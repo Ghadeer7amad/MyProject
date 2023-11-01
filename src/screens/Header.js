@@ -10,7 +10,7 @@ const Drawer = createDrawerNavigator();
 const Header = () => {
   const navigation = useNavigation();
 
-  const handleMenuPress = () => {
+  const handleMenuPress   = () => {
     navigation.openDrawer();
   };
   
