@@ -52,7 +52,7 @@ const EmployeesScreen = () => {
         renderItem={renderEmployeeItem}
         keyExtractor={(item) => item.id}
       />
-      <NavbarButtom />
+      <NavbarButtom onChange={(selectedIcon) => console.log(selectedIcon)}/>
     </View>
   );
 };

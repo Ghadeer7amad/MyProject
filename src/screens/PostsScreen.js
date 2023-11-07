@@ -133,7 +133,7 @@ const PostsScreen = () => {
         )}
       />
 
-      <NavbarButton />
+      <NavbarButton onChange={(selectedIcon) => console.log(selectedIcon)}/>
     </View>
   );
 };
