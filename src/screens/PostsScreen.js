@@ -3,7 +3,6 @@ import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Color from '../Common/Color';
 import Header from './Header.js';
-import FooterVar from './FooterVar.js';
 import NavbarButtom from '../Common/NavbarButtom';
 import { View, Text, FlatList, StyleSheet ,Image,TextInput} from 'react-native';
 
@@ -82,7 +81,7 @@ const mockPosts = [
             </View>
           )}
         />
-        <NavbarButtom/>
+        <NavbarButtom onChange={(selectedIcon) => console.log(selectedIcon)}/>
       </View>
     );
   };

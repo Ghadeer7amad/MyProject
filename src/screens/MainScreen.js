@@ -82,7 +82,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#856c8b'
+    backgroundColor: '#856c8b',
+    marginBottom: -50,
   },
   groupContainer: {
     flexDirection: 'row',

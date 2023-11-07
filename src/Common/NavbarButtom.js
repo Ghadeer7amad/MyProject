@@ -1,37 +1,78 @@
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-import React from "react";
+import React, { useState } from "react";
+import { useNavigation } from "@react-navigation/native";
+import { createStackNavigator } from '@react-navigation/stack';
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
-import  Color from "./Color.js"
+import { FontAwesome } from '@expo/vector-icons';
+import Settings from "../CommonNav/Settings";
+import Color from '../Common/Color';
 
 
-const FooterMenu = () => {
+const NavbarButtom = ({onChange}) => {
+    const [selectedIcon, setSelectedIcon] = useState(null);
+
+  const handleIconPress = (iconName) => {
+    setSelectedIcon(iconName);
+    onChange(iconName);
+  };
+
+    const navigation = useNavigation();
+
+    const handleSettingsPress = () => {
+        navigation.navigate('Settings');
+      };
+
+    const handleHomePress = () => {
+        navigation.navigate('Chose');
+      };
+
+
     return (
-        
+    <View style = {styles.containerr}>
         <View style = {styles.container}>
-          <TouchableOpacity>
-            <Ionicons name="home-outline" style = {styles.iconStyle} />
-            <Text style = {styles.textStyle}>HOME</Text>
+        <TouchableOpacity onPress={() => {
+          handleHomePress(); 
+          handleIconPress("home"); 
+    }}>
+      <Ionicons name="home-outline"  style={[
+              styles.iconStyle,
+              selectedIcon === "home" && { color: Color.primary, borderBottomWidth: 3, borderBottomColor: Color.primary },
+            ]}/>
+            
         </TouchableOpacity>
-        <TouchableOpacity>
-            <Ionicons name="notifications-outline" style = {styles.iconStyle} />
-            <Text style = {styles.textStyle}>NOTIFICATIONS</Text>
+
+        <TouchableOpacity  onPress={() => handleIconPress("notifications")}>
+            <Ionicons name="notifications-outline" style={[
+              styles.iconStyle,
+              selectedIcon === "notifications" && { color: Color.primary, borderBottomWidth: 3, borderBottomColor: Color.primary },
+            ]} />
         </TouchableOpacity>
-        <TouchableOpacity>
-            <MaterialIcons name="favorite-border" style = {styles.iconStyle} />
-            <Text style = {styles.textStyle}>FAVORITES</Text>
+
+        <TouchableOpacity onPress={() => handleIconPress("favorite")}>
+            <MaterialIcons name="favorite-outline" style={[
+              styles.iconStyle,
+              selectedIcon === "favorite" && { color: Color.primary, borderBottomWidth: 3, borderBottomColor: Color.primary },
+            ]} />
         </TouchableOpacity>
-        <TouchableOpacity>
-            <Ionicons name="settings-outline" style = {styles.iconStyle} />
-            <Text style = {styles.textStyle}>SETTINGS</Text>
+
+        <TouchableOpacity onPress={() => {
+          handleSettingsPress(); 
+          handleIconPress("settings"); 
+}} >
+            <Ionicons name="settings-outline" style={[
+              styles.iconStyle,
+              selectedIcon === "settings" && { color: Color.primary, borderBottomWidth: 3, borderBottomColor: Color.primary },
+            ]} />
         </TouchableOpacity>
+        </View>
         </View>
         
         
     )
 }
 
-export default FooterMenu;
+export default NavbarButtom;
 
 const styles = StyleSheet.create({
 
@@ -40,26 +81,26 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     padding: 10,
     justifyContent: 'space-between',
-    backgroundColor: Color.secondary,
-    borderTopLeftRadius: 25,
-    borderTopRightRadius: 25,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    backgroundColor: 'white',
+    height: 65,
+    
+   
+
     },
+
+    
 
     iconStyle: {
-        color: Color.primary,
+        color: 'gray',
         marginBottom: 3,
         alignSelf: 'center',
-        fontSize: 25,
-        textShadowColor: 'rgba(0, 0, 0, 0.30)', 
-        textShadowOffset: { width: 2, height: 2 },
-        textShadowRadius: 5, 
+        fontSize: 30,
+        padding: 5,
 
     },
 
-    textStyle: {
-        color: 'white',
-        fontWeight: 'bold',
-    }
-    
+ 
 
 });

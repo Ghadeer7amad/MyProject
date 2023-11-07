@@ -101,7 +101,7 @@ const BookingScreen = () => {
             </TouchableOpacity>
           </View>
         </ScrollView>
-        <NavbarButtom/>
+        <NavbarButtom onChange={(selectedIcon) => console.log(selectedIcon)}/>
       </View>
     );
   };

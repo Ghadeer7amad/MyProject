@@ -3,9 +3,10 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { createStackNavigator } from '@react-navigation/stack';
 import Header from "./Header";
-import FooterVar from "./FooterVar";
+import NavbarButtom from '../Common/NavbarButtom';
 import Settings from "../CommonNav/Settings";
 import MainScreen from "./MainScreen";
+
 
 const Stack = createStackNavigator();
 
@@ -24,9 +25,11 @@ const Chose = () => {
 
   return (
     <View style={styles.container}>
+    
       <Header />
       <MainScreen />
-      <FooterVar />
+      <NavbarButtom onChange={(selectedIcon) => console.log(selectedIcon)}/>
+      
     </View>
   );
 };

@@ -8,11 +8,8 @@ import Home from './src/screens/Home';
 import Chose from './src/screens/Chose';
 import Signup from './src/screens/Signup';
 import Settings from './src/CommonNav/Settings';
-import Staff from './src/ChosenPages/Staff';
 import About from './src/ChosenPages/About';
-import Reservations from './src/ChosenPages/Reservations';
 import Services from './src/ChosenPages/Servicse';
-import Posts from './src/ChosenPages/Posts';
 import Login from './src/screens/Login';
 import Listt  from './src/screens/Listt';
 import Header from './src/screens/Header';
@@ -53,11 +50,8 @@ export default function App() {
       <Stack.Screen name="Header" component={Header} />
       <Stack.Screen name="List" component={Listt} />
       <Stack.Screen name="Settings" component={Settings} />
-      <Stack.Screen name="Staff" component={Staff} />
-      <Stack.Screen name="About" component={About} />
-      <Stack.Screen name="Reservations" component={Reservations} />
+      <Stack.Screen name="About" component={About} options={{ headerShown: false }}/>
       <Stack.Screen name="Services" component={Services} />
-      <Stack.Screen name="Posts" component={Posts} />
       <Stack.Screen name="ProductsScreens" component={ProductsScreens} />
       <Stack.Screen name="CardsScreen" component={CardsScreen} />
       <Stack.Screen name="Favorite" component={Favorite} />
