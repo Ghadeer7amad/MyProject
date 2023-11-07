@@ -19,7 +19,7 @@ import { useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 //import SliderScreens from "./SliderScreens.js";
   
-const ProductsScreens = () => {
+const ServicesScreen = () => {
 
   const navigation = useNavigation();
 
@@ -92,7 +92,7 @@ const ProductsScreens = () => {
   )
 }
 
-export default ProductsScreens
+export default ServicesScreen
 
 
 const styles = StyleSheet.create({

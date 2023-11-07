@@ -17,7 +17,6 @@ import Chose from './src/screens/Chose';
 import Signup from './src/screens/Signup';
 import Settings from './src/CommonNav/Settings';
 import About from './src/ChosenPages/About';
-import Services from './src/ChosenPages/Servicse';
 import Login from './src/screens/Login';
 import ProductsScreens from './src/Products/ProductsScreens';
 import ServicesScreen from './src/Services/ServicesScreen';
@@ -29,7 +28,6 @@ import BookingScreen from './src/screens/BookingScreen';
 import EmployeesScreen from './src/screens/EmployeesScreen';
 import PostsScreen from './src/screens/PostsScreen';
 import SalonScreen from './src/screens/SalonScreen';
-import Staff from "./src/ChosenPages/Servicse";
 import PathologicalCase from "./src/screens/PathologicalCase.js"
 import ForgetPage from "./src/screens/ForgetPassword.js/ForgetPage.js"
 import ResetPassword from "./src/screens/ForgetPassword.js/ResetPassword.js"
@@ -54,7 +52,7 @@ const HomeStack = () => (
     <Stack.Screen name="Header" component={Header} options={{ headerShown: false }} />
     <Stack.Screen name="Settings" component={Settings} options={{ headerShown: false }}/>
     <Stack.Screen name="About" component={About} options={{ headerShown: false }}/>
-    <Stack.Screen name="Services" component={Services} options={{ headerShown: false }}/>
+    <Stack.Screen name="ServicesScreen" component={ServicesScreen} options={{ headerShown: false }}/>
     <Stack.Screen name="ProductsScreens" component={ProductsScreens} options={{ headerShown: false }} />
     <Stack.Screen name="CardsScreen" component={CardsScreen} options={{ headerShown: false }}/>
     <Stack.Screen name="Favorite" component={Favorite} options={{ headerShown: false }}/>
@@ -96,10 +94,10 @@ const App = () => {
         }}
       >
         <Drawer.Screen name="Home" component={HomeStack} options={{ headerShown: false }}/>
-        <Drawer.Screen name="Staff" component={Staff} options={{ headerShown: false }}/>
+        <Drawer.Screen name="EmployeesScreen" component={EmployeesScreen} options={{ headerShown: false }}/>
         <Drawer.Screen name="About" component={About} options={{ headerShown: false }}/>
         <Drawer.Screen name="Products" component={ProductsScreens} options={{ headerShown: false }}/>
-        <Drawer.Screen name="Services" component={Services} options={{ headerShown: false }}/>
+        <Drawer.Screen name="ServicesScreen" component={ServicesScreen} options={{ headerShown: false }}/>
         <Drawer.Screen name="Reservations" component={BookingScreen} options={{ headerShown: false }}/>
         <Drawer.Screen name="Posts" component={PostsScreen} options={{ headerShown: false }}/>
         <Drawer.Screen name="Settings" component={Settings}/>
