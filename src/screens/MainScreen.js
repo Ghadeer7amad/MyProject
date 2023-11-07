@@ -31,7 +31,7 @@ const MainScreen = () => {
         navigation.navigate('BookingScreen'); 
         break;
         case 'SERVICES':
-        navigation.navigate('Services'); 
+        navigation.navigate('ServicesScreen'); 
         break;
         case 'POSTS':
         navigation.navigate('PostsScreen'); 

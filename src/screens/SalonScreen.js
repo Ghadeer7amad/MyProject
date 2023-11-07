@@ -86,7 +86,7 @@ const SalonScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Color.primary,
+    backgroundColor: Color.background,
     paddingHorizontal: 10,
     paddingTop: 30,
   },

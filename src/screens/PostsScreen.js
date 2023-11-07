@@ -141,7 +141,7 @@ const PostsScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Color.primary,
+    backgroundColor: Color.background,
   },
   postContainer: {
     backgroundColor: "#ffffff",

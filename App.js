@@ -14,6 +14,7 @@ import Login from './src/screens/Login';
 import Listt  from './src/screens/Listt';
 import Header from './src/screens/Header';
 import ProductsScreens from './src/Products/ProductsScreens';
+import ServicesScreen from './src/Services/ServicesScreen';
 import CardsScreen from './src/Products/CardsScreen';
 import Favorite from './src/Products/Favorite';
 import ProductsDetails from './src/Products/ProductsDetails';
@@ -60,6 +61,7 @@ export default function App() {
       <Stack.Screen name="EmployeesScreen" component={EmployeesScreen} options={{ headerShown: false }} />
       <Stack.Screen name="PostsScreen" component={PostsScreen} options={{ headerShown: false }}/>
       <Stack.Screen name="SalonScreen" component={SalonScreen} options={{ headerShown: false }}/>
+      <Stack.Screen name="ServicesScreen" component={ServicesScreen} options={{ headerShown: false }}/>
 
       
       
