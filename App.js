@@ -50,11 +50,8 @@ export default function App() {
       <Stack.Screen name="Header" component={Header} options={{ headerShown: false }} />
       <Stack.Screen name="List" component={Listt} options={{ headerShown: false }}/>
       <Stack.Screen name="Settings" component={Settings} options={{ headerShown: false }}/>
-      <Stack.Screen name="Staff" component={Staff} options={{ headerShown: false }}/>
       <Stack.Screen name="About" component={About} options={{ headerShown: false }}/>
-      <Stack.Screen name="Reservations" component={Reservations} options={{ headerShown: false }}/>
       <Stack.Screen name="Services" component={Services} options={{ headerShown: false }}/>
-      <Stack.Screen name="Posts" component={Posts} options={{ headerShown: false }}/>
       <Stack.Screen name="ProductsScreens" component={ProductsScreens} options={{ headerShown: false }} />
       <Stack.Screen name="CardsScreen" component={CardsScreen} options={{ headerShown: false }}/>
       <Stack.Screen name="Favorite" component={Favorite} options={{ headerShown: false }}/>
