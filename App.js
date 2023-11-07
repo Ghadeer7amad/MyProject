@@ -11,7 +11,8 @@ import { Ionicons } from '@expo/vector-icons';
 import Color from "./src/Common/Color";
 
 import Header from './src/screens/Header';
-import Home from './src/screens/Home';
+import Homee from './src/screens/Home';
+import ChoseScreen from './src/screens/ChoseScreen'
 import Chose from './src/screens/Chose';
 import Signup from './src/screens/Signup';
 import Settings from './src/CommonNav/Settings';
@@ -28,15 +29,26 @@ import EmployeesScreen from './src/screens/EmployeesScreen';
 import PostsScreen from './src/screens/PostsScreen';
 import SalonScreen from './src/screens/SalonScreen';
 import Staff from "./src/ChosenPages/Servicse";
+import PathologicalCase from "./src/screens/PathologicalCase.js"
+import ForgetPage from "./src/screens/ForgetPassword.js/ForgetPage.js"
+import ResetPassword from "./src/screens/ForgetPassword.js/ResetPassword.js"
+import SendCode from "./src/screens/ForgetPassword.js/SendCode.js"
+import AddProduct from "./AdminPage/AddProduct.js"
+import AddServices from './AdminPage/AddServices.js'
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
 const HomeStack = () => (
   <Stack.Navigator>
-    <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
+    <Stack.Screen name="Homee" component={Homee} options={{ headerShown: false }} />
+    <Stack.Screen name="ChoseScreen" component={ChoseScreen} options={{ headerShown: false }} />
     <Stack.Screen name="Signup" component={Signup} options={{ headerShown: false }}/>
     <Stack.Screen name="Login" component={Login} options={{ headerShown: false }}/>
+    <Stack.Screen name="ForgetPage" component={ForgetPage} options={{ headerShown: false }}/>
+    <Stack.Screen name="ResetPassword" component={ResetPassword} options={{ headerShown: false }}/>
+    <Stack.Screen name="SendCode" component={SendCode} options={{ headerShown: false }}/>
+    <Stack.Screen name="PathologicalCase" component={PathologicalCase} options={{ headerShown: false }}/>
     <Stack.Screen name="Chose" component={Chose} options={{ headerShown: false }} />
     <Stack.Screen name="Header" component={Header} options={{ headerShown: false }} />
     <Stack.Screen name="Settings" component={Settings} options={{ headerShown: false }}/>
@@ -50,6 +62,9 @@ const HomeStack = () => (
     <Stack.Screen name="EmployeesScreen" component={EmployeesScreen} options={{ headerShown: false }} />
     <Stack.Screen name="PostsScreen" component={PostsScreen} options={{ headerShown: false }}/>
     <Stack.Screen name="SalonScreen" component={SalonScreen} options={{ headerShown: false }}/>
+
+    <Stack.Screen name="AddProduct" component={AddProduct} options={{ headerShown: false }}/>
+    <Stack.Screen name="AddServices" component={AddServices} options={{ headerShown: false }}/>
   </Stack.Navigator>
 );
 

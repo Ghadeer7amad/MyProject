@@ -6,7 +6,6 @@ import { faFacebookF, faGoogle, faTwitter } from '@fortawesome/free-brands-svg-i
 import { Linking } from 'react-native';
 import { Ionicons } from "@expo/vector-icons";
 import Color from '../Common/Color.js';
-
 import { useNavigation } from '@react-navigation/native';
 
  
@@ -17,13 +16,13 @@ const Login = () => {
   })
  const navigation = useNavigation();
 
-  const handleLogin = async() => {
+  /*const handleLogin = async() => {
     
     if(FData.email == '' || FData.password==''){
       console.log("stop")
       return
     }
-    }
+    }*/
   const [showPassword, setShowPassword] = useState(false);
   const [password, setPassword] = useState('');
 
@@ -62,13 +61,15 @@ const Login = () => {
       </TouchableWithoutFeedback>
       </View>
    
-      <TouchableOpacity onPress={handleLogin} onPress={()=>navigation.navigate('SalonScreen')}>
+      <TouchableOpacity /*onPress={handleLogin}*/ onPress={()=>navigation.navigate('PathologicalCase')}>
        <Text style={styles.buttonStyle}>Log in</Text>
       </TouchableOpacity>  
 
-      <View style={styles.TextStylePassword}>
+      <TouchableOpacity style={styles.TextStylePassword}  onPress={() => {
+            navigation.navigate('ForgetPage');
+          }}>
         <Text style={{ color: 'gray' }}>forget your password?</Text>
-      </View>
+      </TouchableOpacity>
 
       <View style={styles.dividerContainer}>
       <View style={styles.dividerLine} />

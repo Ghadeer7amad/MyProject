@@ -1,31 +1,36 @@
 import { StyleSheet, Text, View,TextInput, Image, TouchableOpacity, TouchableWithoutFeedback, Alert, Pressable } from 'react-native'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faEnvelope, faLock, faUser, faCheck, faEye } from '@fortawesome/free-solid-svg-icons';
+import { faEnvelope, faLock, faUser, faCheck, faHome, faPhone, faBirthdayCake } from '@fortawesome/free-solid-svg-icons';
 import { faFacebookF, faGoogle, faTwitter} from '@fortawesome/free-brands-svg-icons';
 import { Linking } from 'react-native';
 import { Ionicons } from "@expo/vector-icons";
 import Color from '../Common/Color.js';
 import React, {useState} from 'react'
 import { useNavigation } from '@react-navigation/native';
-//import axios from 'axios'
-import Login from './Login.js';
+import Spacing from '../Common/Spacing.js'
+//import { format, isValid, parse } from 'date-fns';
 
 const Signup = () => {
-  const [isPasswordValid, setPasswordValid] = useState(true);
   const [isPasswordCValid, setPasswordCValid] = useState(true);
   const[FData, setFData] = useState({
     name : "",
     email: "",
+    birthday: "",
+    phone: "",
+    address: "",
     password: "",
     passwordC: ""
   })
   const [fieldValid, setFieldValid] = useState({
     name: true,
     email: true,
+    birthday: true,
+    phone: true,
+    address: true,
     password: true,
     passwordC: true
   });
-
+  
  const navigation = useNavigation();
 
   const handleRegister = async() => {
@@ -35,6 +40,15 @@ const Signup = () => {
     }
     if (FData.email === "") {
       errors.email = false;
+    }
+    if (FData.birthday === "") {
+      errors.birthday = false;
+    }
+    if (FData.phone === "") {
+      errors.phone = false;
+    }
+    if (FData.address === "") {
+      errors.address = false;
     }
     if (FData.password === "") {
       errors.password = false;
@@ -48,7 +62,8 @@ const Signup = () => {
     if (Object.values(errors).some(fieldValid => !fieldValid)) {
       return;
     }
-      }
+    navigation.navigate('Login');
+   }
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -62,12 +77,18 @@ const Signup = () => {
   };
   return (
     <View style={styles.contanier}> 
-      <Image style={styles.contanier1}
-       source={require("../../assets/2.jpg")}
-      />
+     <Text style={{color:Color.primary, fontSize: 25, fontWeight:"bold", marginLeft: 20, marginTop: 3, marginBottom: 1}}>
 
-      <View style={styles.contanier2}>
-     
+     <TouchableOpacity style={{marginLeft: Spacing*3}} 
+                 onPress={() => {
+                 navigation.navigate('ChoseScreen');
+                }}>
+                    <Ionicons name="arrow-back" color={Color.primary} size={Spacing*1.3}/>
+    </TouchableOpacity>
+       Dear Lady,
+      </Text>
+
+      <Text style={{color:Color.primary, fontSize: 17, marginLeft: 20, marginBottom: 3}}>please enter your complete information !!</Text>
       <View style={styles.formgroup}>
         <TextInput 
         value={FData.name}
@@ -85,10 +106,44 @@ const Signup = () => {
         onChangeText={(text) => setFData({...FData, email: text})}
         onBlur={() => setFieldValid({ ...fieldValid, email: FData.email !== "" })}
         style={styles.input} 
-        placeholder='Enter Your Email'/>
+        placeholder='example@gmail.com'/>
         <FontAwesomeIcon icon={faEnvelope} style={styles.icon} />
       </View>
       {!fieldValid.email && <Text style={styles.textWrong}> email is required </Text>}
+
+      <View style={styles.formgroup}>
+        <TextInput 
+        value={FData.birthday}
+        onChangeText={(text) => setFData({...FData, birthday: text})}
+        onBlur={() => setFieldValid({ ...fieldValid, birthday: FData.birthday !== ""  })}
+        style={styles.input} 
+        placeholder='dd/mm/yy'/>
+        <FontAwesomeIcon icon={faBirthdayCake} style={styles.icon} />
+      </View>
+      {!fieldValid.birthday && <Text style={styles.textWrong}> birthday is required </Text>}
+
+
+      <View style={styles.formgroup}>
+        <TextInput 
+        value={FData.phone}
+        onChangeText={(text) => setFData({...FData, phone: text})}
+        onBlur={() => setFieldValid({ ...fieldValid, phone: FData.phone !== "" })}
+        style={styles.input} 
+        placeholder='+972 56-853-6463'/>
+        <FontAwesomeIcon icon={faPhone} style={styles.icon} />
+      </View>
+      {!fieldValid.phone && <Text style={styles.textWrong}> phone is required </Text>}
+
+      <View style={styles.formgroup}>
+        <TextInput 
+        value={FData.address}
+        onChangeText={(text) => setFData({...FData, address: text})}
+        onBlur={() => setFieldValid({ ...fieldValid, address: FData.address !== "" })}
+        style={styles.input} 
+        placeholder='City/Village'/>
+        <FontAwesomeIcon icon={faHome} style={styles.icon} />
+      </View>
+      {!fieldValid.address && <Text style={styles.textWrong}> address is required </Text>}
 
       <View style={styles.formgroup}>
         <TextInput 
@@ -96,8 +151,7 @@ const Signup = () => {
         value={FData.password}
         onChangeText={(text) => setFData({...FData, password: text})}
         onBlur={() => {
-          setFieldValid({ ...fieldValid, password: FData.password !== "" });
-          setPasswordValid(FData.password.length >= 5);
+          setFieldValid({ ...fieldValid, password: FData.password !== "" & FData.password.length >= 5});
         }}
          style={styles.input} placeholder='Enter Your password'/>
         <TouchableWithoutFeedback onPress={togglePasswordVisibility}>
@@ -105,8 +159,7 @@ const Signup = () => {
       </TouchableWithoutFeedback>
         <FontAwesomeIcon icon={faLock} style={styles.icon} />
       </View>
-      {!fieldValid.password && <Text style={styles.textWrong}> password is required </Text>}
-      {!isPasswordValid && <Text style={styles.textWrong}>Password must be at least 5 characters</Text>}
+      {!fieldValid.password && <Text style={styles.textWrong}> Password must be at least 5 characters </Text>}
 
       <View style={styles.formgroup}>
         <TextInput secureTextEntry={!showPasswordC}
@@ -160,9 +213,7 @@ const Signup = () => {
       <Text onPress={()=>navigation.navigate('Login')}
        style={styles.link}> Log in your Account..</Text>
       </Text>
-      
       </View>
-    </View>
   )
 }
 
@@ -170,22 +221,14 @@ export default Signup;
 
 const styles = StyleSheet.create({
   contanier:{
+    marginTop: 55,
     height: "100%",
     width: "100%"
-  },
-  contanier1:{
-    height: "40%",
-    width:"100%",
-  },
-  contanier2:{
-    height: "70%",
-    width:"100%",
-    backgroundColor:"#fff",
   },
   TextStyleHeader:{
     fontWeight:"500",
     color: Color.primary, 
-    fontSize: 24,
+    fontSize: 20,
     marginTop:10,
     marginBottom: 5,
     textAlign: "center",
@@ -194,7 +237,7 @@ const styles = StyleSheet.create({
   formgroup:{
     display:"flex",
     position:"relative",
-    marginTop: 20,
+    marginTop: 10,
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -231,7 +274,7 @@ const styles = StyleSheet.create({
   buttonStyle:{
     padding: 20,
     marginTop: 20,
-    marginBottom: 13,
+    marginBottom: 7,
     marginHorizontal: 10,
     backgroundColor: Color.primary,
     fontWeight: '300',
@@ -307,7 +350,7 @@ iconsTiwtter: {
 TextStyle4:{
   marginHorizontal: 70,
   marginVertical: 14,
-  marginTop: 8,
+  marginTop:1,
 },
 link:{
   color: Color.primary,
@@ -315,8 +358,6 @@ link:{
 },
 textWrong:{
    color: "#ff847c",
-   marginLeft: 10
+   marginLeft: 10,
 }
-
-
 })
