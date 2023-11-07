@@ -1,19 +1,24 @@
 import React from "react";
 import { View, Text, ImageBackground, StyleSheet, SafeAreaView, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import One from '../../assets/3.jpeg';
+import { useState } from "react";
+import Colors from "../Common/Color.js"
+import One from '../../assets/face.jpg';
 
-const Home = () => {
+const Homee = () => {
     const navigation = useNavigation();
+  
 
     const handleContinuePress = () => {
-        navigation.navigate('Signup'); // اسم الشاشة التي تريد التنقل إليها
+        navigation.navigate('ChoseScreen'); // اسم الشاشة التي تريد التنقل إليها
     };
 
     return (
         <ImageBackground source={One} style={styles.image}>
             <View>
-                <Text style={styles.container}>INNER GLOW, DISCOVER YOUR BEAUTY!</Text>
+                <Text style={styles.container1}>Hello lady</Text>
+                <Text style={styles.container}><Text style={{ color: "#f4991a" }}>thank you </Text>{'\n'}for choosing our application,
+                 {'\n'}Click continue to {'\n'}<Text style={{ color: "#e2bf81" }}>register</Text> or <Text style={{ color: "#e2bf81" }}>login!!</Text></Text>
             </View>
             
             <TouchableOpacity style={styles.continueButton} onPress={handleContinuePress}>
@@ -24,25 +29,39 @@ const Home = () => {
     );
 };
 
-export default Home;
+export default Homee;
 
 const styles = StyleSheet.create({
     image: {
         flex: 1,
     },
-
-    container: {
-        color: "white",
+    container1: {
+        color: Colors.primary,
         alignItems: 'center',
         alignSelf: "center",
-        paddingTop: 100,
-        fontSize: 20,
+        fontWeight: "bold",
+        paddingTop: 110,
+        marginBottom: 20,
+        fontSize: 28,
+        textTransform: "uppercase",
+        letterSpacing: 2,
+        marginLeft: 180
+    },
+    container: {
+        color: Colors.background,
+        alignItems: 'center',
+        alignSelf: "center",
+        fontWeight: "bold",
+        fontSize: 15,
+        textTransform: "uppercase",
+        lineHeight: 24,
+        marginLeft: 180
     },
     
     continueButton: {
         backgroundColor: 'transparent',  // جعل اللون شفافًا
         borderWidth: 1,  // إضافة حدود للتأكيد على الموقع
-        borderColor: 'white',  // لون الحدود
+        borderColor: Colors.primary,  // لون الحدود
         alignItems: 'center',
         padding: 10,
         borderRadius: 8,
@@ -53,7 +72,7 @@ const styles = StyleSheet.create({
     },
     
     continueButtonText: {
-        color: 'white',
+        color: Colors.primary,
         fontSize: 18,
         
     },

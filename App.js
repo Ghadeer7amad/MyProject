@@ -1,18 +1,24 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import React from "react";
+import { View } from "react-native";
+import { DrawerItemList, DrawerItem } from '@react-navigation/drawer';
+
+
+
+import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import { Ionicons } from '@expo/vector-icons';
+import Color from "./src/Common/Color";
 
-import Home from './src/screens/Home';
+import Header from './src/screens/Header';
+import Homee from './src/screens/Home';
+import ChoseScreen from './src/screens/ChoseScreen'
 import Chose from './src/screens/Chose';
 import Signup from './src/screens/Signup';
 import Settings from './src/CommonNav/Settings';
 import About from './src/ChosenPages/About';
 import Services from './src/ChosenPages/Servicse';
 import Login from './src/screens/Login';
-import Listt  from './src/screens/Listt';
-import Header from './src/screens/Header';
 import ProductsScreens from './src/Products/ProductsScreens';
 import ServicesScreen from './src/Services/ServicesScreen';
 import CardsScreen from './src/Products/CardsScreen';
@@ -23,60 +29,83 @@ import BookingScreen from './src/screens/BookingScreen';
 import EmployeesScreen from './src/screens/EmployeesScreen';
 import PostsScreen from './src/screens/PostsScreen';
 import SalonScreen from './src/screens/SalonScreen';
-
-
-
-
-
+import Staff from "./src/ChosenPages/Servicse";
+import PathologicalCase from "./src/screens/PathologicalCase.js"
+import ForgetPage from "./src/screens/ForgetPassword.js/ForgetPage.js"
+import ResetPassword from "./src/screens/ForgetPassword.js/ResetPassword.js"
+import SendCode from "./src/screens/ForgetPassword.js/SendCode.js"
+import AddProduct from "./AdminPage/AddProduct.js"
+import AddServices from './AdminPage/AddServices.js'
 
 const Stack = createStackNavigator();
-export default function App() {
-  
+const Drawer = createDrawerNavigator();
+
+const HomeStack = () => (
+  <Stack.Navigator>
+    <Stack.Screen name="Homee" component={Homee} options={{ headerShown: false }} />
+    <Stack.Screen name="ChoseScreen" component={ChoseScreen} options={{ headerShown: false }} />
+    <Stack.Screen name="Signup" component={Signup} options={{ headerShown: false }}/>
+    <Stack.Screen name="Login" component={Login} options={{ headerShown: false }}/>
+    <Stack.Screen name="ForgetPage" component={ForgetPage} options={{ headerShown: false }}/>
+    <Stack.Screen name="ResetPassword" component={ResetPassword} options={{ headerShown: false }}/>
+    <Stack.Screen name="SendCode" component={SendCode} options={{ headerShown: false }}/>
+    <Stack.Screen name="PathologicalCase" component={PathologicalCase} options={{ headerShown: false }}/>
+    <Stack.Screen name="Chose" component={Chose} options={{ headerShown: false }} />
+    <Stack.Screen name="Header" component={Header} options={{ headerShown: false }} />
+    <Stack.Screen name="Settings" component={Settings} options={{ headerShown: false }}/>
+    <Stack.Screen name="About" component={About} options={{ headerShown: false }}/>
+    <Stack.Screen name="Services" component={Services} options={{ headerShown: false }}/>
+    <Stack.Screen name="ProductsScreens" component={ProductsScreens} options={{ headerShown: false }} />
+    <Stack.Screen name="CardsScreen" component={CardsScreen} options={{ headerShown: false }}/>
+    <Stack.Screen name="Favorite" component={Favorite} options={{ headerShown: false }}/>
+    <Stack.Screen name="ProductsDetails" component={ProductsDetails}options={{ headerShown: false }} />
+    <Stack.Screen name="BookingScreen" component={BookingScreen}options={{ headerShown: false }} />
+    <Stack.Screen name="EmployeesScreen" component={EmployeesScreen} options={{ headerShown: false }} />
+    <Stack.Screen name="PostsScreen" component={PostsScreen} options={{ headerShown: false }}/>
+    <Stack.Screen name="SalonScreen" component={SalonScreen} options={{ headerShown: false }}/>
+
+    <Stack.Screen name="AddProduct" component={AddProduct} options={{ headerShown: false }}/>
+    <Stack.Screen name="AddServices" component={AddServices} options={{ headerShown: false }}/>
+  </Stack.Navigator>
+);
+
+const CustomDrawerContent = (props) => {
   return (
-
-
-      /*<View style={{ flex: 1, backgroundColor: "#2470a0"}}>
-         <ProductsDetails product={ProductData[4]}/>
-      </View> */
-
-
-    
-    <NavigationContainer>
-    <Stack.Navigator>
-
-      <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
-      <Stack.Screen name="Signup" component={Signup} options={{ headerShown: false }}/>
-      <Stack.Screen name="Login" component={Login} options={{ headerShown: false }}/>
-      <Stack.Screen name="Chose" component={Chose} options={{ headerShown: false }} />
-      <Stack.Screen name="Header" component={Header} options={{ headerShown: false }} />
-      <Stack.Screen name="List" component={Listt} options={{ headerShown: false }}/>
-      <Stack.Screen name="Settings" component={Settings} options={{ headerShown: false }}/>
-      <Stack.Screen name="About" component={About} options={{ headerShown: false }}/>
-      <Stack.Screen name="Services" component={Services} options={{ headerShown: false }}/>
-      <Stack.Screen name="ProductsScreens" component={ProductsScreens} options={{ headerShown: false }} />
-      <Stack.Screen name="CardsScreen" component={CardsScreen} options={{ headerShown: false }}/>
-      <Stack.Screen name="Favorite" component={Favorite} options={{ headerShown: false }}/>
-      <Stack.Screen name="ProductsDetails" component={ProductsDetails}options={{ headerShown: false }} />
-      <Stack.Screen name="BookingScreen" component={BookingScreen}options={{ headerShown: false }} />
-      <Stack.Screen name="EmployeesScreen" component={EmployeesScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="PostsScreen" component={PostsScreen} options={{ headerShown: false }}/>
-      <Stack.Screen name="SalonScreen" component={SalonScreen} options={{ headerShown: false }}/>
-      <Stack.Screen name="ServicesScreen" component={ServicesScreen} options={{ headerShown: false }}/>
-
-      
-      
-      
-    </Stack.Navigator>
-    </NavigationContainer> 
-
-    
-
-    
-   
- 
-
-  
+    <View>
+      <DrawerItemList {...props} />
+      <DrawerItem
+        label="Log Out"
+        icon={({ color, size }) => <Ionicons name="log-out" color={Color.primary} size={size} />}
+        onPress={() => {
+          // اضفي الأكواد هنا لتسجيل الخروج
+        }}
+      />
+    </View>
   );
-}
+};
 
+const App = () => {
+  return (
+    <NavigationContainer>
+      <Drawer.Navigator
+        initialRouteName="Home"
+        drawerContent={(props) => <CustomDrawerContent {...props} />}
+        drawerContentOptions={{
+          activeTintColor: Color.yell, // لتحديد اللون عند النقر
+          itemStyle: { marginVertical: 5, color: 'purple' }, // تخصيص الستايل
+        }}
+      >
+        <Drawer.Screen name="Home" component={HomeStack} options={{ headerShown: false }}/>
+        <Drawer.Screen name="Staff" component={Staff} options={{ headerShown: false }}/>
+        <Drawer.Screen name="About" component={About} options={{ headerShown: false }}/>
+        <Drawer.Screen name="Products" component={ProductsScreens} options={{ headerShown: false }}/>
+        <Drawer.Screen name="Services" component={Services} options={{ headerShown: false }}/>
+        <Drawer.Screen name="Reservations" component={BookingScreen} options={{ headerShown: false }}/>
+        <Drawer.Screen name="Posts" component={PostsScreen} options={{ headerShown: false }}/>
+        <Drawer.Screen name="Settings" component={Settings}/>
+      </Drawer.Navigator>
+    </NavigationContainer>
+  );
+};
 
+export default App;
