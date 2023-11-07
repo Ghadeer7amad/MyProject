@@ -5,6 +5,8 @@ import { FontAwesome as Icon } from '@expo/vector-icons';
 import CustomSearchBar from "../Common/SearchBarComponent.js";
 import { useNavigation } from "@react-navigation/native";
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import Color from "../Common/Color";
+
 
 const SalonScreen = () => {
   const data = [
@@ -84,9 +86,9 @@ const SalonScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#849c9e',
+    backgroundColor: Color.primary,
     paddingHorizontal: 10,
-    paddingTop: 10,
+    paddingTop: 30,
   },
   card: {
     borderRadius: 20,
