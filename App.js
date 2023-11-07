@@ -47,21 +47,6 @@ export default function App() {
       <Stack.Screen name="Signup" component={Signup} options={{ headerShown: false }}/>
       <Stack.Screen name="Login" component={Login} options={{ headerShown: false }}/>
       <Stack.Screen name="Chose" component={Chose} options={{ headerShown: false }} />
-<<<<<<< HEAD
-      <Stack.Screen name="Header" component={Header} />
-      <Stack.Screen name="List" component={Listt} />
-      <Stack.Screen name="Settings" component={Settings} />
-      <Stack.Screen name="About" component={About} options={{ headerShown: false }}/>
-      <Stack.Screen name="Services" component={Services} />
-      <Stack.Screen name="ProductsScreens" component={ProductsScreens} />
-      <Stack.Screen name="CardsScreen" component={CardsScreen} />
-      <Stack.Screen name="Favorite" component={Favorite} />
-      <Stack.Screen name="ProductsDetails" component={ProductsDetails} />
-      <Stack.Screen name="BookingScreen" component={BookingScreen} />
-      <Stack.Screen name="EmployeesScreen" component={EmployeesScreen}  />
-      <Stack.Screen name="PostsScreen" component={PostsScreen} />
-      <Stack.Screen name="SalonScreen" component={SalonScreen} />
-=======
       <Stack.Screen name="Header" component={Header} options={{ headerShown: false }} />
       <Stack.Screen name="List" component={Listt} options={{ headerShown: false }}/>
       <Stack.Screen name="Settings" component={Settings} options={{ headerShown: false }}/>
@@ -78,7 +63,6 @@ export default function App() {
       <Stack.Screen name="EmployeesScreen" component={EmployeesScreen} options={{ headerShown: false }} />
       <Stack.Screen name="PostsScreen" component={PostsScreen} options={{ headerShown: false }}/>
       <Stack.Screen name="SalonScreen" component={SalonScreen} options={{ headerShown: false }}/>
->>>>>>> 0982adbdc31ef17d53de48c3c58b8d8093775b3e
 
       
       
