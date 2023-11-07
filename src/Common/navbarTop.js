@@ -9,11 +9,18 @@ import {
   import { BlurView } from "expo-blur";
   import { Ionicons } from "@expo/vector-icons";
   import Color from "../Common/Color.js";
+  import { createDrawerNavigator } from '@react-navigation/drawer';
+
+  const Drawer = createDrawerNavigator();
+
+  const handleMenuPress   = () => {
+    navigation.openDrawer();
+  };
 
 const NavbarTop = () => {
   return (
             <View style={styles.smallConatiner}>  
-                <TouchableOpacity style={styles.styleIcon}>
+                <TouchableOpacity style={styles.styleIcon} >
                     <BlurView style={styles.styleBulrView}>
                         <Ionicons name = "menu" size={Spacing * 2} color={Color.background}/>
                     </BlurView>
