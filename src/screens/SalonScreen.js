@@ -14,16 +14,19 @@ const SalonScreen = () => {
       id: '1',
       name: 'Aya Beauty',
       image: require('../../assets/aya5.jpg'),
+      Discrption: "Jerusalem | Hebron | Rahat"
     },
     {
       id: '2',
-      name: 'Beauty Center 2',
+      name: 'Madleen Beauty',
       image: require('../../assets/aya5.jpg'),
+      Discrption: "Jenin | Tulkarm"
     },
     {
       id: '3',
-      name: 'Beauty Center 3',
+      name: 'Aram Beauty',
       image: require('../../assets/aya5.jpg'),
+      Discrption: "Tulkarm | Nablus"
     },
   ];
 
@@ -69,13 +72,14 @@ const SalonScreen = () => {
             </TouchableOpacity >
             <View style={styles.iconContainer}>
               <View style={styles.starContainer}>
-                <Icon name="star" color="gold" size={25} />
-                <Icon name="star" color="gold" size={25} />
-                <Icon name="star-o" color="gold" size={25} />
-                <Icon name="star-o" color="gold" size={25} />
+                <Icon name="star" color="gold" size={20} />
+                <Icon name="star" color="gold" size={20} />
+                <Icon name="star-o" color="gold" size={20} />
+                <Icon name="star-o" color="gold" size={20} />
               </View>
-              <Icon name="heart-o" color="red" size={25} />
+              <Icon name="heart-o" color="#cc0e74" size={20} />
             </View>
+            <Text style={{marginTop: 20, letterSpacing: 1, color:Color.primary, fontWeight: "bold"}}>{item.Discrption}</Text>
           </Card>
         )}
       />
@@ -91,13 +95,15 @@ const styles = StyleSheet.create({
     paddingTop: 30,
   },
   card: {
-    borderRadius: 20,
-    backgroundColor: 'white',
+    height: 350,
+    borderRadius: 30,
+    backgroundColor: "#f6f6f6",
     marginBottom: 10,
   },
   cardTitle: {
-    color: 'gray',
-    fontSize: 20,
+    color: Color.primary,
+    fontSize: 17,
+    letterSpacing: 2,
     marginBottom: 10,
     
   },

@@ -49,7 +49,7 @@ const EmployeesScreen = () => {
   return (
     <View style={styles.container}>
     <Header/>
-    <CustomSearchBar/>
+    <CustomSearchBar placeholder={'serach Employee'}/>
 
     <FlatList
     data={employeesData}

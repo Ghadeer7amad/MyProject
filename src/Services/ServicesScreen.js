@@ -11,7 +11,7 @@ import React from "react";
 import Spacing from "../Common/Spacing.js";
 import CustomSearchBar from "../Common/SearchBarComponent.js";
 import NavbarTop from "../Common/navbarTop.js";
-
+import SearchProANDSer from "../Common/SerachProANDSer.js"
 import Color from "../Common/Color.js";
 import Service from "./ServiceData.js";
 import { BlurView } from "expo-blur";
@@ -39,7 +39,7 @@ const ServicesScreen = () => {
             <Text style={styles.styleText}>Here</Text>
             <Text style={[styles.styleText, styles.styleText2]}>Our Services</Text>
 
-            <CustomSearchBar placeholder="Search your service" />
+            <SearchProANDSer placeholder="Search your service" />
           </View>
 
           <View style={styles.ServiceStyle}>
@@ -161,15 +161,16 @@ const styles = StyleSheet.create({
    },
    details:{
     color: "#d9b650",
-    fontSize: 17,
-    fontWeight:"bold",
-    padding:3
+    fontSize: 15,
+    fontWeight:"400",
+    padding:4
    },
     styleText:{
         color: Color.secondary,
-        fontSize: Spacing * 2,
+        fontSize: Spacing * 1.8,
         textTransform:"uppercase",
-        fontWeight: "bold"
+        fontWeight: "bold",
+        marginTop: 5
     },  
     styleText2:{
       color: "#d9b650"

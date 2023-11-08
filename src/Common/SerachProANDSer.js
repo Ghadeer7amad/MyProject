@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { StyleSheet, View } from 'react-native';
 import { faList} from '@fortawesome/free-solid-svg-icons'; 
 
-const CustomSearchBar = ({ placeholder }) => {
+const SearchProANDSer = ({ placeholder }) => {
   const [searchText, setSearchText] = useState('');
 
   const handleSearch = (text) => {
@@ -38,8 +38,8 @@ const styles = StyleSheet.create({
   },
   searchBarInputContainer: {
     backgroundColor: '#fff',
-    borderRadius: 50,
-    padding: 3,
+    borderRadius: 10,
+    padding: 4
    
   },
   searchBarInput: {
@@ -49,11 +49,11 @@ const styles = StyleSheet.create({
     position: 'absolute',
     backgroundColor:"#caabd8",
     marginTop: 29,
-    borderBottomEndRadius: 50,
-    borderTopEndRadius: 50,
-    marginLeft: 350,
-    padding: 19,
+    borderBottomEndRadius: 20,
+    borderTopEndRadius: 20,
+    marginLeft: 330,
+    padding: 20,
   }
 });
 
-export default CustomSearchBar;
+export default SearchProANDSer;

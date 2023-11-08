@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/Ionicons";
-import Color from "../Common/Color";
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faList} from '@fortawesome/free-solid-svg-icons'; 
 import Header from "./Header.js";
-import NavbarButtom from "../Common/NavbarButtom";
+import NavbarButtomB from "../Common/NavbarButtomB.js";
 import {
   View,
   Text,
@@ -13,6 +14,7 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
+import Color from "../Common/Color.js";
 
 const mockPosts = [
   {
@@ -73,8 +75,9 @@ const PostsScreen = () => {
       
       <View style={styles.postInputContainer}>
         <View style={styles.postingContainer}>
-        <Image source={require("../../assets/aya5.jpg")} style={styles.userImage} />
+        <Image  source={require("../../assets/3.jpg")} style={styles.userImage} />
         <View style={styles.postInputWrapper}>
+          
           <TextInput
             style={styles.postInput}
             placeholder="What do you want to share?"
@@ -82,6 +85,9 @@ const PostsScreen = () => {
             onChangeText={(text) => setNewPost(text)}
             multiline
           />
+           <View style={styles.icon}>
+            <FontAwesomeIcon icon={faList}/>
+          </View>
         </View></View>
         <View style={styles.optionsContainer}>
           <TouchableOpacity
@@ -133,7 +139,7 @@ const PostsScreen = () => {
         )}
       />
 
-      <NavbarButtom onChange={(selectedIcon) => console.log(selectedIcon)}/>
+      <NavbarButtomB onChange={(selectedIcon) => console.log(selectedIcon)}/>
     </View>
   );
 };
@@ -141,36 +147,37 @@ const PostsScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Color.background,
+    backgroundColor: "#ffffff",
   },
   postContainer: {
     backgroundColor: "#ffffff",
     padding: 16,
-    margin: 10,
-    marginBottom:5,
+    marginHorizontal: 10,
+    marginBottom:10,
     borderRadius: 20,
     shadowColor:"#fff",
-    
+    borderWidth: 0.8,
+    borderColor: "gray",   
   },
   userContainer: {
     flexDirection: "row",
     alignItems: "center",
-  },
+    },
   userImage: {
-    width: 60,
+    width: 35,
     height: 50,
     borderRadius: 25,
-    marginRight:10
+    marginRight:10,
   },
   userName: {
     fontSize: 18,
     fontWeight: "bold",
-    marginBottom:-5
+    marginBottom:-5,
   },
   postContent: {
     fontSize: 16,
     marginTop: 15,
-    marginBottom:15
+    marginBottom:15,
   },
   postDate: {
     fontSize: 12,
@@ -182,25 +189,22 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#ffffff",
     padding: 16,
-    borderTopWidth: 1,
-    borderBottomWidth: 2,
     borderTopColor: "#ccc",
     borderBottomColor: "#ccc",
   },
   postingContainer:{
     flexDirection: "row",
     alignItems: "center",
-   
+  
   },
   postInput: {
     flex: 1,
     height: 40,
-    width: 290,
-    borderColor: "gray",
+    width: 300,
+    borderColor: Color.background,
     borderWidth:1,
     borderRadius: 20,
-    paddingHorizontal: 16,
-    marginLeft: -15,
+    paddingHorizontal: 20,
   },
   postInputWrapper: {
     flex: 1,
@@ -219,7 +223,7 @@ const styles = StyleSheet.create({
     fontSize:25,
   },
   text:{
-    fontSize:18,
+    fontSize:16,
     marginLeft:6,
     
   },
@@ -228,7 +232,15 @@ const styles = StyleSheet.create({
     gap:6
   },
   postHeader:{
-    gap:1
+    gap:1,
+  },
+  icon: {
+    position: 'absolute',
+    backgroundColor:"#caabd8",
+    borderBottomEndRadius: 20,
+    borderTopEndRadius: 20,
+    marginLeft: 270,
+    padding: 17,
   }
 
 });
