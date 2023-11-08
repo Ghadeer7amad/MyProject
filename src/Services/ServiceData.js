@@ -4,32 +4,36 @@ export default[
       name: "Laser",
       image: require("../ServiceImage/full.jpg"),
       price: "700",
+      time:"30",
       description:
-        "Cappuccino is a coffee drink made with espresso and hot milk. It is traditionally prepared with steamed milk, and is traditionally topped with a small amount of foam.",
+        " Laser treatment for hair removal. Achieve smooth and hair-free skin with our advanced laser technology. Quick and effective.",
     },
     {
       id: 2,
       name: "full bady",
       image: require("../ServiceImage/legs.jpg"),
       price: "500",
+      time:"30",
       description:
-        "Espresso is a coffee drink made with hot coffee beans that are roasted and then brewed with hot water, resulting in a strong, full-bodied, and concentrated typical of a cappuccino. It is traditionally prepared with steamed milk, and is traditionally topped with a small amount of foam.",
+        "Pamper yourself with a full-body spa experience. Enjoy a relaxing massage and rejuvenate your body and mind.",
  
     },    {
       id: 4,
       name: "Underarm",
       image: require("../ServiceImage/underarm.jpg"),
-      price: "3.00",
+      price: "300",
+      time:"30",
       description:
-        "Flat white is a coffee drink made with espresso and steamed milk. It is traditionally prepared with steamed milk, and is traditionally topped with a small amount of foam.",
+        "Underarm waxing for smooth and hair-free underarms. Say goodbye to unwanted hair and feel confident.",
     },
     {
       id: 3,
       name: "full bady 2",
       image: require("../ServiceImage/legs.jpg"),
       price: "500",
+      time:"30",
       description:
-        "Latte is a coffee drink made with espresso and steamed milk. It is traditionally prepared with steamed milk, and is traditionally topped with a small amount of foam.",
+        "A comprehensive full-body spa treatment to relax your muscles and rejuvenate your entire body. Indulge in ultimate relaxation.",
 
     },
 
@@ -38,16 +42,18 @@ export default[
       name: "mustache",
       image: require("../ServiceImage/mustache.jpg"),
       price: "100",
+      time:"30",
       description:
-        "Cappuccino is a coffee drink made with espresso and hot milk. It is traditionally prepared with steamed milk, and is traditionally topped with a small amount of foam.",
+        " Mustache waxing and grooming for a well-groomed appearance. Enhance your facial features with precise mustache care.",
     },
     {
       id: 6,
       name: "arms",
       image: require("../ServiceImage/full.jpg"),
-      price: "5.00",
+      price: "500",
+      time:"30",
       description:
-        "Espresso is a coffee drink made with hot coffee beans that are roasted and then brewed with hot water, resulting in a strong, full-bodied, and concentrated typical of a cappuccino. It is traditionally prepared with steamed milk, and is traditionally topped with a small amount of foam.",
+        "Arm waxing to remove unwanted hair and achieve silky-smooth arms. Experience the joy of hair-free and beautiful arms.",
     },
    
   ];

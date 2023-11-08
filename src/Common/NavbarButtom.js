@@ -85,9 +85,8 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 20,
     backgroundColor: 'white',
     height: 65,
-    
-   
-
+    borderTopColor:"#000",
+    borderTopWidth:1,
     },
 
     

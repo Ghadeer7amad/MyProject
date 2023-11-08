@@ -3,7 +3,7 @@ import { useNavigation } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/Ionicons";
 import Color from "../Common/Color";
 import Header from "./Header.js";
-import NavbarButton from "../Common/NavbarButtom";
+import NavbarButtom from "../Common/NavbarButtom";
 import {
   View,
   Text,
@@ -133,7 +133,7 @@ const PostsScreen = () => {
         )}
       />
 
-      <NavbarButton onChange={(selectedIcon) => console.log(selectedIcon)}/>
+      <NavbarButtom onChange={(selectedIcon) => console.log(selectedIcon)}/>
     </View>
   );
 };

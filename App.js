@@ -20,10 +20,10 @@ import About from './src/ChosenPages/About';
 import Login from './src/screens/Login';
 import ProductsScreens from './src/Products/ProductsScreens';
 import ServicesScreen from './src/Services/ServicesScreen';
+import ServiceDetails from './src/Services/ServiceDetails';
 import CardsScreen from './src/Products/CardsScreen';
 import Favorite from './src/Products/Favorite';
 import ProductsDetails from './src/Products/ProductsDetails';
-import ProductData from './src/Products/ProductData';
 import BookingScreen from './src/screens/BookingScreen';
 import EmployeesScreen from './src/screens/EmployeesScreen';
 import PostsScreen from './src/screens/PostsScreen';
@@ -61,7 +61,7 @@ const HomeStack = () => (
     <Stack.Screen name="EmployeesScreen" component={EmployeesScreen} options={{ headerShown: false }} />
     <Stack.Screen name="PostsScreen" component={PostsScreen} options={{ headerShown: false }}/>
     <Stack.Screen name="SalonScreen" component={SalonScreen} options={{ headerShown: false }}/>
-
+    <Stack.Screen name="ServiceDetails" component={ServiceDetails} options={{ headerShown: false }}/>
     <Stack.Screen name="AddProduct" component={AddProduct} options={{ headerShown: false }}/>
     <Stack.Screen name="AddServices" component={AddServices} options={{ headerShown: false }}/>
   </Stack.Navigator>

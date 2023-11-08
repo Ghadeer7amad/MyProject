@@ -22,7 +22,7 @@ const NavbarTop = () => {
             <View style={styles.smallConatiner}>  
                 <TouchableOpacity style={styles.styleIcon} >
                     <BlurView style={styles.styleBulrView}>
-                        <Ionicons name = "menu" size={Spacing * 2} color={Color.background}/>
+                        <Ionicons name = "menu" size={Spacing * 2.5} color={Color.background}/>
                     </BlurView>
                 </TouchableOpacity>
 
@@ -40,15 +40,15 @@ export default NavbarTop
 
 const styles = StyleSheet.create({
     smallConatiner:{
-        marginTop: 20,
+        marginTop: 25,
         flexDirection: "row",
         justifyContent: "space-between"
     },
     styleIcon:{
         borderRadius: Spacing,
         overflow: "hidden",
-        width: Spacing * 3,
-        height : Spacing * 3,
+        width: Spacing * 3.5,
+        height : Spacing * 3.5,
         backgroundColor : Color.secondary
     },
     styleBulrView:{
