@@ -33,6 +33,7 @@ const NavbarTop = () => {
 export default NavbarTop;
 
 const styles = StyleSheet.create({
+<<<<<<< HEAD
   smallContainer: {
     marginTop: 20,
     flexDirection: "row",
@@ -62,3 +63,34 @@ const styles = StyleSheet.create({
     borderRadius: Spacing * 2,
   },
 });
+=======
+    smallConatiner:{
+        marginTop: 25,
+        flexDirection: "row",
+        justifyContent: "space-between"
+    },
+    styleIcon:{
+        borderRadius: Spacing,
+        overflow: "hidden",
+        width: Spacing * 3,
+        height : Spacing * 3,
+        backgroundColor : Color.secondary
+    },
+    styleBulrView:{
+        height : "100%",
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    imageContainer:{
+        width: Spacing * 3.7,
+        height : Spacing * 3.7,
+        overflow: "hidden",
+        borderRadius: Spacing*2
+    },
+    imageStyle:{
+        height:"100%",
+        width:"100%",
+        borderRadius: Spacing * 2
+    }
+})
+>>>>>>> 913910607cd6e47ac49d257586399dfd28761254

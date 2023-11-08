@@ -1,202 +1,128 @@
-import { ImageBackground,
-    ScrollView, 
-    StyleSheet, 
-    Text,
-    TouchableOpacity,
-    View, 
-    Dimensions, 
-    Image } from 'react-native'
- 
- import React from 'react'
- import { useState } from 'react'
- import { SafeAreaView } from 'react-native'
- import { Ionicons } from '@expo/vector-icons'
- import Color from '../Common/Color.js'
- import Spacing from '../Common/Spacing.js'
- import { BlurView } from 'expo-blur'
- 
- const { height} = Dimensions.get("window");
- 
- const ProductsDetails = ({product}) => {
- 
-   const [isTouched, setIsTouched] = useState(false);
-   const handlePressIn = () => {
-     setIsTouched(true);
-   };
-   const handlePressOut = () => {
-     setIsTouched(false);
-   };
-   return (
-     <ScrollView style={{padding: Spacing, backgroundColor: Color.background}}>
-         <SafeAreaView>
-         <ImageBackground source={product.image}
-           style={styles.ImageBackgroundStyle}  imageStyle={{borderRadius: Spacing * 1.5, marginTop: 20}}>
- 
-             <View style={{flexDirection:"row", justifyContent:"space-between"}}>
-                 <TouchableOpacity style={{padding: Spacing*2}}>
-                     <Ionicons name="arrow-back" color={Color.primary} size={Spacing*2}/>
-                 </TouchableOpacity>
-                 <TouchableOpacity style={{padding: Spacing*2}}>
-                     <Ionicons name="cart" color={Color.primary} size={Spacing*2}/>
-                 </TouchableOpacity>
-             </View>
- 
- 
-             <View style={{borderRadius: Spacing, overflow:"hidden"}}>
-                 <BlurView tint="light" style={styles.BlurViewStyle}>
-                     <View>
-                         <Text style={styles.productName}>{product.name}</Text>
-                         <Text style={{color:"#10316b"}}>{product.included}</Text>
- 
-                 <View style={{flexDirection:"row", justifyContent:"space-between"}}>
-                     <View style={styles.iconRating}>
-                         <Ionicons name="star" size={Spacing * 1.5} color={Color.primary}/>
-                         <Text style={styles.productRating}>{product.rating}</Text>
-                     </View>
- 
-                     <View 
-                       style={styles.TowIcaonStyle}>
-                         <View style={styles.icaonPosition}>
-                         <Ionicons name="heart" size={Spacing * 2} color={Color.primary}/>
-                         <Text style={styles.icanNameStyle}>Favorite</Text>
-                         </View>
-                       
-                         <View style={styles.icaonPosition}>
-                         <Ionicons name="cafe" size={Spacing * 2} color={Color.primary}/>
-                         <Text style={styles.icanNameStyle}>face</Text>
-                         </View>
-                     </View>
- 
-                     </View>
-                    </View>
-                 </BlurView>
-             </View>
-             </ImageBackground> 
-     <View>    
-       <View>
-       <View>
-         <Text style={styles.descriptionText}> Description </Text>
-       </View>
-       </View>
-         <Text style={styles.DiscriptionStyle}>{product.description}</Text>
-     </View>
- 
-     <View style={{flexDirection:"row"}}>
-           <View style={{marginTop: 30, paddingLeft: 5}}>
-           <Text style={styles.priceStyle}>
-             Price
-           </Text>
-           <View style={{ flexDirection: "row" }}>
-             <Text style={styles.DollerStyle}>$</Text>
-             <Text
-               style={styles.priceStyle}>{product.price}</Text>
-           </View>
-         </View>
-         <TouchableOpacity  
-         onPressIn={handlePressIn}
-         onPressOut={handlePressOut}
-         activeOpacity={1}
-           style={[
-             styles.ButtonStyle,
-             isTouched ? styles.touchedText : null]}>
-           <Text
-             style={[
-               styles.styleTextButton,
-               isTouched ? styles.touchedTextButton : null]}>Buy Now</Text>
- 
-         </TouchableOpacity>
-     </View>
-         
-         </SafeAreaView>
-     </ScrollView>
-   )
- }
- 
- export default ProductsDetails
- 
- const styles = StyleSheet.create({
-   ImageBackgroundStyle:{
-     height: height*0.7,
-     justifyContent:"space-between", 
-     padding: 0
-   },
-   BlurViewStyle:{
-     padding: Spacing*1.5
-   },
-   productName:{
-     fontSize:Spacing*2,
-     fontWeight:"bold",
-     color:Color.primary,
-     marginBottom: Spacing/3
-   },
-   iconRating:{
-     flexDirection: "row",
-     marginTop: Spacing, 
-     alignItems:"center"
-   },
-   productRating:{
-     color: "#94784c",
-     marginLeft: Spacing/2
-   },
-   TowIcaonStyle:{
-     justifyContent: "center",
-     alignItems: "center",
-     flexDirection:"row",
-   },
-   icaonPosition:{
-     justifyContent: "center",
-     alignItems: "center",
-     flexDirection:"column",
-     marginRight: Spacing,
-   },
-   icanNameStyle:{
-     color: Color.primary,
-     fontSize: Spacing,
-   },
-   DiscriptionStyle:{
-     fontSize: Spacing,
-     lineHeight: Spacing*1.3,
-     color: Color.secondary,
-   },
-   DollerStyle:{
-     color: Color.primary,
-     fontSize: Spacing * 1.5
-   },
-   priceStyle:{
-     fontSize: Spacing*1.5,
-     marginLeft: Spacing / 2,
-     color: Color.secondary,
-   },
-   descriptionText: {
-     fontSize: Spacing*2,
-     color: "#b6cdbd",
-     marginTop: 20,
-     marginBottom: Spacing/2,
-     fontWeight: "500",
-   },
-   touchedText: {
-     backgroundColor: Color.secondary,
-   },
-   touchedTextButton:{
-     color: "#235784"
-   },
-   styleTextButton:{
-     color: Color.secondary,
-     fontSize: Spacing * 1.5,
-     fontWeight: "500"
-   },
-   ButtonStyle:{
-     marginLeft: Spacing*5,
-     backgroundColor: Color.primary,
-     paddingLeft: 50,
-     paddingRight: 50,
-     marginTop: 30,
-     justifyContent: "center",
-     alignItems: "center",
-     borderRadius: Spacing * 2,
-   }
- });
- 
- 
- 
- 
+import React from "react";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import NavbarTop from "../Common/navbarTop.js";
+import NavbarButtom from "../Common/NavbarButtom.js";
+import Spacing from "../Common/Spacing.js";
+import Color from "../Common/Color.js";
+import Icon from "react-native-vector-icons/Ionicons";
+import { useNavigation } from "@react-navigation/native";
+
+const ServiceDetailsScreen = ({ route }) => {
+  const { service } = route.params;
+  const navigation = useNavigation();
+
+  const handleBookAppointment = () => {
+    navigation.navigate("BookingScreen");
+  };
+  const handleCancelAppointment = () => {
+    navigation.navigate("ServicesScreen");
+  };
+
+  return (
+    <View style={styles.container}>
+      <ScrollView style={{ padding: Spacing }}>
+        <NavbarTop />
+
+        <View style={styles.detailsContainer}>
+          <Image source={service.image} style={styles.image} />
+          <Text style={styles.name}>{service.name}</Text>
+
+          <View style={styles.sectionTitleContainer}>
+            <Icon name="ios-cash" color={Color.primary} size={25} /> 
+            <Text style={styles.time}>{service.price}</Text>
+          </View>
+          <View style={styles.sectionTitleContainer}>
+            <Icon name="time" color={Color.primary} size={25} />
+            <Text style={styles.time}>{service.time}</Text>
+          </View>
+
+          <Text style={styles.description}>{service.description}</Text>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={handleBookAppointment}
+            >
+              <Text style={styles.buttonText}>Book Now</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={handleCancelAppointment}
+            >
+              <Text style={styles.buttonText}>Cancel</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </ScrollView>
+      <NavbarButtom />
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: Color.background,
+  },
+  image: {
+    width: "100%",
+    height: 250,
+  },
+  sectionTitleContainer: {
+    flexDirection: "row",
+    borderBottomWidth: 3, // Add a bottom border
+    borderBottomColor: "#d9b650", // Border color
+    marginBottom: 20,
+    marginTop: 20,
+  },
+  detailsContainer: {
+    backgroundColor: "white",
+    padding: 20,
+    margin: 10,
+    borderRadius: 10,
+    elevation: 3,
+    marginTop: 20,
+  },
+  name: {
+    fontSize: 26,
+    fontWeight: "bold",
+    marginTop: 20,
+    color: "#d9b650",
+  },
+
+  time: {
+    fontSize: 20,
+    marginLeft:5
+  },
+  description: {
+    fontSize: 18,
+    marginTop: 10,
+    lineHeight: 22,
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    marginTop: 20,
+    alignItems: "center",
+    justifyContent: "space-around",
+  },
+  button: {
+    backgroundColor: Color.primary,
+    padding: 15,
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 18,
+  },
+});
+
+export default ServiceDetailsScreen;

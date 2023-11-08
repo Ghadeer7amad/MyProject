@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, Image, Button, StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation } from "@react-navigation/native";
+import Color from '../Common/Color.js';
 
 
 
@@ -82,8 +83,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#856c8b',
-    marginBottom: -50,
+    backgroundColor: Color.background,
+    marginBottom: -100,
   },
   groupContainer: {
     flexDirection: 'row',

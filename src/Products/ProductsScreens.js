@@ -18,7 +18,9 @@ import { BlurView } from "expo-blur";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from '@react-navigation/native'; 
 import { createStackNavigator } from '@react-navigation/stack';
-//import SliderScreens from "./SliderScreens.js";
+import SliderScreens from "./SliderScreens.js"
+import NavbarButtom from "../Common/NavbarButtom.js"
+import SearchProANDSer from "../Common/SerachProANDSer.js";
   
 const ProductsScreens = () => {
 
@@ -47,9 +49,9 @@ const ProductsScreens = () => {
           <View style={{width:"100%"}}>
             <Text style={styles.styleText}>find the best</Text>
             <Text style={[styles.styleText, styles.styleText2]}>product for you</Text>
-             
-        <CustomSearchBar/>
-       
+            
+        <SearchProANDSer/>
+        <SliderScreens/>
         <Categories/>
         </View>
         
@@ -88,12 +90,10 @@ const ProductsScreens = () => {
           </View>
           )
         }
-
     </View>
-
+    <NavbarButtom onChange={(selectedIcon) => console.log(selectedIcon)}/>
         </ScrollView>
      </SafeAreaView>
-
     </View>     
   )
 }

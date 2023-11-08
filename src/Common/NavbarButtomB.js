@@ -73,25 +73,25 @@ export default NavbarButtom;
 
 const styles = StyleSheet.create({
 
-    container: {
-      flexDirection: "row",
-      padding: 10,
-      justifyContent: 'space-between',
-      borderTopLeftRadius: 20,
-      borderBottomEndRadius: 20,
-      borderBottomStartRadius: 20,
-      borderTopRightRadius: 20,
-      backgroundColor: Color.secondary,
-      height: 65,
-      marginBottom: 15,
-      marginHorizontal: 10,
-      borderTopColor:"#000",
+    container: {   
+    flexDirection: "row",
+    padding: 10,
+    justifyContent: 'space-between',
+    borderTopLeftRadius: 20,
+    borderBottomEndRadius: 20,
+    borderBottomStartRadius: 20,
+    borderTopRightRadius: 20,
+    backgroundColor: Color.background,
+    height: 65,
+    marginBottom: 15,
+    marginHorizontal: 10,
+    borderTopColor:"#000",
     },
     iconStyle: {
-        color: 'gray',
+        color: "#fff",
         marginBottom: 3,
         alignSelf: 'center',
-        fontSize: 30,
+        fontSize: 25,
         padding: 5,
     },
 });
