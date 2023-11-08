@@ -12,9 +12,13 @@ import {
 import Header from "../screens/Header";
 import Color from "../Common/Color";
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import { useNavigation } from "@react-navigation/native";
 
 
 const About = () => {
+
+ 
+
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const images = [
@@ -29,15 +33,19 @@ const About = () => {
 
   const windowWidth = Dimensions.get("window").width;
 
+  const navigation = useNavigation();
+
+
+  const handleBookPress = () => {
+      navigation.navigate('BookingScreen');
+    };
+
   const handleContactPress = () => {
     // Handle contact button press
     console.log("Contact us pressed");
   };
 
-  const handleBookAppointmentPress = () => {
-    // Handle book appointment button press
-    console.log("Book an appointment pressed");
-  };
+
 
   const branches = [
     { name: 'Jerusalem', locationIcon: 'map-marker-alt', phoneIcon: 'phone', phoneNumber: '0526053612' },
@@ -123,7 +131,7 @@ const About = () => {
               styles.button,
               { backgroundColor: Color.primary },
             ]}
-            onPress={handleBookAppointmentPress}
+            onPress={handleBookPress}
           >
             <Text style={[styles.buttonText, { color: "white" }]}>
               Book an Appointment
