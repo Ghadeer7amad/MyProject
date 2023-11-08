@@ -6,6 +6,7 @@ import Products from "./ProductData.js"
 import { Ionicons } from "@expo/vector-icons";
 import { BlurView } from 'expo-blur';
 import Spacing from "../Common/Spacing.js"
+import { useNavigation } from '@react-navigation/native'; 
 
 const FavoriteScreens = () => {
   const [isTouched, setIsTouched] = useState(false);
@@ -16,10 +17,17 @@ const FavoriteScreens = () => {
     setIsTouched(false);
   };
 
+  const navigation = useNavigation();
+
+  const handleProductPress = () => {
+      navigation.navigate('ProductsScreens');
+    };
+
   return (
     <View style={{backgroundColor: "#fff5f5", height:"100%"}}>
       <View style={{padding: 40}}>
-      <TouchableOpacity style={{flexDirection:"row", justifyContent:"space-between"}}>
+      <TouchableOpacity style={{flexDirection:"row", justifyContent:"space-between"}}
+       onPress={handleProductPress}>
             <Ionicons name="arrow-back" color={Color.background} style={{fontSize: 30}}/>
             <View style={styles.imageContainer}>
                     <View style={{height: "100%", padding: Spacing/4}}>

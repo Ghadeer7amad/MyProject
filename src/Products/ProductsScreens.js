@@ -44,6 +44,7 @@ const ProductsScreens = () => {
     <View style={{backgroundColor: Color.background, height:"100%"}}>
     <SafeAreaView>
         <ScrollView style={{padding: Spacing}}>
+          
           <NavbarTop/>
 
           <View style={{width:"100%"}}>
@@ -91,7 +92,7 @@ const ProductsScreens = () => {
           )
         }
     </View>
-    <NavbarButtom onChange={(selectedIcon) => console.log(selectedIcon)}/>
+    
         </ScrollView>
      </SafeAreaView>
     </View>     

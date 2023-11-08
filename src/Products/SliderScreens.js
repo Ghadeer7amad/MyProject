@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native'
-import { SliderBox } from 'react-native-image-slider-box'
+import { SliderBox } from 'react-native-image-slider-box';
+
 
 
 import React from 'react'

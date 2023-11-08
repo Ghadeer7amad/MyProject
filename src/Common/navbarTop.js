@@ -16,7 +16,7 @@ const NavbarTop = () => {
   return (
     <View style={styles.smallContainer}>
       <TouchableOpacity style={styles.styleIcon} onPress={handleMenuPress}>
-        <BlurView style={styles.styleBlurView}>
+        <BlurView style={styles.styleBulrView}>
           <Ionicons name="menu" size={Spacing * 2} color={Color.background} />
         </BlurView>
       </TouchableOpacity>
@@ -33,7 +33,7 @@ const NavbarTop = () => {
 export default NavbarTop;
 
 const styles = StyleSheet.create({
-    smallConatiner:{
+    smallContainer:{
         marginTop: 25,
         flexDirection: "row",
         justifyContent: "space-between"
@@ -41,8 +41,8 @@ const styles = StyleSheet.create({
     styleIcon:{
         borderRadius: Spacing,
         overflow: "hidden",
-        width: Spacing * 3,
-        height : Spacing * 3,
+        width: Spacing * 3.5,
+        height : Spacing * 3.5,
         backgroundColor : Color.secondary
     },
     styleBulrView:{
@@ -51,8 +51,8 @@ const styles = StyleSheet.create({
         alignItems: "center"
     },
     imageContainer:{
-        width: Spacing * 3.7,
-        height : Spacing * 3.7,
+        width: Spacing * 4,
+        height : Spacing * 4,
         overflow: "hidden",
         borderRadius: Spacing*2
     },

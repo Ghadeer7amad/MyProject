@@ -57,7 +57,7 @@ const HomeStack = () => (
     <Stack.Screen name="PathologicalCase" component={PathologicalCase} options={{ headerShown: false }}/>
     <Stack.Screen name="Chose" component={Chose} options={{ headerShown: false }} />
     <Stack.Screen name="Header" component={Header} options={{ headerShown: false }} />
-    <Stack.Screen name="Settings" component={Settings} options={{ headerShown: false }}/>
+    <Stack.Screen name="Settings" component={Settings} />
     <Stack.Screen name="About" component={About} options={{ headerShown: false }}/>
     <Stack.Screen name="ServicesScreen" component={ServicesScreen} options={{ headerShown: false }}/>
     <Stack.Screen name="ProductsScreens" component={ProductsScreens} options={{ headerShown: false }} />

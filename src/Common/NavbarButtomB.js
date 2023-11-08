@@ -26,41 +26,92 @@ const NavbarButtom = ({onChange}) => {
 
 
     return (
-    <View style = {styles.containerr}>
+    <View >
         <View style = {styles.container}>
-        <TouchableOpacity onPress={() => {
-          handleHomePress(); 
-          handleIconPress("home"); 
-    }}>
-      <Ionicons name="home-outline"  style={[
-              styles.iconStyle,
-              selectedIcon === "home" && { color: Color.primary, borderBottomWidth: 3, borderBottomColor: Color.primary },
-            ]}/>
-            
+        <TouchableOpacity
+          onPress={() => {
+            handleHomePress();
+            handleIconPress("home");
+          }}
+        >
+          {selectedIcon === "home" ? (
+            <Ionicons
+              name="home"
+              style={[
+                styles.iconStyle,
+                { color: 'white', textShadowColor: Color.secondary },
+              ]}
+            />
+          ) : (
+            <Ionicons
+              name="home-outline"
+              style={styles.iconStyle}
+            />
+          )}
         </TouchableOpacity>
 
-        <TouchableOpacity  onPress={() => handleIconPress("notifications")}>
-            <Ionicons name="notifications-outline" style={[
-              styles.iconStyle,
-              selectedIcon === "notifications" && { color: Color.primary, borderBottomWidth: 3, borderBottomColor: Color.primary },
-            ]} />
+        <TouchableOpacity
+          onPress={() => {
+            handleIconPress("notifications");
+          }}
+        >
+          {selectedIcon === "notifications" ? (
+            <Ionicons
+              name="notifications"
+              style={[
+                styles.iconStyle,
+                { color: 'white',  textShadowColor:Color.secondary},
+              ]}
+            />
+          ) : (
+            <Ionicons
+              name="notifications-outline"
+              style={styles.iconStyle}
+            />
+          )}
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => handleIconPress("favorite")}>
-            <MaterialIcons name="favorite-outline" style={[
-              styles.iconStyle,
-              selectedIcon === "favorite" && { color: Color.primary, borderBottomWidth: 3, borderBottomColor: Color.primary },
-            ]} />
+        <TouchableOpacity
+          onPress={() => {
+            handleIconPress("favorite");
+          }}
+        >
+          {selectedIcon === "favorite" ? (
+            <MaterialIcons
+              name="favorite"
+              style={[
+                styles.iconStyle,
+                { color: 'white', textShadowColor: Color.secondary },
+              ]}
+            />
+          ) : (
+            <MaterialIcons
+              name="favorite-outline"
+              style={styles.iconStyle}
+            />
+          )}
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => {
-          handleSettingsPress(); 
-          handleIconPress("settings"); 
-}} >
-            <Ionicons name="settings-outline" style={[
-              styles.iconStyle,
-              selectedIcon === "settings" && { color: Color.primary, borderBottomWidth: 3, borderBottomColor: Color.primary },
-            ]} />
+        <TouchableOpacity
+          onPress={() => {
+            handleSettingsPress();
+            handleIconPress("settings");
+          }}
+        >
+          {selectedIcon === "settings" ? (
+            <Ionicons
+              name="settings"
+              style={[
+                styles.iconStyle,
+                { color: 'white', textShadowColor: Color.secondary  },
+              ]}
+            />
+          ) : (
+            <Ionicons
+              name="settings-outline"
+              style={styles.iconStyle}
+            />
+          )}
         </TouchableOpacity>
         </View>
         </View>
