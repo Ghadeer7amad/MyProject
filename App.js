@@ -34,13 +34,18 @@ import ResetPassword from "./src/screens/ForgetPassword.js/ResetPassword.js"
 import SendCode from "./src/screens/ForgetPassword.js/SendCode.js"
 import AddProduct from "./AdminPage/AddProduct.js"
 import AddServices from './AdminPage/AddServices.js'
+import MainScreen2 from './src/screens/MainScreen2.js'
+import Employee from "./src/screens/Employee.js";
+import Offers from './src/screens/Offers.js'
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
 const HomeStack = () => (
   <Stack.Navigator>
-    <Stack.Screen name="Homee" component={Homee} options={{ headerShown: false }} />
+    <Stack.Screen name="Homee" component={Homee} options={{ headerShown: false }}  />
+    <Stack.Screen name="Employee" component={Employee} options={{ headerShown: false }}  />
+    <Stack.Screen name="Offers" component={Offers} options={{ headerShown: false }}  />
     <Stack.Screen name="ChoseScreen" component={ChoseScreen} options={{ headerShown: false }} />
     <Stack.Screen name="Signup" component={Signup} options={{ headerShown: false }}/>
     <Stack.Screen name="Login" component={Login} options={{ headerShown: false }}/>
@@ -49,7 +54,7 @@ const HomeStack = () => (
     <Stack.Screen name="SendCode" component={SendCode} options={{ headerShown: false }}/>
     <Stack.Screen name="PathologicalCase" component={PathologicalCase} options={{ headerShown: false }}/>
     <Stack.Screen name="Chose" component={Chose} options={{ headerShown: false }} />
-    <Stack.Screen name="Header" component={Header} options={{ headerShown: false }} />
+    <Stack.Screen name="MainScreen2" component={MainScreen2} options={{ headerShown: false }} />
     <Stack.Screen name="Settings" component={Settings} options={{ headerShown: false }}/>
     <Stack.Screen name="About" component={About} options={{ headerShown: false }}/>
     <Stack.Screen name="ServicesScreen" component={ServicesScreen} options={{ headerShown: false }}/>

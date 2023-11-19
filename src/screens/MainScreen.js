@@ -54,8 +54,8 @@ const MainScreen = () => {
   };
 
   const groupedData = [];
-  for (let i = 0; i < data.length; i += 2) {
-    groupedData.push(data.slice(i, i + 2));
+  for (let i = 0; i < data.length; i += 6) {
+    groupedData.push(data.slice(i, i + 6));
   }
 
   return (
@@ -80,47 +80,37 @@ const MainScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: Color.background,
-    marginBottom: -100,
+    backgroundColor: 'white',
+    marginTop: 2
   },
   groupContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 20,
-    width: '90%',
-    height: '25%',
+    width: '100%',
   },
   itemContainer: {
-    flex: 1,
-    marginRight: 10,
     alignItems: 'center',
   },
   imageContainer: {
-    width: 100,
-    height: 100,
+    width: 50,
+    height: 50,
     borderRadius: 9999,
     overflow: 'hidden',
     shadowColor: 'black',
     shadowOffset: {
       width: 0,
       height: 8,
-    },
-    shadowOpacity: 2,
-    shadowRadius: 5,
-    elevation: 8, 
+    }
   },
   image: {
     width: '100%',
     height: '100%',
-    resizeMode: 'cover',
   },
   description: {
     textAlign: 'center',
     marginTop: 10,
-    color: 'white',
+    color: 'black',
+    fontSize: 10,
     fontWeight: 'bold',
   },
 });

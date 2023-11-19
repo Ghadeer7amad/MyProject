@@ -7,7 +7,6 @@ import { useNavigation } from "@react-navigation/native";
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Color from "../Common/Color";
 
-
 const SalonScreen = () => {
   const data = [
     {
@@ -38,13 +37,13 @@ const SalonScreen = () => {
     setChosenOption(option);
     switch (option) {
       case 'Aya Beauty':
-        navigation.navigate('Chose'); 
+        navigation.navigate('MainScreen2'); 
         break;
       case 'Beauty Center 2':
-        navigation.navigate('Chose'); 
+        navigation.navigate('MainScreen2'); 
         break;
         case 'Beauty Center 3':
-        navigation.navigate('Chose'); 
+        navigation.navigate('MainScreen2'); 
         break;
       default:
         break;

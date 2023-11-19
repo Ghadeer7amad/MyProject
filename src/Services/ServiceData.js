@@ -1,12 +1,12 @@
 export default[
     {
       id: 1,
-      name: "Laser",
-      image: require("../ServiceImage/full.jpg"),
+      name: "Freshness for the skin",
+      image: require("../../assets/serv3.jpg"),
       price: "700",
-      time:"30",
+      time:"30 min",
       description:
-        " Laser treatment for hair removal. Achieve smooth and hair-free skin with our advanced laser technology. Quick and effective.",
+        "Laser treatment for hair removal. Achieve smooth and hair-free skin with our advanced laser technology. Quick and effective, Achieve smooth and hair-free skin with our advanced laser technology. Quick and effective,Laser treatment for hair removal. Achieve smooth and hair-free skin with our advanced laser technology. Quick and effective.",
     },
     {
       id: 2,

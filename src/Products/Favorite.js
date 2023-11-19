@@ -4,10 +4,11 @@ import { useState } from 'react'
 import Color from '../Common/Color.js';
 import Products from "./ProductData.js"
 import { Ionicons } from "@expo/vector-icons";
-import { BlurView } from 'expo-blur';
+import { useNavigation } from '@react-navigation/native';
 import Spacing from "../Common/Spacing.js"
 
 const FavoriteScreens = () => {
+  const navigation = useNavigation();
   const [isTouched, setIsTouched] = useState(false);
   const handlePressIn = () => {
     setIsTouched(true);
@@ -17,13 +18,13 @@ const FavoriteScreens = () => {
   };
 
   return (
-    <View style={{backgroundColor: "#fff5f5", height:"100%"}}>
+    <View style={{backgroundColor: "#fff", height:"100%"}}>
       <View style={{padding: 40}}>
       <TouchableOpacity style={{flexDirection:"row", justifyContent:"space-between"}}>
-            <Ionicons name="arrow-back" color={Color.background} style={{fontSize: 30}}/>
+            <Ionicons name="arrow-back" color={Color.background} style={{fontSize: 30}} onPress={()=>navigation.navigate('ProductsScreens')}/>
             <View style={styles.imageContainer}>
                     <View style={{height: "100%", padding: Spacing/4}}>
-                    <Ionicons name="cart" color={Color.background} size={Spacing*2}/>
+                    <Ionicons name="cart" color={Color.background} size={Spacing*2} onPress={()=>navigation.navigate('CardsScreen')}/>
                     </View>
              </View>
       </TouchableOpacity>
@@ -37,8 +38,6 @@ const FavoriteScreens = () => {
       </View>
       </View>
       
-        
-    
         <ScrollView style={{marginTop: 5}}>
         {Products.map((product) => (
           <View key={product.id} style={styles.productContainer}>

@@ -1,6 +1,7 @@
 import { View, Text, Image, StyleSheet, ScrollView,TouchableOpacity} from 'react-native'
 import React from 'react'
 import { useState } from 'react'
+import { useNavigation } from '@react-navigation/native';
 import Color from '../Common/Color.js';
 import Products from "./ProductData.js"
 import { Ionicons } from "@expo/vector-icons";
@@ -8,6 +9,7 @@ import { BlurView } from 'expo-blur';
 import Spacing from "../Common/Spacing.js"
 
 const CardsScreen = () => {
+  const navigation = useNavigation();
   const [isTouched, setIsTouched] = useState(false);
   const handlePressIn = () => {
     setIsTouched(true);
@@ -17,10 +19,11 @@ const CardsScreen = () => {
   };
 
   return (
-    <View style={{backgroundColor: "#fff5f5", height:"100%"}}>
+    <View style={{backgroundColor: "#fff", height:"100%"}}>
       <View style={{padding: 40}}>
       <TouchableOpacity style={{flexDirection:"row", justifyContent:"space-between"}}>
-            <Ionicons name="arrow-back" color={Color.background} style={{fontSize: 30}}/>
+            <Ionicons name="arrow-back" color={Color.background} style={{fontSize: 30}} 
+            onPress={()=>navigation.navigate('ProductsScreens')}/>
             <View style={styles.imageContainer}>
                     <BlurView style={{height: "100%", padding: Spacing/4}}>
                         <Image source={require("../../assets/aya5.jpg")} style={styles.imageStyle}/>
