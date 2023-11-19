@@ -80,21 +80,17 @@ const BookingScreen = () => {
             </View>
   
             <View style={styles.timeListContainer}>
-              {/* Display available times side by side */}
-              <FlatList
-                data={availableTimes}
-                keyExtractor={(item) => item}
-                 // Display two items per row
-                renderItem={({ item }) => (
-                  <TouchableOpacity
-                    style={styles.timeItem}
-                    onPress={() => onTimeSelected(item)}
-                  >
-                    <Text style={styles.timeText}>{item}</Text>
-                  </TouchableOpacity>
-                )}
-              />
-            </View>
+  {/* Display available times side by side */}
+  {availableTimes.map((item) => (
+    <TouchableOpacity
+      key={item}
+      style={styles.timeItem}
+      onPress={() => onTimeSelected(item)}
+    >
+      <Text style={styles.timeText}>{item}</Text>
+    </TouchableOpacity>
+  ))}
+</View>
   
             <TouchableOpacity style={styles.submitButton} onPress={onSubmitPressed}>
               <Text style={styles.submitButtonText}>Send</Text>

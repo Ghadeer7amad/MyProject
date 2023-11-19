@@ -1,6 +1,11 @@
 import React from "react";
-import { View } from "react-native";
+import { Text, View, StyleSheet, Image } from "react-native";
+
+
+
 import { DrawerItemList, DrawerItem } from '@react-navigation/drawer';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { MaterialIcons } from '@expo/vector-icons'; 
 
 
 
@@ -13,7 +18,6 @@ import Color from "./src/Common/Color";
 import Header from './src/screens/Header';
 import Homee from './src/screens/Home';
 import ChoseScreen from './src/screens/ChoseScreen'
-import Chose from './src/screens/Chose';
 import Signup from './src/screens/Signup';
 import Settings from './src/CommonNav/Settings';
 import About from './src/ChosenPages/About';
@@ -53,7 +57,6 @@ const HomeStack = () => (
     <Stack.Screen name="ResetPassword" component={ResetPassword} options={{ headerShown: false }}/>
     <Stack.Screen name="SendCode" component={SendCode} options={{ headerShown: false }}/>
     <Stack.Screen name="PathologicalCase" component={PathologicalCase} options={{ headerShown: false }}/>
-    <Stack.Screen name="Chose" component={Chose} options={{ headerShown: false }} />
     <Stack.Screen name="MainScreen2" component={MainScreen2} options={{ headerShown: false }} />
     <Stack.Screen name="Settings" component={Settings} options={{ headerShown: false }}/>
     <Stack.Screen name="About" component={About} options={{ headerShown: false }}/>
@@ -72,20 +75,147 @@ const HomeStack = () => (
   </Stack.Navigator>
 );
 
+
+
 const CustomDrawerContent = (props) => {
   return (
-    <View>
-      <DrawerItemList {...props} />
+    <View style={{ flex: 1, justifyContent: 'flex-start' }}>
+
+      <Image
+        style={{ width: 280, height: 150, marginBottom: 10 }}
+        source={require('./assets/puu.jpg')}
+      />
+      
       <DrawerItem
-        label="Log Out"
-        icon={({ color, size }) => <Ionicons name="log-out" color={Color.primary} size={size} />}
+        style={{ marginVertical: 10, ...styles.drawerItem }}
+        label="HOME"
+        icon={({ color, size }) => <Ionicons name="home" color={Color.primary} size={size} />}
         onPress={() => {
-          // اضفي الأكواد هنا لتسجيل الخروج
+          props.navigation.navigate('MainScreen2');
+        }}
+        
+        
+      /> 
+      
+      
+
+      <DrawerItem
+       style={{ marginVertical: 10, ...styles.drawerItem }}
+        label="STAFF"
+        icon={({ color, size }) => <Ionicons name="people" color={Color.primary} size={size} />}
+        onPress={() => {
+          props.navigation.navigate('EmployeesScreen');
         }}
       />
+      
+
+
+      
+      <DrawerItem
+        style={{ marginVertical: 10, ...styles.drawerItem }}
+        label="ABOUT"
+        icon={({ color, size }) => <Ionicons name="information-circle" color={Color.primary} size={size} />}
+        onPress={() => {
+          props.navigation.navigate('About');
+        }}
+      />
+
+      <DrawerItem
+        style={{ marginVertical: 10, ...styles.drawerItem }}
+        label="JOBS"
+        icon={({ color, size }) => <Ionicons name="briefcase" color={Color.primary} size={size} />}
+        onPress={() => {
+          props.navigation.navigate('Jobs'); 
+        }}
+      />
+      
+      
+      <DrawerItem
+        style={{ marginVertical: 10, ...styles.drawerItem }}
+        label="PRODUCTS"
+        icon={({ color, size }) => <Ionicons name="pricetag" color={Color.primary} size={size} />}
+        onPress={() => {
+          props.navigation.navigate('ProductsScreens');
+        }}
+      />
+     
+
+      <DrawerItem
+        style={{ marginVertical: 10, ...styles.drawerItem }}
+        label="SERVICES"
+        icon={({ color, size }) => <Ionicons name="medkit" color={Color.primary} size={size} />}
+        onPress={() => {
+          props.navigation.navigate('ServicesScreen');
+        }}
+      />
+
+      
+      
+
+      <DrawerItem
+        style={{ marginVertical: 10, ...styles.drawerItem }}
+        label="RESERVATIONS"
+        icon={({ color, size }) => <Ionicons name="calendar" color={Color.primary} size={size} />}
+        onPress={() => {
+          props.navigation.navigate('BookingScreen');
+        }}
+      />
+      
+
+      <DrawerItem
+        style={{ marginVertical: 10, ...styles.drawerItem }}
+        label="POSTS"
+        icon={({ color, size }) => <Ionicons name="share" color={Color.primary} size={size} />}
+        onPress={() => {
+          props.navigation.navigate('PostsScreen');
+        }}
+      />
+      
+      
+      <DrawerItem
+        style={{ marginVertical: 10, ...styles.drawerItem }}
+        label="SETTINGS"
+        icon={({ color, size }) => <Ionicons name="settings" color={Color.primary} size={size} />}
+        onPress={() => {
+          props.navigation.navigate('Settings'); 
+        }}
+      />
+      
+      <View
+        style={{
+        borderBottomColor: 'gray',
+        borderBottomWidth: 0.5,
+        marginVertical: 90,
+    
+      }}
+      />
+  
+      
+      <DrawerItem
+        style={{ marginVertical: -95,  }}
+        label="LOG OUT"
+        icon={({ color, size }) => <Ionicons name="log-out" color={Color.primary} size={size} />}
+        onPress={() => {
+          props.navigation.navigate('Homee');
+        }}
+      />
+
+      
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  drawerItem: {
+    backgroundColor: 'white', // لون الخلفية
+
+  },
+});
+
+
+
+
+// ... الكود السابق
 
 const App = () => {
   return (
@@ -93,19 +223,19 @@ const App = () => {
       <Drawer.Navigator
         initialRouteName="Home"
         drawerContent={(props) => <CustomDrawerContent {...props} />}
-        drawerContentOptions={{
-          activeTintColor: Color.yell, // لتحديد اللون عند النقر
-          itemStyle: { marginVertical: 5, color: 'purple' }, // تخصيص الستايل
+        drawerStyle={{
+          backgroundColor: 'lightgray',
+          width: 240,
+        }}
+        contentContainerStyle={{
+          flex: 1,
+        }}
+        screenOptions={{
+          drawerActiveTintColor: Color.primary,
+          drawerItemStyle: styles.drawerItem, // استخدم الأنماط هنا
         }}
       >
         <Drawer.Screen name="Home" component={HomeStack} options={{ headerShown: false }}/>
-        <Drawer.Screen name="EmployeesScreen" component={EmployeesScreen} options={{ headerShown: false }}/>
-        <Drawer.Screen name="About" component={About} options={{ headerShown: false }}/>
-        <Drawer.Screen name="Products" component={ProductsScreens} options={{ headerShown: false }}/>
-        <Drawer.Screen name="ServicesScreen" component={ServicesScreen} options={{ headerShown: false }}/>
-        <Drawer.Screen name="Reservations" component={BookingScreen} options={{ headerShown: false }}/>
-        <Drawer.Screen name="Posts" component={PostsScreen} options={{ headerShown: false }}/>
-        <Drawer.Screen name="Settings" component={Settings}/>
       </Drawer.Navigator>
     </NavigationContainer>
   );

@@ -17,6 +17,9 @@ const CardsScreen = () => {
   const handlePressOut = () => {
     setIsTouched(false);
   };
+  const handleProductPress = () => {
+      navigation.navigate('ProductsScreens');
+    };
 
   return (
     <View style={{backgroundColor: "#fff", height:"100%"}}>

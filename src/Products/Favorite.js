@@ -17,6 +17,10 @@ const FavoriteScreens = () => {
     setIsTouched(false);
   };
 
+  const handleProductPress = () => {
+      navigation.navigate('ProductsScreens');
+    };
+
   return (
     <View style={{backgroundColor: "#fff", height:"100%"}}>
       <View style={{padding: 40}}>

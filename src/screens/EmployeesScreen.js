@@ -73,7 +73,7 @@ const EmployeesScreen = () => {
       </View>
     )}
   />
-  <NavbarButtom/>
+  <NavbarButtom onChange={(selectedIcon) => console.log(selectedIcon)}/>
   </View>
   );
 };
