@@ -61,7 +61,11 @@ const Login = () => {
       </TouchableWithoutFeedback>
       </View>
    
-      <TouchableOpacity /*onPress={handleLogin}*/ onPress={()=>navigation.navigate('PathologicalCase')}>
+      <TouchableOpacity onPress={() => {
+            navigation.navigate('PathologicalCase');
+            {/*handleLogin();*/}
+       }}
+>
        <Text style={styles.buttonStyle}>Log in</Text>
       </TouchableOpacity>  
 

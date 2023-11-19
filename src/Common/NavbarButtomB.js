@@ -39,7 +39,7 @@ const NavbarButtom = ({onChange}) => {
               name="home"
               style={[
                 styles.iconStyle,
-                { color: 'white', textShadowColor: Color.secondary },
+                { color: 'white', textShadowColor: Color.secondary , borderBottomWidth: 3,  borderBottomColor: Color.secondary   },
               ]}
             />
           ) : (
@@ -60,7 +60,7 @@ const NavbarButtom = ({onChange}) => {
               name="notifications"
               style={[
                 styles.iconStyle,
-                { color: 'white',  textShadowColor:Color.secondary},
+                { color: 'white',  textShadowColor:Color.secondary ,borderBottomWidth: 3,  borderBottomColor: Color.secondary },
               ]}
             />
           ) : (
@@ -81,7 +81,7 @@ const NavbarButtom = ({onChange}) => {
               name="favorite"
               style={[
                 styles.iconStyle,
-                { color: 'white', textShadowColor: Color.secondary },
+                { color: 'white', textShadowColor: Color.secondary ,borderBottomWidth: 3,  borderBottomColor: Color.secondary },
               ]}
             />
           ) : (
@@ -103,7 +103,7 @@ const NavbarButtom = ({onChange}) => {
               name="settings"
               style={[
                 styles.iconStyle,
-                { color: 'white', textShadowColor: Color.secondary  },
+                { color: 'white', textShadowColor: Color.secondary ,borderBottomWidth: 3,  borderBottomColor: Color.secondary },
               ]}
             />
           ) : (

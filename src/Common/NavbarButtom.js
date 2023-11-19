@@ -38,7 +38,7 @@ const NavbarButtom = ({ onChange }) => {
               name="home"
               style={[
                 styles.iconStyle,
-                { color: 'purple', textShadowColor: Color.primary },
+                { color: 'purple', textShadowColor: Color.primary , borderBottomWidth: 3,  borderBottomColor: Color.primary  },
               ]}
             />
           ) : (
@@ -59,7 +59,7 @@ const NavbarButtom = ({ onChange }) => {
               name="notifications"
               style={[
                 styles.iconStyle,
-                { color: 'purple',  textShadowColor:Color.primary},
+                { color: 'purple',  textShadowColor:Color.primary , borderBottomWidth: 3,  borderBottomColor: Color.primary  },
               ]}
             />
           ) : (
@@ -80,7 +80,7 @@ const NavbarButtom = ({ onChange }) => {
               name="favorite"
               style={[
                 styles.iconStyle,
-                { color: 'purple', textShadowColor: Color.primary },
+                { color: 'purple', textShadowColor: Color.primary,  borderBottomWidth: 3,  borderBottomColor: Color.primary },
               ]}
             />
           ) : (
@@ -102,7 +102,7 @@ const NavbarButtom = ({ onChange }) => {
               name="settings"
               style={[
                 styles.iconStyle,
-                { color: 'purple', textShadowColor: Color.primary  },
+                { color: 'purple', textShadowColor: Color.primary, borderBottomWidth: 3,  borderBottomColor: Color.primary  },
               ]}
             />
           ) : (
@@ -136,6 +136,7 @@ const styles = StyleSheet.create({
       marginBottom: 15,
       marginHorizontal: 10,
       borderTopColor:"#000",
+      
     },
     iconStyle: {
         color: 'gray',

@@ -32,7 +32,7 @@ const PathologicalCase = () => {
     <TouchableOpacity  onPress={() => {
             navigation.navigate('SalonScreen');
           }}>
-       <Text style={styles.buttonStyle}><Ionicons name="paper-plane" size={25} color="#ebebeb"/>Submit Form</Text>
+       <Text style={styles.buttonStyle}><Ionicons name="paper-plane" size={25} color="#ebebeb" />  Submit Form</Text>
       </TouchableOpacity>  
 
      </View>
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
         padding: 15,
         marginTop: 230,
         marginHorizontal: 100,
-        fontWeight: '300',
+        fontWeight: '400',
         fontSize: 20,
         textAlign:"center",
         color: "#ebebeb",

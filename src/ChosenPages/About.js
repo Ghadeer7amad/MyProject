@@ -22,9 +22,9 @@ const About = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const images = [
+    require("../../assets/hh.jpg"),
     require("../../assets/oo.jpg"),
     require("../../assets/hhhh.jpg"),
-    require("../../assets/hh.jpg"),
   ];
 
   const handleSlideChange = (index) => {

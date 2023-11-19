@@ -1,7 +1,8 @@
 import React from "react";
 import { View, Text, StyleSheet, Image,  SafeAreaView, ScrollView, TouchableOpacity, Switch } from "react-native";
-import One from '../../assets/gh.jpeg';
+import One from '../Common/ah.jpg';
 import FeatherIcon from 'react-native-vector-icons/Feather'
+import Color from '../Common/Color.js';
 
 const SECTIONS = [
   {
@@ -91,13 +92,13 @@ export default function Example() {
                     alt= "Profile Picture"
                     source={One} style={styles.profileAvatar}/>
                     <View style={styles.profileAction}>
-                      <FeatherIcon name="edit-3" size={15} color= "#fff"/>
+                      <FeatherIcon name="edit-3" size={15} color= {Color.primary}/>
                     </View>
                   </View>
 
                 </TouchableOpacity>
                 <Text style={styles.profileName}> Ghadeer Hamad </Text>
-                <Text style={styles.profileAddress}> 123 West Street, Rameen</Text>
+                <Text style={styles.profileAddress}> ghadeer7amad@gmail.com</Text>
               </View>
 
               {SECTIONS.map( ({ header, items }) => {
@@ -122,8 +123,11 @@ export default function Example() {
 
                         {type == 'toggle' && (
                         <Switch
+                         
                          value={form[id]}
                          onValueChange={value => setForm({...form, [id]: value})} 
+                         trackColor={{ false: 'grey', true: Color.background }}
+                         thumbColor={form[id] ? Color.primary : 'white'}
                          />
                          )}
 
@@ -163,7 +167,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     fontSize: 19,
     fontWeight: '600',
-    color: '#414d63',
+    color: Color.primary,
     textAlign: 'center',
   },
 
@@ -186,11 +190,12 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
 
+  /////////////////////
   profileAction: {
     width: 28,
     height: 28,
     borderRadius: 9999,
-    backgroundColor: '#007bff',
+    backgroundColor: '#f2f2f2',
     position: 'absolute',
     right: -4,
     bottom: -10,
