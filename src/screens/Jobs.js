@@ -1,4 +1,4 @@
-import { Text, View, Image, TouchableOpacity, StyleSheet } from "react-native";
+/*import { Text, View, Image, TouchableOpacity, StyleSheet } from "react-native";
 import React from "react";
 import { Ionicons } from '@expo/vector-icons';
 import One from '../../assets/aya.jpeg';
@@ -31,4 +31,4 @@ const styles = StyleSheet.create({
   },
 
 
-});
+});*/

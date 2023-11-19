@@ -1,7 +1,6 @@
 import React from "react";
 import { View, Text, ImageBackground, StyleSheet, SafeAreaView, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { useState } from "react";
 import Colors from "../Common/Color.js"
 import One from '../../assets/face.jpg';
 
@@ -23,9 +22,9 @@ const Homee = () => {
             
             <TouchableOpacity style={styles.continueButton} onPress={handleContinuePress}>
                 <Text style={styles.continueButtonText}>Continue</Text>
-                
             </TouchableOpacity>
         </ImageBackground>
+        
     );
 };
 

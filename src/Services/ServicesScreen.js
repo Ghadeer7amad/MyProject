@@ -9,7 +9,6 @@ import {
 } from "react-native";
 import React from "react";
 import Spacing from "../Common/Spacing.js";
-import CustomSearchBar from "../Common/SearchBarComponent.js";
 import NavbarTop from "../Common/navbarTop.js";
 import SearchProANDSer from "../Common/SerachProANDSer.js"
 import Color from "../Common/Color.js";
@@ -36,7 +35,7 @@ const ServicesScreen = () => {
           <NavbarTop />
 
           <View style={{ width: "100%" }}>
-            <Text style={styles.styleText}>Here</Text>
+            <Text style={styles.styleText}>Here <Image style={{ width: 80, height: 60 }} source={require("../../assets/111.jpg")} /></Text>
             <Text style={[styles.styleText, styles.styleText2]}>Our Services</Text>
 
             <SearchProANDSer placeholder="Search your service" />
@@ -45,13 +44,11 @@ const ServicesScreen = () => {
           <View style={styles.ServiceStyle}>
             {Service.map((service) => (
               <View key={service.id} style={styles.EveryService}>
-                <BlurView tint="default" intensity={90} style={{ padding: Spacing / 2 }}>
+                <BlurView tint="default" intensity={90} style={{ padding: Spacing*3}}>
                   <TouchableOpacity
                     style={{ width: 300, height: 250 }}
-                    onPress={() => handleDetailsPress(service)}
-                  >
+                    onPress={() => handleDetailsPress(service)}>
                     <Image source={service.image} style={styles.ImageStyle} />
-
                     <View style={styles.StyleTop}>
                       <BlurView style={styles.BlurViewTop}>
                         <Ionicons
@@ -69,7 +66,7 @@ const ServicesScreen = () => {
 
                   <View style={styles.styleRow}>
                     <View style={{ flexDirection: "row" }}>
-                      <Text style={styles.PriceStyle}>{service.price} LIS</Text>
+                      <Text style={styles.PriceStyle}>{service.price} <Text style={{color:'red'}}> LIS</Text></Text>
                       <Text style={styles.PriceStyle}></Text>
                     </View>
 
@@ -80,14 +77,9 @@ const ServicesScreen = () => {
                 </BlurView>
               </View>
             ))}
-            
-
           </View>
-        </ScrollView>
-       
-          
+        </ScrollView>   
       <NavbarButtom onChange={(selectedIcon) => console.log(selectedIcon)}/>
-
     </View>
   );
 };
@@ -99,7 +91,7 @@ export default ServicesScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Color.background,
+    backgroundColor: Color.secondary,
     height: "100%" 
   },
    ServiceStyle:{
@@ -112,6 +104,8 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     justifyContent:"center",
     alignItems:"center",
+    backgroundColor: Color.background,
+    borderRadius: 20
    },
    ImageStyle:{
     width:"100%",
@@ -138,8 +132,10 @@ const styles = StyleSheet.create({
    NameStyle:{
     color: Color.primary,
     fontWeight:"bold",
-    fontSize:25,
+    fontSize:20,
     marginLeft:8,
+    textTransform: 'uppercase',
+    letterSpacing: 1.5,
     marginTop:8,
    },
    styleRow:{
@@ -150,7 +146,7 @@ const styles = StyleSheet.create({
    PriceStyle:{
     color: "#fff",
     fontWeight: "bold",
-    fontSize:18,
+    fontSize:16,
     marginLeft:8,
    },
    styleIcons:{
@@ -166,13 +162,13 @@ const styles = StyleSheet.create({
     padding:4
    },
     styleText:{
-        color: Color.secondary,
+        color: 'black',
         fontSize: Spacing * 1.8,
         textTransform:"uppercase",
         fontWeight: "bold",
         marginTop: 5
     },  
     styleText2:{
-      color: "#d9b650"
+      color: Color.background
     }
 })
