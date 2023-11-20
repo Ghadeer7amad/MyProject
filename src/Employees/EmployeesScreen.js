@@ -17,7 +17,7 @@ import Spacing from "../Common/Spacing.js";
 import { Ionicons } from "@expo/vector-icons";
 import SearchProANDSer from "../Common/SerachProANDSer.js";
 import { useNavigation } from "@react-navigation/native";
-import employeeData from "./EmployeesData.js";
+import Employees from "./EmployeesData.js";
 
 
 
@@ -25,10 +25,9 @@ import employeeData from "./EmployeesData.js";
 const EmployeesScreen = () => {
   const navigation = useNavigation();
 
-  const handleDetailsPress = (employee) => {
-    navigation.navigate("EmployeesDetails", { employee });
+  const handleDetailsPress = (item) => {
+    navigation.navigate("EmployeesDetails", { item });
   };
-  
 
   return (
     <View style={styles.container}>
@@ -37,16 +36,16 @@ const EmployeesScreen = () => {
         <Text style={[styles.styleText, styles.styleText2]}>
           Beauty Employees.
         </Text>
-        <CustomSearchBar placeholder={"serach Employee"} />
+        <CustomSearchBar placeholder={"search Employee"} />
       </View>
 
       <FlatList
-      data={employeeData} // Corrected variable name
-      keyExtractor={(item) => item.id.toString()}
-      renderItem={({ item }) => (
+        data={Employees}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => (
           <View style={styles.employeeContainer}>
             <View style={styles.ImageContainer}>
-              <Image source={item.photo} style={styles.userImage} />
+              <Image source={item.image} style={styles.userImage} />
             </View>
             <View style={styles.userContainer}>
               <Text style={styles.userName}>{item.name}</Text>
@@ -54,16 +53,13 @@ const EmployeesScreen = () => {
               <TouchableOpacity style={styles.employeeInteractions}>
                 <View style={styles.starContainer}>
                   <Icon name="star" color="gold" size={20} />
-                  <Icon name="star" color="gold" size={20} />
-                  <Icon name="star" color="gold" size={20} />
-                  <Icon name="star-o" color="gold" size={20} />
-                  <Icon name="star-o" color="gold" size={20} />
+                  <Text style={styles.employeeContent}>4.5</Text>
                 </View>
               </TouchableOpacity>
             </View>
             <TouchableOpacity
               style={styles.button}
-              onPress={handleDetailsPress}
+              onPress={() => handleDetailsPress(item)} 
             >
               <Ionicons name="ios-arrow-forward" size={24} color="white" />
             </TouchableOpacity>
@@ -111,6 +107,7 @@ const styles = StyleSheet.create({
   },
   employeeContent: {
     fontSize: 15,
+
   },
   styleText: {
     color: Color.primary,
@@ -124,6 +121,7 @@ const styles = StyleSheet.create({
   starContainer: {
     flexDirection: "row",
     gap: 3,
+    marginTop:10,
   },
   button: {
     backgroundColor: "#caabd8",
@@ -131,7 +129,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     flexDirection: "column",
     alignSelf: "center",
-    marginLeft: 20,
+    justifyContent:"center",
   },
 });
 

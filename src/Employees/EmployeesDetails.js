@@ -8,15 +8,13 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import NavbarTop from "../Common/navbarTop.js";
-import NavbarButtom from "../Common/NavbarButtom.js";
-import Spacing from "../Common/Spacing.js";
 import Color from "../Common/Color.js";
 import Icon from "react-native-vector-icons/Ionicons";
+import { FontAwesome as Iconn } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
-const EmployeeDetailsScreen = ({ route }) => {
-  const { employee } = route.params;
+const EmployeesDetailsScreen = ({ route }) => {
+  const { item } = route.params;
   const navigation = useNavigation();
 
   const handleBookAppointment = () => {
@@ -28,37 +26,44 @@ const EmployeeDetailsScreen = ({ route }) => {
 
   return (
     <View style={styles.container}>
-      <ScrollView style={{ padding: Spacing }}>
-        
-
-        <View style={styles.detailsContainer}>
-          <Image source={employee.image} style={styles.image} />
-          <Text style={styles.name}>{employee.name}</Text>
-
-          <View style={styles.sectionTitleContainer}>
-            <Icon name="ios-cash" color={Color.primary} size={25} /> 
-          </View>
-          <View style={styles.sectionTitleContainer}>
-            <Icon name="time" color={Color.primary} size={25} />
-          </View>
-
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={handleBookAppointment}
-            >
-              <Text style={styles.buttonText}>Book Now</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={handleCancelAppointment}
-            >
-              <Text style={styles.buttonText}>Cancel</Text>
-            </TouchableOpacity>
-          </View>
+      <Image source={item.image} style={styles.image} />
+      <View style={styles.detailsContainer}>
+        <View style={styles.nameContainer}>
+          <Text style={styles.name}>{item.name}</Text>
+          <TouchableOpacity
+            style={styles.chat}
+            onPress={() => handleDetailsPress(item)}
+          >
+            <Ionicons name="chatbubble" size={24} color="white" />
+          </TouchableOpacity>
         </View>
-      </ScrollView>
-      <NavbarButtom />
+        <Text style={styles.job}>{item.job}</Text>
+        <View style={styles.iconContainer}>
+        <View style={styles.starContainer}>
+          <Icon name="star" color="gold" size={20} />
+          <Text style={styles.rate}>4.5</Text>
+        </View>
+        <TouchableOpacity style={styles.starContainer} >
+          <Icon name="checkmark-circle" size={20} color="green" />
+          <Text style={styles.rate}>{item.experienceYears}</Text>
+        </TouchableOpacity>
+       </View>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={handleBookAppointment}
+          >
+            <Text style={styles.buttonText}>Book Now</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[styles.button, styles.button1]}
+            onPress={handleCancelAppointment}
+          >
+            <Text style={styles.buttonText1}>Cancel</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
     </View>
   );
 };
@@ -66,60 +71,92 @@ const EmployeeDetailsScreen = ({ route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Color.background,
+    backgroundColor: Color.secondary,
   },
   image: {
     width: "100%",
-    height: 250,
+    height: "60%",
+    position: "absolute",
+    marginTop: 50,
+    borderBottomLeftRadius: 40,
+    borderBottomRightRadius: 40,
+    zIndex: 5,
   },
-  sectionTitleContainer: {
-    flexDirection: "row",
-    borderBottomWidth: 3, // Add a bottom border
-    borderBottomColor: "#d9b650", // Border color
-    marginBottom: 20,
-    marginTop: 20,
-  },
+
   detailsContainer: {
-    backgroundColor: "white",
-    padding: 20,
-    margin: 10,
-    borderRadius: 10,
-    elevation: 3,
+    backgroundColor: "#fff",
+    width: "100%",
+    marginTop: 600,
+  },
+  nameContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginTop: 20,
   },
   name: {
-    fontSize: 26,
+    fontSize: 25,
     fontWeight: "bold",
-    marginTop: 20,
-    color: "#d9b650",
+    color: "black",
+    marginLeft: 20,
   },
-
-  time: {
-    fontSize: 20,
-    marginLeft:5
-  },
-  description: {
+  job: {
     fontSize: 18,
-    marginTop: 10,
-    lineHeight: 22,
+    color: "black",
+    margin: 20,
+    marginTop: 0,
+    paddingBottom: 15,
+  },
+  iconContainer: {
+    flexDirection: "row",
+    
+  },
+  starContainer: {
+    flexDirection: "row",
+    margin: 20,
+    marginTop: 5,
+    gap: 5,
+  },
+  rate: {
+    fontSize: 15,
+    fontWeight: "bold",
   },
   buttonContainer: {
     flexDirection: "row",
     marginTop: 20,
-    alignItems: "center",
-    justifyContent: "space-around",
+    marginLeft: 30,
   },
   button: {
     backgroundColor: Color.primary,
     padding: 15,
+    paddingHorizontal: 70,
     borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",
+    marginLeft: 20,
+  },
+  button1: {
+    paddingHorizontal: 10,
+    marginLeft: 20,
+    backgroundColor: Color.secondary,
+    borderColor: Color.background,
+    borderWidth: 1,
   },
   buttonText: {
     color: "white",
     fontSize: 18,
   },
+  buttonText1: {
+    color: Color.background,
+  },
+  chat: {
+    backgroundColor: Color.primary,
+    padding: 10,
+    borderRadius: 50,
+    flexDirection: "column",
+    alignSelf: "center",
+    justifyContent: "center",
+    marginRight: 20,
+  },
 });
 
-export default EmployeeDetailsScreen;
+export default EmployeesDetailsScreen;

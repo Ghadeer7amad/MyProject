@@ -1,27 +1,38 @@
 export default [
-  {
-    id: "1",
-    name: "Aya",
-    job: "The Owner",
-    photo: require("../../assets/employee.jpg"), // Replace with the actual photo path
-  },
-  {
-    id: "2",
-    name: "Maymona",
-    job: "Software Engineer",
-    photo: require("../../assets/employee.jpg"), // Replace with the actual photo path
-  },
-  {
-    id: "3",
-    name: "Ghadeer",
-    job: "Software Engineer",
-    photo: require("../../assets/employee.jpg"), // Replace with the actual photo path
-  },
-  {
-    id: "4",
-    name: "Nada",
-    job: "Software Engineer",
-    photo: require("../../assets/employee.jpg"), // Replace with the actual photo path
-  },
-  // Add more employee data as needed
-];
+    {
+      id: 1,
+      image: require("../../assets/n7.jpg"),
+      name: "Nada Obaid",
+      job: "Hair Stylist",
+      experienceYears: "5 years of experience",
+    },
+    {
+      id: 2,
+      image: require("../../assets/n3.jpg"),
+      name: "Maymona Khanfer",
+      job: "Makeup Artist",
+      experienceYears: "5 years of experience",
+    },
+    {
+      id: 3,
+      image: require("../../assets/n2.jpg"),
+      name: "Gadeer Hamed",
+      job: "Nail Technician",
+      experienceYears: "5 years of experience",
+    },
+    {
+      id: 4,
+      image: require("../../assets/n4.jpg"),
+      name: "Sara Ahmed",
+      job: "Esthetician",
+      experienceYears: "5 years of experience",
+    },
+    {
+      id: 5,
+      image: require("../../assets/n5.jpg"),
+      name: "Layla Hassan",
+      job: "Massage Therapist",
+      experienceYears: "5 years of experience",
+    },
+  ];
+  
