@@ -21,7 +21,7 @@ const NavbarButtom = ({ onChange }) => {
   };
 
   const handleHomePress = () => {
-    navigation.navigate('Chose');
+    navigation.navigate('MainScreen2');
   };
 
   return (

@@ -4,9 +4,8 @@ import { ImageBackground,
    Text,
    TouchableOpacity,
    View, 
-   Dimensions, 
-   Image } from 'react-native'
-
+   Dimensions} from 'react-native'
+import { useNavigation } from '@react-navigation/native';
 import React from 'react'
 import { useState } from 'react'
 import { SafeAreaView } from 'react-native'
@@ -17,8 +16,9 @@ import { BlurView } from 'expo-blur'
 
 const { height} = Dimensions.get("window");
 
-const ProductsDetails = ({product}) => {
-
+const ProductsDetails = ({ route }) => {
+  const navigation = useNavigation();
+  const { product } = route.params;
   const [isTouched, setIsTouched] = useState(false);
   const handlePressIn = () => {
     setIsTouched(true);
@@ -33,11 +33,11 @@ const ProductsDetails = ({product}) => {
           style={styles.ImageBackgroundStyle}  imageStyle={{borderRadius: Spacing * 1.5, marginTop: 20}}>
 
             <View style={{flexDirection:"row", justifyContent:"space-between"}}>
-                <TouchableOpacity style={{padding: Spacing*2}}>
+                <TouchableOpacity style={{padding: Spacing*2}}  onPress={()=>navigation.navigate('ProductsScreens')}>
                     <Ionicons name="arrow-back" color={Color.primary} size={Spacing*2}/>
                 </TouchableOpacity>
                 <TouchableOpacity style={{padding: Spacing*2}}>
-                    <Ionicons name="cart" color={Color.primary} size={Spacing*2}/>
+                    <Ionicons name="cart" color={Color.primary} size={Spacing*2}  onPress={()=>navigation.navigate('CardsScreen')}/>
                 </TouchableOpacity>
             </View>
 
@@ -46,7 +46,7 @@ const ProductsDetails = ({product}) => {
                 <BlurView tint="light" style={styles.BlurViewStyle}>
                     <View>
                         <Text style={styles.productName}>{product.name}</Text>
-                        <Text style={{color:"#10316b"}}>{product.included}</Text>
+                        <Text style={{color:"black"}}>{product.included}</Text>
 
                 <View style={{flexDirection:"row", justifyContent:"space-between"}}>
                     <View style={styles.iconRating}>
@@ -59,11 +59,6 @@ const ProductsDetails = ({product}) => {
                         <View style={styles.icaonPosition}>
                         <Ionicons name="heart" size={Spacing * 2} color={Color.primary}/>
                         <Text style={styles.icanNameStyle}>Favorite</Text>
-                        </View>
-                      
-                        <View style={styles.icaonPosition}>
-                        <Ionicons name="cafe" size={Spacing * 2} color={Color.primary}/>
-                        <Text style={styles.icanNameStyle}>face</Text>
                         </View>
                     </View>
 
@@ -102,7 +97,7 @@ const ProductsDetails = ({product}) => {
           <Text
             style={[
               styles.styleTextButton,
-              isTouched ? styles.touchedTextButton : null]}>Buy Now</Text>
+              isTouched ? styles.touchedTextButton : null]} onPress={()=>navigation.navigate('CardsScreen')}>Buy Now</Text>
 
         </TouchableOpacity>
     </View>
@@ -135,7 +130,7 @@ const styles = StyleSheet.create({
     alignItems:"center"
   },
   productRating:{
-    color: "#94784c",
+    color: "black",
     marginLeft: Spacing/2
   },
   TowIcaonStyle:{
@@ -169,7 +164,7 @@ const styles = StyleSheet.create({
   },
   descriptionText: {
     fontSize: Spacing*2,
-    color: "#b6cdbd",
+    color: "black",
     marginTop: 20,
     marginBottom: Spacing/2,
     fontWeight: "500",

@@ -62,7 +62,7 @@ const Signup = () => {
     if (Object.values(errors).some(fieldValid => !fieldValid)) {
       return;
     }
-    navigation.navigate('Login');
+    navigation.navigate('test');
    }
 
   const [showPassword, setShowPassword] = useState(false);
