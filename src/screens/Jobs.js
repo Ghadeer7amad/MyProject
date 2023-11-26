@@ -1,155 +1,119 @@
-import React, { useState } from 'react';
-import { TextInput, StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
+import React from 'react';
+import { View, Image, Text, TouchableOpacity, StyleSheet, ScrollView, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { Ionicons } from "@expo/vector-icons";
-//import * as DocumentPicker from 'react-native-document-picker';
-
-import Color from '../Common/Color';
+import { Ionicons } from '@expo/vector-icons';
+import Color from '../Common/Color.js';
+import Spacing from '../Common/Spacing.js';
 
 const Jobs = () => {
   const navigation = useNavigation();
-  const [selectedFile, setSelectedFile] = useState(null);
 
-  const handleFilePick = async () => {
-    try {
-      const result = await DocumentPicker.getDocumentAsync();
-      if (result.type === 'success') {
-        setSelectedFile(result.name);
-        // You can handle the selected file here
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  // بيانات الوظائف
+  const jobData = [
+    {
+      id: 1,
+      title: 'Software Developer',
+      description: 'Create amazing software solutions.',
+      image: require('../../assets/11.jpg'),
+    },
+    {
+      id: 2,
+      title: 'Graphic Designer',
+      description: 'Design stunning graphics and visuals.',
+      image: require('../../assets/11.jpg'),
+    },
+    {
+      id: 3,
+      title: 'Marketing Specialist',
+      description: 'Promote products and reach wider audiences.',
+      image: require('../../assets/11.jpg'),
+    },
+  ];
 
   return (
     <View style={styles.container}>
-      <Image
-        source={require('../../assets/job.jpg')}
-        style={styles.imageStyle}
-        resizeMode="cover"
-      />
-
-      <Text style={styles.labelStyle}>Type of The Job:</Text>
-
-      <View style={styles.labeledContainerStyle}>
-        <Text style={styles.labeledTextStyle}>Laser Specialist</Text>
-      </View>
-
-      <Text style={[styles.labelStyle, { marginTop: 20 }]}>Description:</Text>
-
-      <View style={[styles.labeledContainerStyle, { height: 120 }]}>
-        <Text style={styles.labeledTextStyle}>
-          A laser specialist performs work from 9 am to 4 pm and receives a salary of $1000 per month. Only Friday is a day off.
-        </Text>
-      </View>
-
-      <Text style={[styles.labelStyle, { marginTop: 20 }]}>Attach your CV:</Text>
-
-
-      <TouchableOpacity onPress={handleFilePick} style={styles.fileUploadButton}>
-        <Text style={styles.fileUploadText}>Upload File</Text>
+      <TouchableOpacity
+        style={{ marginLeft: Spacing * 2, marginTop: Spacing * 3 }}
+        onPress={() => {
+          navigation.navigate('MainJob');
+        }}
+      >
+        <Ionicons name="arrow-back" color={Color.primary} size={Spacing * 2} />
       </TouchableOpacity>
 
-      {/* Display selected file */}
-      {selectedFile && (
-        <Text style={styles.selectedFileText}>{`Selected File: ${selectedFile}`}</Text>
-      )}
+      <View style={styles.container1}></View>
+      <ScrollView>
+        <Text style={styles.textHeader}>Here are the jobs</Text>
+        <Text style={styles.textHeader1}>we currently have available</Text>
 
-      {/* Additional information for file upload */}
-      <Text style={styles.uploadInfoText}>
-        Upload your CV by tapping the "Upload File" button.
-      </Text>
-     
-
-      {/* Submit Form button */}
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity>
-          <Text style={styles.buttonStyle}><Ionicons name="paper-plane" size={25} color="#ebebeb" />  Submit Form</Text>
-        </TouchableOpacity>
-      </View>
+        {/* إضافة بطاقات الوظائف */}
+        {jobData.map((job) => (
+          <TouchableOpacity
+            key={job.id}
+            style={styles.jobCard}
+            onPress={() => {
+              // يمكنك أدراج السلوك المرتبط بالنقر على البطاقة هنا
+            }}
+          >
+            <Image source={job.image} style={styles.jobImage} resizeMode="cover" />
+            <View style={styles.jobDetails}>
+              <Text style={styles.jobTitle}>{job.title}</Text>
+              <Text style={styles.jobDescription}>{job.description}</Text>
+            </View>
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
     </View>
   );
-}
+};
 
 export default Jobs;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: 'white',
   },
-  imageStyle: {
-    width: '100%',
-    height: 350,
+  container1: {
+    flexDirection: 'row',
+    paddingTop: 1,
+    paddingLeft: 15,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: 'white',
   },
-  labelStyle: {
-    fontSize: 20,
+  textHeader: {
+    fontSize: 25,
     fontWeight: 'bold',
-    marginLeft: 20,
-    marginTop: 10,
-    marginBottom: 5,
+    textTransform: 'uppercase',
+    marginLeft: 15,
+  },
+  textHeader1: {
+    fontSize: 18,
+    fontWeight: '500',
+    textTransform: 'uppercase',
+    marginLeft: 15,
     color: Color.primary,
   },
-  labeledContainerStyle: {
-    marginLeft: 20,
-    marginRight: 20,
-    marginBottom: 20,
-    padding: 10,
-    borderRadius: 5,
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    shadowColor: 'black',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
-    elevation: 5, // For Android
+  jobCard: {
+    margin: Spacing,
+    borderRadius: 10,
+    overflow: 'hidden',
+    backgroundColor: 'white',
+    elevation: 5, // ظل البطاقة
   },
-  labeledTextStyle: {
-    fontSize: 17,
-    color: 'gray',
-  },
-
-  buttonContainer: {
-    position: 'absolute',
-    bottom: 20,
+  jobImage: {
+    height: 150,
     width: '100%',
-    alignItems: 'center',
   },
-  buttonStyle: {
-    padding: 15,
-    marginTop: 10,
-    marginHorizontal: 100,
-    fontWeight: '400',
+  jobDetails: {
+    padding: Spacing,
+  },
+  jobTitle: {
     fontSize: 20,
-    textAlign: "center",
-    color: "#ebebeb",
-    backgroundColor: Color.primary,
-    borderRadius: 5,
+    fontWeight: 'bold',
   },
-
-
-  fileUploadButton: {
-    backgroundColor: Color.primary,
-    padding: 10,
-    borderRadius: 5,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 10,
-    width: 370,
-    alignSelf: 'center',
-    
-  },
-  fileUploadText: {
-    color: '#ebebeb',
-    fontSize: 16,
-  },
-  selectedFileText: {
-    color: 'gray',
-    marginTop: 10,
-  },
-  uploadInfoText: {
-    marginTop: 10,
-    marginLeft: 20,
-    marginRight: 20,
+  jobDescription: {
     fontSize: 14,
     color: 'gray',
   },
