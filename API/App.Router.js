@@ -1,5 +1,5 @@
-import AuthRouter from "./Modules/Auth/Auth.Router.js"
-import connectDb from "./DB/Model/Connection.js"
+import AuthRouter from './src/Modules/Auth/Auth.Router.js'
+import connectDb from './DB/Connection.js'
 
 const initApp =(app, express)=>{
     connectDb()

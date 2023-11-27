@@ -12,19 +12,25 @@ const UserSchema = new Schema({
         required: true,
         unique: true
     },
-    dob: {
+    age: {
+        type: Number,
+        required: true,
+    },
+    phone : {
         type: String,
         required: true,
     },
-     phone : {
-        type: String
-    },
     address : {
-        type: String
+        type: String,
+        required: true,
     },
     password : {
         type: String,
         required: true
+    },
+    confirmpassword:{
+        type: String,
+        default: false,
     },
     confirmEmail:{
         type: Boolean,
@@ -34,6 +40,10 @@ const UserSchema = new Schema({
         type : String,
         default: 'User',
         enum : ['User', 'Admin']
+    },
+    sendCode:{
+        type: String,
+        default: null
     }
 },
 { 

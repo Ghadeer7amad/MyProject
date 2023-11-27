@@ -8,7 +8,6 @@ import { Ionicons } from "@expo/vector-icons";
 import Color from '../Common/Color.js';
 import { useNavigation } from '@react-navigation/native';
 
- 
 const Login = () => {
   const[FData, setFData] = useState({
     email: "",
@@ -16,13 +15,6 @@ const Login = () => {
   })
  const navigation = useNavigation();
 
-  /*const handleLogin = async() => {
-    
-    if(FData.email == '' || FData.password==''){
-      console.log("stop")
-      return
-    }
-    }*/
   const [showPassword, setShowPassword] = useState(false);
   const [password, setPassword] = useState('');
 
@@ -45,8 +37,7 @@ const Login = () => {
         onChangeText={(text) => setFData({...FData, email: text})}
         //onFocus={handlePasswordFocus}
         style={styles.input} placeholder='Enter Your Email'/>
-        <FontAwesomeIcon icon={faEnvelope} style={styles.icon} />
-        
+        <FontAwesomeIcon icon={faEnvelope} style={styles.icon} /> 
       </View>
 
 
@@ -61,7 +52,10 @@ const Login = () => {
       </TouchableWithoutFeedback>
       </View>
    
-      <TouchableOpacity /*onPress={handleLogin}*/ onPress={()=>navigation.navigate('PathologicalCase')}>
+      <TouchableOpacity onPress={() => {
+        //handleLogin(); 
+        navigation.navigate('PathologicalCase'); 
+        }}>
        <Text style={styles.buttonStyle}>Log in</Text>
       </TouchableOpacity>  
 
