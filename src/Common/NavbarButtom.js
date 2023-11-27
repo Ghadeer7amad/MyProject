@@ -21,7 +21,7 @@ const NavbarButtom = ({ onChange }) => {
   };
 
   const handleHomePress = () => {
-    navigation.navigate('Chose');
+    navigation.navigate('MainScreen2');
   };
 
   return (
@@ -38,7 +38,7 @@ const NavbarButtom = ({ onChange }) => {
               name="home"
               style={[
                 styles.iconStyle,
-                { color: 'purple', textShadowColor: Color.primary },
+                { color: Color.background, textShadowColor: Color.background , borderBottomWidth: 3,  borderBottomColor: Color.background  },
               ]}
             />
           ) : (
@@ -59,7 +59,7 @@ const NavbarButtom = ({ onChange }) => {
               name="notifications"
               style={[
                 styles.iconStyle,
-                { color: 'purple',  textShadowColor:Color.primary},
+                { color: Color.background,  textShadowColor:Color.background , borderBottomWidth: 3,  borderBottomColor: Color.background  },
               ]}
             />
           ) : (
@@ -80,7 +80,7 @@ const NavbarButtom = ({ onChange }) => {
               name="favorite"
               style={[
                 styles.iconStyle,
-                { color: 'purple', textShadowColor: Color.primary },
+                { color: Color.background, textShadowColor: Color.background,  borderBottomWidth: 3,  borderBottomColor: Color.background },
               ]}
             />
           ) : (
@@ -102,7 +102,7 @@ const NavbarButtom = ({ onChange }) => {
               name="settings"
               style={[
                 styles.iconStyle,
-                { color: 'purple', textShadowColor: Color.primary  },
+                { color: Color.background, textShadowColor: Color.background, borderBottomWidth: 3,  borderBottomColor: Color.background  },
               ]}
             />
           ) : (
@@ -136,6 +136,7 @@ const styles = StyleSheet.create({
       marginBottom: 15,
       marginHorizontal: 10,
       borderTopColor:"#000",
+      
     },
     iconStyle: {
         color: 'gray',

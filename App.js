@@ -42,6 +42,9 @@ import AddServices from './AdminPage/AddServices.js'
 import MainScreen2 from './src/screens/MainScreen2.js'
 import Employee from "./src/screens/Employee.js";
 import Offers from './src/screens/Offers.js'
+import Jobs from "./src/screens/Jobs.js";
+import MainJob from "./src/screens/MainJob.js";
+import ApplyForaJob from "./src/screens/ApplyForaJob.js";
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -74,7 +77,9 @@ const HomeStack = () => (
     <Stack.Screen name="ServiceDetails" component={ServiceDetails} options={{ headerShown: false }}/>
     <Stack.Screen name="AddProduct" component={AddProduct} options={{ headerShown: false }}/>
     <Stack.Screen name="AddServices" component={AddServices} options={{ headerShown: false }}/>
-    {/* <Stack.Screen name="Jobs" component={Jobs} />  */}
+    <Stack.Screen name="MainJob" component={MainJob} options={{ headerShown: false }}/>
+    <Stack.Screen name="Jobs" component={Jobs} options={{ headerShown: false }}/>
+    <Stack.Screen name="ApplyForaJob" component={ApplyForaJob} options={{ headerShown: false }}/>
   </Stack.Navigator>
 );
 
@@ -128,7 +133,7 @@ const CustomDrawerContent = (props) => {
         label="JOBS"
         icon={({ color, size }) => <Ionicons name="briefcase" color={Color.primary} size={size} />}
         onPress={() => {
-          props.navigation.navigate('Jobs'); 
+          props.navigation.navigate('MainJob'); 
         }}
       />
       

@@ -8,7 +8,7 @@ import React from 'react'
 const PathologicalCase = () => {
     const navigation = useNavigation();
   return (
-    <View> 
+    <View > 
     <View style={{flexDirection:"row", justifyContent:"space-between"}}>
        <Text style={styles.textHeader}>Dear Lady,</Text>
        <TouchableOpacity onPress={() => {
@@ -18,7 +18,7 @@ const PathologicalCase = () => {
         </TouchableOpacity>
     </View>
     
-     <Text style={styles.subText}>in order to complete the services as you want and with the desired results, we ask you to mention if you have any health problems or allergies to some things, or even if you are taking medications.</Text>
+     <Text style={styles.subText}>In order to complete the services as you want and with the desired results, we ask you to mention if you have any health problems or allergies to some things, or even if you are taking medications.</Text>
      
      <Icon name="pencil" size={30} color="black" style={styles.icon} />
      <View style={styles.container}>
@@ -32,7 +32,7 @@ const PathologicalCase = () => {
     <TouchableOpacity  onPress={() => {
             navigation.navigate('SalonScreen');
           }}>
-       <Text style={styles.buttonStyle}><Ionicons name="paper-plane" size={25} color="#ebebeb"/>Submit Form</Text>
+       <Text style={styles.buttonStyle}><Ionicons name="paper-plane" size={25} color="#ebebeb" />  Submit Form</Text>
       </TouchableOpacity>  
 
      </View>
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
         fontSize: 17, 
         marginLeft: 20, 
         marginBottom: 3,
-        letterSpacing: 2,
+        letterSpacing: 1,
         lineHeight: 25
     },
     container: {
@@ -64,6 +64,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginTop: 220,
         flexDirection:"row",
+        
+        
       },
       textInput: {
         width: '90%', // العرض المرغوب
@@ -82,7 +84,7 @@ const styles = StyleSheet.create({
         padding: 15,
         marginTop: 230,
         marginHorizontal: 100,
-        fontWeight: '300',
+        fontWeight: '400',
         fontSize: 20,
         textAlign:"center",
         color: "#ebebeb",

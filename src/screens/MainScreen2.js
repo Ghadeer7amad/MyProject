@@ -28,12 +28,12 @@ const MainScreen2 = () => {
           hello, nada
           <Image style={{ width: 50, height: 50 }} source={require("../../assets/pic3.jpg")} />
         </Text>
-        <Text style={styles.textHeader1}>welcome beauty center</Text>
+        <Text style={styles.textHeader1}>welcome to aya beauty center</Text>
         <SearchProANDSer placeholder={'search here'} />
         <MainScreen />
         <Employee />
         <Offers/>
-        <NavbarButtom/>
+        <NavbarButtom onChange={(selectedIcon) => console.log(selectedIcon)}/>
       </ScrollView>
     </View>
   );
