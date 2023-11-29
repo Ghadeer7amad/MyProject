@@ -5,53 +5,107 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faLock, faUser, faCheck} from '@fortawesome/free-solid-svg-icons';
 import Color from '../../Common/Color.js';
 import React, {useState} from 'react'
+import axios from 'axios';
 
 const ResetPassword = () => {
     const navigation = useNavigation();
-    const[password, setpassword] = useState("")
-    const[passwordC, setpasswordC] = useState("")
-    const [fieldValid, setFieldValid] = useState({
-        password: true,
-        passwordC: true
-    })
+    const [email, setEmail] = useState("");
+    const [code, setcode] = useState("");
+    const [password, setpassword] = useState("");
+    const [confirmpassword, setconfirmpassword] = useState("");
+
+    const onChangePasswordHandler = (password) => {
+      setpassword(password);
+    };
+    const onChangeconfirmpasswordHandler = (confirmpassword) => {
+      setconfirmpassword(confirmpassword);
+    };
+    const onChangeCodeHandler = (code) => {
+      setcode(code);
+    };
+    const onChangeEmailHandler = (email) => {
+      setEmail(email);
+    };
+
+    const handleReset = async () => {
+      const baseUrl = 'https://ayabeautyn.onrender.com';
+      try {
+        const response = await axios.patch(`${baseUrl}/auth/forgetPassword`, {
+          email,
+          code,
+          password,
+          confirmpassword
+        });
+    
+        if (response.status === 200) {
+          alert(` You have : ${JSON.stringify(response.data)}`);
+          setEmail("")
+          setcode("")
+          setpassword("")
+          setconfirmpassword("")
+          navigation.navigate('Login')
+        } else {
+          console.error('Error:', error.response.status, error.response.data);
+        }
+      } catch (error) {
+        console.error('Error:', error.message)
+      }
+    };
 
   return (
    <View style={styles.contanier}>
     <Image style={styles.contanier1}
-        source={require("../../../assets/check.png")}
+        source={require("../../../assets/true1.jpg")}
     />
     <View style={styles.contanier2}>
     <Text style={styles.TextStyleHeader}>Reset password Confirmation</Text>
 
     <View style={styles.formgroup}>
         <TextInput 
-        value={password}
-        onChangeText={(text) => setpassword(text)}
+        value={email}
+        onChangeText={onChangeEmailHandler}
+        //onBlur={() => setFieldValid({ ...fieldValid, password: password !== "" })}
+        style={styles.input} 
+        placeholder='Enter email'
+        />
+        <FontAwesomeIcon icon={faLock} style={styles.icon} />
+    </View>
+
+    <View style={styles.formgroup}>
+        <TextInput 
+        value={code}
+        onChangeText={onChangeCodeHandler}
+        //onBlur={() => setFieldValid({ ...fieldValid, password: password !== "" })}
+        style={styles.input} 
+        placeholder='Enter Code'
+        />
+        <FontAwesomeIcon icon={faLock} style={styles.icon} />
+    </View>
+
+    <View style={styles.formgroup}>
+        <TextInput 
+         value={password}
+         onChangeText={onChangePasswordHandler}
         //label = {<Text style={{}}>Email</Text>}
-        onBlur={() => setFieldValid({ ...fieldValid, password: password !== "" })}
+        //onBlur={() => setFieldValid({ ...fieldValid, password: password !== "" })}
         style={styles.input} 
         placeholder='New Password'
         />
         <FontAwesomeIcon icon={faLock} style={styles.icon} />
     </View>
-    {!fieldValid.password && <Text style={styles.textWrong}> password is required </Text>}
 
     <View style={styles.formgroup}>
         <TextInput 
-        value={passwordC}
-        onChangeText={(text) => setpasswordC(text)}
-        //label = {<Text style={{}}>Email</Text>}
-        onBlur={() => setFieldValid({ ...fieldValid, passwordC: passwordC !== "" })}
+        value={confirmpassword}
+        onChangeText={onChangeconfirmpasswordHandler}
+        //onBlur={() => setFieldValid({ ...fieldValid, passwordC: passwordC !== "" })}
         style={styles.input} 
         placeholder='Confirm your Password'
         />
         <FontAwesomeIcon icon={faCheck} style={styles.icon} />
     </View>
-    {!fieldValid.passwordC && <Text style={styles.textWrong}>confrim password is required </Text>}
 
-    <TouchableOpacity onPress={() => {
-            navigation.navigate('SendCode');
-          }}>
+    <TouchableOpacity onPress={() => {handleReset()}}>
        <Text style={[styles.buttonStyle, styles.buttonStyle1]}>Submit</Text>
       </TouchableOpacity>  
 
@@ -76,13 +130,13 @@ const styles = StyleSheet.create({
         height:"100%",
       },
       contanier1: {
-        height: "35%",
+        height: "23%",
         width: "100%",
         justifyContent: "center",
        
       },
       contanier2: {
-        height: "65%",
+        height: "77%",
         backgroundColor: "#f4f4f4",
       },
       TextStyleHeader:{
