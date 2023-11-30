@@ -17,12 +17,7 @@ import Spacing from "../Common/Spacing.js";
 import { Ionicons } from "@expo/vector-icons";
 import SearchProANDSer from "../Common/SerachProANDSer.js";
 import { useNavigation } from "@react-navigation/native";
-import Employees from "./EmployeesData.js";
 import React, {useState, useEffect} from 'react';
-
-
-
-
 
 const EmployeesScreen = () => {
   const navigation = useNavigation();
@@ -60,7 +55,7 @@ const EmployeesScreen = () => {
         renderItem={({ item }) => (
           <View style={styles.employeeContainer}>
             <View style={styles.ImageContainer}>
-              <Image source={item.image} style={styles.userImage} />
+              <Image source={{uri: item?.image?.secure_url}} style={styles.userImage} />
             </View>
             <View style={styles.userContainer}>
               <Text style={styles.userName}>{item.name}</Text>

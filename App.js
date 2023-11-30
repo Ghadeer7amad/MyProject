@@ -39,6 +39,7 @@ import ResetPassword from "./src/screens/ForgetPassword.js/ResetPassword.js"
 import SendCode from "./src/screens/ForgetPassword.js/SendCode.js"
 import AddProduct from "./AdminPage/AddProduct.js"
 import AddServices from './AdminPage/AddServices.js'
+import AddEmployee from './AdminPage/AddEmployee.js'
 import MainScreen2 from './src/screens/MainScreen2.js'
 import Employee from "./src/screens/Employee.js";
 import Offers from './src/screens/Offers.js'
@@ -69,14 +70,15 @@ const HomeStack = () => (
     <Stack.Screen name="CardsScreen" component={CardsScreen} options={{ headerShown: false }}/>
     <Stack.Screen name="Favorite" component={Favorite} options={{ headerShown: false }}/>
     <Stack.Screen name="ProductsDetails" component={ProductsDetails}options={{ headerShown: false }} />
-    <Stack.Screen name="BookingScreen" component={BookingScreen}options={{ headerShown: false }} /> 
+    <Stack.Screen name="BookingScreen" component={BookingScreen}options={{ headerShown: false }} />  
     <Stack.Screen name="EmployeesScreen" component={EmployeesScreen} options={{ headerShown: false }} />
     <Stack.Screen name="EmployeesDetails" component={EmployeesDetailsScreen} options={{ headerShown: false }}/>
     <Stack.Screen name="PostsScreen" component={PostsScreen} options={{ headerShown: false }}/>
     <Stack.Screen name="SalonScreen" component={SalonScreen} options={{ headerShown: false }}/>
     <Stack.Screen name="ServiceDetails" component={ServiceDetails} options={{ headerShown: false }}/>
     <Stack.Screen name="AddProduct" component={AddProduct} options={{ headerShown: false }}/>
-    <Stack.Screen name="AddServices" component={AddServices} options={{ headerShown: false }}/>
+    <Stack.Screen name="AddServices" component={AddServices} options={{ headerShown: false }}/> 
+     <Stack.Screen name="AddEmployee" component={AddEmployee} options={{ headerShown: false }}/>
     <Stack.Screen name="MainJob" component={MainJob} options={{ headerShown: false }}/>
     <Stack.Screen name="Jobs" component={Jobs} options={{ headerShown: false }}/>
     <Stack.Screen name="ApplyForaJob" component={ApplyForaJob} options={{ headerShown: false }}/>
