@@ -13,9 +13,9 @@ const Employee = () => {
   const navigation = useNavigation();
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-
+  const baseUrl = "https://ayabeautyn.onrender.com";
   useEffect(() => {
-    fetch(`http://10.0.2.2:3000/employees/employee`)
+    fetch(`${baseUrl}/employees/employee`)
       .then((res) => res.json())
       .then((data) => {
         setItems(data);

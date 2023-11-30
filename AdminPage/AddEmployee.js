@@ -43,8 +43,8 @@ const AddEmployee = () => {
           formData.append('job', FData.job);
           formData.append('experienceYears', FData.experienceYears);
           formData.append('image', { uri: FData.image.secure_url, name: 'image.jpg', type: 'image/jpg' });
-      
-          const response = await fetch('http://10.0.2.2:3000/employees/employee', {
+          const baseUrl = "https://ayabeautyn.onrender.com";
+          const response = await fetch(`${baseUrl}/employees/employee`, {
             method: 'POST',
             body: formData,
           });
