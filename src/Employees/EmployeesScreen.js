@@ -1,4 +1,3 @@
-import React from "react";
 import {
   View,
   Text,
@@ -7,6 +6,7 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
+  
 } from "react-native";
 import CustomSearchBar from "../Common/SearchBarComponent.js";
 import Header from "../screens/Header.js";
@@ -18,16 +18,32 @@ import { Ionicons } from "@expo/vector-icons";
 import SearchProANDSer from "../Common/SerachProANDSer.js";
 import { useNavigation } from "@react-navigation/native";
 import Employees from "./EmployeesData.js";
+import React, {useState, useEffect} from 'react';
+
 
 
 
 
 const EmployeesScreen = () => {
   const navigation = useNavigation();
+  const [items, setItems] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const handleDetailsPress = (item) => {
-    navigation.navigate("EmployeesDetails", { item });
+    navigation.navigate('EmployeesDetails', { item });
   };
+
+  useEffect(() => {
+    fetch(`http://10.0.2.2:3000/employees/employee`)
+      .then((res) => res.json())
+      .then((data) => {
+        setItems(data);
+        setIsLoading(false);
+      })
+      .catch((error) =>
+        console.log('Error from favs screen: ', error.message)
+      );
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -36,12 +52,11 @@ const EmployeesScreen = () => {
         <Text style={[styles.styleText, styles.styleText2]}>
           Beauty Employees.
         </Text>
-        <CustomSearchBar placeholder={"search Employee"} />
+        <CustomSearchBar placeholder={'search Employee'} />
       </View>
-
       <FlatList
-        data={Employees}
-        keyExtractor={(item) => item.id.toString()}
+        data={items}
+        keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => (
           <View style={styles.employeeContainer}>
             <View style={styles.ImageContainer}>
@@ -59,7 +74,7 @@ const EmployeesScreen = () => {
             </View>
             <TouchableOpacity
               style={styles.button}
-              onPress={() => handleDetailsPress(item)} 
+              onPress={() => handleDetailsPress(item)}
             >
               <Ionicons name="ios-arrow-forward" size={24} color="white" />
             </TouchableOpacity>
