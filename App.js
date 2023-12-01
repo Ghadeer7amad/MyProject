@@ -46,12 +46,15 @@ import Jobs from "./src/screens/Jobs.js";
 import MainJob from "./src/screens/MainJob.js";
 import ApplyForaJob from "./src/screens/ApplyForaJob.js";
 
+import Test from './Test.js';
+
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
 const HomeStack = () => (
   <Stack.Navigator>
     <Stack.Screen name="Homee" component={Homee} options={{ headerShown: false }}  />
+    <Stack.Screen name="Test" component={Test} options={{ headerShown: false }}  />
     <Stack.Screen name="Employee" component={Employee} options={{ headerShown: false }}  />
     <Stack.Screen name="Offers" component={Offers} options={{ headerShown: false }}  />
     <Stack.Screen name="ChoseScreen" component={ChoseScreen} options={{ headerShown: false }} />
