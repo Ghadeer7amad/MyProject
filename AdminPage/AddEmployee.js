@@ -22,7 +22,6 @@ import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
 import Icon from "react-native-vector-icons/Ionicons";
 import { serialize } from "object-to-formdata";
-import { Toast } from "expo-react-native-toastify";
 import { Box, useToast } from "native-base";
 
 const AddEmployee = () => {
@@ -43,13 +42,11 @@ const AddEmployee = () => {
       aspect: [4, 3],
       quality: 1,
     });
-    console.log("rrr ", result);
     if (!result.canceled) {
       setImage(result.assets[0]);
       setButtonText("Image is uploaded successfully");
     }
 
-    console.log("111", image);
   };
 
   const addEmployee = async () => {
@@ -73,21 +70,13 @@ const AddEmployee = () => {
       });
       const baseUrl = "https://ayabeautyn.onrender.com";
 
-      console.log("ffff", formData);
-      const response = await fetch(`http://10.0.2.2:3000/employees/employee`, {
+      const response = await fetch(`${baseUrl}/employees/employee`, {
         method: "POST",
         body: formData,
       });
 
       const responseData = await response.json();
-      //   Toast.show({
-      //     type: 'successToast',
-      //     position: 'top',
-      //     text1: 'Request sent successfuly',
-      //     visibilityTime: 4000,
-      //     bottomOffset: 60,
-      //     autoHide: true,
-      //   });
+   
       toast.show({
         render: () => {
           return (
@@ -96,7 +85,7 @@ const AddEmployee = () => {
             </Box>
           );
         },
-      }); //   ToastAndroid.show('Request sent successfully!', ToastAndroid.TOP );
+      }); 
     } catch (error) {
       console.error(error);
     }
