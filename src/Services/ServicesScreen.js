@@ -12,14 +12,15 @@ import Spacing from "../Common/Spacing.js";
 import NavbarTop from "../Common/navbarTop.js";
 import SearchProANDSer from "../Common/SerachProANDSer.js"
 import Color from "../Common/Color.js";
-import Service from "./ServiceData.js";
+import { useState, useEffect } from "react";
 import { BlurView } from "expo-blur";
 import { Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation} from "@react-navigation/native";
 import NavbarButtom from "../Common/NavbarButtom";
 
 const ServicesScreen = () => {
   const navigation = useNavigation();
+  const [Services, setServices] = useState([]);
 
   const handleBookPress = () => {
     navigation.navigate("BookingScreen");
@@ -28,6 +29,18 @@ const ServicesScreen = () => {
   const handleDetailsPress = (service) => {
     navigation.navigate("ServiceDetails", { service });
   };
+  const baseUrl = "https://ayabeautyn.onrender.com";
+  useEffect(() => {
+    console.log("Fetching services...");
+    fetch(`${baseUrl}/services/getServices`)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("Received data:", data);
+        setServices(data.Services);
+        console.log(Services)
+      })
+      .catch((error) => console.log('Error from favs screen: ', error.message));
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -42,13 +55,13 @@ const ServicesScreen = () => {
           </View>
 
           <View style={styles.ServiceStyle}>
-            {Service.map((service) => (
-              <View key={service.id} style={styles.EveryService}>
+          {Services && Services.length > 0 && Services.map((service, index) => (
+              <View key={index} style={styles.EveryService}>
                 <BlurView tint="default" intensity={90} style={{ padding: Spacing*3}}>
                   <TouchableOpacity
                     style={{ width: 300, height: 250 }}
                     onPress={() => handleDetailsPress(service)}>
-                    <Image source={service.image} style={styles.ImageStyle} />
+                    <Image source={{uri: service?.image?.secure_url}} style={styles.ImageStyle} />
                     <View style={styles.StyleTop}>
                       <BlurView style={styles.BlurViewTop}>
                         <Ionicons
@@ -66,8 +79,10 @@ const ServicesScreen = () => {
 
                   <View style={styles.styleRow}>
                     <View style={{ flexDirection: "row" }}>
-                      <Text style={styles.PriceStyle}>{service.price} <Text style={{color:'red'}}> LIS</Text></Text>
-                      <Text style={styles.PriceStyle}></Text>
+                      <Text style={styles.PriceStyle}>{service.finalPrice}<Text style={{color:'black'}}> LIS</Text></Text>
+                      {service.price && (
+                        <Text style={styles.OldPriceStyle}>{service.price}<Text style={{ color: 'red', textDecorationLine: 'line-through' }}> LIS</Text></Text>
+                      )}
                     </View>
 
                     <TouchableOpacity style={styles.styleIcons} onPress={() => handleDetailsPress(service)}>
@@ -144,10 +159,17 @@ const styles = StyleSheet.create({
     alignItems: "center"
    },
    PriceStyle:{
-    color: "#fff",
+    color: "black",
     fontWeight: "bold",
     fontSize:16,
     marginLeft:8,
+   },
+   OldPriceStyle:{
+    color: "red",
+    fontWeight: "bold",
+    fontSize:16,
+    marginLeft:8,
+    textDecorationLine: 'line-through'
    },
    styleIcons:{
     backgroundColor:Color.primary,

@@ -5,95 +5,65 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faBook, faFileSignature, faDollarSign, faCloudUploadAlt} from '@fortawesome/free-solid-svg-icons';
 import Color from '../src/Common/Color.js';
 import { useNavigation } from '@react-navigation/native';
-import RNPickerSelect from 'react-native-picker-select';
 import * as ImagePicker from 'expo-image-picker';
 import axios from 'axios';
 
 const AddServices = () => {
-  const [name, setname] = useState("");
-  const [description, setdescription] = useState("");
-  const [price, setprice] = useState("");
-  const [subServices, setsubServices] = useState("");
-  const [time, settime] = useState("");
-  const [image, setimage] = useState("");
-  const [discount, setdiscount] = useState("");
-  const [status, setstatus] = useState("");
+  const [FData, setFData] = useState({
+    name: "",
+    description: "",
+    price: "",
+    discount: "",
+    time: "",
+    subServices: "",
+    status: "",
+    image: "",
+  });
 
-  const onChangenameHandler = (name) => {
-    setname(name);
+  const [buttonText, setButtonText] = useState("Upload Image");
+  const [image, setImage] = useState(null);
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+      setButtonText("Image is uploaded successfully");
+      setFData({ ...FData, image: result.assets[0].uri });
+    }
   };
-  const onChangedescriptionHandler = (description) => {
-    setdescription(description);
-  };
-  const onChangepriceHandler = (price) => {
-    setprice(price);
-  };
-  const onChangesubServicesHandler = (subServices) => {
-    setsubServices(subServices);
-  };
-  const onChangetimeHandler = (time) => {
-    settime(time);
-  };
-  const onChangeimageHandler = (image) => {
-    setimage(image);
-  };
-  const onChangediscountHandler = (discount) => {
-    setdiscount(discount);
-  };
-  const onChangestatusHandler = (status) => {
-    setstatus(status);
-  };
+
 
   const handleAddServices = async () => {
-    const baseUrl = 'https://ayabeautyn.onrender.com';
     try {
-      const response = await axios.post(`${baseUrl}/services/CreateServices`, {
-        name, description, price, subServices, time, image, discount, status
+      const formData = new FormData();
+      formData.append('name', FData.name);
+      formData.append('description', FData.description);
+      formData.append('price', FData.price);
+      formData.append('discount', FData.discount);
+      formData.append('time', FData.time);
+      formData.append('subServices', FData.subServices);
+      formData.append('status', FData.status);
+      formData.append('image', { uri: FData.image.secure_url, name: 'image.jpg', type: 'image/jpg'});
+      const baseUrl = "https://ayabeautyn.onrender.com";
+      const response = await fetch(`${baseUrl}/services/CreateServices`, {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
       });
-  
-      if (response.status === 201) {
-        alert(` You have added the service successfully: ${JSON.stringify(response.data)}`);
-        setname("");
-        setdescription("");
-        setprice("");
-        setdiscount("");
-        setsubServices("");
-        setdiscount("");
-        setImage("");
-        setstatus("");
-        settime("");
-        navigation.navigate('SalonScreen'); 
-      } else {
-        console.error('Error:', error.response.status, error.response.data);
-      }
+      const responseData = await response.json();
+      console.log(responseData);
     } catch (error) {
-      console.error('Error:', error.message)
+      console.error(error);
     }
   };
  const navigation = useNavigation();
- /*const SubCategory = [
-  { label: 'Face', value: 'Face' },
-  { label: 'Body', value: 'Body' },
-];
-const [selectedSubCategory, setSelectedSubCategory] = useState(-1);*/
-
-const [buttonText, setButtonText] = useState(" Upload Image                                             ");
-const [Image, setImage] = useState(null);  
-const pickImage = async () => {
-  let result = await ImagePicker.launchImageLibraryAsync({
-    mediaTypes: ImagePicker.MediaTypeOptions.Images,
-    allowsEditing: true,
-    aspect: [4, 3],
-    quality: 1,
-  });
-  console.log(result);
-
-  if (!result.canceled) {
-    setImage(result.uri); 
-    alert("Chose Photo Done") 
-    setButtonText("Services Image is uploaded successfully");
-  }
-};
   return (
     <ScrollView>
     <View style={styles.contanier}>
@@ -101,8 +71,8 @@ const pickImage = async () => {
 
       <View style={styles.formgroup}>
         <TextInput
-        value={name}
-        onChangeText={onChangenameHandler}
+        value={FData.name}
+        onChangeText={(text) => setFData({ ...FData, name: text })}
         style={styles.input} placeholder='Name Services'/>
         <FontAwesomeIcon icon={faFileSignature} style={styles.icon} />
         
@@ -111,8 +81,8 @@ const pickImage = async () => {
 
       <View style={styles.formgroup}>
         <TextInput 
-        value={description}
-        onChangeText={onChangedescriptionHandler}
+         value={FData.description}
+         onChangeText={(text) => setFData({ ...FData, description: text })}
         style={[styles.input, styles.inputDis]} placeholder='Discrption Services'
         multiline={true} />
        <FontAwesomeIcon icon={faBook} style={[styles.icon, styles.iconDis]} />
@@ -120,52 +90,52 @@ const pickImage = async () => {
 
       <View style={styles.formgroup}>
         <TextInput 
-        value={price}
-        onChangeText={onChangepriceHandler}
+        value={FData.price}
+        onChangeText={(text) => setFData({ ...FData, price: text })}
         style={styles.input} placeholder='Prise Services'/>
        <FontAwesomeIcon icon={faDollarSign} style={styles.icon} />
       </View>
 
       <View style={styles.formgroup}>
         <TextInput 
-        value={discount}
-        onChangeText={onChangediscountHandler}
+         value={FData.discount}
+         onChangeText={(text) => setFData({ ...FData, discount: text })}
         style={styles.input} placeholder='discount Services'/>
        <FontAwesomeIcon icon={faDollarSign} style={styles.icon} />
       </View>
 
       <View style={styles.formgroup}>
         <TextInput 
-        value={time}
-        onChangeText={onChangetimeHandler}
+        value={FData.time}
+        onChangeText={(text) => setFData({ ...FData, time: text })}
         style={styles.input} placeholder='time Services'/>
        <FontAwesomeIcon icon={faDollarSign} style={styles.icon} />
       </View>
 
       <View style={styles.formgroup}>
         <TextInput 
-        value={subServices}
-        onChangeText={onChangesubServicesHandler}
+        value={FData.subServices}
+        onChangeText={(text) => setFData({ ...FData, subServices: text })}
         style={styles.input} placeholder='subServices Services'/>
        <FontAwesomeIcon icon={faDollarSign} style={styles.icon} />
       </View>
 
       <View style={styles.formgroup}>
         <TextInput 
-        value={status}
-        onChangeText={onChangestatusHandler}
+         value={FData.status}
+         onChangeText={(text) => setFData({ ...FData, status: text })}
         style={styles.input} placeholder='status Services'/>
        <FontAwesomeIcon icon={faDollarSign} style={styles.icon} />
       </View>
       
     <View style={{marginHorizontal: 10, marginTop: 20}}>
       <Button title={buttonText}
-       onPress={() => pickImage()}  
+       onPress={pickImage} 
        buttonStyle={{ backgroundColor: "transparent", width: "100%", height: 60, borderWidth: 2, borderColor: "#c3b4d2"}}
        titleStyle={{ color:"#757a79", fontSize: 15, marginLeft: 0 }} 
        />
         <FontAwesomeIcon icon={faCloudUploadAlt} style={[styles.icon, styles.iconDis]} />
-        {image && <Image source={{ uri: image }} style={{ flex: 1 }} />}
+        {image && image.assets && image.assets.length > 0 && <Image source={{ uri: image.assets[0].uri }} style={{ flex: 1 }} />}
     </View>
 
       <TouchableOpacity onPress={()=>handleAddServices()}>

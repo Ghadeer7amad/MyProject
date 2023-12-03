@@ -9,7 +9,7 @@ const Homee = () => {
   
 
     const handleContinuePress = () => {
-        navigation.navigate('ServicesScreen'); // اسم الشاشة التي تريد التنقل إليها
+        navigation.navigate('AddEmployee'); // اسم الشاشة التي تريد التنقل إليها
     };
 
     return (

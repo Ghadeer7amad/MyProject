@@ -26,7 +26,7 @@ const EmployeesDetailsScreen = ({ route }) => {
 
   return (
     <View style={styles.container}>
-      <Image source={item.image} style={styles.image} />
+      <Image source={{uri: item?.image?.secure_url}} style={styles.image} />
       <View style={styles.detailsContainer}>
         <View style={styles.nameContainer}>
           <Text style={styles.name}>{item.name}</Text>
@@ -45,7 +45,7 @@ const EmployeesDetailsScreen = ({ route }) => {
         </View>
         <TouchableOpacity style={styles.starContainer} >
           <Icon name="checkmark-circle" size={20} color="green" />
-          <Text style={styles.rate}>{item.experienceYears}</Text>
+          <Text style={styles.rate}>{item.experienceYears} years of experience</Text>
         </TouchableOpacity>
        </View>
         <View style={styles.buttonContainer}>
