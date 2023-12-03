@@ -31,7 +31,7 @@ const EmployeesScreen = () => {
   
   const fetchData = async () => {
     try {
-      const response = await fetch(`${baseUrl}:3000/employees/employee`);
+      const response = await fetch(`${baseUrl}/employees/employee`);
       const data = await response.json();
       setItems(data);
       setIsLoading(false);
@@ -44,7 +44,7 @@ const EmployeesScreen = () => {
     console.log('Deleting item with ID:', itemId);
 
     try {
-      const response = await fetch(`${baseUrl}:3000/employees/employee/${itemId}`, {
+      const response = await fetch(`${baseUrl}/employees/employee/${itemId}`, {
         method: 'DELETE',
       });
 

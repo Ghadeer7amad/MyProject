@@ -20,7 +20,7 @@ const SalonScreen = () => {
   const baseUrl = "https://ayabeautyn.onrender.com";
   const fetchData = async () => {
     try {
-      const response = await fetch(`${baseUrl}:3000/salons/salon`);
+      const response = await fetch(`${baseUrl}/salons/salon`);
       const data = await response.json();
       setItems(data);
       setIsLoading(false);
