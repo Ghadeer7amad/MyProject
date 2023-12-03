@@ -31,6 +31,7 @@ const AddEmployee = () => {
     experienceYears: "",
   });
   const toast = useToast();
+  const navigation = useNavigation();
 
   const [buttonText, setButtonText] = useState("Upload Image");
   const [image, setImage] = useState(null);
@@ -159,7 +160,7 @@ const AddEmployee = () => {
         <Text style={styles.buttonStyle}>Add Employee</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+      <TouchableOpacity onPress={() => navigation.navigate("EmployeesScreen")}>
         <Text style={[styles.buttonStyle, styles.buttonStyle1]}>Cancel</Text>
       </TouchableOpacity>
     </View>
