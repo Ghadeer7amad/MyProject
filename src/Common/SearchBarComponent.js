@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     borderBottomColor: 'transparent',
     borderTopColor: 'transparent',
-    marginBottom: 10,
+    marginBottom: 5,
     marginTop: 20,
   },
   searchBarInputContainer: {

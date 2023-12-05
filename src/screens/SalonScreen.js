@@ -1,4 +1,4 @@
-import React , { useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { View, FlatList, Image, StyleSheet } from 'react-native';
 import { Card, Text, Button } from 'react-native-elements';
 import { FontAwesome as Icon } from '@expo/vector-icons';
@@ -7,67 +7,72 @@ import { useNavigation } from "@react-navigation/native";
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Color from "../Common/Color";
 
+
 const SalonScreen = () => {
-  const data = [
-    {
-      id: '1',
-      name: 'Aya Beauty',
-      image: require('../../assets/aya5.jpg'),
-      Discrption: "Jerusalem | Hebron | Rahat"
-    },
-    {
-      id: '2',
-      name: 'Madleen Beauty',
-      image: require('../../assets/aya5.jpg'),
-      Discrption: "Jenin | Tulkarm"
-    },
-    {
-      id: '3',
-      name: 'Aram Beauty',
-      image: require('../../assets/aya5.jpg'),
-      Discrption: "Tulkarm | Nablus"
-    },
-  ];
-
-
-
   const navigation = useNavigation();
+  const [items, setItems] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const handleContinuePress = (option) => {
-    setChosenOption(option);
-    switch (option) {
-      case 'Aya Beauty':
-        navigation.navigate('MainScreen2'); 
-        break;
-      case 'Beauty Center 2':
-        navigation.navigate('MainScreen2'); 
-        break;
-        case 'Beauty Center 3':
-        navigation.navigate('MainScreen2'); 
-        break;
-      default:
-        break;
+  const handleContinuePress = (item) => {
+    navigation.navigate('MainScreen2', { item });
+  };
+ 
+  const baseUrl = "https://ayabeautyn.onrender.com";
+  const fetchData = async () => {
+    try {
+      const response = await fetch(`${baseUrl}/salons/salon`);
+      const data = await response.json();
+      setItems(data);
+      setIsLoading(false);
+    } catch (error) {
+      console.error('Error fetching data:', error);
     }
   };
 
-  
-  const [chosenOption, setChosenOption] = useState(null);
+  const handleDeletePress = async (itemId) => {
+    console.log('Deleting item with ID:', itemId);
 
-  const handleChooseOption = (option) => {
-    setChosenOption(option);
+    try {
+      const response = await fetch(`${baseUrl}/salons/salon/${itemId}`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        fetchData();
+      } else {
+        const responseData = await response.json();
+        console.error('Failed to delete item. Server response:', responseData);
+      }
+    } catch (error) {
+      console.error('Error deleting item:', error);
+    }
   };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <View style={styles.container}>
       <CustomSearchBar placeholder="Search your BeautyCenter" />
+      <TouchableOpacity onPress={() => navigation.navigate("AddSalon")}>
+          <Text style={styles.buttonStyle}>Add Salon</Text>
+        </TouchableOpacity>
+  
       <FlatList
-        data={data}
-        keyExtractor={(item) => item.id}
+        data={items}
+        keyExtractor={(item) => item._id}
         renderItem={({ item }) => (
           <Card containerStyle={styles.card}>
-            <TouchableOpacity onPress={() => handleContinuePress(item.name)}>
+            <TouchableOpacity
+              style={styles.deleteIcon}
+              onPress={() => handleDeletePress(item._id)}
+            >
+              <Icon name="close" color="#5e366a" size={20} />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => handleContinuePress(item._id)}>
             <Card.Title style={styles.cardTitle}>{item.name}</Card.Title>
-            <Image source={item.image} style={styles.cardImage} />
+            <Image source={{uri: item?.image?.secure_url}} style={styles.cardImage} />
             </TouchableOpacity >
             <View style={styles.iconContainer}>
               <View style={styles.starContainer}>
@@ -78,7 +83,7 @@ const SalonScreen = () => {
               </View>
               <Icon name="heart-o" color="#cc0e74" size={20} />
             </View>
-            <Text style={{marginTop: 20, letterSpacing: 1, color:Color.primary, fontWeight: "bold"}}>{item.Discrption}</Text>
+            <Text style={{marginTop: 20, letterSpacing: 1, color:Color.primary, fontWeight: "bold"}}>{item.branches}</Text>
           </Card>
         )}
       />
@@ -94,10 +99,11 @@ const styles = StyleSheet.create({
     paddingTop: 30,
   },
   card: {
-    height: 350,
+    height: 360,
     borderRadius: 30,
     backgroundColor: "#f6f6f6",
     marginBottom: 10,
+    position: 'relative',
   },
   cardTitle: {
     color: Color.primary,
@@ -120,6 +126,20 @@ const styles = StyleSheet.create({
   },
   starContainer: {
     flexDirection: 'row',
+  },
+  buttonStyle: {
+    width:"30%",
+    padding: 10,
+    marginHorizontal: 250,
+    backgroundColor: Color.primary,
+    fontWeight: "400",
+    fontSize: 15,
+    letterSpacing: 2,
+    textAlign: "center",
+    color: "#fff",
+  },
+  deleteIcon: {
+   left:300,
   },
 });
 

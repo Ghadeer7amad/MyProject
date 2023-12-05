@@ -28,16 +28,39 @@ const EmployeesScreen = () => {
     navigation.navigate('EmployeesDetails', { item });
   };
   const baseUrl = "https://ayabeautyn.onrender.com";
+  
+  const fetchData = async () => {
+    try {
+      const response = await fetch(`${baseUrl}:3000/employees/employee`);
+      const data = await response.json();
+      setItems(data);
+      setIsLoading(false);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  const handleDeletePress = async (itemId) => {
+    console.log('Deleting item with ID:', itemId);
+
+    try {
+      const response = await fetch(`${baseUrl}:3000/employees/employee/${itemId}`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        fetchData();
+      } else {
+        const responseData = await response.json();
+        console.error('Failed to delete item. Server response:', responseData);
+      }
+    } catch (error) {
+      console.error('Error deleting item:', error);
+    }
+  };
+
   useEffect(() => {
-    fetch(`${baseUrl}/employees/employee`)
-      .then((res) => res.json())
-      .then((data) => {
-        setItems(data);
-        setIsLoading(false);
-      })
-      .catch((error) =>
-        console.log('Error from favs screen: ', error.message)
-      );
+    fetchData();
   }, []);
 
   return (
@@ -49,11 +72,16 @@ const EmployeesScreen = () => {
         </Text>
         <CustomSearchBar placeholder={'search Employee'} />
       </View>
+      <TouchableOpacity onPress={() => navigation.navigate("AddEmployee")}>
+          <Text style={styles.buttonStyle}>Add Employee</Text>
+        </TouchableOpacity>
+  
       <FlatList
         data={items}
-        keyExtractor={(item, index) => index.toString()}
+        keyExtractor={(item) => item._id}
         renderItem={({ item }) => (
           <View style={styles.employeeContainer}>
+           
             <View style={styles.ImageContainer}>
               <Image source={{uri: item?.image?.secure_url}} style={styles.userImage} />
             </View>
@@ -64,15 +92,22 @@ const EmployeesScreen = () => {
                 <View style={styles.starContainer}>
                   <Icon name="star" color="gold" size={20} />
                   <Text style={styles.employeeContent}>4.5</Text>
-                </View>
-              </TouchableOpacity>
-            </View>
-            <TouchableOpacity
+                  <TouchableOpacity
               style={styles.button}
               onPress={() => handleDetailsPress(item)}
             >
               <Ionicons name="ios-arrow-forward" size={24} color="white" />
             </TouchableOpacity>
+             <TouchableOpacity
+              style={styles.deleteIcon}
+              onPress={() => handleDeletePress(item._id)}
+            >
+              <Icon name="close" color="#5e366a" size={20} />
+            </TouchableOpacity>
+                </View>
+              </TouchableOpacity>
+            </View>
+            
           </View>
         )}
       />
@@ -139,6 +174,22 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignSelf: "center",
     justifyContent:"center",
+    marginLeft:100
+  },
+  buttonStyle: {
+    width:"35%",
+    padding: 10,
+    marginHorizontal: 250,
+    fontWeight: "400",
+    fontSize: 15,
+    letterSpacing: 2,
+    textAlign: "center",
+    color: Color.primary,
+    borderWidth:1,
+    borderColor:Color.primary,
+  },
+  deleteIcon:{
+    marginTop:-80,
   },
 });
 

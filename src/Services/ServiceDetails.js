@@ -1,12 +1,5 @@
-import React from "react";
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-} from "react-native";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import Color from "../Common/Color.js";
 import Icon from "react-native-vector-icons/Ionicons";
 import { FontAwesome as Iconn } from '@expo/vector-icons';
@@ -16,81 +9,61 @@ const ServiceDetailsScreen = ({ route }) => {
   const { service } = route.params;
   const navigation = useNavigation();
 
-  const [serviceDetails, setserviceDetails] = useState(null);
-
   const handleBookAppointment = () => {
-    navigation.navigate("BookingScreen");
+    navigation.navigate("BookingScreen", { service });
   };
+
   const handleCancelAppointment = () => {
     navigation.navigate("ServicesScreen");
   };
-  const baseUrl = "https://ayabeautyn.onrender.com";
-  useEffect(() => {
-    console.log("Fetching services...");
-    fetch(`${baseUrl}/services/getDetailsServices`)
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("Received data:", data);
-        setserviceDetails(data.serviceDetails);
-        console.log(data)
-      })
-      .catch((error) => console.log('Error from favs screen: ', error.message));
-  }, []);
-
 
   return (
     <View style={styles.container}>
-      {serviceDetails ?(
-        <>
-          <Image source={{ uri: serviceDetails.image }} style={styles.image} />
-          <View style={styles.detailsContainer}>
-            <View style={{ flexDirection: "row" }}>
-              <Text style={styles.name}>{serviceDetails.name}</Text>
-              <View style={styles.starContainer}>
-                <Iconn name="star" color="gold" size={15} />
-                <Iconn name="star" color="gold" size={15} />
-                <Iconn name="star" color="gold" size={15} />
-                <Iconn name="star-o" color="gold" size={15} />
-                <Iconn name="star-o" color="gold" size={15} />
-              </View>
-            </View>
-
-            <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-              <View style={styles.sectionTitleContainer}>
-                <Icon name="ios-cash" color={Color.primary} size={20} />
-                <Text style={styles.time}>{serviceDetails.price}</Text>
-              </View>
-              <View style={styles.sectionTitleContainer}>
-                <Icon name="time" color={Color.primary} size={20} />
-                <Text style={styles.time}>{serviceDetails.time}</Text>
-              </View>
-            </View>
-
-            <Text style={{ fontSize: 23, color: "black", fontWeight: "bold", marginLeft: 20 }}>
-              Description
-            </Text>
-            <Text style={styles.description}>{serviceDetails.description}</Text>
-            <View style={styles.buttonContainer}>
-              <TouchableOpacity style={styles.button} onPress={handleBookAppointment}>
-                <Text style={styles.buttonText}>Book Now</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={[styles.button, styles.button1]}
-                onPress={handleCancelAppointment}
-              >
-                <Text style={styles.buttonText1}>Cancel</Text>
-              </TouchableOpacity>
-            </View>
+      <Image source={{ uri: service.image.secure_url }} style={styles.image} />
+      <View style={styles.detailsContainer}>
+        <View style={{ flexDirection: "row" }}>
+          <Text style={styles.name}>{service.name}</Text>
+          <View style={styles.starContainer}>
+            <Iconn name="star" color="gold" size={15} />
+            <Iconn name="star" color="gold" size={15} />
+            <Iconn name="star" color="gold" size={15} />
+            <Iconn name="star-o" color="gold" size={15} />
+            <Iconn name="star-o" color="gold" size={15} />
           </View>
-        </>
-      ) : (
-        <Text>Loading...</Text>
-      )}
+        </View>
+
+        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+          <View style={styles.sectionTitleContainer}>
+            <Icon name="ios-cash" color={Color.primary} size={20} />
+            <Text style={styles.time}>{service.finalPrice}</Text>
+          </View>
+          <View style={styles.sectionTitleContainer}>
+            <Icon name="time" color={Color.primary} size={20} />
+            <Text style={styles.time}>{service.time}</Text>
+          </View>
+        </View>
+
+        <Text style={{ fontSize: 23, color: "black", fontWeight: "bold", marginLeft: 20 }}>
+          Description
+        </Text>
+        <Text style={styles.description}>{service.description}</Text>
+
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.button} onPress={handleBookAppointment}>
+            <Text style={styles.buttonText}>Book Now</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[styles.button, styles.button1]}
+            onPress={handleCancelAppointment}
+          >
+            <Text style={styles.buttonText1}>Cancel</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
     </View>
   );
 };
-
 
 const styles = StyleSheet.create({
   container: {
