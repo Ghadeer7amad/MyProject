@@ -63,6 +63,7 @@ const HomeStack = () => (
     <Stack.Screen name="MainScreen2" component={MainScreen2} options={{ headerShown: false }} />
     <Stack.Screen name="Settings" component={Settings} options={{ headerShown: false }}/>
     <Stack.Screen name="About" component={About} options={{ headerShown: false }}/>
+    <Stack.Screen name="SalonScreen" component={SalonScreen} options={{ headerShown: false }}/>
     <Stack.Screen name="ServicesScreen" component={ServicesScreen} options={{ headerShown: false }}/>
     <Stack.Screen name="ProductsScreens" component={ProductsScreens} options={{ headerShown: false }} />
     <Stack.Screen name="CardsScreen" component={CardsScreen} options={{ headerShown: false }}/>
@@ -73,7 +74,6 @@ const HomeStack = () => (
     <Stack.Screen name="EmployeesDetails" component={EmployeesDetailsScreen} options={{ headerShown: false }}/>
     <Stack.Screen name="AddEmployee" component={AddEmployee} options={{ headerShown: false }}/>
     <Stack.Screen name="PostsScreen" component={PostsScreen} options={{ headerShown: false }}/>
-    <Stack.Screen name="SalonScreen" component={SalonScreen} options={{ headerShown: false }}/>
     <Stack.Screen name="ServiceDetails" component={ServiceDetails} options={{ headerShown: false }}/> 
     <Stack.Screen name="AddSalon" component={AddSalon} options={{ headerShown: false }}/>
     <Stack.Screen name="AddProduct" component={AddProduct} options={{ headerShown: false }}/>

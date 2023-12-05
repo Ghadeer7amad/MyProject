@@ -9,7 +9,7 @@ const Homee = () => {
   
 
     const handleContinuePress = () => {
-        navigation.navigate('AddServices'); 
+        navigation.navigate('ChoseScreen'); 
     };
 
     return (
