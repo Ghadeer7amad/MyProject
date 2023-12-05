@@ -27,7 +27,7 @@ const ForgetPage = () => {
         });
     
         if (response.status === 200) {
-        console.log('yes');
+        /*console.log('yes');
         Toast.show({
           type: 'successToast',
           position: 'bottom',
@@ -35,17 +35,15 @@ const ForgetPage = () => {
           visibilityTime: 10,
           bottomOffset: 60,
           autoHide: true,
-        });
-          /*Alert.alert(
+        });*/
+          Alert.alert(
             'Success',
             'Congrats, Your Login is Successful',
             [
               { text: 'OK', onPress: () => navigation.navigate('SendCode') }
             ],
             { cancelable: false }
-          );*/
-    
-
+          );
          //alert(` You have : ${JSON.stringify(response.data)}`);
           setEmail("");
           //navigation.navigate('SendCode')

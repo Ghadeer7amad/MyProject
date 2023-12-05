@@ -143,8 +143,7 @@ const styles = StyleSheet.create({
   userImage: {
     width: 150,
     height: 150,
-    borderRadius: 25,
-
+    borderRadius: 25
   },
   userName: {
     fontSize: 20,
