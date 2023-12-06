@@ -4,7 +4,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faList} from '@fortawesome/free-solid-svg-icons'; 
 import Header from "./Header.js";
-import NavbarButtomB from "../Common/NavbarButtomB.js";
+import NavbarButtom from "../Common/NavbarButtom.js";
 import {
   View,
   Text,
@@ -139,7 +139,7 @@ const PostsScreen = () => {
         )}
       />
 
-      <NavbarButtomB onChange={(selectedIcon) => console.log(selectedIcon)}/>
+      <NavbarButtom onChange={(selectedIcon) => console.log(selectedIcon)}/>
     </View>
   );
 };
