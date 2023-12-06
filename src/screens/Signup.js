@@ -8,14 +8,14 @@ import Color from '../Common/Color.js';
 import React, {useState} from 'react'
 import { useNavigation } from '@react-navigation/native';
 import Spacing from '../Common/Spacing.js'
-//import { format, isValid, parse } from 'date-fns';
+import axios from 'axios';
 
 const Signup = () => {
-  const [isPasswordCValid, setPasswordCValid] = useState(true);
-  const[FData, setFData] = useState({
+  const navigation = useNavigation();
+  /*const[FData, setFData] = useState({
     name : "",
     email: "",
-    birthday: "",
+    age: "",
     phone: "",
     address: "",
     password: "",
@@ -30,9 +30,6 @@ const Signup = () => {
     password: true,
     passwordC: true
   });
-  
- const navigation = useNavigation();
-
   const handleRegister = async() => {
     const errors = {};
     if (FData.name === "") {
@@ -63,7 +60,68 @@ const Signup = () => {
       return;
     }
     navigation.navigate('test');
-   }
+   }*/
+  const [userName, setuserName] = useState("");
+  const [email, setEmail] = useState("");
+  const [age, setage] = useState("");
+  const [phone, setphone] = useState("");
+  const [address, setaddress] = useState("");
+  const [password, setpassword] = useState("");
+  const [confirmpassword, setconfirmpassword] = useState("");
+
+  const onChangeNameHandler = (userName) => {
+    setuserName(userName);
+  };
+  const onChangeEmailHandler = (email) => {
+    setEmail(email);
+  };
+  const onChangeAgeHandler = (age) => {
+    setage(age);
+  };
+  const onChangePhoneHandler = (phone) => {
+    setphone(phone);
+  };
+  const onChangeAddressHandler = (address) => {
+    setaddress(address);
+  };
+  const onChangePasswordHandler = (password) => {
+    setpassword(password);
+  };
+  const onChangeconfirmpasswordHandler = (confirmpassword) => {
+    setconfirmpassword(confirmpassword);
+  };
+
+
+  const baseUrl = "https://ayabeautyn.onrender.com";
+   const handleSignUp = async () => {
+    try {
+      const response = await axios.post(`${baseUrl}/auth/signup`, {
+        userName,
+        email,
+        age,
+        phone,
+        address,
+        password,
+        confirmpassword
+      });
+
+      if (response.status === 201) {
+        alert(` You have created: ${JSON.stringify(response.data)}`);
+        setuserName("");
+        setEmail("");
+        setage("");
+        setphone("");
+        setaddress("");
+        setpassword("");
+        setconfirmpassword("");
+        navigation.navigate('Login'); 
+      } else {
+        console.error('Error:', error.response.status, error.response.data);
+      }
+    } catch (error) {
+      console.error('Error:', error.message)
+    }
+  };
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -91,95 +149,87 @@ const Signup = () => {
       <Text style={{color:Color.primary, fontSize: 17, marginLeft: 20, marginBottom: 3}}>please enter your complete information !!</Text>
       <View style={styles.formgroup}>
         <TextInput 
-        value={FData.name}
-        onChangeText={(text) => setFData({...FData, name: text})}
-        onBlur={() => setFieldValid({ ...fieldValid, name: FData.name !== "" })}
+        value={userName}
+        onChangeText={onChangeNameHandler}
+        //onBlur={() => setFieldValid({ ...fieldValid, name: FData.name !== "" })}
         style={styles.input} 
         placeholder='Enter Your Name'/>
         <FontAwesomeIcon icon={faUser} style={styles.icon} />
       </View>
-      {!fieldValid.name && <Text style={styles.textWrong}> Name is required </Text>}
 
       <View style={styles.formgroup}>
         <TextInput 
-        value={FData.email}
-        onChangeText={(text) => setFData({...FData, email: text})}
-        onBlur={() => setFieldValid({ ...fieldValid, email: FData.email !== "" })}
+        value={email}
+        onChangeText={onChangeEmailHandler}
+        //onBlur={() => setFieldValid({ ...fieldValid, email: FData.email !== "" })}
         style={styles.input} 
         placeholder='example@gmail.com'/>
         <FontAwesomeIcon icon={faEnvelope} style={styles.icon} />
       </View>
-      {!fieldValid.email && <Text style={styles.textWrong}> email is required </Text>}
 
       <View style={styles.formgroup}>
         <TextInput 
-        value={FData.birthday}
-        onChangeText={(text) => setFData({...FData, birthday: text})}
-        onBlur={() => setFieldValid({ ...fieldValid, birthday: FData.birthday !== ""  })}
+       value={age}
+       onChangeText={onChangeAgeHandler}
+        //onBlur={() => setFieldValid({ ...fieldValid, birthday: FData.birthday !== ""  })}
         style={styles.input} 
         placeholder='dd/mm/yy'/>
         <FontAwesomeIcon icon={faBirthdayCake} style={styles.icon} />
       </View>
-      {!fieldValid.birthday && <Text style={styles.textWrong}> birthday is required </Text>}
 
 
       <View style={styles.formgroup}>
         <TextInput 
-        value={FData.phone}
-        onChangeText={(text) => setFData({...FData, phone: text})}
-        onBlur={() => setFieldValid({ ...fieldValid, phone: FData.phone !== "" })}
+        value={phone}
+        onChangeText={onChangePhoneHandler}
+       // onBlur={() => setFieldValid({ ...fieldValid, phone: FData.phone !== "" })}
         style={styles.input} 
         placeholder='+972 56-853-6463'/>
         <FontAwesomeIcon icon={faPhone} style={styles.icon} />
       </View>
-      {!fieldValid.phone && <Text style={styles.textWrong}> phone is required </Text>}
 
       <View style={styles.formgroup}>
         <TextInput 
-        value={FData.address}
-        onChangeText={(text) => setFData({...FData, address: text})}
-        onBlur={() => setFieldValid({ ...fieldValid, address: FData.address !== "" })}
+        value={address}
+        onChangeText={onChangeAddressHandler}
+        //onBlur={() => setFieldValid({ ...fieldValid, address: FData.address !== "" })}
         style={styles.input} 
         placeholder='City/Village'/>
         <FontAwesomeIcon icon={faHome} style={styles.icon} />
       </View>
-      {!fieldValid.address && <Text style={styles.textWrong}> address is required </Text>}
 
       <View style={styles.formgroup}>
         <TextInput 
         secureTextEntry={!showPassword}
-        value={FData.password}
-        onChangeText={(text) => setFData({...FData, password: text})}
-        onBlur={() => {
+        value={password}
+        onChangeText={onChangePasswordHandler}
+        /*onBlur={() => {
           setFieldValid({ ...fieldValid, password: FData.password !== "" & FData.password.length >= 5});
-        }}
+        }}*/
          style={styles.input} placeholder='Enter Your password'/>
         <TouchableWithoutFeedback onPress={togglePasswordVisibility}>
         <Ionicons style={styles.iconEye} name={showPassword ? 'eye' : 'eye-off'} size={20} />
       </TouchableWithoutFeedback>
         <FontAwesomeIcon icon={faLock} style={styles.icon} />
       </View>
-      {!fieldValid.password && <Text style={styles.textWrong}> Password must be at least 5 characters </Text>}
 
       <View style={styles.formgroup}>
         <TextInput secureTextEntry={!showPasswordC}
-        value={FData.passwordC}
-        onChangeText={(text) => setFData({...FData, passwordC: text})} 
-        onBlur={() => {
+        value={confirmpassword}
+        onChangeText={onChangeconfirmpasswordHandler}
+        /*onBlur={() => {
           setFieldValid({ ...fieldValid, passwordC: FData.passwordC !== "" });
           setPasswordCValid(FData.password === FData.passwordC);
-        }}
+        }}*/
         style={styles.input} placeholder='Confirm Your password'/>
         <TouchableWithoutFeedback onPress={togglePasswordVisibilityC}>
         <Ionicons style={styles.iconEye} name={showPasswordC ? 'eye' : 'eye-off'} size={20} />
         </TouchableWithoutFeedback>
         <FontAwesomeIcon icon={faCheck} style={styles.icon} />
       </View>
-      {!fieldValid.passwordC && <Text style={styles.textWrong}> confirm password is required </Text>}
-      {!isPasswordCValid && <Text style={styles.textWrong}>Your Password not match</Text>}
 
    
-      <TouchableOpacity onPress={handleRegister}>
+      <TouchableOpacity onPress={handleSignUp}>
        <Text style={styles.buttonStyle}>Sign Up</Text>
       </TouchableOpacity>  
 

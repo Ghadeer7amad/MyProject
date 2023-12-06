@@ -1,16 +1,5 @@
-import React from "react";
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-} from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import NavbarTop from "../Common/navbarTop.js";
-import NavbarButtom from "../Common/NavbarButtom.js";
-import Spacing from "../Common/Spacing.js";
+import React, { useState, useEffect } from "react";
+import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import Color from "../Common/Color.js";
 import Icon from "react-native-vector-icons/Ionicons";
 import { FontAwesome as Iconn } from '@expo/vector-icons';
@@ -21,56 +10,57 @@ const ServiceDetailsScreen = ({ route }) => {
   const navigation = useNavigation();
 
   const handleBookAppointment = () => {
-    navigation.navigate("BookingScreen");
+    navigation.navigate("BookingScreen", { service });
   };
+
   const handleCancelAppointment = () => {
     navigation.navigate("ServicesScreen");
   };
 
   return (
     <View style={styles.container}>
-      <Image source={service.image} style={styles.image} />
-        <View style={styles.detailsContainer}>
-          <View style={{flexDirection: 'row'}}>
+      <Image source={{ uri: service.image.secure_url }} style={styles.image} />
+      <View style={styles.detailsContainer}>
+        <View style={{ flexDirection: "row" }}>
           <Text style={styles.name}>{service.name}</Text>
           <View style={styles.starContainer}>
-                <Iconn name="star" color="gold" size={15} />
-                <Iconn name="star" color="gold" size={15} />
-                <Iconn name="star" color="gold" size={15} />
-                <Iconn name="star-o" color="gold" size={15} />
-                <Iconn name="star-o" color="gold" size={15} />
+            <Iconn name="star" color="gold" size={15} />
+            <Iconn name="star" color="gold" size={15} />
+            <Iconn name="star" color="gold" size={15} />
+            <Iconn name="star-o" color="gold" size={15} />
+            <Iconn name="star-o" color="gold" size={15} />
           </View>
-          </View>
+        </View>
 
-          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
           <View style={styles.sectionTitleContainer}>
-            <Icon name="ios-cash" color={Color.primary} size={20} /> 
-            <Text style={styles.time}>{service.price}</Text>
+            <Icon name="ios-cash" color={Color.primary} size={20} />
+            <Text style={styles.time}>{service.finalPrice}</Text>
           </View>
           <View style={styles.sectionTitleContainer}>
             <Icon name="time" color={Color.primary} size={20} />
             <Text style={styles.time}>{service.time}</Text>
           </View>
-          </View>
-
-          <Text style={{fontSize: 23, color:'black', fontWeight: 'bold', marginLeft: 20 }}>Description</Text>
-          <Text style={styles.description}>{service.description}</Text>
-          <View style={styles.buttonContainer}>
-
-            <TouchableOpacity
-              style={styles.button}
-              onPress={handleBookAppointment}>
-            <Text style={styles.buttonText}>Book Now</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={[styles.button, styles.button1]}
-              onPress={handleCancelAppointment}>
-              <Text style={styles.buttonText1}>Cancel</Text>
-            </TouchableOpacity>
-            
-          </View>
         </View>
+
+        <Text style={{ fontSize: 23, color: "black", fontWeight: "bold", marginLeft: 20 }}>
+          Description
+        </Text>
+        <Text style={styles.description}>{service.description}</Text>
+
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.button} onPress={handleBookAppointment}>
+            <Text style={styles.buttonText}>Book Now</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[styles.button, styles.button1]}
+            onPress={handleCancelAppointment}
+          >
+            <Text style={styles.buttonText1}>Cancel</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
     </View>
   );
 };

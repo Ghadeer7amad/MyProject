@@ -1,17 +1,60 @@
-import { StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, Image, Alert} from 'react-native'
 import { TextInput } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faEnvelope} from '@fortawesome/free-solid-svg-icons';
 import Color from '../../Common/Color.js';
 import React, {useState} from 'react'
+import axios from 'axios'
+import Toast from 'react-native-toast-message';
 
 const ForgetPage = () => {
     const navigation = useNavigation();
-    const[email, setemail] = useState("")
+    const [email, setEmail] = useState("");
+
+    const onChangeEmailHandler = (email) => {
+      setEmail(email);
+    };
     const [fieldValid, setFieldValid] = useState({
         email: true
     })
+
+    const handleEmail = async () => {
+      const baseUrl = 'https://ayabeautyn.onrender.com';
+      try {
+        const response = await axios.patch(`${baseUrl}/auth/SendCode`, {
+          email,
+        });
+    
+        if (response.status === 200) {
+        /*console.log('yes');
+        Toast.show({
+          type: 'successToast',
+          position: 'bottom',
+          text1: 'sign up done successfuly',
+          visibilityTime: 10,
+          bottomOffset: 60,
+          autoHide: true,
+        });*/
+          Alert.alert(
+            'Success',
+            'Congrats, Your Login is Successful',
+            [
+              { text: 'OK', onPress: () => navigation.navigate('SendCode') }
+            ],
+            { cancelable: false }
+          );
+         //alert(` You have : ${JSON.stringify(response.data)}`);
+          setEmail("");
+          //navigation.navigate('SendCode')
+        } else {
+          console.error('Error:', error.response.status, error.response.data);
+        }
+      } catch (error) {
+        console.error('Error:', error.message)
+      }
+    };
+    
 
   return (
    <View style={styles.contanier}>
@@ -23,20 +66,17 @@ const ForgetPage = () => {
     <Text style={styles.TextSub}>please enter your email address to reset your password !!</Text>
     <View style={styles.formgroup}>
         <TextInput 
-        value={email}
-        onChangeText={(text) => setemail(text)}
-        //label = {<Text style={{}}>Email</Text>}
-        onBlur={() => setFieldValid({ ...fieldValid, email: email !== "" })}
-        style={styles.input} 
-        placeholder='example@gmail.com'
+         value={email}
+         onChangeText={onChangeEmailHandler}
+         onBlur={() => setFieldValid({ ...fieldValid, email: email !== "" })}
+         style={styles.input} 
+         placeholder='example@gmail.com'
         />
         <FontAwesomeIcon icon={faEnvelope} style={styles.icon} />
     </View>
     {!fieldValid.email && <Text style={styles.textWrong}> email is required </Text>}
 
-    <TouchableOpacity onPress={() => {
-            navigation.navigate('ResetPassword');
-          }}>
+    <TouchableOpacity onPress={() => {handleEmail()}}>
        <Text style={[styles.buttonStyle, styles.buttonStyle1]}>Reset Password</Text>
       </TouchableOpacity>  
 

@@ -1,4 +1,3 @@
-import React from "react";
 import {
   View,
   Text,
@@ -7,6 +6,7 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
+  
 } from "react-native";
 import CustomSearchBar from "../Common/SearchBarComponent.js";
 import Header from "../screens/Header.js";
@@ -17,17 +17,51 @@ import Spacing from "../Common/Spacing.js";
 import { Ionicons } from "@expo/vector-icons";
 import SearchProANDSer from "../Common/SerachProANDSer.js";
 import { useNavigation } from "@react-navigation/native";
-import Employees from "./EmployeesData.js";
-
-
-
+import React, {useState, useEffect} from 'react';
 
 const EmployeesScreen = () => {
   const navigation = useNavigation();
+  const [items, setItems] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const handleDetailsPress = (item) => {
-    navigation.navigate("EmployeesDetails", { item });
+    navigation.navigate('EmployeesDetails', { item });
   };
+  const baseUrl = "https://ayabeautyn.onrender.com";
+  
+  const fetchData = async () => {
+    try {
+      const response = await fetch(`${baseUrl}/employees/employee`);
+      const data = await response.json();
+      setItems(data);
+      setIsLoading(false);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  const handleDeletePress = async (itemId) => {
+    console.log('Deleting item with ID:', itemId);
+
+    try {
+      const response = await fetch(`${baseUrl}/employees/employee/${itemId}`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        fetchData();
+      } else {
+        const responseData = await response.json();
+        console.error('Failed to delete item. Server response:', responseData);
+      }
+    } catch (error) {
+      console.error('Error deleting item:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -36,16 +70,20 @@ const EmployeesScreen = () => {
         <Text style={[styles.styleText, styles.styleText2]}>
           Beauty Employees.
         </Text>
-        <CustomSearchBar placeholder={"search Employee"} />
+        <CustomSearchBar placeholder={'search Employee'} />
       </View>
-
+      <TouchableOpacity onPress={() => navigation.navigate("AddEmployee")}>
+          <Text style={styles.buttonStyle}>Add Employee</Text>
+        </TouchableOpacity>
+  
       <FlatList
-        data={Employees}
-        keyExtractor={(item) => item.id.toString()}
+        data={items}
+        keyExtractor={(item) => item._id}
         renderItem={({ item }) => (
           <View style={styles.employeeContainer}>
+           
             <View style={styles.ImageContainer}>
-              <Image source={item.image} style={styles.userImage} />
+              <Image source={{uri: item?.image?.secure_url}} style={styles.userImage} />
             </View>
             <View style={styles.userContainer}>
               <Text style={styles.userName}>{item.name}</Text>
@@ -54,15 +92,22 @@ const EmployeesScreen = () => {
                 <View style={styles.starContainer}>
                   <Icon name="star" color="gold" size={20} />
                   <Text style={styles.employeeContent}>4.5</Text>
-                </View>
-              </TouchableOpacity>
-            </View>
-            <TouchableOpacity
+                  <TouchableOpacity
               style={styles.button}
-              onPress={() => handleDetailsPress(item)} 
+              onPress={() => handleDetailsPress(item)}
             >
               <Ionicons name="ios-arrow-forward" size={24} color="white" />
             </TouchableOpacity>
+             <TouchableOpacity
+              style={styles.deleteIcon}
+              onPress={() => handleDeletePress(item._id)}
+            >
+              <Icon name="close" color="#5e366a" size={20} />
+            </TouchableOpacity>
+                </View>
+              </TouchableOpacity>
+            </View>
+            
           </View>
         )}
       />
@@ -98,8 +143,7 @@ const styles = StyleSheet.create({
   userImage: {
     width: 150,
     height: 150,
-    borderRadius: 25,
-    elevation: 5,
+    borderRadius: 25
   },
   userName: {
     fontSize: 20,
@@ -130,6 +174,22 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignSelf: "center",
     justifyContent:"center",
+    marginLeft:100
+  },
+  buttonStyle: {
+    width:"35%",
+    padding: 10,
+    marginHorizontal: 250,
+    fontWeight: "400",
+    fontSize: 15,
+    letterSpacing: 2,
+    textAlign: "center",
+    color: Color.primary,
+    borderWidth:1,
+    borderColor:Color.primary,
+  },
+  deleteIcon:{
+    marginTop:-80,
   },
 });
 

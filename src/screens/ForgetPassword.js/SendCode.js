@@ -16,35 +16,9 @@ const SendCode = () => {
     <Text style={styles.TextStyleHeader}>Verification Code</Text>
     <Text style={styles.TextSub}> You will receive 4 digit Code that is send to you</Text>
 
-    <View style={styles.formgroupstyle}>
-      <View style={styles.formgroup}>
-        <TextInput style={styles.input}/>
-      </View>
-
-      <View style={styles.formgroup}>
-        <TextInput style={styles.input}/>
-      </View>
-
-      <View style={styles.formgroup}>
-        <TextInput style={styles.input}/>
-      </View>
-
-      <View style={styles.formgroup}>
-        <TextInput style={styles.input}/>
-      </View>
-    </View>
-
-    <Text style={styles.TextStyle}> Do not receive code?
-      <Text onPress={()=>navigation.navigate('Login')}
-       style={styles.link}>Resend Code</Text>
-      </Text>
-
-    <TouchableOpacity onPress={() => {
-            navigation.navigate('ResetPassword');
-          }}>
+    <TouchableOpacity onPress={() => navigation.navigate('ResetPassword')}>
        <Text style={styles.buttonStyle}>Verifiy</Text>
       </TouchableOpacity>  
-
    </View>
    </View>
    

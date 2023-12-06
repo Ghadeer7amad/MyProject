@@ -7,16 +7,43 @@ import { Linking } from 'react-native';
 import { Ionicons } from "@expo/vector-icons";
 import Color from '../Common/Color.js';
 import { useNavigation } from '@react-navigation/native';
+import axios from 'axios';
 
 const Login = () => {
-  const[FData, setFData] = useState({
-    email: "",
-    password: "",
-  })
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const onChangeEmailHandler = (email) => {
+    setEmail(email);
+  };
+  const onChangePasswordHandler = (password) => {
+    setPassword(password);
+  };
+
  const navigation = useNavigation();
 
+ const handleLogin = async () => {
+  const baseUrl = 'https://ayabeautyn.onrender.com';
+  try {
+    const response = await axios.post(`${baseUrl}/auth/signin`, {
+      email,
+      password,
+    });
+
+    if (response.status === 200) {
+      alert(` You have login: ${JSON.stringify(response.data)}`);
+      setEmail("");
+      setPassword("");
+      navigation.navigate('SalonScreen'); 
+    } else {
+      console.error('Error:', error.response.status, error.response.data);
+    }
+  } catch (error) {
+    console.error('Error:', error.message)
+  }
+};
+
   const [showPassword, setShowPassword] = useState(false);
-  const [password, setPassword] = useState('');
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -33,8 +60,8 @@ const Login = () => {
 
       <View style={styles.formgroup}>
         <TextInput
-        value={FData.email}
-        onChangeText={(text) => setFData({...FData, email: text})}
+        value={email}
+        onChangeText={onChangeEmailHandler}
         //onFocus={handlePasswordFocus}
         style={styles.input} placeholder='Enter Your Email'/>
         <FontAwesomeIcon icon={faEnvelope} style={styles.icon} /> 
@@ -44,8 +71,8 @@ const Login = () => {
       <View style={styles.formgroup}>
         <TextInput 
         secureTextEntry={!showPassword}
-        value={FData.password}
-        onChangeText={(text) => setFData({...FData, password: text})} style={styles.input} placeholder='Enter Your password'/>
+        value={password}
+        onChangeText={onChangePasswordHandler} style={styles.input} placeholder='Enter Your password'/>
         <FontAwesomeIcon icon={faLock} style={styles.icon} />
         <TouchableWithoutFeedback onPress={togglePasswordVisibility}>
         <Ionicons style={styles.iconEye} name={showPassword ? 'eye' : 'eye-off'} size={20} />
@@ -53,8 +80,7 @@ const Login = () => {
       </View>
    
       <TouchableOpacity onPress={() => {
-        //handleLogin(); 
-        navigation.navigate('PathologicalCase'); 
+        handleLogin(); 
         }}>
        <Text style={styles.buttonStyle}>Log in</Text>
       </TouchableOpacity>  
