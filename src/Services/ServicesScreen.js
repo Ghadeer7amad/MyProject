@@ -17,11 +17,23 @@ import { BlurView } from "expo-blur";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation} from "@react-navigation/native";
 import NavbarButtom from "../Common/NavbarButtom";
+import { serialize } from "object-to-formdata";
 
 const ServicesScreen = () => {
   const navigation = useNavigation();
   const [Services, setServices] = useState(null);
   //const userRole = "Admin"; 
+  const [FData, setFData] = useState({
+    name: "",
+    description: "",
+    price: "",
+    discount: "",
+    time: "",
+    subServices: [],
+    status: [],
+    image: "",
+  });
+  const [image, setImage] = useState(null);
 
   const handleBookPress = () => {
     navigation.navigate("BookingScreen");
@@ -76,6 +88,23 @@ const ServicesScreen = () => {
     }
   };
 
+  /*const  handleEditService = async (itemId) => {
+    console.log('EditService item with ID:', itemId);
+    try {
+      const response = await fetch(`${baseUrl}/services/updateServices/${itemId}`, {
+        method: 'PUT',
+      });
+      if (response.ok) {
+        navigation.navigate("AddServices", { editedItemId: itemId });
+      } else {
+        const responseData = await response.json();
+        console.error('Failed to EditService item. Server response:', responseData);
+      }
+    } catch (error) {
+      console.error('Error EditService item:', error);
+    }
+  };*/
+
   return (
     <View style={styles.container}>
         <ScrollView style={{ padding: Spacing }}>
@@ -104,6 +133,12 @@ const ServicesScreen = () => {
                     onPress={() => handleSoftDeleteService(service._id)}>
                     <Ionicons name="trash-bin" color="#fff" size={Spacing*1.2} />
                   </TouchableOpacity>
+
+                  <TouchableOpacity
+                    style={styles.editButton}
+                    onPress={() => handleEditService(service._id)}>
+                    <Ionicons name="pencil" color="red" size={Spacing} />
+                </TouchableOpacity>
               
                   <TouchableOpacity
                     style={{ width: 300, height: 250 }}
