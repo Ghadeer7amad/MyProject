@@ -7,9 +7,11 @@ import { Linking } from 'react-native';
 import { Ionicons } from "@expo/vector-icons";
 import Color from '../Common/Color.js';
 import { useNavigation } from '@react-navigation/native';
+import { Box, useToast } from "native-base";
 import axios from 'axios';
 
 const Login = () => {
+  const toast = useToast();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -31,15 +33,35 @@ const Login = () => {
     });
 
     if (response.status === 200) {
-      alert(` You have login: ${JSON.stringify(response.data)}`);
+      toast.show({
+        render: () => (
+          <Box bg='#55a44e' px="8" py="5" rounded="sm" mb={5}>
+            login successfully
+          </Box>
+        )
+      });
       setEmail("");
       setPassword("");
       navigation.navigate('SalonScreen'); 
     } else {
-      console.error('Error:', error.response.status, error.response.data);
+      toast.show({
+          render: () => (
+              <Box bg='#c81912' px="8" py="5" rounded="sm" mb={5}>
+                  login failed
+              </Box>
+          ),
+      });
+      return;
     }
   } catch (error) {
-    console.error('Error:', error.message)
+    toast.show({
+        render: () => (
+            <Box bg='#c81912' px="8" py="5" rounded="sm" mb={5}>
+               Login Failed From email or password
+            </Box>
+        ),
+    });
+    return;
   }
 };
 

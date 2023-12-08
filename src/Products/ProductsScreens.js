@@ -22,6 +22,8 @@ import { Alert } from "react-native";
 const ProductsScreens = () => {
   const navigation = useNavigation();
   const [products, setproducts] = useState([]);
+  const [selectedItem, setSelectedItem] = useState(null);
+
   const handleBookPress = () => {
     navigation.navigate("BookingScreen");
   };
@@ -79,6 +81,7 @@ const ProductsScreens = () => {
         const data = await response.json();
         console.log("Received data:", data);
         setproducts(data.products);
+        setSelectedItem('Body');
       } catch (error) {
         console.error('Error fetching body-related products:', error.message);
       }
@@ -94,6 +97,7 @@ const ProductsScreens = () => {
         const data = await response.json();
         console.log("Received data:", data);
         setproducts(data.products);
+        setSelectedItem('Face');
       } catch (error) {
         console.error('Error fetching body-related products:', error.message);
       }
@@ -128,11 +132,11 @@ const ProductsScreens = () => {
       <SearchProANDSer/>
       <View style={{flexDirection:'row'}}>
       <TouchableOpacity onPress={handleBodyPress}>
-        <Text style={styles.Sub1}>body</Text>
+         <Text style={[styles.Sub1, selectedItem === 'Body' ? styles.selectedText1 : null]}>Body</Text>
       </TouchableOpacity>
       
       <TouchableOpacity onPress={handleFacePress}>
-        <Text style={styles.Sub2}>face</Text>
+      <Text style={[styles.Sub2, selectedItem === 'Face' ? styles.selectedText2: null]}>Face</Text>
       </TouchableOpacity>
       </View>
       <Image style={{height: 300, resizeMode: 'contain', width: '100%'}}
@@ -283,4 +287,14 @@ const styles = StyleSheet.create({
     padding: Spacing /10,
     zIndex: 1, 
   },
+  selectedText1: {
+    color: Color.secondary,
+    borderColor: Color.background,
+    borderWidth: 1
+  },
+
+  selectedText2: {
+    color: Color.background,
+    backgroundColor: '#fffcea'
+  }
 })

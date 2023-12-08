@@ -44,8 +44,6 @@ import Jobs from "./src/screens/Jobs.js";
 import MainJob from "./src/screens/MainJob.js";
 import ApplyForaJob from "./src/screens/ApplyForaJob.js";
 
-import test2 from "./src/Products/test2.js";
-
 import { NativeBaseProvider } from "native-base";
 
 const Stack = createStackNavigator();
@@ -81,7 +79,6 @@ const HomeStack = () => (
     <Stack.Screen name="AddSalon" component={AddSalon} options={{ headerShown: false }}/>
     <Stack.Screen name="AddProduct" component={AddProduct} options={{ headerShown: false }}/>
     <Stack.Screen name="AddServices" component={AddServices} options={{ headerShown: false }}/> 
-    <Stack.Screen name="test2" component={test2} options={{ headerShown: false }}/>
     <Stack.Screen name="MainJob" component={MainJob} options={{ headerShown: false }}/>
     <Stack.Screen name="Jobs" component={Jobs} options={{ headerShown: false }}/>
     <Stack.Screen name="ApplyForaJob" component={ApplyForaJob} options={{ headerShown: false }}/>

@@ -93,7 +93,7 @@ const AddServices = ({route}) => {
         console.error('Error during fetch:', response.status, responseData);
         toast.show({
             render: () => (
-                <Box bg="red.500" px="5" py="5" rounded="sm" mb={5}>
+                <Box bg='#c81912' px="5" py="5" rounded="sm" mb={5}>
                     Error adding services: {responseData.message}
                 </Box>
             ),
@@ -104,7 +104,7 @@ const AddServices = ({route}) => {
       toast.show({
         render: () => {
           return (
-            <Box bg="emerald.500" px="5" py="5" rounded="sm" mb={5}>
+            <Box bg='#55a44e' px="5" py="5" rounded="sm" mb={5}>
               Services added successfully
             </Box>
           );

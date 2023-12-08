@@ -26,6 +26,8 @@ const ServicesScreen = () => {
     navigation.navigate("BookingScreen");
   };
 
+  const [selectedItem, setSelectedItem] = useState(null);
+
   const handleBodyPress = async () => {
     try {
       console.log("Fetching services...");
@@ -36,6 +38,7 @@ const ServicesScreen = () => {
       const data = await response.json();
       console.log("Received data:", data);
       setServices(data.Services);
+      setSelectedItem('Body');
     } catch (error) {
       console.error('Error fetching body-related products:', error.message);
     }
@@ -51,10 +54,12 @@ const ServicesScreen = () => {
       const data = await response.json();
       console.log("Received data:", data);
       setServices(data.Services);
+      setSelectedItem('Face');
     } catch (error) {
       console.error('Error fetching body-related products:', error.message);
     }
   };
+
 
   const handleDetailsPress = (service) => {
     navigation.navigate("ServiceDetails", { service });
@@ -153,11 +158,11 @@ const ServicesScreen = () => {
 
       <View style={{flexDirection:'row'}}>
       <TouchableOpacity onPress={handleBodyPress}>
-        <Text style={styles.Sub1}>body</Text>
+         <Text style={[styles.Sub1, selectedItem === 'Body' ? styles.selectedText1 : null]}>Body</Text>
       </TouchableOpacity>
       
       <TouchableOpacity onPress={handleFacePress}>
-        <Text style={styles.Sub2}>face</Text>
+      <Text style={[styles.Sub2, selectedItem === 'Face' ? styles.selectedText2: null]}>Face</Text>
       </TouchableOpacity>
       </View>
 
@@ -244,30 +249,6 @@ const styles = StyleSheet.create({
     alignItems:"center",
     backgroundColor: Color.background,
     borderRadius: 20
-   },
-   Sub1:{
-    backgroundColor: Color.background,
-    marginLeft: 15,
-    paddingHorizontal: 30,
-    borderRadius: 20,
-    padding: 10,
-    color: '#fff',
-    fontWeight: 'bold',
-    textTransform: 'capitalize',
-    marginBottom: 20
-   },
-   Sub2:{
-    backgroundColor: Color.secondary,
-    marginLeft: 30,
-    paddingHorizontal: 30,
-    borderRadius: 20,
-    padding: 10,
-    color: 'black',
-    borderWidth: 1,
-    borderColor: Color.background,
-    fontWeight: 'bold',
-    textTransform: 'capitalize',
-    marginBottom: 20
    },
    removeButton: {
     position: "absolute",
@@ -360,5 +341,39 @@ const styles = StyleSheet.create({
     },  
     styleText2:{
       color: Color.background
+    },
+    Sub1:{
+      backgroundColor: Color.background,
+      marginLeft: 15,
+      paddingHorizontal: 30,
+      borderRadius: 20,
+      padding: 10,
+      color: '#fff',
+      fontWeight: 'bold',
+      textTransform: 'capitalize',
+      marginBottom: 20
+     },
+     Sub2:{
+      backgroundColor: Color.secondary,
+      marginLeft: 30,
+      paddingHorizontal: 30,
+      borderRadius: 20,
+      padding: 10,
+      color: 'black',
+      borderWidth: 1,
+      borderColor: Color.background,
+      fontWeight: 'bold',
+      textTransform: 'capitalize',
+      marginBottom: 20
+     },
+     selectedText1: {
+      color: Color.secondary,
+      borderColor: Color.background,
+      borderWidth: 1
+    },
+  
+    selectedText2: {
+      color: Color.background,
+      backgroundColor: '#fffcea'
     }
 })
