@@ -3,14 +3,11 @@ import { Text, View, StyleSheet, Image } from "react-native";
 import {Provider} from 'react-redux';
 import store from './src/redux/store';
 import { DrawerItemList, DrawerItem } from "@react-navigation/drawer";
-import Icon from "react-native-vector-icons/Ionicons";
-import { MaterialIcons } from "@expo/vector-icons";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { Ionicons } from "@expo/vector-icons";
 import Color from "./src/Common/Color";
-import Header from "./src/screens/Header";
 import Homee from "./src/screens/Home";
 import ChoseScreen from "./src/screens/ChoseScreen";
 import Signup from "./src/screens/Signup";
@@ -42,6 +39,7 @@ import Offers from "./src/screens/Offers.js";
 import Jobs from "./src/screens/Jobs.js";
 import MainJob from "./src/screens/MainJob.js";
 import ApplyForaJob from "./src/screens/ApplyForaJob.js";
+import AppointmentHistory from "./src/screens/AppointmentHistory";
 
 import { NativeBaseProvider } from "native-base";
 
@@ -69,7 +67,8 @@ const HomeStack = () => (
     <Stack.Screen name="Favorite" component={Favorite} options={{ headerShown: false }}/>
     <Stack.Screen name="ProductsDetails" component={ProductsDetails}options={{ headerShown: false }} />
     <Stack.Screen name="SalonScreen" component={SalonScreen} options={{ headerShown: false }}/>
-    <Stack.Screen name="BookingScreen" component={BookingScreen}options={{ headerShown: false }} /> 
+    <Stack.Screen name="BookingScreen" component={BookingScreen}options={{ headerShown: false }} />
+    <Stack.Screen name="AppointmentHistory" component={AppointmentHistory} options={{ headerShown: false }}  />
     <Stack.Screen name="EmployeesScreen" component={EmployeesScreen} options={{ headerShown: false }} />
     <Stack.Screen name="EmployeesDetails" component={EmployeesDetailsScreen} options={{ headerShown: false }}/>
     <Stack.Screen name="AddEmployee" component={AddEmployee} options={{ headerShown: false }}/>
@@ -170,6 +169,17 @@ const CustomDrawerContent = (props) => {
         )}
         onPress={() => {
           props.navigation.navigate("BookingScreen");
+        }}
+      />
+
+      <DrawerItem
+        style={{ marginVertical: 10, ...styles.drawerItem }}
+        label="HISTORY"
+        icon={({ color, size }) => (
+          <Ionicons name="checkmark-circle" color={Color.primary} size={size} />
+        )}
+        onPress={() => {
+          props.navigation.navigate("AppointmentHistory");
         }}
       />
 

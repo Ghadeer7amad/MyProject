@@ -16,6 +16,24 @@ const SalonScreen = () => {
   const handleContinuePress = (item) => {
     navigation.navigate('MainScreen2', { item });
   };
+
+  const confirmDelete = (itemId) => {
+    Alert.alert(
+      "Delete Confirmation",
+      "Are you sure you want to cancle this appointment?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Yes, Delete",
+          onPress: () => handleDeletePress(itemId),
+        },
+      ],
+      { cancelable: false }
+    );
+  };
  
   const baseUrl = "https://ayabeautyn.onrender.com";
   const fetchData = async () => {
@@ -66,7 +84,8 @@ const SalonScreen = () => {
           <Card containerStyle={styles.card}>
             <TouchableOpacity
               style={styles.deleteIcon}
-              onPress={() => handleDeletePress(item._id)}
+              onPress={() => confirmDelete(item._id)}
+
             >
               <Icon name="close" color="#5e366a" size={20} />
             </TouchableOpacity>

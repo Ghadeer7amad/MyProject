@@ -23,14 +23,11 @@ const screenwidth = Dimensions.get("window").width;
 const BookingScreen = () => {
   const navigation = useNavigation();
   const [isLoading, setIsLoading] = useState(true);
-  const [items, setItems] = useState([]);
   const toast = useToast();
 
-
-  // const generalState = useSelector(state => state);
   const {id: userId , name: userName} = useSelector(state => state.user.userData)
 
-  console.log(userId,userName);
+  // console.log(userId,userName);
   const generateAvailableTimes = () => {
     const startHour = 8;
     const endHour = 16;
@@ -116,13 +113,11 @@ const BookingScreen = () => {
       }
       if (response.ok) {
         console.log('appointment details', json);
-        // //console.warn('Your appointment is booked');
-        // navigation.navigate('Success');
         toast.show({
           render: () => {
             return (
               <Box bg="emerald.500" px="5" py="5" rounded="sm" mb={5}>
-                Employee added successfully
+                Your appointment is booked successfuly
               </Box>
             );
           },

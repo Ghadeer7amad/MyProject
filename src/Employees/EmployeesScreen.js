@@ -4,9 +4,7 @@ import {
   FlatList,
   StyleSheet,
   Image,
-  TextInput,
   TouchableOpacity,
-  
 } from "react-native";
 import CustomSearchBar from "../Common/SearchBarComponent.js";
 import Header from "../screens/Header.js";
@@ -15,7 +13,6 @@ import { FontAwesome as Icon } from "@expo/vector-icons";
 import Color from "../Common/Color.js";
 import Spacing from "../Common/Spacing.js";
 import { Ionicons } from "@expo/vector-icons";
-import SearchProANDSer from "../Common/SerachProANDSer.js";
 import { useNavigation } from "@react-navigation/native";
 import React, {useState, useEffect} from 'react';
 
@@ -38,6 +35,24 @@ const EmployeesScreen = () => {
     } catch (error) {
       console.error('Error fetching data:', error);
     }
+  };
+
+  const confirmDelete = (itemId) => {
+    Alert.alert(
+      "Delete Confirmation",
+      "Are you sure you want to cancle this appointment?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Yes, Delete",
+          onPress: () => handleDeletePress(itemId),
+        },
+      ],
+      { cancelable: false }
+    );
   };
 
   const handleDeletePress = async (itemId) => {
@@ -100,7 +115,7 @@ const EmployeesScreen = () => {
             </TouchableOpacity>
              <TouchableOpacity
               style={styles.deleteIcon}
-              onPress={() => handleDeletePress(item._id)}
+              onPress={() => confirmDelete(item._id)}
             >
               <Icon name="close" color="#5e366a" size={20} />
             </TouchableOpacity>

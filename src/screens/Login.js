@@ -38,6 +38,7 @@ const  dispatch = useDispatch()
       alert(` You have login: ${JSON.stringify(response.data)}`);
       dispatch(storeCurrentUser(response.data))
       toast.show({
+
         render: () => (
           <Box bg='#55a44e' px="8" py="5" rounded="sm" mb={5}>
             login successfully
