@@ -5,10 +5,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faLock, faUser, faCheck} from '@fortawesome/free-solid-svg-icons';
 import Color from '../../Common/Color.js';
 import React, {useState} from 'react'
+import { Box, useToast } from "native-base";
 import axios from 'axios';
 
 const ResetPassword = () => {
     const navigation = useNavigation();
+    const toast = useToast();
     const [email, setEmail] = useState("");
     const [code, setcode] = useState("");
     const [password, setpassword] = useState("");
@@ -38,17 +40,51 @@ const ResetPassword = () => {
         });
     
         if (response.status === 200) {
-          alert(` You have : ${JSON.stringify(response.data)}`);
+          toast.show({
+            render: () => (
+              <Box bg='#55a44e' px="8" py="5" rounded="sm" mb={5}>
+                The password has been modified successfully
+              </Box>
+            )
+          });
           setEmail("")
           setcode("")
           setpassword("")
           setconfirmpassword("")
           navigation.navigate('Login')
         } else {
-          console.error('Error:', error.response.status, error.response.data);
+          toast.show({
+            render: () => (
+                <Box bg='#c81912' px="8" py="5" rounded="sm" mb={5}>
+                    Something error
+                </Box>
+            ),
+        });
+        return;
         }
       } catch (error) {
-        console.error('Error:', error.message)
+        try{
+          if(error.response && error.response.status === 409){
+            toast.show({
+              render: () => (
+                  <Box bg='#c81912' px="8" py="5" rounded="sm" mb={5}>
+                       Password you used
+                  </Box>
+              ),
+          });
+          }
+        return;
+        }catch(error){
+          toast.show({
+            render: () => (
+                <Box bg='#c81912' px="8" py="5" rounded="sm" mb={5}>
+                     Something error
+                </Box>
+            ),
+        });
+        return;
+        }
+        //console.error('Error:', error.message)
       }
     };
 

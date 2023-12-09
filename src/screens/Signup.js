@@ -8,23 +8,18 @@ import Color from '../Common/Color.js';
 import React, {useState} from 'react'
 import { useNavigation } from '@react-navigation/native';
 import Spacing from '../Common/Spacing.js'
+import { Box, useToast, Toast } from "native-base";
 import axios from 'axios';
 
 const Signup = () => {
   const navigation = useNavigation();
-  /*const[FData, setFData] = useState({
-    name : "",
-    email: "",
-    age: "",
-    phone: "",
-    address: "",
-    password: "",
-    passwordC: ""
-  })
+  const toast = useToast();
+  const [isPasswordValid, setPasswordValid] = useState(true);
+  const [isPasswordCValid, setPasswordCValid] = useState(true);
   const [fieldValid, setFieldValid] = useState({
     name: true,
     email: true,
-    birthday: true,
+    age: true,
     phone: true,
     address: true,
     password: true,
@@ -32,26 +27,26 @@ const Signup = () => {
   });
   const handleRegister = async() => {
     const errors = {};
-    if (FData.name === "") {
+    if (userName === "") {
       errors.name = false;
     }
-    if (FData.email === "") {
+    if (email === "") {
       errors.email = false;
     }
-    if (FData.birthday === "") {
+    if (age === "") {
       errors.birthday = false;
     }
-    if (FData.phone === "") {
+    if (phone === "") {
       errors.phone = false;
     }
-    if (FData.address === "") {
+    if (address === "") {
       errors.address = false;
     }
-    if (FData.password === "") {
+    if (password === "") {
       errors.password = false;
     }
-    if (FData.passwordC === "") {
-      errors.passwordC = false;
+    if (confirmpassword === "") {
+      errors.confirmpassword = false;
     }
     setFieldValid({ ...fieldValid, ...errors });
 
@@ -59,8 +54,7 @@ const Signup = () => {
     if (Object.values(errors).some(fieldValid => !fieldValid)) {
       return;
     }
-    navigation.navigate('test');
-   }*/
+   }
   const [userName, setuserName] = useState("");
   const [email, setEmail] = useState("");
   const [age, setage] = useState("");
@@ -90,7 +84,28 @@ const Signup = () => {
   const onChangeconfirmpasswordHandler = (confirmpassword) => {
     setconfirmpassword(confirmpassword);
   };
-
+  const handleSignUpAndRegister = () => {
+    handleSignUp();
+    handleRegister();
+  };
+  const MyToast = ({ message, bgColor }) => {
+    return (
+      <Box
+        px="8"
+        py="5"
+        rounded="sm"
+        mb={5}
+        bg={bgColor || 'gray.500'}
+      >
+        <Text>{message}</Text>
+      </Box>
+    );
+  };
+  const showToast = (message, bgColor) => {
+    Toast.show({
+      render: () => <MyToast message={message} bgColor={bgColor} />,
+    });
+  };
 
   const baseUrl = "https://ayabeautyn.onrender.com";
    const handleSignUp = async () => {
@@ -104,9 +119,14 @@ const Signup = () => {
         password,
         confirmpassword
       });
-
       if (response.status === 201) {
-        alert(` You have created: ${JSON.stringify(response.data)}`);
+        toast.show({
+          render: () => (
+            <Box bg='#55a44e' px="8" py="5" rounded="sm" mb={5}>
+              SignUp successfully
+            </Box>
+          )
+        });
         setuserName("");
         setEmail("");
         setage("");
@@ -115,11 +135,30 @@ const Signup = () => {
         setpassword("");
         setconfirmpassword("");
         navigation.navigate('Login'); 
-      } else {
-        console.error('Error:', error.response.status, error.response.data);
+      }else {
+        toast.show({
+          render: () => (
+              <Box bg='#c81912' px="8" py="5" rounded="sm" mb={5}>
+                  SignUp failed
+              </Box>
+          ),
+      });
+      return;
       }
     } catch (error) {
-      console.error('Error:', error.message)
+      try{
+        if (error.response && error.response.status === 404) {
+          showToast("Email Exists. Use another email please", '#c81912');
+        } 
+      }catch(error){
+        toast.show({
+          render: () => (
+              <Box bg='#c81912' px="8" py="5" rounded="sm" mb={5}>
+                  SignUp failed
+              </Box>
+          ),
+      });
+      }
     }
   };
 
@@ -151,85 +190,103 @@ const Signup = () => {
         <TextInput 
         value={userName}
         onChangeText={onChangeNameHandler}
-        //onBlur={() => setFieldValid({ ...fieldValid, name: FData.name !== "" })}
+        onBlur={() => setFieldValid({ ...fieldValid, name: userName !== "" })}
         style={styles.input} 
         placeholder='Enter Your Name'/>
         <FontAwesomeIcon icon={faUser} style={styles.icon} />
       </View>
+      {!fieldValid.name && <Text style={styles.textWrong}> name is required </Text>}
 
       <View style={styles.formgroup}>
         <TextInput 
         value={email}
         onChangeText={onChangeEmailHandler}
-        //onBlur={() => setFieldValid({ ...fieldValid, email: FData.email !== "" })}
+        onBlur={() => setFieldValid({ ...fieldValid, email: email !== "" })}
         style={styles.input} 
         placeholder='example@gmail.com'/>
         <FontAwesomeIcon icon={faEnvelope} style={styles.icon} />
       </View>
+      {!fieldValid.email && <Text style={styles.textWrong}> email is required </Text>}
 
       <View style={styles.formgroup}>
         <TextInput 
        value={age}
        onChangeText={onChangeAgeHandler}
-        //onBlur={() => setFieldValid({ ...fieldValid, birthday: FData.birthday !== ""  })}
+       onBlur={() => {
+        const isValidAge = age !== "" && parseInt(age) >= 18 && parseInt(age) <= 50;
+        setFieldValid({ ...fieldValid, age: isValidAge });
+      }}
         style={styles.input} 
-        placeholder='dd/mm/yy'/>
+        placeholder='18-50'/>
         <FontAwesomeIcon icon={faBirthdayCake} style={styles.icon} />
       </View>
+      {!fieldValid.age && age !== "" && parseInt(age) < 18 && <Text style={styles.textWrong}> Age must be 18 or more </Text>}
+      {!fieldValid.age && age !== "" && parseInt(age) > 50 && <Text style={styles.textWrong}> Age must be 50 or less </Text>}
+      {!fieldValid.age && age === "" && <Text style={styles.textWrong}> Age is required </Text>}
 
 
       <View style={styles.formgroup}>
         <TextInput 
         value={phone}
         onChangeText={onChangePhoneHandler}
-       // onBlur={() => setFieldValid({ ...fieldValid, phone: FData.phone !== "" })}
+        onBlur={() => {
+          const isValidPhone = phone !== "" && /^05\d{8}$/.test(phone);
+          setFieldValid({ ...fieldValid, phone: isValidPhone });
+        }}
         style={styles.input} 
         placeholder='+972 56-853-6463'/>
         <FontAwesomeIcon icon={faPhone} style={styles.icon} />
       </View>
-
+      {!fieldValid.phone && phone === "" && <Text style={styles.textWrong}> Phone is required </Text>}
+      {!fieldValid.phone && phone !== "" && !/^05\d{8}$/.test(phone) && <Text style={styles.textWrong}> Invalid phone format </Text>} 
+      
+      
       <View style={styles.formgroup}>
         <TextInput 
         value={address}
         onChangeText={onChangeAddressHandler}
-        //onBlur={() => setFieldValid({ ...fieldValid, address: FData.address !== "" })}
+        onBlur={() => setFieldValid({ ...fieldValid, address: address !== "" })}
         style={styles.input} 
         placeholder='City/Village'/>
         <FontAwesomeIcon icon={faHome} style={styles.icon} />
       </View>
+      {!fieldValid.address && <Text style={styles.textWrong}> address is required </Text>}
 
       <View style={styles.formgroup}>
         <TextInput 
         secureTextEntry={!showPassword}
         value={password}
         onChangeText={onChangePasswordHandler}
-        /*onBlur={() => {
-          setFieldValid({ ...fieldValid, password: FData.password !== "" & FData.password.length >= 5});
-        }}*/
+        onBlur={() => {
+          setFieldValid({ ...fieldValid, password: password !== "" & password.length >= 5});
+        }}
          style={styles.input} placeholder='Enter Your password'/>
         <TouchableWithoutFeedback onPress={togglePasswordVisibility}>
         <Ionicons style={styles.iconEye} name={showPassword ? 'eye' : 'eye-off'} size={20} />
       </TouchableWithoutFeedback>
         <FontAwesomeIcon icon={faLock} style={styles.icon} />
       </View>
+      {!fieldValid.password && <Text style={styles.textWrong}> Password must be at least 5 characters </Text>}
 
       <View style={styles.formgroup}>
         <TextInput secureTextEntry={!showPasswordC}
         value={confirmpassword}
         onChangeText={onChangeconfirmpasswordHandler}
-        /*onBlur={() => {
-          setFieldValid({ ...fieldValid, passwordC: FData.passwordC !== "" });
-          setPasswordCValid(FData.password === FData.passwordC);
-        }}*/
+        onBlur={() => {
+          setFieldValid({ ...fieldValid, confirmpassword: confirmpassword !== "" });
+          setPasswordCValid(password === confirmpassword);
+        }}
         style={styles.input} placeholder='Confirm Your password'/>
         <TouchableWithoutFeedback onPress={togglePasswordVisibilityC}>
         <Ionicons style={styles.iconEye} name={showPasswordC ? 'eye' : 'eye-off'} size={20} />
         </TouchableWithoutFeedback>
         <FontAwesomeIcon icon={faCheck} style={styles.icon} />
       </View>
+      {!fieldValid.passwordC && <Text style={styles.textWrong}> confirm password is required </Text>}
+      {!isPasswordCValid && <Text style={styles.textWrong}>Your Password not match</Text>}
 
    
-      <TouchableOpacity onPress={handleSignUp}>
+      <TouchableOpacity onPress={handleSignUpAndRegister}>
        <Text style={styles.buttonStyle}>Sign Up</Text>
       </TouchableOpacity>  
 

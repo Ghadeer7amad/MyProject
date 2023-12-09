@@ -10,7 +10,7 @@ import { serialize } from "object-to-formdata";
 import { Box, useToast } from "native-base";
 import RNPickerSelect from 'react-native-picker-select';
 
-const AddServices = () => {
+const AddServices = ({route}) => {
   const subServices = [
     { label: 'Face', value: 'Face' },
     { label: 'Body', value: 'Body' },
@@ -93,7 +93,7 @@ const AddServices = () => {
         console.error('Error during fetch:', response.status, responseData);
         toast.show({
             render: () => (
-                <Box bg="red.500" px="5" py="5" rounded="sm" mb={5}>
+                <Box bg='#c81912' px="5" py="5" rounded="sm" mb={5}>
                     Error adding services: {responseData.message}
                 </Box>
             ),
@@ -104,7 +104,7 @@ const AddServices = () => {
       toast.show({
         render: () => {
           return (
-            <Box bg="emerald.500" px="5" py="5" rounded="sm" mb={5}>
+            <Box bg='#55a44e' px="5" py="5" rounded="sm" mb={5}>
               Services added successfully
             </Box>
           );
@@ -135,6 +135,82 @@ const AddServices = () => {
       });
     }
   };
+
+  /*const handleEditService = async (itemId) => {
+    try {
+      if (!image || !image.uri) {
+        console.error('Error: Image is null or does not have a uri property.');
+        return;
+      }
+      const options = {
+        indices: false,
+        nullsAsUndefineds: false,
+        booleansAsIntegers: false,
+        allowEmptyArrays: false,
+        noFilesWithArrayNotation: false,
+        dotsForObjectNotation: true,
+      };
+      const formData = serialize(FData, options);
+      formData.append("image", {
+        uri: image.uri,
+        name: FData.name + ".jpg",
+        type: "image/jpeg",
+        size: image.fileSize,
+      });
+      const baseUrl = "https://ayabeautyn.onrender.com";
+  
+      const response = await fetch(`${baseUrl}/services/updateServices/${itemId}`, {
+        method: "PUT",
+        body: formData,
+      });
+  
+      const responseData = await response.json();
+      if (!response.ok) {
+        console.error('Error during fetch:', response.status, responseData);
+        toast.show({
+          render: () => (
+            <Box bg="red.500" px="5" py="5" rounded="sm" mb={5}>
+              Error updating services: {responseData.message}
+            </Box>
+          ),
+        });
+        return;
+      }
+  
+      console.log('Request successful:', responseData);
+      toast.show({
+        render: () => (
+          <Box bg="emerald.500" px="5" py="5" rounded="sm" mb={5}>
+            Services updated successfully
+          </Box>
+        ),
+      }); 
+  
+      setFData({
+        name: "",
+        description: "",
+        price: "",
+        discount: "",
+        time: "",
+        subServices: "",
+        status: "",
+        image: "",
+      });
+      setImage(null);
+      setButtonText("Upload Image");
+  
+    } catch (error) {
+      console.error('Error during fetch:', error);
+      toast.show({
+        render: () => (
+          <Box bg="red.500" px="5" py="5" rounded="sm" mb={5}>
+            Error updating services
+          </Box>
+        ),
+      });
+    }
+  };*/
+  
  const navigation = useNavigation();
   return (
     <ScrollView>
@@ -258,6 +334,10 @@ const AddServices = () => {
 
       <TouchableOpacity onPress={()=>handleAddServices()}>
        <Text style={styles.buttonStyle}>Publish Services</Text>
+      </TouchableOpacity>  
+
+      <TouchableOpacity onPress={()=>handleEditService()}>
+       <Text style={styles.buttonStyle}>Edit Services</Text>
       </TouchableOpacity>  
 
       <TouchableOpacity onPress={()=>navigation.navigate('Home')}>

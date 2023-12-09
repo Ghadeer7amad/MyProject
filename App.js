@@ -42,6 +42,7 @@ import Offers from "./src/screens/Offers.js";
 import Jobs from "./src/screens/Jobs.js";
 import MainJob from "./src/screens/MainJob.js";
 import ApplyForaJob from "./src/screens/ApplyForaJob.js";
+
 import { NativeBaseProvider } from "native-base";
 
 const Stack = createStackNavigator();

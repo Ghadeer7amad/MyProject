@@ -6,10 +6,11 @@ import { faEnvelope} from '@fortawesome/free-solid-svg-icons';
 import Color from '../../Common/Color.js';
 import React, {useState} from 'react'
 import axios from 'axios'
-import Toast from 'react-native-toast-message';
+import { Box, useToast } from "native-base";
 
 const ForgetPage = () => {
     const navigation = useNavigation();
+    const toast = useToast();
     const [email, setEmail] = useState("");
 
     const onChangeEmailHandler = (email) => {
@@ -27,31 +28,32 @@ const ForgetPage = () => {
         });
     
         if (response.status === 200) {
-        /*console.log('yes');
-        Toast.show({
-          type: 'successToast',
-          position: 'bottom',
-          text1: 'sign up done successfuly',
-          visibilityTime: 10,
-          bottomOffset: 60,
-          autoHide: true,
-        });*/
-          Alert.alert(
-            'Success',
-            'Congrats, Your Login is Successful',
-            [
-              { text: 'OK', onPress: () => navigation.navigate('SendCode') }
-            ],
-            { cancelable: false }
-          );
-         //alert(` You have : ${JSON.stringify(response.data)}`);
+          toast.show({
+            render: () => (
+              <Box bg='#55a44e' px="8" py="5" rounded="sm" mb={5}>
+                You received a 4-digit code
+              </Box>
+            )
+          });
+          navigation.navigate('ResetPassword')
           setEmail("");
-          //navigation.navigate('SendCode')
         } else {
-          console.error('Error:', error.response.status, error.response.data);
+          toast.show({
+            render: () => (
+                <Box bg='#c81912' px="8" py="5" rounded="sm" mb={5}>
+                    Something error
+                </Box>
+            ),
+        });
         }
       } catch (error) {
-        console.error('Error:', error.message)
+        toast.show({
+          render: () => (
+              <Box bg='#c81912' px="8" py="5" rounded="sm" mb={5}>
+                  Something error
+              </Box>
+          ),
+      });
       }
     };
     
