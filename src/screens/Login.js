@@ -8,11 +8,13 @@ import { Ionicons } from "@expo/vector-icons";
 import Color from '../Common/Color.js';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
+import { useDispatch} from 'react-redux';
+import {storeCurrentUser} from "../redux/user/userActions.js";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+const  dispatch = useDispatch()
   const onChangeEmailHandler = (email) => {
     setEmail(email);
   };
@@ -25,13 +27,14 @@ const Login = () => {
  const handleLogin = async () => {
   const baseUrl = 'https://ayabeautyn.onrender.com';
   try {
-    const response = await axios.post(`${baseUrl}/auth/signin`, {
+    const response = await axios.post(`http://10.0.2.2:3000/auth/signin`, {
       email,
       password,
     });
 
     if (response.status === 200) {
       alert(` You have login: ${JSON.stringify(response.data)}`);
+      dispatch(storeCurrentUser(response.data))
       setEmail("");
       setPassword("");
       navigation.navigate('SalonScreen'); 

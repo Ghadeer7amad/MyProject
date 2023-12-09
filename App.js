@@ -1,16 +1,15 @@
 import React from "react";
 import { Text, View, StyleSheet, Image } from "react-native";
-
+import {Provider} from 'react-redux';
+import store from './src/redux/store';
 import { DrawerItemList, DrawerItem } from "@react-navigation/drawer";
 import Icon from "react-native-vector-icons/Ionicons";
 import { MaterialIcons } from "@expo/vector-icons";
-
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { Ionicons } from "@expo/vector-icons";
 import Color from "./src/Common/Color";
-
 import Header from "./src/screens/Header";
 import Homee from "./src/screens/Home";
 import ChoseScreen from "./src/screens/ChoseScreen";
@@ -69,7 +68,6 @@ const HomeStack = () => (
     <Stack.Screen name="Favorite" component={Favorite} options={{ headerShown: false }}/>
     <Stack.Screen name="ProductsDetails" component={ProductsDetails}options={{ headerShown: false }} />
     <Stack.Screen name="SalonScreen" component={SalonScreen} options={{ headerShown: false }}/>
-    <Stack.Screen name="MainScreen2" component={MainScreen2} options={{ headerShown: false }} />
     <Stack.Screen name="BookingScreen" component={BookingScreen}options={{ headerShown: false }} /> 
     <Stack.Screen name="EmployeesScreen" component={EmployeesScreen} options={{ headerShown: false }} />
     <Stack.Screen name="EmployeesDetails" component={EmployeesDetailsScreen} options={{ headerShown: false }}/>
@@ -228,7 +226,9 @@ const styles = StyleSheet.create({
 
 const App = () => {
   return (
+    
     <NativeBaseProvider>
+      <Provider store={store}>
       <NavigationContainer>
         <Drawer.Navigator
           initialRouteName="Home"
@@ -252,6 +252,7 @@ const App = () => {
           />
         </Drawer.Navigator>
       </NavigationContainer>
+      </Provider>
     </NativeBaseProvider>
   );
 };

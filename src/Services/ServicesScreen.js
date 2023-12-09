@@ -33,7 +33,7 @@ const ServicesScreen = () => {
   const baseUrl = "https://ayabeautyn.onrender.com";
   useEffect(() => {
     console.log("Fetching services...");
-    fetch(`${baseUrl}/services/getServices`)
+    fetch(`http://10.0.2.2:3000/services/getServices`)
       .then((res) => res.json())
       .then((data) => {
         console.log("Received data:", data);

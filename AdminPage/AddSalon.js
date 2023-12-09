@@ -71,7 +71,7 @@ import {
         });
         const baseUrl = "https://ayabeautyn.onrender.com";
   
-        const response = await fetch(`${baseUrl}/salons/salon`, {
+        const response = await fetch(`http://10.0.2.2:3000/salons/salon`, {
           method: "POST",
           body: formData,
         });
