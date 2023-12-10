@@ -22,7 +22,7 @@ import { Alert } from "react-native";
 const ProductsScreens = () => {
   const navigation = useNavigation();
   const [products, setproducts] = useState([]);
-  const [selectedItem, setSelectedItem] = useState(null);
+  const [selectedItem, setSelectedItem] = useState('Body');
 
   const handleBookPress = () => {
     navigation.navigate("BookingScreen");
@@ -128,15 +128,37 @@ const ProductsScreens = () => {
           <View style={{width:"100%"}}>
           <Text style={styles.styleText}>find the best <Image style={{ width: 50, height: 50 }} source={require("../../assets/122.jpg")} /></Text>
           <Text style={[styles.styleText, styles.styleText2]}>product for you</Text>
+          <TouchableOpacity
+             onPress={() => navigation.navigate("AddProduct")}
+             style={{
+               marginTop: 30,
+               backgroundColor: Color.primary,
+               borderWidth: 1,
+               borderColor: '#fff',
+               borderRadius: 8,
+               paddingVertical: 10,
+               paddingHorizontal: 40,
+               justifyContent: 'center',
+               alignItems: 'center',
+             }}
+           >
+             <Text style={{
+               fontWeight: 'bold',
+               color: '#fff',
+               fontSize: 16,
+             }}>
+               Add product
+               </Text>
+             </TouchableOpacity>
           
       <SearchProANDSer/>
-      <View style={{flexDirection:'row'}}>
-      <TouchableOpacity onPress={handleBodyPress}>
-         <Text style={[styles.Sub1, selectedItem === 'Body' ? styles.selectedText1 : null]}>Body</Text>
+      <View style={{ flexDirection: 'row'}}>
+        <TouchableOpacity onPress={handleBodyPress}>
+        <Text style={[styles.Sub1, selectedItem === 'Body' ? styles.selectedText1 : null]}>Body</Text>
       </TouchableOpacity>
-      
+
       <TouchableOpacity onPress={handleFacePress}>
-      <Text style={[styles.Sub2, selectedItem === 'Face' ? styles.selectedText2: null]}>Face</Text>
+        <Text style={[styles.Sub2, selectedItem === 'Face' ? styles.selectedText2 : null]}>Face</Text>
       </TouchableOpacity>
       </View>
       <Image style={{height: 300, resizeMode: 'contain', width: '100%'}}
@@ -287,14 +309,54 @@ const styles = StyleSheet.create({
     padding: Spacing /10,
     zIndex: 1, 
   },
-  selectedText1: {
-    color: Color.secondary,
+  Sub1: {
+    color: 'black',
+    marginLeft: 15,
+    paddingHorizontal: 30,
+    borderRadius: 20,
+    padding: 10,
+    fontWeight: 'bold',
+    textTransform: 'capitalize',
+    marginBottom: 20,
     borderColor: Color.background,
     borderWidth: 1
   },
-
+  selectedText1: {
+    color: '#fff',
+    backgroundColor: Color.background,
+    marginLeft: 15,
+    paddingHorizontal: 30,
+    borderRadius: 20,
+    padding: 10,
+    fontWeight: 'bold',
+    textTransform: 'capitalize',
+    marginBottom: 20,
+    borderColor: Color.background,
+    borderWidth: 1
+  },
+  Sub2: {
+    color: 'black',
+    marginLeft: 15,
+    paddingHorizontal: 30,
+    borderRadius: 20,
+    padding: 10,
+    fontWeight: 'bold',
+    textTransform: 'capitalize',
+    marginBottom: 20,
+    borderColor: Color.background,
+    borderWidth: 1
+  },
   selectedText2: {
-    color: Color.background,
-    backgroundColor: '#fffcea'
-  }
+    color: '#fff', 
+    backgroundColor: Color.background,
+    marginLeft: 15,
+    paddingHorizontal: 30,
+    borderRadius: 20,
+    padding: 10,
+    fontWeight: 'bold',
+    textTransform: 'capitalize',
+    marginBottom: 20,
+    borderColor: Color.background,
+    borderWidth: 1
+  },  
 })

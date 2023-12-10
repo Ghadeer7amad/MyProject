@@ -25,8 +25,7 @@ import { serialize } from "object-to-formdata";
 import { Box, useToast } from "native-base";
 import RNPickerSelect from "react-native-picker-select";
 
-const AddServices = ({ route }) => {
-  const { item } = route.params;
+const AddServices = () => {
 
   const subServices = [
     { label: "Face", value: "Face" },
@@ -37,10 +36,7 @@ const AddServices = ({ route }) => {
     { label: "Inactive", value: "Inactive" },
   ];
 
-  const initialValues = item
-    ? {...item , image:{ uri: item.image.
-      secure_url  }}
-    : {
+  const [FData, setFData] = useState({
         name: "",
         description: "",
         price: "",
@@ -49,17 +45,11 @@ const AddServices = ({ route }) => {
         subServices: [],
         status: [],
         image: "",
-      };
-  const [FData, setFData] = useState({
-    ...initialValues,
   });
 
-  
-
-  console.log("6y7hy" , FData);
   const toast = useToast();
   const [buttonText, setButtonText] = useState("Upload Image");
-  const [image, setImage] = useState(initialValues.image);
+  const [image, setImage] = useState(image);
 
   const handleSubServicesChange = (selectedsubServices) => {
     setFData((prevData) => ({
@@ -110,7 +100,7 @@ const AddServices = ({ route }) => {
       const baseUrl = "https://ayabeautyn.onrender.com";
 
       const response = await fetch(
-        `http://10.0.2.2:3000/services/CreateServices`,
+        `${baseUrl}/services/CreateServices`,
         {
           method: "POST",
           body: formData,
@@ -153,88 +143,10 @@ const AddServices = ({ route }) => {
       setButtonText("Upload Image");
     } catch (error) {
       console.error("Error during fetch:", error);
-      // Show an error message to the user
       toast.show({
         render: () => (
           <Box bg="red.500" px="5" py="5" rounded="sm" mb={5}>
             Error adding services
-          </Box>
-        ),
-      });
-    }
-  };
-
-  const handleEditService = async (itemId) => {
-    try {
-      if (!image || !image.uri) {
-        console.error("Error: Image is null or does not have a uri property.");
-        return;
-      }
-      const options = {
-        indices: false,
-        nullsAsUndefineds: false,
-        booleansAsIntegers: false,
-        allowEmptyArrays: false,
-        noFilesWithArrayNotation: false,
-        dotsForObjectNotation: true,
-      };
-      const formData = serialize(FData, options);
-      formData.append("image", {
-        uri: image.uri,
-        name: FData.name + ".jpg",
-        type: "image/jpeg",
-        size: image.fileSize,
-      });
-      const baseUrl = "https://ayabeautyn.onrender.com";
-
-      const response = await fetch(
-        `http://10.0.2.2:3000/services/updateServices/${itemId}`,
-        {
-          method: "PUT",
-          body: formData,
-        }
-      );
-
-      const responseData = await response.json();
-      if (!response.ok) {
-        console.error("Error during fetch:", response.status, responseData);
-        toast.show({
-          render: () => (
-            <Box bg="red.500" px="5" py="5" rounded="sm" mb={5}>
-              Error updating services: {responseData.message}
-            </Box>
-          ),
-        });
-        return;
-      }
-
-      console.log("Request successful:", responseData);
-      toast.show({
-        render: () => (
-          <Box bg="emerald.500" px="5" py="5" rounded="sm" mb={5}>
-            Services updated successfully
-          </Box>
-        ),
-      });
-
-      setFData({
-        name: "",
-        description: "",
-        price: "",
-        discount: "",
-        time: "",
-        subServices: "",
-        status: "",
-        image: "",
-      });
-      setImage(null);
-      setButtonText("Upload Image");
-    } catch (error) {
-      console.error("Error during fetch:", error);
-      toast.show({
-        render: () => (
-          <Box bg="red.500" px="5" py="5" rounded="sm" mb={5}>
-            Error updating services
           </Box>
         ),
       });
@@ -273,7 +185,7 @@ const AddServices = ({ route }) => {
 
         <View style={styles.formgroup}>
           <TextInput
-            value={FData.price.toString()}
+            value={FData.price}
             onChangeText={(text) => setFData({ ...FData, price: text })}
             style={styles.input}
             placeholder="Prise Services"
@@ -283,7 +195,7 @@ const AddServices = ({ route }) => {
 
         <View style={styles.formgroup}>
           <TextInput
-            value={FData.discount.toString()}
+            value={FData.discount}
             onChangeText={(text) => setFData({ ...FData, discount: text })}
             style={styles.input}
             placeholder="discount Services"
@@ -293,7 +205,7 @@ const AddServices = ({ route }) => {
 
         <View style={styles.formgroup}>
           <TextInput
-            value={FData.time.toString()}
+            value={FData.time}
             onChangeText={(text) => setFData({ ...FData, time: text })}
             style={styles.input}
             placeholder="time Services"
@@ -391,10 +303,6 @@ const AddServices = ({ route }) => {
 
         <TouchableOpacity onPress={() => handleAddServices()}>
           <Text style={styles.buttonStyle}>Publish Services</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={() => handleEditService(item._id)}>
-          <Text style={styles.buttonStyle}>Edit Services</Text>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => navigation.navigate("Home")}>

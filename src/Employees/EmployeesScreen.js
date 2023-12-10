@@ -28,7 +28,7 @@ const EmployeesScreen = () => {
   
   const fetchData = async () => {
     try {
-      const response = await fetch(`http://10.0.2.2:3000/employees/employee`);
+      const response = await fetch(`${baseUrl}/employees/employee`);
       const data = await response.json();
       setItems(data);
       setIsLoading(false);

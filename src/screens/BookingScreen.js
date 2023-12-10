@@ -53,8 +53,9 @@ const BookingScreen = () => {
   const [selectedValue, setSelectedValue] = useState(
     services.length > 0 ? services[0].name : null
   );
+  const baseUrl = "https://ayabeautyn.onrender.com";
   useEffect(() => {
-    fetch(`http://10.0.2.2:3000/services/getServices`)
+    fetch(`${baseUrl}/services/getServices`)
       .then((res) => res.json())
       .then((data) => {
         setServices(data.Services);
@@ -99,7 +100,7 @@ const BookingScreen = () => {
     };
     console.log('data to send-->', data);
     try {
-      const response = await fetch('http://10.0.2.2:3000/appointments/appointment', {
+      const response = await fetch(`${baseUrl}/appointments/appointment`, {
         method: 'POST',
         body: JSON.stringify(data),
         headers: {

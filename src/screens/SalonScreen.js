@@ -38,7 +38,7 @@ const SalonScreen = () => {
   const baseUrl = "https://ayabeautyn.onrender.com";
   const fetchData = async () => {
     try {
-      const response = await fetch(`http://10.0.2.2:3000/salons/salon`);
+      const response = await fetch(`${baseUrl}/salons/salon`);
       const data = await response.json();
       setItems(data);
       setIsLoading(false);
@@ -51,7 +51,7 @@ const SalonScreen = () => {
     console.log('Deleting item with ID:', itemId);
 
     try {
-      const response = await fetch(`http://10.0.2.2:3000/salons/salon/${itemId}`, {
+      const response = await fetch(`${baseUrl}/salons/salon/${itemId}`, {
         method: 'DELETE',
       });
 

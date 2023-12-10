@@ -40,6 +40,7 @@ import Jobs from "./src/screens/Jobs.js";
 import MainJob from "./src/screens/MainJob.js";
 import ApplyForaJob from "./src/screens/ApplyForaJob.js";
 import AppointmentHistory from "./src/screens/AppointmentHistory";
+import EditServices from './AdminPage/EditServices.js'
 
 import { NativeBaseProvider } from "native-base";
 
@@ -80,6 +81,7 @@ const HomeStack = () => (
     <Stack.Screen name="MainJob" component={MainJob} options={{ headerShown: false }}/>
     <Stack.Screen name="Jobs" component={Jobs} options={{ headerShown: false }}/>
     <Stack.Screen name="ApplyForaJob" component={ApplyForaJob} options={{ headerShown: false }}/>
+    <Stack.Screen name="EditServices" component={EditServices} options={{ headerShown: false }}/>
   </Stack.Navigator>
 );
 

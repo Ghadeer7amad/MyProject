@@ -26,12 +26,12 @@ const ServicesScreen = () => {
     navigation.navigate("BookingScreen");
   };
 
-  const [selectedItem, setSelectedItem] = useState(null);
+  const [selectedItem, setSelectedItem] = useState('Body');
 
   const handleBodyPress = async () => {
     try {
       console.log("Fetching services...");
-      const response = await fetch(`http://10.0.2.2:3000/services/getBodyServices`);
+      const response = await fetch(`${baseUrl}/services/getBodyServices`);
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
@@ -47,7 +47,7 @@ const ServicesScreen = () => {
   const handleFacePress = async () => {
     try {
       console.log("Fetching services...");
-      const response = await fetch(`http://10.0.2.2:3000/services/getFaceServices`);
+      const response = await fetch(`${baseUrl}/services/getFaceServices`);
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
@@ -67,7 +67,7 @@ const ServicesScreen = () => {
   const baseUrl = "https://ayabeautyn.onrender.com";
   useEffect(() => {
     console.log("Fetching services...");
-    fetch(`http://10.0.2.2:3000/services/getServices`)
+    fetch(`${baseUrl}/services/getServices`)
       .then((res) => res.json())
       .then((data) => {
         console.log("Received data:", data);
@@ -127,9 +127,8 @@ const ServicesScreen = () => {
     }
   };
 
-  const  handleEditService = async (item) => {
-   
-        navigation.navigate("AddServices", { item });
+  const handleEditService = async (item) => {
+        navigation.navigate("EditServices", { item });
      
   };
 
@@ -141,17 +140,40 @@ const ServicesScreen = () => {
           <View style={{ width: "100%" }}>
             <Text style={styles.styleText}>Here <Image style={{ width: 80, height: 60 }} source={require("../../assets/111.jpg")} /></Text>
             <Text style={[styles.styleText, styles.styleText2]}>Our Services</Text>
+           
+            <TouchableOpacity
+             onPress={() => navigation.navigate("AddServices")}
+             style={{
+               marginTop: 20,
+               backgroundColor: Color.primary,
+               borderWidth: 1,
+               borderColor: '#fff',
+               borderRadius: 8,
+               paddingVertical: 10,
+               paddingHorizontal: 40,
+               justifyContent: 'center',
+               alignItems: 'center',
+             }}
+           >
+             <Text style={{
+               fontWeight: 'bold',
+               color: '#fff',
+               fontSize: 16,
+             }}>
+               Add Service
+               </Text>
+             </TouchableOpacity>
 
             <SearchProANDSer placeholder="Search your service" />
           </View>
 
-      <View style={{flexDirection:'row'}}>
-      <TouchableOpacity onPress={handleBodyPress}>
-         <Text style={[styles.Sub1, selectedItem === 'Body' ? styles.selectedText1 : null]}>Body</Text>
+        <View style={{ flexDirection: 'row'}}>
+        <TouchableOpacity onPress={handleBodyPress}>
+        <Text style={[styles.Sub1, selectedItem === 'Body' ? styles.selectedText1 : null]}>Body</Text>
       </TouchableOpacity>
-      
+
       <TouchableOpacity onPress={handleFacePress}>
-      <Text style={[styles.Sub2, selectedItem === 'Face' ? styles.selectedText2: null]}>Face</Text>
+        <Text style={[styles.Sub2, selectedItem === 'Face' ? styles.selectedText2 : null]}>Face</Text>
       </TouchableOpacity>
       </View>
 
@@ -331,38 +353,54 @@ const styles = StyleSheet.create({
     styleText2:{
       color: Color.background
     },
-    Sub1:{
+    Sub1: {
+      color: 'black',
+      marginLeft: 15,
+      paddingHorizontal: 30,
+      borderRadius: 20,
+      padding: 10,
+      fontWeight: 'bold',
+      textTransform: 'capitalize',
+      marginBottom: 20,
+      borderColor: Color.background,
+      borderWidth: 1
+    },
+    selectedText1: {
+      color: '#fff',
       backgroundColor: Color.background,
       marginLeft: 15,
       paddingHorizontal: 30,
       borderRadius: 20,
       padding: 10,
-      color: '#fff',
       fontWeight: 'bold',
       textTransform: 'capitalize',
-      marginBottom: 20
-     },
-     Sub2:{
-      backgroundColor: Color.secondary,
-      marginLeft: 30,
-      paddingHorizontal: 30,
-      borderRadius: 20,
-      padding: 10,
-      color: 'black',
-      borderWidth: 1,
-      borderColor: Color.background,
-      fontWeight: 'bold',
-      textTransform: 'capitalize',
-      marginBottom: 20
-     },
-     selectedText1: {
-      color: Color.secondary,
+      marginBottom: 20,
       borderColor: Color.background,
       borderWidth: 1
     },
-  
+    Sub2: {
+      color: 'black',
+      marginLeft: 15,
+      paddingHorizontal: 30,
+      borderRadius: 20,
+      padding: 10,
+      fontWeight: 'bold',
+      textTransform: 'capitalize',
+      marginBottom: 20,
+      borderColor: Color.background,
+      borderWidth: 1
+    },
     selectedText2: {
-      color: Color.background,
-      backgroundColor: '#fffcea'
-    }
+      color: '#fff', 
+      backgroundColor: Color.background,
+      marginLeft: 15,
+      paddingHorizontal: 30,
+      borderRadius: 20,
+      padding: 10,
+      fontWeight: 'bold',
+      textTransform: 'capitalize',
+      marginBottom: 20,
+      borderColor: Color.background,
+      borderWidth: 1
+    },  
 })
