@@ -31,7 +31,7 @@ const ServicesScreen = () => {
   const handleBodyPress = async () => {
     try {
       console.log("Fetching services...");
-      const response = await fetch(`${baseUrl}/services/getBodyServices`);
+      const response = await fetch(`http://10.0.2.2:3000/services/getBodyServices`);
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
@@ -47,7 +47,7 @@ const ServicesScreen = () => {
   const handleFacePress = async () => {
     try {
       console.log("Fetching services...");
-      const response = await fetch(`${baseUrl}/services/getFaceServices`);
+      const response = await fetch(`http://10.0.2.2:3000/services/getFaceServices`);
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
@@ -127,22 +127,11 @@ const ServicesScreen = () => {
     }
   };
 
-  /*const  handleEditService = async (itemId) => {
-    console.log('EditService item with ID:', itemId);
-    try {
-      const response = await fetch(`${baseUrl}/services/updateServices/${itemId}`, {
-        method: 'PUT',
-      });
-      if (response.ok) {
-        navigation.navigate("AddServices", { editedItemId: itemId });
-      } else {
-        const responseData = await response.json();
-        console.error('Failed to EditService item. Server response:', responseData);
-      }
-    } catch (error) {
-      console.error('Error EditService item:', error);
-    }
-  };*/
+  const  handleEditService = async (item) => {
+   
+        navigation.navigate("AddServices", { item });
+     
+  };
 
   return (
     <View style={styles.container}>
@@ -185,7 +174,7 @@ const ServicesScreen = () => {
 
                   <TouchableOpacity
                     style={styles.editButton}
-                    onPress={() => handleEditService(service._id)}>
+                    onPress={() => handleEditService(service)}>
                     <Ionicons name="pencil" color="red" size={Spacing} />
                 </TouchableOpacity>
               
