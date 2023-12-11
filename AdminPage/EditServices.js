@@ -38,8 +38,7 @@ import {
     ];
   
    const initialValues = item
-      ? {...item , image:{ uri: item.image.
-        secure_url  }}
+      ? {...item}
       : {
           name: "",
           description: "",
@@ -48,14 +47,11 @@ import {
           time: "",
           subServices: [],
           status: [],
-          image: "",
         };
     const [FData, setFData] = useState({
       ...initialValues,
     });
     const toast = useToast();
-    const [buttonText, setButtonText] = useState("Upload Image");
-    const [image, setImage] = useState(initialValues.image);
    
     const handleSubServicesChange = (selectedsubServices) => {
       setFData((prevData) => ({
@@ -70,22 +66,6 @@ import {
         status: selectedStauts,
       }));
     };
-  
-    const pickImage = async () => {
-        let result = await ImagePicker.launchImageLibraryAsync({
-          mediaTypes: ImagePicker.MediaTypeOptions.Images,
-          allowsEditing: true,
-          aspect: [4, 3],
-          quality: 1,
-        });
-      
-        if (!result.canceled) {
-          setImage({ uri: result.assets[0].uri });
-          setButtonText("Image is uploaded successfully");
-          setFData((prevData) => ({ ...prevData, image: { uri: result.assets[0].uri } }));
-        }
-      };
-      
         
     const baseUrl = "https://ayabeautyn.onrender.com";
       const handleEditService = (itemId) => {
@@ -249,37 +229,6 @@ import {
             />
           </SafeAreaView>
   
-          <View style={{ marginHorizontal: 10, marginTop: 20 }}>
-            <Button
-              title={buttonText}
-              onPress={pickImage}
-              buttonStyle={{
-                backgroundColor: "transparent",
-                width: "100%",
-                height: 60,
-                borderWidth: 2,
-                borderColor: "#c3b4d2",
-              }}
-              titleStyle={{ color: "#757a79", fontSize: 15, marginLeft: 0 }}
-            />
-            <FontAwesomeIcon
-              icon={faCloudUploadAlt}
-              style={[styles.icon, styles.iconDis]}
-            />
-            {image && (
-              <Image
-                source={{ uri:  image.uri }}
-                style={{
-                  width: 335,
-                  height: 180,
-                  margin: 20,
-                  borderRadius: 10,
-                  marginLeft: 15,
-                }}
-              />
-            )}
-          </View>
-  
           <TouchableOpacity onPress={() => handleEditService(item._id)}>
             <Text style={styles.buttonStyle}>Edit Services</Text>
           </TouchableOpacity>
@@ -341,7 +290,7 @@ import {
   
     buttonStyle: {
       padding: 20,
-      marginTop: 80,
+      marginTop: 40,
       marginHorizontal: 10,
       backgroundColor: Color.primary,
       fontWeight: "400",
