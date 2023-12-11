@@ -144,7 +144,7 @@ import {
   
           <View style={styles.formgroup}>
             <TextInput
-              value={FData.price}
+              value={FData.price.toString()}
               onChangeText={(text) => setFData({ ...FData, price: text })}
               style={styles.input}
               placeholder="Prise Services"
@@ -154,7 +154,7 @@ import {
   
           <View style={styles.formgroup}>
             <TextInput
-              value={FData.discount}
+              value={FData.discount.toString()}
               onChangeText={(text) => setFData({ ...FData, discount: text })}
               style={styles.input}
               placeholder="discount Services"
@@ -164,7 +164,7 @@ import {
   
           <View style={styles.formgroup}>
             <TextInput
-              value={FData.time}
+              value={FData.time.toString()}
               onChangeText={(text) => setFData({ ...FData, time: text })}
               style={styles.input}
               placeholder="time Services"
