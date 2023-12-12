@@ -19,6 +19,7 @@ const MainScreen2 = () => {
   };
 
   const {id: userId , name: userName} = useSelector(state => state.user.userData)
+  const {id: salonId , name: salonName} = useSelector(state => state.user.usedSalonData)
 
 
   return (
@@ -33,7 +34,7 @@ const MainScreen2 = () => {
           hello, {userName}
           <Image style={{ width: 50, height: 50 }} source={require("../../assets/pic3.jpg")} />
         </Text>
-        <Text style={styles.textHeader1}>welcome to aya beauty center</Text>
+        <Text style={styles.textHeader1}>welcome to {salonName} center</Text>
         <SearchProANDSer placeholder={'search here'} />
         <MainScreen />
         <Employee />

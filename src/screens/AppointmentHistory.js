@@ -48,7 +48,7 @@ const AppointmentsScreen = () => {
   const fetchData = async () => {
     try {
       const response = await fetch(
-        `${baseUrl}/appointments/appointment`
+        `http://10.0.2.2:3000/appointments/appointment`
       );
       const data = await response.json();
       setItems(data);
@@ -63,7 +63,7 @@ const AppointmentsScreen = () => {
 
     try {
       const response = await fetch(
-        `${baseUrl}/appointments/appointment/${itemId}`,
+        `http://10.0.2.2:3000/appointments/appointment/${itemId}`,
         {
           method: "DELETE",
         }
