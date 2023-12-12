@@ -14,13 +14,9 @@ import Color from "../Common/Color";
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { useNavigation } from "@react-navigation/native";
 
-
 const About = () => {
-
- 
-
   const [currentIndex, setCurrentIndex] = useState(0);
-
+  
   const images = [
     require("../../assets/hh.jpg"),
     require("../../assets/oo.jpg"),
