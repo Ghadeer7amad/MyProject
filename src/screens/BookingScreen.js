@@ -55,7 +55,7 @@ const BookingScreen = () => {
   );
   const baseUrl = "https://ayabeautyn.onrender.com";
   useEffect(() => {
-    fetch(`${baseUrl}/services/getServices`)
+    fetch(`http://10.0.2.2:3000/services/getServices`)
       .then((res) => res.json())
       .then((data) => {
         setServices(data.Services);
@@ -100,7 +100,7 @@ const BookingScreen = () => {
     };
     console.log('data to send-->', data);
     try {
-      const response = await fetch(`${baseUrl}/appointments/appointment`, {
+      const response = await fetch(`http://10.0.2.2:3000/appointments/appointment`, {
         method: 'POST',
         body: JSON.stringify(data),
         headers: {

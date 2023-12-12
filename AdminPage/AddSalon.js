@@ -28,8 +28,7 @@ import {
     const navigation = useNavigation();
     const [FData, setFData] = useState({
       name: "",
-      job: "",
-      experienceYears: "",
+      branches: "",
     });
     const toast = useToast();
   
@@ -71,7 +70,7 @@ import {
         });
         const baseUrl = "https://ayabeautyn.onrender.com";
   
-        const response = await fetch(`http://10.0.2.2:3000/salons/salon`, {
+        const response = await fetch(`${baseUrl}/salons/salon`, {
           method: "POST",
           body: formData,
         });

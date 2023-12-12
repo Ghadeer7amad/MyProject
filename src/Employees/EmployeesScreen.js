@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Image,
   TouchableOpacity,
+  Alert
 } from "react-native";
 import CustomSearchBar from "../Common/SearchBarComponent.js";
 import Header from "../screens/Header.js";
@@ -24,6 +25,11 @@ const EmployeesScreen = () => {
   const handleDetailsPress = (item) => {
     navigation.navigate('EmployeesDetails', { item });
   };
+
+  const handleEditEmployee = async (item) => {
+    navigation.navigate("EditEmployee", { item });
+  };
+
   const baseUrl = "https://ayabeautyn.onrender.com";
   
   const fetchData = async () => {
@@ -40,7 +46,7 @@ const EmployeesScreen = () => {
   const confirmDelete = (itemId) => {
     Alert.alert(
       "Delete Confirmation",
-      "Are you sure you want to cancle this appointment?",
+      "Are you sure you want to delete this employee?",
       [
         {
           text: "Cancel",
@@ -113,12 +119,20 @@ const EmployeesScreen = () => {
             >
               <Ionicons name="ios-arrow-forward" size={24} color="white" />
             </TouchableOpacity>
+            <TouchableOpacity
+               style={styles.editIcon}
+                onPress={() => handleEditEmployee(item)}
+              >
+                
+                <Icon name="pencil" color="#5e366a" size={20} />
+              </TouchableOpacity>
              <TouchableOpacity
               style={styles.deleteIcon}
               onPress={() => confirmDelete(item._id)}
             >
               <Icon name="close" color="#5e366a" size={20} />
             </TouchableOpacity>
+              
                 </View>
               </TouchableOpacity>
             </View>
@@ -205,6 +219,12 @@ const styles = StyleSheet.create({
   },
   deleteIcon:{
     marginTop:-80,
+    marginLeft:10,
+  },
+  editIcon:{
+    marginTop:-80,
+   
+ marginLeft:-20,
   },
 });
 
