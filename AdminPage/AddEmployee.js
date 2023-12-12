@@ -71,7 +71,7 @@ const AddEmployee = () => {
       });
       const baseUrl = "https://ayabeautyn.onrender.com";
 
-      const response = await fetch(`http://10.0.2.2:3000/employees/employee`, {
+      const response = await fetch(`${baseUrl}/employees/employee`, {
         method: "POST",
         body: formData,
       });

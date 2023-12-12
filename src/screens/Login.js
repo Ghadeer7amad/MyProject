@@ -29,7 +29,7 @@ const  dispatch = useDispatch()
  const handleLogin = async () => {
   const baseUrl = 'https://ayabeautyn.onrender.com';
   try {
-    const response = await axios.post(`http://10.0.2.2:3000/auth/signin`, {
+    const response = await axios.post(`${baseUrl}/auth/signin`, {
       email,
       password,
     });

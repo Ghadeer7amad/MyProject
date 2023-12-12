@@ -31,7 +31,7 @@ const ServicesScreen = () => {
   const handleBodyPress = async () => {
     try {
       console.log("Fetching services...");
-      const response = await fetch(`http://10.0.2.2:3000/services/getBodyServices`);
+      const response = await fetch(`${baseUrl}/services/getBodyServices`);
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }

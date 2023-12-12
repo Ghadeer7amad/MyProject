@@ -14,7 +14,7 @@ import Color from "../Common/Color";
 import Header from "./Header";
 import NavbarButtom from "../Common/NavbarButtom";
 import { Select } from "native-base";
-import {useSelector} from 'react-redux';
+import { useSelector } from "react-redux";
 import { serialize } from "object-to-formdata";
 import { Box, useToast } from "native-base";
 
@@ -23,14 +23,19 @@ const screenwidth = Dimensions.get("window").width;
 const BookingScreen = () => {
   const navigation = useNavigation();
   const [isLoading, setIsLoading] = useState(true);
+  const [items, setItems] = useState([]);
   const toast = useToast();
 
-  const {id: userId , name: userName} = useSelector(state => state.user.userData)
+  const { id: userId, name: userName } = useSelector(
+    (state) => state.user.userData
+  );
+  const { _id: salonId, name: salonName } = useSelector(
+    (state) => state.user.usedSalonData
+  );
 
-  // console.log(userId,userName);
   const generateAvailableTimes = () => {
     const startHour = 8;
-    const endHour = 16;
+    const endHour = 20;
     const intervalMinutes = 30;
 
     const availableTimes = [];
@@ -54,8 +59,9 @@ const BookingScreen = () => {
     services.length > 0 ? services[0].name : null
   );
   const baseUrl = "https://ayabeautyn.onrender.com";
+
   useEffect(() => {
-    fetch(`http://10.0.2.2:3000/services/getServices`)
+    fetch(`${baseUrl}/services/getServices`)
       .then((res) => res.json())
       .then((data) => {
         setServices(data.Services);
@@ -80,56 +86,119 @@ const BookingScreen = () => {
 
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
+  const [bookedAppointments, setBookedAppointments] = useState([]);
+
+  const fetchData = async () => {
+    try {
+      const response = await fetch(
+        `${baseUrl}/appointments/appointment`
+      );
+      const data = await response.json();
+      setBookedAppointments(data.map((appointment) => appointment.uniqueDate));
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const isSlotAvailable = (date, time) => {
+    const uniqueDate = date + time;
+    return !bookedAppointments.includes(uniqueDate);
+  };
 
   const onDateChange = (date) => {
     setSelectedDate(date);
   };
 
   const onTimeSelected = (time) => {
-    setSelectedTime(time);
+    if (isSlotAvailable(selectedDate, time)) {
+      setSelectedTime(time);
+    } else {
+      toast.show({
+        render: () => {
+          return (
+            <Box bg="#c81912" px="5" py="5" rounded="sm" mb={5}>
+              Selected time is not available. Please choose another time.
+            </Box>
+          );
+        },
+      });
+    }
+  };
+
+  const timeItemStyles = {
+    backgroundColor: Color.background,
+    borderRadius: 50,
+    padding: 20,
+    marginLeft: 10,
+    marginBottom: 10,
+    width: 84,
+    height: 84,
+    alignItems: "center",
+    justifyContent: "center",
+  };
+
+  const timeTextStyles = {
+    fontSize: 15,
+    color: Color.secondary,
+    fontWeight: "bold",
+    alignSelf: "center",
+    textAlign: "center",
   };
 
   const onSubmitPressed = async () => {
     const data = {
       user_id: userId,
-      user_name:userName ,
+      salon_id: salonId,
+      user_name: userName,
       appointment_date: selectedDate,
       appointment_time: selectedTime,
       uniqueDate: selectedDate + selectedTime,
       serviceType: selectedValue,
     };
-    console.log('data to send-->', data);
+
     try {
-      const response = await fetch(`http://10.0.2.2:3000/appointments/appointment`, {
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-      });
+      const response = await fetch(
+        `${baseUrl}/appointments/appointment`,
+        {
+          method: "POST",
+          body: JSON.stringify(data),
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+        }
+      );
       const json = await response.json();
+
       if (!response.ok) {
         console.warn(json.error);
       }
+
       if (response.ok) {
-        console.log('appointment details', json);
+        console.log("appointment details", json);
+
+        // Add the booked appointment to the list
+        setBookedAppointments([...bookedAppointments, data.uniqueDate]);
+
         toast.show({
           render: () => {
             return (
               <Box bg="emerald.500" px="5" py="5" rounded="sm" mb={5}>
-                Your appointment is booked successfuly
+                Your appointment is booked successfully
               </Box>
             );
           },
-        }); 
+        });
       }
     } catch (err) {
       console.log(err.message);
     }
   };
-   
-  
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -188,14 +257,16 @@ const BookingScreen = () => {
                 <TouchableOpacity
                   key={item}
                   style={[
-                    styles.timeItem,
+                    timeItemStyles,
                     selectedTime === item && styles.selectedTimeItem,
+                    !isSlotAvailable(selectedDate, item) && { opacity: 0.5 },
                   ]}
                   onPress={() => onTimeSelected(item)}
+                  disabled={!isSlotAvailable(selectedDate, item)}
                 >
                   <Text
                     style={[
-                      styles.timeText,
+                      timeTextStyles,
                       selectedTime === item && styles.selectedTimeText,
                     ]}
                   >
@@ -300,7 +371,7 @@ const styles = StyleSheet.create({
   },
   selectedTimeItem: {
     backgroundColor: Color.secondary,
-    borderWidth:2,
+    borderWidth: 2,
     borderColor: Color.background,
   },
   selectedTimeText: {
