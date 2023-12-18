@@ -26,10 +26,14 @@ const ProductsDetails = ({ route }) => {
   const handlePressOut = () => {
     setIsTouched(false);
   };
+  const handleFavoritePress = (product) => {
+    navigation.navigate('Favorite', { product });
+  };
+  
   return (
-    <ScrollView style={{padding: Spacing, backgroundColor: Color.background}}>
+    <View style={{padding: Spacing, backgroundColor: Color.background, height: '100%'}}>
         <SafeAreaView>
-        <ImageBackground source={product.image}
+        <ImageBackground source={{uri: product?.image?.secure_url}} 
           style={styles.ImageBackgroundStyle}  imageStyle={{borderRadius: Spacing * 1.5, marginTop: 20}}>
 
             <View style={{flexDirection:"row", justifyContent:"space-between"}}>
@@ -46,19 +50,24 @@ const ProductsDetails = ({ route }) => {
                 <BlurView tint="light" style={styles.BlurViewStyle}>
                     <View>
                         <Text style={styles.productName}>{product.name}</Text>
-                        <Text style={{color:"black"}}>{product.included}</Text>
+                        <Text style={{color:"black", fontWeight: 'bold'}}>Quantity   {product.stock}</Text>
+                        <Text style={{color:"black", fontWeight: 'bold'}}>Sold   {product.number_sellers}</Text>
+                        
 
                 <View style={{flexDirection:"row", justifyContent:"space-between"}}>
                     <View style={styles.iconRating}>
                         <Ionicons name="star" size={Spacing * 1.5} color={Color.primary}/>
-                        <Text style={styles.productRating}>{product.rating}</Text>
+                        <Text style={styles.productRating}>{product.rate}</Text>
                     </View>
 
                     <View 
                       style={styles.TowIcaonStyle}>
                         <View style={styles.icaonPosition}>
-                        <Ionicons name="heart" size={Spacing * 2} color={Color.primary}/>
-                        <Text style={styles.icanNameStyle}>Favorite</Text>
+                        <Ionicons name="heart" size={Spacing * 2} color={Color.primary} onPress={handleFavoritePress}/>
+
+                        <TouchableOpacity onPress={handleFavoritePress}>
+                         <Text style={styles.icanNameStyle}>Favorite</Text>
+                        </TouchableOpacity>
                         </View>
                     </View>
 
@@ -81,11 +90,7 @@ const ProductsDetails = ({ route }) => {
           <Text style={styles.priceStyle}>
             Price
           </Text>
-          <View style={{ flexDirection: "row" }}>
-            <Text style={styles.DollerStyle}>$</Text>
-            <Text
-              style={styles.priceStyle}>{product.price}</Text>
-          </View>
+            <Text style={styles.priceStyle}>${product.finalPrice}</Text>
         </View>
         <TouchableOpacity  
         onPressIn={handlePressIn}
@@ -103,7 +108,7 @@ const ProductsDetails = ({ route }) => {
     </View>
         
         </SafeAreaView>
-    </ScrollView>
+    </View>
   )
 }
 
@@ -113,10 +118,11 @@ const styles = StyleSheet.create({
   ImageBackgroundStyle:{
     height: height*0.7,
     justifyContent:"space-between", 
-    padding: 0
+    padding: 0,
+
   },
   BlurViewStyle:{
-    padding: Spacing*1.5
+    padding: Spacing/2
   },
   productName:{
     fontSize:Spacing*2,
@@ -131,7 +137,8 @@ const styles = StyleSheet.create({
   },
   productRating:{
     color: "black",
-    marginLeft: Spacing/2
+    marginLeft: Spacing/2,
+    fontWeight: 'bold'
   },
   TowIcaonStyle:{
     justifyContent: "center",
@@ -149,18 +156,15 @@ const styles = StyleSheet.create({
     fontSize: Spacing,
   },
   DiscriptionStyle:{
-    fontSize: Spacing,
+    fontSize: 14,
     lineHeight: Spacing*1.3,
     color: Color.secondary,
   },
-  DollerStyle:{
-    color: Color.primary,
-    fontSize: Spacing * 1.5
-  },
   priceStyle:{
-    fontSize: Spacing*1.5,
+    fontSize: Spacing,
     marginLeft: Spacing / 2,
-    color: Color.secondary,
+    color: 'black',
+    fontWeight: 'bold'
   },
   descriptionText: {
     fontSize: Spacing*2,
@@ -183,8 +187,9 @@ const styles = StyleSheet.create({
   ButtonStyle:{
     marginLeft: Spacing*5,
     backgroundColor: Color.primary,
-    paddingLeft: 50,
-    paddingRight: 50,
+    paddingLeft: 60,
+    paddingRight: 60,
+    paddingVertical: 10,
     marginTop: 30,
     justifyContent: "center",
     alignItems: "center",

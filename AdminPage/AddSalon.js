@@ -28,8 +28,7 @@ import {
     const navigation = useNavigation();
     const [FData, setFData] = useState({
       name: "",
-      job: "",
-      experienceYears: "",
+      branches: "",
     });
     const toast = useToast();
   

@@ -5,7 +5,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 import Header from "./Header.js";
 import NavbarButtom from "../Common/NavbarButtom.js";
 import Modal from 'react-native-modal';
-import * as ImagePicker from 'react-native-image-picker';
+import * as ImagePicker from 'expo-image-picker';
 import {
   View,
   Text,
@@ -14,18 +14,48 @@ import {
   Image,
   TouchableOpacity,
   TextInput,
+  Alert,
+  PermissionsAndroid
 } from "react-native";
 import Color from "../Common/Color.js";
 import { MenuProvider, Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu';
 
-
 const PostsScreen = () => {
   const navigation = useNavigation();
   const [items, setItems] = useState([]);
-  const [isLoading, setIsLoading] = useState(true); 
+  const [isLoading, setIsLoading] = useState(true);
+  const [editedText, setEditedText] = useState('');
+  const [editedImage, setEditedImage] = useState('');
+  const [editedItemId, setEditedItemId] = useState(null);
+  const [isEditModalVisible, setEditModalVisible] = useState(false);
 
+  // (الرابط الرئيسي للخادم)
   const baseUrl = "https://ayabeautyn.onrender.com";
-  
+
+  // (طلب إذن الوصول إلى معرض الصور)
+  const requestGalleryPermission = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+        {
+          title: 'Gallery Permission',
+          message: 'App needs access to your gallery to choose images.',
+          buttonNeutral: 'Ask Me Later',
+          buttonNegative: 'Cancel',
+          buttonPositive: 'OK',
+        },
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        console.log('Gallery permission granted');
+      } else {
+        console.log('Gallery permission denied');
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  };
+
+  // (استرجاع البيانات من الخادم)
   const fetchData = async () => {
     try {
       const response = await fetch(`${baseUrl}/posts/post`);
@@ -41,6 +71,7 @@ const PostsScreen = () => {
     }
   };
 
+  // (معالجة الضغط على زر الحذف)
   const handleDeletePress = async (itemId) => {
     console.log('Deleting item with ID:', itemId);
 
@@ -60,124 +91,198 @@ const PostsScreen = () => {
     }
   };
 
-  const [isEditModalVisible, setEditModalVisible] = useState(false);
-  const [editedText, setEditedText] = useState('');
-  const [editedImage, setEditedImage] = useState('');
-  const [editedItemId, setEditedItemId] = useState(null);
+  // (عرض رسالة تأكيد الحذف)
+  const confirmDelete = (itemId) => {
+    Alert.alert(
+      "Delete Confirmation",
+      "Are you sure you want to delete this post?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Yes, Delete",
+          onPress: () => handleDeletePress(itemId),
+        },
+      ],
+      { cancelable: false } 
+    );
+  };
 
-  const handleEditPress = (itemId, currentText) => {
+  // (معالجة الضغط على زر التعديل)
+  const handleEditPress = (itemId, currentText, currentImage) => {
     setEditedItemId(itemId);
     setEditedText(currentText);
-    setEditedImage(items.find(item => item._id === itemId)?.image?.secure_url || '');
+    setEditedImage(currentImage);
     setEditModalVisible(true);
   };
 
-  const handleChooseImage = () => {
-    ImagePicker.launchImageLibrary({}, response => {
-      if (response.uri) {
-        handleImageSelected(response.uri);
+  // (اختيار الصورة من معرض الصور)
+  const handleChooseImage = async () => {
+    try {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
+  
+      if (!result.canceled) {
+        const selectedImage = result.assets && result.assets.length > 0
+          ? result.assets[0].uri
+          : result.uri;
+  
+        handleImageSelected(selectedImage);
       }
-    });
+    } catch (error) {
+      console.error('Error choosing image:', error);
+    }
   };
-
+  
+  // (معالجة اختيار الصورة)
   const handleImageSelected = (selectedImage) => {
     setEditedImage(selectedImage);
   };
 
+  // (رفع الصورة إلى الخادم)
   const handleImageUpload = async () => {
     console.log('Image uploaded:', editedImage);
   
-    // Check if there is an image to upload
-    if (!editedImage) {
-      console.log('No image to upload');
-      return;
+    if (!editedImage || !editedText) {
+      console.log('Both text and image are required');
+      return null;
     }
   
     try {
       const formData = new FormData();
       formData.append('image', {
         uri: editedImage,
-        type: 'image/jpeg', // Adjust the type according to your image format
+        type: 'image/jpeg',
         name: 'image.jpg',
       });
   
-      const response = await fetch(`${baseUrl}/upload/image`, {
+      formData.append('textPost', editedText);
+  
+      const response = await fetch(`${baseUrl}/posts/post`, {
         method: 'POST',
         body: formData,
         headers: {
           'Content-Type': 'multipart/form-data',
-          // Add any additional headers if needed
         },
       });
   
       if (response.ok) {
         const responseData = await response.json();
         console.log('Image upload successful. Server response:', responseData);
-  
-        // If the server returns the image URL, you can use it for further processing
-        const imageUrl = responseData.imageUrl;
-        // Do something with the imageUrl if needed
+        return responseData.secure_url;
       } else {
         const errorData = await response.json();
         console.error('Failed to upload image. Server response:', errorData);
+        return null;
       }
     } catch (error) {
       console.error('Error uploading image:', error);
+      return null;
     }
   };
+
+  // (حذف الصورة من الخادم)
+  const handleDeleteImage = async (imageId) => {
+    try {
+      // استرجاع الصورة المطلوب حذفها باستخدام imageId
+      const itemToDelete = items.find(item => item._id === imageId);
+      
+      // التحقق من وجود الصورة و public_id
+      if (itemToDelete && itemToDelete.image && itemToDelete.image.public_id) {
+        // حذف الصورة باستخدام public_id
+        const response = await fetch(`${baseUrl}/upload/image/${itemToDelete.image.public_id}`, {
+          method: 'DELETE',
+        });
+    
+        if (response.ok) {
+          console.log('Image deleted successfully');
+        } else {
+          const responseData = await response.text();
+          console.error('Error deleting image:', responseData);
+        }
+      }
+    } catch (error) {
+      console.error('Error deleting image:', error);
+    }
+  };
+  
+  
   
 
   const handleSaveEdit = async () => {
     try {
-      const response = await fetch(`${baseUrl}/posts/post/${editedItemId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          textPost: editedText,
-          image: editedImage,
-        }),
-      });
-
-      if (response.ok) {
-        const updatedItems = items.map(item => {
-          if (item._id === editedItemId) {
-            return {
-              ...item,
-              textPost: editedText,
-              image: editedImage,
-            };
-          }
-          return item;
+      if (editedItemId) {
+        // إلغاء الظاهرية للحفاظ على المرونة
+        const newText = editedText || null;
+        const newImage = editedImage || null;
+  
+        // إعادة التعامل مع الحذف في حال كان هناك تعديل على الصورة
+        if (editedItemId && newImage) {
+          await handleDeleteImage(editedItemId);
+        }
+  
+        // رفع الصورة إذا كان هناك تعديل على الصورة
+        const newImageUrl = newImage ? await handleImageUpload() : null;
+  
+        const response = await fetch(`${baseUrl}/posts/post/${editedItemId}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            textPost: newText,
+            image: newImageUrl || '', // استخدام العنوان الجديد للصورة إذا كانت موجودة
+          }),
         });
-
-        setItems(updatedItems);
-        setEditModalVisible(false);
-      } else {
-        const responseData = await response.json();
-        console.error('Failed to update item. Server response:', responseData);
+  
+        if (response.ok) {
+          const updatedItems = items.map(item => {
+            if (item._id === editedItemId) {
+              return {
+                ...item,
+                textPost: newText || item.textPost,
+                image: newImageUrl ? { secure_url: newImageUrl } : item.image,
+              };
+            }
+            return item;
+          });
+  
+          setItems(updatedItems);
+          setEditModalVisible(false);
+        } else {
+          const responseData = await response.json();
+          console.error('Failed to update item. Server response:', responseData);
+        }
       }
     } catch (error) {
       console.error('Error updating item:', error);
     }
   };
-
+  
+  
+  
+  // (إلغاء التعديل)
   const handleCancelEdit = () => {
     setEditModalVisible(false);
   };
 
+  // (حساب فارق الوقت)
   const calculateTimeDifference = (createdAt) => {
     const now = new Date();
     const postDate = new Date(createdAt);
     const timeDifference = now - postDate;
-  
-    // Calculate time difference in seconds, minutes, hours, and days
+
     const seconds = Math.floor(timeDifference / 1000);
     const minutes = Math.floor(seconds / 60);
     const hours = Math.floor(minutes / 60);
     const days = Math.floor(hours / 24);
-  
+
     if (minutes === 0) {
       return 'Just now';
     } else if (minutes < 60) {
@@ -187,104 +292,108 @@ const PostsScreen = () => {
     } else if (days <= 2) {
       return `${days}d`;
     } else {
-      // Format the postDate using toLocaleDateString() with the desired options
-      return postDate.toLocaleDateString('en-GB'); // Adjust the locale as needed
+      return postDate.toLocaleDateString('en-GB'); 
     }
   };
-  
-  
-  
-  
 
+  // (استرجاع الصلاحيات وجلب البيانات عند تحميل الشاشة)
   useEffect(() => {
+    requestGalleryPermission();
     fetchData();
   }, []);
 
-
-
+  // (عرض المكون)
   return (
     <MenuProvider>
-    <View style={styles.container}>
-      <Header />
+      <View style={styles.container}>
+        <Header />
 
-      <View style={styles.postInputContainer}>
-        <View style={styles.postingContainer}>
-          <Image source={require("../../assets/3.jpg")} style={styles.userImage} />
-          <View style={styles.postInputWrapper}>
-            <Button
-              title="What do you want to share?"
-              type="outline"
-              onPress={() => navigation.navigate("AddPost")}
-              buttonStyle={styles.postButton}
-              titleStyle={styles.postButtonTitle}
-            />
-          </View>
-        </View>
-      </View>
-
-      <FlatList
-        data={items}
-        keyExtractor={(item) => item._id}
-        renderItem={({ item }) => (
-          <Card containerStyle={styles.card}>
-            <Menu>
-              <MenuTrigger>
-                <Icon name="ellipsis-vertical" color="#5e366a" size={20} />
-              </MenuTrigger>
-              <MenuOptions>
-                <MenuOption onSelect={() => handleDeletePress(item._id)} text="Delete" />
-                <MenuOption onSelect={() => handleEditPress(item._id, item.textPost)} text="Edit" />
-              </MenuOptions>
-            </Menu>
-            <View style={styles.cardContentContainer}>
-              <Text style={styles.postDate}>
-                {calculateTimeDifference(item.createdAt) || 'No date available'}
-              </Text>
-              <Text style={styles.cardTitle}>{item.textPost}</Text>
-              <Image
-                source={{ uri: item?.image?.secure_url }}
-                style={styles.cardImage}
-                resizeMode="cover"
+        <View style={styles.postInputContainer}>
+          <View style={styles.postingContainer}>
+            <Image source={require("../../assets/3.jpg")} style={styles.userImage} />
+            <View style={styles.postInputWrapper}>
+              <Button
+                title="What do you want to share?"
+                type="outline"
+                onPress={() => navigation.navigate("AddPost")}
+                buttonStyle={styles.postButton}
+                titleStyle={styles.postButtonTitle}
               />
             </View>
-            <View style={styles.postInteractions}>
-              <TouchableOpacity>
-                <Icon name="heart" size={20} color="#ff4d4d" />
-              </TouchableOpacity>
-              <Text>{item.likes}</Text>
-              <TouchableOpacity>
-                <Icon name="chatbox" size={20} color="#777" />
-              </TouchableOpacity>
-              <Text>{item.comments}</Text>
-            </View>
-          </Card>
-        )}
-      />
-
-      <NavbarButtom onChange={(selectedIcon) => console.log(selectedIcon)} />
-
-      <Modal isVisible={isEditModalVisible}>
-        <View style={styles.editModalContainer}>
-          <TextInput
-            style={styles.editInput}
-            value={editedText}
-            onChangeText={(text) => setEditedText(text)}
-          />
-          <Image
-            source={{ uri: editedImage }}
-            style={styles.editImage}
-            resizeMode="cover"
-          />
-          <TouchableOpacity onPress={handleChooseImage}>
-            <Text style={styles.editImagePicker}>Choose Image</Text>
-          </TouchableOpacity>
-          <View style={styles.editModalButtons}>
-            <Button title="Save" onPress={handleSaveEdit} />
-            <Button title="Cancel" onPress={handleCancelEdit} />
           </View>
         </View>
-      </Modal>
-    </View>
+
+        <FlatList
+          data={items}
+          keyExtractor={(item) => item._id}
+          renderItem={({ item }) => (
+            <Card containerStyle={styles.card}>
+              <Menu>
+                <MenuTrigger>
+                  <Icon name="ellipsis-vertical" color="#5e366a" size={20} />
+                </MenuTrigger>
+                <MenuOptions>
+                  <MenuOption onSelect={() => confirmDelete(item._id)} text="Delete" />
+                  <MenuOption onSelect={() => handleEditPress(item._id, item.textPost, item?.image?.secure_url || '')} text="Edit" />
+                </MenuOptions>
+              </Menu>
+              <View style={styles.cardContentContainer}>
+                <Text style={styles.postDate}>
+                  {calculateTimeDifference(item.createdAt) || 'No date available'}
+                </Text>
+                <Text style={styles.cardTitle}>{item.textPost}</Text>
+                <Image
+                  source={{ uri: item?.image?.secure_url }}
+                  style={styles.cardImage}
+                  resizeMode="cover"
+                />
+              </View>
+              <View style={styles.postInteractions}>
+                <TouchableOpacity>
+                  <Icon name="heart" size={20} color="#ff4d4d" />
+                </TouchableOpacity>
+                <Text>{item.likes}</Text>
+                <TouchableOpacity>
+                  <Icon name="chatbox" size={20} color="#777" />
+                </TouchableOpacity>
+                <Text>{item.comments}</Text>
+              </View>
+            </Card>
+          )}
+        />
+
+        <NavbarButtom onChange={(selectedIcon) => console.log(selectedIcon)} />
+
+        <Modal isVisible={isEditModalVisible}>
+          <View style={styles.editModalContainer}>
+            <TextInput
+              style={styles.editInput}
+              value={editedText}
+              onChangeText={(text) => setEditedText(text)}
+            />
+            <Image
+              source={{ uri: editedImage }}
+              style={styles.editImage}
+              resizeMode="cover"
+            />
+            <TouchableOpacity onPress={handleChooseImage}>
+              <Text style={styles.editImagePicker}>Choose Image</Text>
+            </TouchableOpacity>
+            <View style={styles.editModalButtons}>
+  <Button
+    title="Save"
+    onPress={handleSaveEdit}
+    buttonStyle={styles.saveButton}
+  />
+  <Button
+    title="Cancel"
+    onPress={handleCancelEdit}
+    buttonStyle={styles.cancelButton}
+  />
+</View>
+          </View>
+        </Modal>
+      </View>
     </MenuProvider>
   );
 };
@@ -455,14 +564,26 @@ const styles = StyleSheet.create({
   },
   editImage: {
     width: '100%',
-    height: 150, // ارتفاع الصورة الثابت داخل الكارت
+    height: 300, // ارتفاع الصورة الثابت داخل الكارت
     borderRadius: 8,
     marginVertical: 10,
   },
   editImagePicker: {
-    color: 'blue',
+    color: Color.primary,
     marginVertical: 10,
   },
+  saveButton: {
+    backgroundColor: Color.background,
+    borderRadius: 10,
+    padding: 10,
+  },
+  cancelButton: {
+    backgroundColor: Color.background,
+    borderRadius: 10,
+    padding: 10,
+  },
+
+
   
 });
 

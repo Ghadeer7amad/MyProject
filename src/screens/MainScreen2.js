@@ -8,6 +8,8 @@ import MainScreen from '../screens/MainScreen.js';
 import Employee from '../screens/Employee.js';
 import Offers from '../screens/Offers.js'
 import NavbarButtom from '../Common/NavbarButtom.js'
+import {useSelector} from 'react-redux';
+
 
 const MainScreen2 = () => {
   const navigation = useNavigation();
@@ -15,6 +17,10 @@ const MainScreen2 = () => {
   const handleMenuPress = () => {
     navigation.openDrawer();
   };
+
+  const {id: userId , name: userName} = useSelector(state => state.user.userData)
+  const {id: salonId , name: salonName} = useSelector(state => state.user.usedSalonData)
+
 
   return (
     <View style={styles.container}>
@@ -25,10 +31,10 @@ const MainScreen2 = () => {
       </View>
       <ScrollView>
         <Text style={styles.textHeader}>
-          hello, nada
+          hello, {userName}
           <Image style={{ width: 50, height: 50 }} source={require("../../assets/pic3.jpg")} />
         </Text>
-        <Text style={styles.textHeader1}>welcome to aya beauty center</Text>
+        <Text style={styles.textHeader1}>welcome to {salonName} center</Text>
         <SearchProANDSer placeholder={'search here'} />
         <MainScreen />
         <Employee />

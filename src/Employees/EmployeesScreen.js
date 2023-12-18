@@ -4,9 +4,8 @@ import {
   FlatList,
   StyleSheet,
   Image,
-  TextInput,
   TouchableOpacity,
-  
+  Alert
 } from "react-native";
 import CustomSearchBar from "../Common/SearchBarComponent.js";
 import Header from "../screens/Header.js";
@@ -15,7 +14,6 @@ import { FontAwesome as Icon } from "@expo/vector-icons";
 import Color from "../Common/Color.js";
 import Spacing from "../Common/Spacing.js";
 import { Ionicons } from "@expo/vector-icons";
-import SearchProANDSer from "../Common/SerachProANDSer.js";
 import { useNavigation } from "@react-navigation/native";
 import React, {useState, useEffect} from 'react';
 
@@ -27,6 +25,11 @@ const EmployeesScreen = () => {
   const handleDetailsPress = (item) => {
     navigation.navigate('EmployeesDetails', { item });
   };
+
+  const handleEditEmployee = async (item) => {
+    navigation.navigate("EditEmployee", { item });
+  };
+
   const baseUrl = "https://ayabeautyn.onrender.com";
   
   const fetchData = async () => {
@@ -38,6 +41,24 @@ const EmployeesScreen = () => {
     } catch (error) {
       console.error('Error fetching data:', error);
     }
+  };
+
+  const confirmDelete = (itemId) => {
+    Alert.alert(
+      "Delete Confirmation",
+      "Are you sure you want to delete this employee?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Yes, Delete",
+          onPress: () => handleDeletePress(itemId),
+        },
+      ],
+      { cancelable: false } 
+    );
   };
 
   const handleDeletePress = async (itemId) => {
@@ -98,17 +119,25 @@ const EmployeesScreen = () => {
             >
               <Ionicons name="ios-arrow-forward" size={24} color="white" />
             </TouchableOpacity>
+            <TouchableOpacity
+               style={styles.editIcon}
+                onPress={() => handleEditEmployee(item)}
+              >
+                
+                <Icon name="pencil" color="#5e366a" size={20} />
+              </TouchableOpacity>
              <TouchableOpacity
               style={styles.deleteIcon}
-              onPress={() => handleDeletePress(item._id)}
+              onPress={() => confirmDelete(item._id)}
             >
               <Icon name="close" color="#5e366a" size={20} />
             </TouchableOpacity>
+              
                 </View>
               </TouchableOpacity>
             </View>
             
-          </View>
+          </View> 
         )}
       />
       <NavbarButtom onChange={(selectedIcon) => console.log(selectedIcon)} />
@@ -190,6 +219,12 @@ const styles = StyleSheet.create({
   },
   deleteIcon:{
     marginTop:-80,
+    marginLeft:10,
+  },
+  editIcon:{
+    marginTop:-80,
+   
+ marginLeft:-20,
   },
 });
 

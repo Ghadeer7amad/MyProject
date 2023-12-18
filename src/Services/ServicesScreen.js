@@ -17,27 +17,49 @@ import { BlurView } from "expo-blur";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation} from "@react-navigation/native";
 import NavbarButtom from "../Common/NavbarButtom";
-import { serialize } from "object-to-formdata";
+import { Alert } from "react-native";
 
 const ServicesScreen = () => {
   const navigation = useNavigation();
   const [Services, setServices] = useState(null);
-  //const userRole = "Admin"; 
-  const [FData, setFData] = useState({
-    name: "",
-    description: "",
-    price: "",
-    discount: "",
-    time: "",
-    subServices: [],
-    status: [],
-    image: "",
-  });
-  const [image, setImage] = useState(null);
-
   const handleBookPress = () => {
     navigation.navigate("BookingScreen");
   };
+
+  const [selectedItem, setSelectedItem] = useState('Body');
+
+  const handleBodyPress = async () => {
+    try {
+      console.log("Fetching services...");
+      const response = await fetch(`${baseUrl}/services/getBodyServices`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      const data = await response.json();
+      console.log("Received data:", data);
+      setServices(data.Services);
+      setSelectedItem('Body');
+    } catch (error) {
+      console.error('Error fetching body-related products:', error.message);
+    }
+  };
+
+  const handleFacePress = async () => {
+    try {
+      console.log("Fetching services...");
+      const response = await fetch(`${baseUrl}/services/getFaceServices`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      const data = await response.json();
+      console.log("Received data:", data);
+      setServices(data.Services);
+      setSelectedItem('Face');
+    } catch (error) {
+      console.error('Error fetching body-related products:', error.message);
+    }
+  };
+
 
   const handleDetailsPress = (service) => {
     navigation.navigate("ServiceDetails", { service });
@@ -70,6 +92,23 @@ const ServicesScreen = () => {
       console.error('Error deleting item:', error);
     }
   };
+  const confirmDelete = (itemId) => {
+    Alert.alert(
+      "Delete Confirmation",
+      "Are you sure you want to delete this item?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Yes, Delete",
+          onPress: () => handleRemoveService(itemId),
+        },
+      ],
+      { cancelable: false }
+    );
+  };
 
   const  handleSoftDeleteService = async (itemId) => {
     console.log('SoftDelete item with ID:', itemId);
@@ -88,22 +127,10 @@ const ServicesScreen = () => {
     }
   };
 
-  /*const  handleEditService = async (itemId) => {
-    console.log('EditService item with ID:', itemId);
-    try {
-      const response = await fetch(`${baseUrl}/services/updateServices/${itemId}`, {
-        method: 'PUT',
-      });
-      if (response.ok) {
-        navigation.navigate("AddServices", { editedItemId: itemId });
-      } else {
-        const responseData = await response.json();
-        console.error('Failed to EditService item. Server response:', responseData);
-      }
-    } catch (error) {
-      console.error('Error EditService item:', error);
-    }
-  };*/
+  const handleEditService = async (item) => {
+        navigation.navigate("EditServices", { item });
+     
+  };
 
   return (
     <View style={styles.container}>
@@ -113,9 +140,42 @@ const ServicesScreen = () => {
           <View style={{ width: "100%" }}>
             <Text style={styles.styleText}>Here <Image style={{ width: 80, height: 60 }} source={require("../../assets/111.jpg")} /></Text>
             <Text style={[styles.styleText, styles.styleText2]}>Our Services</Text>
+           
+            <TouchableOpacity
+             onPress={() => navigation.navigate("AddServices")}
+             style={{
+               marginTop: 20,
+               backgroundColor: Color.primary,
+               borderWidth: 1,
+               borderColor: '#fff',
+               borderRadius: 8,
+               paddingVertical: 10,
+               paddingHorizontal: 40,
+               justifyContent: 'center',
+               alignItems: 'center',
+             }}
+           >
+             <Text style={{
+               fontWeight: 'bold',
+               color: '#fff',
+               fontSize: 16,
+             }}>
+               Add Service
+               </Text>
+             </TouchableOpacity>
 
             <SearchProANDSer placeholder="Search your service" />
           </View>
+
+        <View style={{ flexDirection: 'row'}}>
+        <TouchableOpacity onPress={handleBodyPress}>
+        <Text style={[styles.Sub1, selectedItem === 'Body' ? styles.selectedText1 : null]}>Body</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={handleFacePress}>
+        <Text style={[styles.Sub2, selectedItem === 'Face' ? styles.selectedText2 : null]}>Face</Text>
+      </TouchableOpacity>
+      </View>
 
           <View style={styles.ServiceStyle}>
           {Services && Services.length > 0 && Services.map((service, index) => (
@@ -124,7 +184,7 @@ const ServicesScreen = () => {
 
                 <TouchableOpacity
                     style={styles.removeButton}
-                    onPress={() => handleRemoveService(service._id)}>
+                    onPress={() => confirmDelete(service._id)}>
                     <Ionicons name="close" color="red" size={Spacing*1.5} />
                 </TouchableOpacity>
 
@@ -136,7 +196,7 @@ const ServicesScreen = () => {
 
                   <TouchableOpacity
                     style={styles.editButton}
-                    onPress={() => handleEditService(service._id)}>
+                    onPress={() => handleEditService(service)}>
                     <Ionicons name="pencil" color="red" size={Spacing} />
                 </TouchableOpacity>
               
@@ -181,8 +241,6 @@ const ServicesScreen = () => {
 };
 
 export default ServicesScreen;
-
-
 
 const styles = StyleSheet.create({
   container: {
@@ -294,5 +352,55 @@ const styles = StyleSheet.create({
     },  
     styleText2:{
       color: Color.background
-    }
+    },
+    Sub1: {
+      color: 'black',
+      marginLeft: 15,
+      paddingHorizontal: 30,
+      borderRadius: 20,
+      padding: 10,
+      fontWeight: 'bold',
+      textTransform: 'capitalize',
+      marginBottom: 20,
+      borderColor: Color.background,
+      borderWidth: 1
+    },
+    selectedText1: {
+      color: '#fff',
+      backgroundColor: Color.background,
+      marginLeft: 15,
+      paddingHorizontal: 30,
+      borderRadius: 20,
+      padding: 10,
+      fontWeight: 'bold',
+      textTransform: 'capitalize',
+      marginBottom: 20,
+      borderColor: Color.background,
+      borderWidth: 1
+    },
+    Sub2: {
+      color: 'black',
+      marginLeft: 15,
+      paddingHorizontal: 30,
+      borderRadius: 20,
+      padding: 10,
+      fontWeight: 'bold',
+      textTransform: 'capitalize',
+      marginBottom: 20,
+      borderColor: Color.background,
+      borderWidth: 1
+    },
+    selectedText2: {
+      color: '#fff', 
+      backgroundColor: Color.background,
+      marginLeft: 15,
+      paddingHorizontal: 30,
+      borderRadius: 20,
+      padding: 10,
+      fontWeight: 'bold',
+      textTransform: 'capitalize',
+      marginBottom: 20,
+      borderColor: Color.background,
+      borderWidth: 1
+    },  
 })

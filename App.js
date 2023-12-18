@@ -1,17 +1,13 @@
 import React from "react";
 import { Text, View, StyleSheet, Image } from "react-native";
-
+import {Provider} from 'react-redux';
+import store from './src/redux/store';
 import { DrawerItemList, DrawerItem } from "@react-navigation/drawer";
-import Icon from "react-native-vector-icons/Ionicons";
-import { MaterialIcons } from "@expo/vector-icons";
-
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { Ionicons } from "@expo/vector-icons";
 import Color from "./src/Common/Color";
-
-import Header from "./src/screens/Header";
 import Homee from "./src/screens/Home";
 import ChoseScreen from "./src/screens/ChoseScreen";
 import Signup from "./src/screens/Signup";
@@ -45,6 +41,9 @@ import Offers from "./src/screens/Offers.js";
 import Jobs from "./src/screens/Jobs.js";
 import MainJob from "./src/screens/MainJob.js";
 import ApplyForaJob from "./src/screens/ApplyForaJob.js";
+import AppointmentHistory from "./src/screens/AppointmentHistory";
+import EditServices from './AdminPage/EditServices.js'
+import Advice from './src/screens/Advice.js'
 import { NativeBaseProvider } from "native-base";
 
 const Stack = createStackNavigator();
@@ -62,16 +61,17 @@ const HomeStack = () => (
     <Stack.Screen name="ResetPassword" component={ResetPassword} options={{ headerShown: false }}/>
     <Stack.Screen name="SendCode" component={SendCode} options={{ headerShown: false }}/>
     <Stack.Screen name="PathologicalCase" component={PathologicalCase} options={{ headerShown: false }}/>
+    <Stack.Screen name="SalonScreen" component={SalonScreen} options={{ headerShown: false }}/>
     <Stack.Screen name="MainScreen2" component={MainScreen2} options={{ headerShown: false }} />
     <Stack.Screen name="Settings" component={Settings} options={{ headerShown: false }}/>
-    <Stack.Screen name="About" component={About} options={{ headerShown: false }}/>
-    <Stack.Screen name="SalonScreen" component={SalonScreen} options={{ headerShown: false }}/>
+    <Stack.Screen name="About" component={About} options={{ headerShown: false }}/> 
     <Stack.Screen name="ServicesScreen" component={ServicesScreen} options={{ headerShown: false }}/>
     <Stack.Screen name="ProductsScreens" component={ProductsScreens} options={{ headerShown: false }} />
     <Stack.Screen name="CardsScreen" component={CardsScreen} options={{ headerShown: false }}/>
     <Stack.Screen name="Favorite" component={Favorite} options={{ headerShown: false }}/>
     <Stack.Screen name="ProductsDetails" component={ProductsDetails}options={{ headerShown: false }} />
-    <Stack.Screen name="BookingScreen" component={BookingScreen}options={{ headerShown: false }} /> 
+    <Stack.Screen name="BookingScreen" component={BookingScreen}options={{ headerShown: false }} />
+    <Stack.Screen name="AppointmentHistory" component={AppointmentHistory} options={{ headerShown: false }}  />
     <Stack.Screen name="EmployeesScreen" component={EmployeesScreen} options={{ headerShown: false }} />
     <Stack.Screen name="EmployeesDetails" component={EmployeesDetailsScreen} options={{ headerShown: false }}/>
     <Stack.Screen name="AddEmployee" component={AddEmployee} options={{ headerShown: false }}/>
@@ -88,6 +88,9 @@ const HomeStack = () => (
     <Stack.Screen name="MainJob" component={MainJob} options={{ headerShown: false }}/>
     <Stack.Screen name="Jobs" component={Jobs} options={{ headerShown: false }}/>
     <Stack.Screen name="ApplyForaJob" component={ApplyForaJob} options={{ headerShown: false }}/>
+    <Stack.Screen name="EditServices" component={EditServices} options={{ headerShown: false }}/>
+    <Stack.Screen name="Advice" component={Advice} options={{ headerShown: false }}/>
+   
   </Stack.Navigator>
 );
 
@@ -100,7 +103,7 @@ const CustomDrawerContent = (props) => {
       />
 
       <DrawerItem
-        style={{ marginVertical: 10, ...styles.drawerItem }}
+        style={{ marginVertical: 3, ...styles.drawerItem }}
         label="HOME"
         icon={({ color, size }) => (
           <Ionicons name="home" color={Color.primary} size={size} />
@@ -111,7 +114,7 @@ const CustomDrawerContent = (props) => {
       />
 
       <DrawerItem
-        style={{ marginVertical: 10, ...styles.drawerItem }}
+        style={{ marginVertical: 3, ...styles.drawerItem }}
         label="STAFF"
         icon={({ color, size }) => (
           <Ionicons name="people" color={Color.primary} size={size} />
@@ -122,7 +125,7 @@ const CustomDrawerContent = (props) => {
       />
 
       <DrawerItem
-        style={{ marginVertical: 10, ...styles.drawerItem }}
+        style={{ marginVertical: 3, ...styles.drawerItem }}
         label="ABOUT"
         icon={({ color, size }) => (
           <Ionicons
@@ -137,7 +140,7 @@ const CustomDrawerContent = (props) => {
       />
 
       <DrawerItem
-        style={{ marginVertical: 10, ...styles.drawerItem }}
+        style={{ marginVertical: 3, ...styles.drawerItem }}
         label="JOBS"
         icon={({ color, size }) => (
           <Ionicons name="briefcase" color={Color.primary} size={size} />
@@ -148,7 +151,7 @@ const CustomDrawerContent = (props) => {
       />
 
       <DrawerItem
-        style={{ marginVertical: 10, ...styles.drawerItem }}
+        style={{ marginVertical: 3, ...styles.drawerItem }}
         label="PRODUCTS"
         icon={({ color, size }) => (
           <Ionicons name="pricetag" color={Color.primary} size={size} />
@@ -159,7 +162,7 @@ const CustomDrawerContent = (props) => {
       />
 
       <DrawerItem
-        style={{ marginVertical: 10, ...styles.drawerItem }}
+        style={{ marginVertical: 3, ...styles.drawerItem }}
         label="SERVICES"
         icon={({ color, size }) => (
           <Ionicons name="medkit" color={Color.primary} size={size} />
@@ -170,7 +173,7 @@ const CustomDrawerContent = (props) => {
       />
 
       <DrawerItem
-        style={{ marginVertical: 10, ...styles.drawerItem }}
+        style={{ marginVertical: 3, ...styles.drawerItem }}
         label="RESERVATIONS"
         icon={({ color, size }) => (
           <Ionicons name="calendar" color={Color.primary} size={size} />
@@ -181,7 +184,29 @@ const CustomDrawerContent = (props) => {
       />
 
       <DrawerItem
-        style={{ marginVertical: 10, ...styles.drawerItem }}
+        style={{ marginVertical: 3, ...styles.drawerItem }}
+        label="HISTORY"
+        icon={({ color, size }) => (
+          <Ionicons name="checkmark-circle" color={Color.primary} size={size} />
+        )}
+        onPress={() => {
+          props.navigation.navigate("AppointmentHistory");
+        }}
+      />
+
+     <DrawerItem
+        style={{ marginVertical: 3, ...styles.drawerItem }}
+        label="ADVICE"
+        icon={({ color, size }) => (
+          <Ionicons name="checkmark-circle" color={Color.primary} size={size} />
+        )}
+        onPress={() => {
+          props.navigation.navigate("Advice");
+        }}
+      />
+
+      <DrawerItem
+        style={{ marginVertical: 3, ...styles.drawerItem }}
         label="POSTS"
         icon={({ color, size }) => (
           <Ionicons name="share" color={Color.primary} size={size} />
@@ -192,7 +217,7 @@ const CustomDrawerContent = (props) => {
       />
 
       <DrawerItem
-        style={{ marginVertical: 10, ...styles.drawerItem }}
+        style={{ marginVertical: 3, ...styles.drawerItem }}
         label="SETTINGS"
         icon={({ color, size }) => (
           <Ionicons name="settings" color={Color.primary} size={size} />
@@ -234,7 +259,9 @@ const styles = StyleSheet.create({
 
 const App = () => {
   return (
+    
     <NativeBaseProvider>
+      <Provider store={store}>
       <NavigationContainer>
         <Drawer.Navigator
           initialRouteName="Home"
@@ -258,6 +285,7 @@ const App = () => {
           />
         </Drawer.Navigator>
       </NavigationContainer>
+      </Provider>
     </NativeBaseProvider>
   );
 };

@@ -15,7 +15,7 @@ const Employee = () => {
   const [isLoading, setIsLoading] = useState(true);
   const baseUrl = "https://ayabeautyn.onrender.com";
   useEffect(() => {
-    fetch(`${baseUrl}/employees/employee`)
+    fetch(`${baseUrl}/employees/employee/`)
       .then((res) => res.json())
       .then((data) => {
         setItems(data);

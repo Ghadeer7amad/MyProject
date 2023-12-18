@@ -72,10 +72,6 @@ const styles = StyleSheet.create({
     
     continueButtonText: {
         color: Colors.primary,
-        fontSize: 18,
-        
+        fontSize: 18,  
     },
-
-    
-
 });
