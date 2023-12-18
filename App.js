@@ -37,6 +37,8 @@ import AddProduct from "./AdminPage/AddProduct.js";
 import AddServices from "./AdminPage/AddServices.js";
 import AddEmployee from "./AdminPage/AddEmployee.js";
 import AddSalon from "./AdminPage/AddSalon.js";
+import AddPost from "./AdminPage/AddPost.js";
+import AddJob from "./AdminPage/AddJob.js";
 import MainScreen2 from "./src/screens/MainScreen2.js";
 import Employee from "./src/screens/Employee.js";
 import Offers from "./src/screens/Offers.js";
@@ -78,6 +80,10 @@ const HomeStack = () => (
     <Stack.Screen name="AddSalon" component={AddSalon} options={{ headerShown: false }}/>
     <Stack.Screen name="AddProduct" component={AddProduct} options={{ headerShown: false }}/>
     <Stack.Screen name="AddServices" component={AddServices} options={{ headerShown: false }}/> 
+    <Stack.Screen name="AddPost" component={AddPost} options={{ headerShown: false }}/> 
+    <Stack.Screen name="AddJob" component={AddJob} options={{ headerShown: false }}/> 
+
+
    
     <Stack.Screen name="MainJob" component={MainJob} options={{ headerShown: false }}/>
     <Stack.Screen name="Jobs" component={Jobs} options={{ headerShown: false }}/>

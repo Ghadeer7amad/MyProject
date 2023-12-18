@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { TextInput, StyleSheet, Text, View, TouchableOpacity, ImageBackground } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from "@expo/vector-icons";
@@ -9,7 +9,7 @@ import { Picker } from '@react-native-picker/picker';
 import Color from '../Common/Color';
 
 const ApplyForaJob = () => {
-  const navigation = useNavigation();
+  
   const [selectedFile, setSelectedFile] = useState(null);
   const [selectedJob, setSelectedJob] = useState('Laser Specialist'); // State for selected job type
 
@@ -29,6 +29,29 @@ const ApplyForaJob = () => {
     }
   };
 
+  const navigation = useNavigation();
+  const [items, setItems] = useState([]);
+  const [isLoading, setIsLoading] = useState(true); 
+
+ 
+  const baseUrl = "https://ayabeautyn.onrender.com";
+  const fetchData = async () => {
+    try {
+      const response = await fetch(`${baseUrl}/jobs/job`);
+      const data = await response.json();
+      setItems(data);
+      setIsLoading(false);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
     <ImageBackground source={require('../../assets/11.jpg')} style={styles.container}>
       <TouchableOpacity style={{ marginLeft: Spacing * 2, marginTop: Spacing * 3 }}
@@ -42,15 +65,17 @@ const ApplyForaJob = () => {
         <Text style={styles.labelStyle}>Choose The Job:</Text>
 
         <View style={styles.labeledContainerStyle}>
-          <Picker
-            selectedValue={selectedJob}
-            onValueChange={(itemValue, itemIndex) => setSelectedJob(itemValue)}
-            style={styles.pickerStyle}
-          >
-            <Picker.Item label="Laser Specialist" value="Laser Specialist" />
-            <Picker.Item label="Beauty Specialist" value="Beauty" />
-            <Picker.Item label="Secretary" value="Secretary" />
-          </Picker>
+        <Picker
+  selectedValue={selectedJob}
+  onValueChange={(itemValue, itemIndex) => setSelectedJob(itemValue)}
+  style={styles.pickerStyle}
+>
+  {items.map((item) => (
+    <Picker.Item key={item.id} label={item.jobName} value={item.jobName} />
+  ))}
+</Picker>
+
+
         </View>
 
         <Text style={[styles.labelStyle, { marginTop: 20 }]}>Attach your CV:</Text>

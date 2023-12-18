@@ -1,34 +1,53 @@
-import React from 'react';
-import { View, Image, Text, TouchableOpacity, StyleSheet, ScrollView, Dimensions } from 'react-native';
+import React, {useState, useEffect} from 'react';
+import { View, Image, Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { Card, Button } from 'react-native-elements';
+import { FontAwesome as Icon } from '@expo/vector-icons';
+import CustomSearchBar from "../Common/SearchBarComponent.js";
 import { Ionicons } from '@expo/vector-icons';
 import Color from '../Common/Color.js';
 import Spacing from '../Common/Spacing.js';
 
 const Jobs = () => {
   const navigation = useNavigation();
+  const [items, setItems] = useState([]);
+  const [isLoading, setIsLoading] = useState(true); 
 
-  // بيانات الوظائف
-  const jobData = [
-    {
-      id: 1,
-      title: 'Software Developer',
-      description: 'Create amazing software solutions.',
-      image: require('../../assets/11.jpg'),
-    },
-    {
-      id: 2,
-      title: 'Graphic Designer',
-      description: 'Design stunning graphics and visuals.',
-      image: require('../../assets/11.jpg'),
-    },
-    {
-      id: 3,
-      title: 'Marketing Specialist',
-      description: 'Promote products and reach wider audiences.',
-      image: require('../../assets/11.jpg'),
-    },
-  ];
+ 
+  const baseUrl = "https://ayabeautyn.onrender.com";
+  const fetchData = async () => {
+    try {
+      const response = await fetch(`${baseUrl}/jobs/job`);
+      const data = await response.json();
+      setItems(data);
+      setIsLoading(false);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  const handleDeletePress = async (itemId) => {
+    console.log('Deleting item with ID:', itemId);
+
+    try {
+      const response = await fetch(`${baseUrl}/jobs/job/${itemId}`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        fetchData();
+      } else {
+        const responseData = await response.json();
+        console.error('Failed to delete item. Server response:', responseData);
+      }
+    } catch (error) {
+      console.error('Error deleting item:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -42,32 +61,46 @@ const Jobs = () => {
       </TouchableOpacity>
 
       <View style={styles.container1}></View>
-      <ScrollView>
+      <View style={{ flex: 1 }}>
         <Text style={styles.textHeader}>Here are the jobs</Text>
         <Text style={styles.textHeader1}>we currently have available</Text>
 
-        {/* إضافة بطاقات الوظائف */}
-        {jobData.map((job) => (
-          <TouchableOpacity
-            key={job.id}
-            style={styles.jobCard}
-            onPress={() => {
-              // يمكنك أدراج السلوك المرتبط بالنقر على البطاقة هنا
-            }}
-          >
-            <Image source={job.image} style={styles.jobImage} resizeMode="cover" />
-            <View style={styles.jobDetails}>
-              <Text style={styles.jobTitle}>{job.title}</Text>
-              <Text style={styles.jobDescription}>{job.description}</Text>
-            </View>
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
+        <FlatList
+          data={items}
+          keyExtractor={(item) => item._id}
+          renderItem={({ item }) => (
+            <>
+              
+            <Card containerStyle={styles.card}>
+            <TouchableOpacity
+              style={styles.deleteIcon}
+              onPress={() => handleDeletePress(item._id)}
+            >
+              <Icon name="close" color="#5e366a" size={20} />
+            </TouchableOpacity>
+            <Card.Title style={styles.cardTitle}>{item.jobName}</Card.Title>
+            <Card.Title style={styles.cardTitlee}>{item.jobDescription}</Card.Title>
+            <Image source={{uri: item?.image?.secure_url}} style={styles.cardImage} />
+            
+            
+          </Card>
+            </>
+            
+          )}
+        />
+
+        <TouchableOpacity
+          style={styles.addButton}
+          onPress={() => {
+            navigation.navigate('AddJob');
+          }}
+        >
+          <Text style={styles.addButtonText}>Add Job</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
-
-export default Jobs;
 
 const styles = StyleSheet.create({
   container: {
@@ -95,26 +128,59 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     color: Color.primary,
   },
-  jobCard: {
-    margin: Spacing,
-    borderRadius: 10,
-    overflow: 'hidden',
-    backgroundColor: 'white',
-    elevation: 5, // ظل البطاقة
+  
+  
+  
+  
+  addButton: {
+    alignSelf: 'flex-end',
+    marginRight: Spacing,
+    marginTop: Spacing,
+    marginBottom: Spacing,
+    backgroundColor: Color.background,
+    paddingVertical: Spacing,
+    paddingHorizontal: Spacing * 2,
+    borderRadius: 5,
   },
-  jobImage: {
-    height: 150,
-    width: '100%',
-  },
-  jobDetails: {
-    padding: Spacing,
-  },
-  jobTitle: {
-    fontSize: 20,
+  addButtonText: {
+    color: 'white',
+    fontSize: 16,
     fontWeight: 'bold',
   },
-  jobDescription: {
-    fontSize: 14,
-    color: 'gray',
+
+  card: {
+    borderRadius: 30,
+    backgroundColor: "#f6f6f6",
+    marginBottom: 10,
+    position: 'relative',
+  },
+  cardTitle: {
+    color: Color.primary,
+    fontSize: 19,
+    letterSpacing: 2,
+    marginBottom: 10,
+    
+  },
+  cardTitlee: {
+    color: "#4c4c4c",
+    fontSize: 13,
+    letterSpacing: 1,
+    marginBottom: 10,
+    fontWeight: "800",
+    textAlign: "left",
+    
+  },
+  cardImage: {
+    width: '100%',
+    height: 300, // ارتفاع الصورة الثابت داخل الكارت
+    resizeMode: 'cover',
+    borderRadius: 20,
+  },
+
+  
+  deleteIcon: {
+   left:300,
   },
 });
+
+export default Jobs;

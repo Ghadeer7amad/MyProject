@@ -11,10 +11,12 @@ import Color from "../Common/Color";
 const SalonScreen = () => {
   const navigation = useNavigation();
   const [items, setItems] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true); 
 
   const handleContinuePress = (item) => {
     navigation.navigate('MainScreen2', { item });
+
+
   };
  
   const baseUrl = "https://ayabeautyn.onrender.com";

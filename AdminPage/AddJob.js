@@ -24,12 +24,12 @@ import {
   import { serialize } from "object-to-formdata";
   import { Box, useToast } from "native-base";
   
-  const AddSalon = () => {
+  const AddJob = () => {
     const navigation = useNavigation();
     const [FData, setFData] = useState({
       name: "",
-      job: "",
-      experienceYears: "",
+      description: "",
+      image: "",
     });
     const toast = useToast();
   
@@ -50,7 +50,7 @@ import {
   
     };
   
-    const addSalon = async () => {
+    const addJob = async () => {
       try {
         const options = {
           indices: false,
@@ -71,7 +71,7 @@ import {
         });
         const baseUrl = "https://ayabeautyn.onrender.com";
   
-        const response = await fetch(`${baseUrl}/salons/salon`, {
+        const response = await fetch(`${baseUrl}/jobs/job`, {
           method: "POST",
           body: formData,
         });
@@ -81,7 +81,7 @@ import {
           render: () => {
             return (
               <Box bg="emerald.500" px="5" py="5" rounded="sm" mb={5}>
-                Salon added successfully
+                Job added successfully
               </Box>
             );
           },
@@ -96,20 +96,20 @@ import {
   
         <View style={styles.formgroup}>
           <TextInput
-            value={FData.name}
-            onChangeText={(text) => setFData({ ...FData, name: text })}
+            value={FData.jobName}
+            onChangeText={(text) => setFData({ ...FData, jobName: text })}
             style={styles.input}
-            placeholder="Salon Name"
+            placeholder="Job Name"
           />
           <FontAwesomeIcon icon={faFileSignature} style={styles.icon} />
         </View>
   
         <View style={styles.formgroup}>
           <TextInput
-            value={FData.branches}
-            onChangeText={(text) => setFData({ ...FData, branches: text })}
+            value={FData.jobDescription}
+            onChangeText={(text) => setFData({ ...FData, jobDescription: text })}
             style={styles.input}
-            placeholder="Branches"
+            placeholder="Job Description"
           />
           <FontAwesomeIcon icon={faFileSignature} style={styles.icon} />
         </View>
@@ -146,18 +146,18 @@ import {
           )}
         </View>
   
-        <TouchableOpacity onPress={addSalon}>
-          <Text style={styles.buttonStyle}>Add Salon</Text>
+        <TouchableOpacity onPress={addJob}>
+          <Text style={styles.buttonStyle}>Add Job</Text>
         </TouchableOpacity>
   
-        <TouchableOpacity onPress={() => navigation.navigate("SalonScreen")}>
+        <TouchableOpacity onPress={() => navigation.navigate("Jobs")}>
           <Text style={[styles.buttonStyle, styles.buttonStyle1]}>Cancel</Text>
         </TouchableOpacity>
       </View>
     );
   };
   
-  export default AddSalon;
+  export default AddJob;
   
   const styles = StyleSheet.create({
     contanier: {

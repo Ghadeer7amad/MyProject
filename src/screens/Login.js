@@ -34,7 +34,7 @@ const Login = () => {
       alert(` You have login: ${JSON.stringify(response.data)}`);
       setEmail("");
       setPassword("");
-      navigation.navigate('SalonScreen'); 
+      navigation.navigate('PathologicalCase'); 
     } else {
       console.error('Error:', error.response.status, error.response.data);
     }
