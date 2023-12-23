@@ -218,17 +218,7 @@ const PostsScreen = () => {
   const handleSaveEdit = async () => {
     try {
       if (editedItemId) {
-        // إلغاء الظاهرية للحفاظ على المرونة
         const newText = editedText || null;
-        const newImage = editedImage || null;
-  
-        // إعادة التعامل مع الحذف في حال كان هناك تعديل على الصورة
-        if (editedItemId && newImage) {
-          await handleDeleteImage(editedItemId);
-        }
-  
-        // رفع الصورة إذا كان هناك تعديل على الصورة
-        const newImageUrl = newImage ? await handleImageUpload() : null;
   
         const response = await fetch(`${baseUrl}/posts/post/${editedItemId}`, {
           method: 'PUT',
@@ -237,7 +227,6 @@ const PostsScreen = () => {
           },
           body: JSON.stringify({
             textPost: newText,
-            image: newImageUrl || '', // استخدام العنوان الجديد للصورة إذا كانت موجودة
           }),
         });
   
@@ -247,7 +236,6 @@ const PostsScreen = () => {
               return {
                 ...item,
                 textPost: newText || item.textPost,
-                image: newImageUrl ? { secure_url: newImageUrl } : item.image,
               };
             }
             return item;
@@ -264,6 +252,7 @@ const PostsScreen = () => {
       console.error('Error updating item:', error);
     }
   };
+  
   
   
   
@@ -302,6 +291,86 @@ const PostsScreen = () => {
     fetchData();
   }, []);
 
+  const [likeStatus, setLikeStatus] = useState({});
+
+  
+  const handleToggleLike = async (itemId) => {
+    try {
+      const response = await fetch(`${baseUrl}/posts/post/${itemId}/like`, {
+        method: 'POST', // Change to 'DELETE' when unliking
+      });
+  
+      if (response.ok) {
+        const responseData = await response.json();
+        // Update local data
+        const updatedItems = items.map(item => {
+          if (item._id === itemId) {
+            return {
+              ...item,
+              likes: responseData.likes,
+            };
+          }
+          return item;
+        });
+        setItems(updatedItems);
+  
+        // Toggle like status locally
+        setLikeStatus((prevStatus) => ({
+          ...prevStatus,
+          [itemId]: !prevStatus[itemId],
+        }));
+      } else {
+        // Handle error
+      }
+    } catch (error) {
+      console.error('Error toggling like:', error);
+    }
+  };
+  
+  const handleUnlike = async (itemId) => {
+    try {
+      const response = await fetch(`${baseUrl}/posts/post/${itemId}/unlike`, {
+        method: 'POST',
+      });
+  
+      if (response.ok) {
+        const responseData = await response.json();
+  
+        // Update local data and decrement likes
+        const updatedItems = items.map(item => {
+          if (item._id === itemId) {
+            return {
+              ...item,
+              likes: responseData.likes,
+            };
+          }
+          return item;
+        });
+  
+        setItems(updatedItems);
+  
+        // Toggle like status locally
+        setLikeStatus((prevStatus) => ({
+          ...prevStatus,
+          [itemId]: !prevStatus[itemId],
+        }));
+      } else {
+        console.error('Failed to unlike. Server response:', response.statusText);
+  
+        // Optionally, log or handle the HTML error page
+        const responseText = await response.text();
+        console.log('HTML error page:', responseText);
+  
+        // You can also throw an error or handle it based on your requirements
+      }
+    } catch (error) {
+      console.error('Error handling unlike:', error);
+    }
+  };
+  
+
+
+
   // (عرض المكون)
   return (
     <MenuProvider>
@@ -323,75 +392,90 @@ const PostsScreen = () => {
           </View>
         </View>
 
-        <FlatList
-          data={items}
-          keyExtractor={(item) => item._id}
-          renderItem={({ item }) => (
-            <Card containerStyle={styles.card}>
-              <Menu>
-                <MenuTrigger>
-                  <Icon name="ellipsis-vertical" color="#5e366a" size={20} />
-                </MenuTrigger>
-                <MenuOptions>
-                  <MenuOption onSelect={() => confirmDelete(item._id)} text="Delete" />
-                  <MenuOption onSelect={() => handleEditPress(item._id, item.textPost, item?.image?.secure_url || '')} text="Edit" />
-                </MenuOptions>
-              </Menu>
-              <View style={styles.cardContentContainer}>
-                <Text style={styles.postDate}>
-                  {calculateTimeDifference(item.createdAt) || 'No date available'}
-                </Text>
-                <Text style={styles.cardTitle}>{item.textPost}</Text>
-                <Image
-                  source={{ uri: item?.image?.secure_url }}
-                  style={styles.cardImage}
-                  resizeMode="cover"
-                />
-              </View>
-              <View style={styles.postInteractions}>
-                <TouchableOpacity>
-                  <Icon name="heart" size={20} color="#ff4d4d" />
-                </TouchableOpacity>
-                <Text>{item.likes}</Text>
-                <TouchableOpacity>
-                  <Icon name="chatbox" size={20} color="#777" />
-                </TouchableOpacity>
-                <Text>{item.comments}</Text>
-              </View>
-            </Card>
-          )}
+<FlatList
+  data={items}
+  keyExtractor={(item) => item._id}
+  renderItem={({ item }) => (
+    <Card containerStyle={styles.card}>
+
+
+      <Menu>
+        <MenuTrigger style={styles.pointsContainer}>
+          <Icon name="ellipsis-vertical" color="#5e366a" size={20} />
+        </MenuTrigger>
+        <MenuOptions>
+          <MenuOption onSelect={() => confirmDelete(item._id)} text="Delete" />
+          <MenuOption onSelect={() => handleEditPress(item._id, item.textPost, item?.image?.secure_url || '')} text="Edit" />
+        </MenuOptions>
+      </Menu>
+      <View style={styles.cardContentContainer}>
+        {/* New section for the small circular image and name */}
+        <View style={styles.userInfoContainer}>
+          <Image source={require("../../assets/3.jpg")} style={styles.smallUserImage} />
+          <Text style={styles.userName}>Ghadeer Hamad</Text>
+        </View>
+
+        <Text style={styles.postDate}>
+          {calculateTimeDifference(item.createdAt) || 'No date available'}
+        </Text>
+        <Text style={styles.cardTitle}>{item.textPost}</Text>
+        <Image
+          source={{ uri: item?.image?.secure_url }}
+          style={styles.cardImage}
+          resizeMode="cover"
         />
+      </View>
+      <View style={styles.postInteractions}>
+      <TouchableOpacity
+         onPress={() => {
+          if (likeStatus[item._id]) {
+           handleUnlike(item._id);
+        } else {
+        handleToggleLike(item._id);
+      }
+       }}
+     >
+    <Icon
+    name="heart"
+    size={20}
+    color={likeStatus[item._id] ? 'red' : '#777'}
+  />
+</TouchableOpacity>
+        <Text>{item.likes}</Text>
+        <TouchableOpacity>
+          <Icon name="chatbox" size={20} color="#777" />
+        </TouchableOpacity>
+        <Text>{item.comments}</Text>
+      </View>
+    </Card>
+  )}
+/>
+
 
         <NavbarButtom onChange={(selectedIcon) => console.log(selectedIcon)} />
 
         <Modal isVisible={isEditModalVisible}>
-          <View style={styles.editModalContainer}>
-            <TextInput
-              style={styles.editInput}
-              value={editedText}
-              onChangeText={(text) => setEditedText(text)}
-            />
-            <Image
-              source={{ uri: editedImage }}
-              style={styles.editImage}
-              resizeMode="cover"
-            />
-            <TouchableOpacity onPress={handleChooseImage}>
-              <Text style={styles.editImagePicker}>Choose Image</Text>
-            </TouchableOpacity>
-            <View style={styles.editModalButtons}>
-  <Button
-    title="Save"
-    onPress={handleSaveEdit}
-    buttonStyle={styles.saveButton}
+        <View style={styles.editModalContainer}>
+  <TextInput
+    style={styles.editInput}
+    value={editedText}
+    onChangeText={(text) => setEditedText(text)}
   />
-  <Button
-    title="Cancel"
-    onPress={handleCancelEdit}
-    buttonStyle={styles.cancelButton}
-  />
+
+  <View style={styles.editModalButtons}>
+    <Button
+      title="Save"
+      onPress={handleSaveEdit}
+      buttonStyle={styles.saveButton}
+    />
+    <Button
+      title="Cancel"
+      onPress={handleCancelEdit}
+      buttonStyle={styles.cancelButton}
+    />
+  </View>
 </View>
-          </View>
+
         </Modal>
       </View>
     </MenuProvider>
@@ -582,6 +666,29 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 10,
   },
+
+  pointsContainer: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    zIndex: 1,
+  },
+  userInfoContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  smallUserImage: {
+    width: 50,
+    height: 50,
+    borderRadius: 50,
+    marginRight: 5,
+  },
+  userName: {
+    fontSize: 12,
+    color: "black",
+    
+  },
+  
 
 
   

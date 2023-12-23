@@ -132,7 +132,7 @@ import {
       marginTop: 70,
       marginBottom: 5,
       textAlign: "center",
-      textTransform: "uppercase",
+      textTransform: "uppercase", 
     },
     formgroup: {
       display: "flex",

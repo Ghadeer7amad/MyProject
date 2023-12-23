@@ -1,152 +1,194 @@
-import React from "react";
-import { View, Text, StyleSheet, Image,  SafeAreaView, ScrollView, TouchableOpacity, Switch } from "react-native";
-import One from '../Common/ah.jpg';
-import FeatherIcon from 'react-native-vector-icons/Feather'
-import Color from '../Common/Color.js';
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  FlatList,
+  SafeAreaView,
+  ScrollView,
+  TouchableOpacity,
+  Switch,
+} from "react-native";
+import One from "../Common/ah.jpg";
+import FeatherIcon from "react-native-vector-icons/Feather";
+import { useNavigation } from "@react-navigation/native";
+import Color from "../Common/Color.js";
+import { useDispatch, useSelector } from "react-redux";
+import { Ionicons } from "@expo/vector-icons";
+import Spacing from "../Common/Spacing.js";
 
 const SECTIONS = [
   {
-    header: 'Preferences',
-    icon: 'settings',
+    header: "Preferences",
+    icon: "settings",
     items: [
-      {icon: 'globe', color: '#fe9400', label: 'Language', type: 'link'},
+      { icon: "globe", color: "#fe9400", label: "Language", type: "link" },
       {
-        id: 'darkMode',
-        icon: 'moon',
-        color: '#807afe',
-        label: 'Dark Mode',
-        type: 'toggle',
+        id: "darkMode",
+        icon: "moon",
+        color: "#807afe",
+        label: "Dark Mode",
+        type: "toggle",
       },
       {
-        id: 'wifi',
-        icon: 'wifi',
-        color: '#807afe',
-        label: 'Use Wi-Fi',
-        type: 'toggle',
-
+        id: "wifi",
+        icon: "wifi",
+        color: "#807afe",
+        label: "Use Wi-Fi",
+        type: "toggle",
       },
-      {icon: 'navigation', color: '#32c795', label: 'Location', type: 'link'},
+      { icon: "navigation", color: "#32c795", label: "Location", type: "link" },
       {
-        id: 'showCollaborators',
-        icon: 'users',
-        color: '#32c759',
-        label: 'Show collaborators',
-        type: 'toggle',
-
+        id: "showCollaborators",
+        icon: "users",
+        color: "#32c759",
+        label: "Show collaborators",
+        type: "toggle",
       },
       {
-        id: 'accessibilityMode',
-        icon: 'airplay',
-        color: '#fd2d54',
-        label: 'Accessibility mode',
-        type: 'toggle',
-
+        id: "accessibilityMode",
+        icon: "airplay",
+        color: "#fd2d54",
+        label: "Accessibility mode",
+        type: "toggle",
       },
-
     ],
-    
-  },
-  
-  {
-    header: 'Help',
-    icon: 'help-circle',
-    items: [
-      { icon: 'flag', color: '#8e8d91', label: 'Report Bug', type: 'link'},
-      { icon: 'mail', color: '#a07afe', label: 'Contact Us', type: 'link'},
-
-    ],
-
   },
   {
-    header: 'Content',
-    icon: 'align-center',
+    header: "Help",
+    icon: "help-circle",
     items: [
-      { icon: 'save', color: '#32c759', label: 'Saved', type: 'link'},
-      { icon: 'download', color: '#fd2d54', label: 'Download', type: 'link'},
-
+      { icon: "flag", color: "#8e8d91", label: "Report Bug", type: "link" },
+      { icon: "mail", color: "#a07afe", label: "Contact Us", type: "link" },
     ],
-
-
   },
-
-
-]; 
-
+  {
+    header: "Content",
+    icon: "align-center",
+    items: [
+      { icon: "save", color: "#32c759", label: "Saved", type: "link" },
+      { icon: "download", color: "#fd2d54", label: "Download", type: "link" },
+    ],
+  },
+];
 
 export default function Example() {
+  const navigation = useNavigation();
+  const [isLoading, setIsLoading] = useState(true);
+  const [items, setItems] = useState([]);
+  // Assuming your Redux store structure has 'name' and 'email' properties
+  const { id: userId, name: userName, email: userEmail } = useSelector(
+    (state) => state.user.userData
+  );
+
+  const baseUrl = "https://ayabeautyn.onrender.com";
+
+  const fetchData = async () => {
+    try {
+      const response = await fetch(`${baseUrl}/auth/signin`);
+      const data = await response.json();
+      setItems(data);
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   const [form, setForm] = React.useState({
     darkMode: true,
     wifi: false,
     showCollaborates: true,
     accessibillityMode: false,
-  })
-     return (
-      <SafeAreaView style={{flex: 1}}>
-             <ScrollView contentContainerStyle={styles.container}>
-              <View style={styles.profile}>
-                <TouchableOpacity onPress={() =>{
+  });
 
-                }}>
-                  <View style={styles.profileAvatarWrapper}>
-                    <Image 
-                    alt= "Profile Picture"
-                    source={One} style={styles.profileAvatar}/>
-                    <View style={styles.profileAction}>
-                      <FeatherIcon name="edit-3" size={15} color= {Color.primary}/>
-                    </View>
-                  </View>
-
-                </TouchableOpacity>
-                <Text style={styles.profileName}> Ghadeer Hamad </Text>
-                <Text style={styles.profileAddress}> ghadeer7amad@gmail.com</Text>
+  return (
+    <SafeAreaView style={{ flex: 1 }}>
+      <ScrollView contentContainerStyle={styles.container}>
+        <View style={styles.profile}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("EditProfile");
+            }}
+          >
+            <View style={styles.profileAvatarWrapper}>
+              <Image
+                alt="Profile Picture"
+                source={One}
+                style={styles.profileAvatar}
+              />
+              <View style={styles.profileAction}>
+                <FeatherIcon name="edit-3" size={15} color={Color.primary} />
               </View>
+            </View>
+          </TouchableOpacity>
+          <Text style={styles.profileName}>{userName}</Text>
+          <Text style={styles.profileAddress}>{userEmail}</Text>
+        </View>
 
-              {SECTIONS.map( ({ header, items }) => {
+        
+          
+
+        {SECTIONS.map(({ header, items }) => {
+          return (
+            <View style={styles.section} key={header}>
+              <Text style={styles.sectionHeader}>{header}</Text>
+
+              {items.map(({ id, label, type, icon, color }) => {
                 return (
-                <View style={styles.section} key={header}>
-                  <Text style={styles.sectionHeader}>{header}</Text>
-
-                  {items.map(({ id, label, type, icon, color }) => {
-                    return (
-                    <TouchableOpacity 
+                  <TouchableOpacity
                     key={icon}
                     onPress={() => {
-
-                    }}>
-                      <View style={styles.row}>
-                        <View style={[styles.rowIcon, {backgroundColor: color}]}>
-                          <FeatherIcon name={icon} color="#fff" size={18}/>
-                        </View>
-                        <Text style={styles.rowLabel}>{label}</Text>
-
-                        <View style={{flex: 1}}/>
-
-                        {type == 'toggle' && (
-                        <Switch
-                         
-                         value={form[id]}
-                         onValueChange={value => setForm({...form, [id]: value})} 
-                         trackColor={{ false: 'grey', true: Color.background }}
-                         thumbColor={form[id] ? Color.primary : 'white'}
-                         />
-                         )}
-
-                         {type === 'link' && (
-                          <FeatherIcon  
-                          name="chevron-right" 
-                          color="#0c0c0c"
-                          size={22}/>
-                         )}
+                      // Handle section item press
+                    }}
+                  >
+                    <View style={styles.row}>
+                      <View
+                        style={[styles.rowIcon, { backgroundColor: color }]}
+                      >
+                        <FeatherIcon name={icon} color="#fff" size={18} />
                       </View>
-                    </TouchableOpacity>);
-                  })}
-                </View>);
-              }
+                      <Text style={styles.rowLabel}>{label}</Text>
 
-              )}
-             </ScrollView>
-      </SafeAreaView>
-     )
+                      <View style={{ flex: 1 }} />
+
+                      {type == "toggle" && (
+                        <Switch
+                          value={form[id]}
+                          onValueChange={(value) =>
+                            setForm({ ...form, [id]: value })
+                          }
+                          trackColor={{
+                            false: "grey",
+                            true: Color.background,
+                          }}
+                          thumbColor={form[id] ? Color.primary : "white"}
+                        />
+                      )}
+
+                      {type === "link" && (
+                        <FeatherIcon
+                          name="chevron-right"
+                          color="#0c0c0c"
+                          size={22}
+                        />
+                      )}
+                    </View>
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+          );
+        })}
+      </ScrollView>
+    </SafeAreaView>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -249,5 +291,3 @@ const styles = StyleSheet.create({
   }
 
 });
-
-

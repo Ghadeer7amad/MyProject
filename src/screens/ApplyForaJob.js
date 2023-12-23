@@ -1,39 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { TextInput, StyleSheet, Text, View, TouchableOpacity, ImageBackground } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ImageBackground } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons } from '@expo/vector-icons';
 import Spacing from '../Common/Spacing.js';
 import { Picker } from '@react-native-picker/picker';
-//import * as DocumentPicker from 'react-native-document-picker'; // Import DocumentPicker
-
+import * as DocumentPicker from 'expo-document-picker';
 import Color from '../Common/Color';
 
 const ApplyForaJob = () => {
-  
   const [selectedFile, setSelectedFile] = useState(null);
-  const [selectedJob, setSelectedJob] = useState('Laser Specialist'); // State for selected job type
-
-  const handleFilePick = async () => {
-    try {
-      const result = await DocumentPicker.pick({
-        type: [DocumentPicker.types.allFiles],
-      });
-      setSelectedFile(result.name);
-      // Handle the selected file here
-    } catch (err) {
-      if (DocumentPicker.isCancel(err)) {
-        // File selection was cancelled
-      } else {
-        throw err;
-      }
-    }
-  };
+  const [selectedJob, setSelectedJob] = useState('Laser Specialist'); 
 
   const navigation = useNavigation();
   const [items, setItems] = useState([]);
-  const [isLoading, setIsLoading] = useState(true); 
+  const [isLoading, setIsLoading] = useState(true);
 
- 
   const baseUrl = "https://ayabeautyn.onrender.com";
   const fetchData = async () => {
     try {
@@ -46,41 +27,53 @@ const ApplyForaJob = () => {
     }
   };
 
-
-
   useEffect(() => {
     fetchData();
   }, []);
 
+  const pickDocument = async () => {
+    try {
+      const result = await DocumentPicker.getDocumentAsync({
+        type: "application/pdf", 
+      });
+
+      if (result.type === 'success') {
+        setSelectedFile(result.name);
+      } else {
+      }
+    } catch (err) {
+    }
+  };
+
   return (
     <ImageBackground source={require('../../assets/11.jpg')} style={styles.container}>
-      <TouchableOpacity style={{ marginLeft: Spacing * 2, marginTop: Spacing * 3 }}
+      <TouchableOpacity
+        style={{ marginLeft: Spacing * 2, marginTop: Spacing * 3 }}
         onPress={() => {
           navigation.navigate('MainJob');
-        }}>
+        }}
+      >
         <Ionicons name="arrow-back" color={Color.primary} size={Spacing * 2} />
       </TouchableOpacity>
-      
+
       <View style={{ flex: 1, justifyContent: 'center', marginTop: -200 }}>
         <Text style={styles.labelStyle}>Choose The Job:</Text>
 
         <View style={styles.labeledContainerStyle}>
-        <Picker
-  selectedValue={selectedJob}
-  onValueChange={(itemValue, itemIndex) => setSelectedJob(itemValue)}
-  style={styles.pickerStyle}
->
-  {items.map((item) => (
-    <Picker.Item key={item.id} label={item.jobName} value={item.jobName} />
-  ))}
-</Picker>
-
-
+          <Picker
+            selectedValue={selectedJob}
+            onValueChange={(itemValue, itemIndex) => setSelectedJob(itemValue)}
+            style={styles.pickerStyle}
+          >
+            {items.map((item) => (
+              <Picker.Item key={item.id} label={item.jobName} value={item.jobName} />
+            ))}
+          </Picker>
         </View>
 
-        <Text style={[styles.labelStyle, { marginTop: 20 }]}>Attach your CV:</Text>
+        <Text style={[styles.labelStyle, { marginTop: 20 }]}>Attach your CV (PDF):</Text>
 
-        <TouchableOpacity onPress={handleFilePick} style={styles.fileUploadButton}>
+        <TouchableOpacity onPress={pickDocument} style={styles.fileUploadButton}>
           <Text style={styles.fileUploadText}>Upload File</Text>
         </TouchableOpacity>
 
@@ -89,18 +82,20 @@ const ApplyForaJob = () => {
         )}
 
         <Text style={styles.uploadInfoText}>
-          Upload your CV by tapping the "Upload File" button.
+          Upload your CV (PDF) by tapping the "Upload File" button.
         </Text>
       </View>
 
       <View style={styles.buttonContainer}>
         <TouchableOpacity>
-          <Text style={styles.buttonStyle}><Ionicons name="paper-plane" size={25} color="#ebebeb" />  Submit Form</Text>
+          <Text style={styles.buttonStyle}>
+            <Ionicons name="paper-plane" size={25} color="#ebebeb" /> Submit Form
+          </Text>
         </TouchableOpacity>
       </View>
     </ImageBackground>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -126,7 +121,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 2,
-    elevation: 5, 
+    elevation: 5,
   },
   buttonContainer: {
     position: 'absolute',

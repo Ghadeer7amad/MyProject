@@ -43,6 +43,7 @@ import MainJob from "./src/screens/MainJob.js";
 import ApplyForaJob from "./src/screens/ApplyForaJob.js";
 import AppointmentHistory from "./src/screens/AppointmentHistory";
 import EditServices from './AdminPage/EditServices.js'
+import EditProfile from './AdminPage/EditProfile.js'
 import Advice from './src/screens/Advice.js'
 import { NativeBaseProvider } from "native-base";
 
@@ -89,6 +90,8 @@ const HomeStack = () => (
     <Stack.Screen name="Jobs" component={Jobs} options={{ headerShown: false }}/>
     <Stack.Screen name="ApplyForaJob" component={ApplyForaJob} options={{ headerShown: false }}/>
     <Stack.Screen name="EditServices" component={EditServices} options={{ headerShown: false }}/>
+    <Stack.Screen name="EditProfile" component={EditProfile} options={{ headerShown: false }}/>
+
     <Stack.Screen name="Advice" component={Advice} options={{ headerShown: false }}/>
    
   </Stack.Navigator>

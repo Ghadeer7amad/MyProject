@@ -29,7 +29,7 @@ const BookingScreen = () => {
   const { id: userId, name: userName } = useSelector(
     (state) => state.user.userData
   );
-  const { _id: salonId, name: salonName } = useSelector(
+  const { _id: salonId, name: salonName } = useSelector( 
     (state) => state.user.usedSalonData
   );
 

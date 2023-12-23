@@ -86,6 +86,12 @@ import {
         }
       };
 
+
+
+      /////
+
+      
+
     return (
         <View style={styles.container}>
           <Text style={styles.TextStyleHeader}>Add Post</Text>

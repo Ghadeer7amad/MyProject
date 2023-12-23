@@ -18,13 +18,14 @@ const Login = () => {
   const [password, setPassword] = useState("");
 const  dispatch = useDispatch()
   const onChangeEmailHandler = (email) => {
-    setEmail(email);
+    setEmail(email); 
   };
   const onChangePasswordHandler = (password) => {
     setPassword(password);
   };
 
  const navigation = useNavigation();
+
 
  const handleLogin = async () => {
   const baseUrl = 'https://ayabeautyn.onrender.com';

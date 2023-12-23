@@ -3,6 +3,7 @@ import {
   ADD_SALON,
   INC_NOTIFICATION,
   SET_IS_PROVIDER,
+  EDIT_USER,
 } from './userActionTypes';
 
 export const setIsProvider = isProvider => {
@@ -20,6 +21,13 @@ export const storeCurrentUser = userData => {
   };
 };
 
+export const editCurrentUser = userData => {
+  return {
+    type: EDIT_USER,
+    payload: userData,
+  };
+};
+
 export const storeUsedSalon = salonData => {
   return {
     type: ADD_SALON,
@@ -32,5 +40,8 @@ export const incNotifications = () => {
     type: INC_NOTIFICATION,
   };
 };
+
+
+
 
 
