@@ -3,49 +3,121 @@ import { StyleSheet, Text, View, TouchableOpacity, ImageBackground } from 'react
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import Spacing from '../Common/Spacing.js';
-import { Picker } from '@react-native-picker/picker';
 import * as DocumentPicker from 'expo-document-picker';
 import Color from '../Common/Color';
+import { Box, useToast } from 'native-base';
+import axios from 'axios';
+import { useSelector } from 'react-redux';
+import { Select } from "native-base";
+import { serialize } from "object-to-formdata";
 
 const ApplyForaJob = () => {
   const [selectedFile, setSelectedFile] = useState(null);
-  const [selectedJob, setSelectedJob] = useState('Laser Specialist'); 
+  const [selectedJob, setSelectedJob] = useState('Laser Specialist');
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigation = useNavigation();
   const [items, setItems] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+
+  const { id: userId, name: userName } = useSelector(
+    (state) => state.user.userData
+  );
+  const { _id: salonId, name: salonName } = useSelector(
+    (state) => state.user.usedSalonData
+  );
+
+  const [FData, setFData] = useState({
+    user_id: userId,
+    salon_id: salonId,
+    user_name: userName,
+
+  });
+
+  const toast = useToast();
+
+
 
   const baseUrl = "https://ayabeautyn.onrender.com";
-  const fetchData = async () => {
-    try {
-      const response = await fetch(`${baseUrl}/jobs/job`);
-      const data = await response.json();
-      setItems(data);
-      setIsLoading(false);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  };
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${baseUrl}/jobs/job`);
+        setItems(response.data);
+        setIsLoading(false);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
     fetchData();
   }, []);
 
   const pickDocument = async () => {
     try {
       const result = await DocumentPicker.getDocumentAsync({
-        type: "application/pdf", 
+        type: 'application/pdf',
       });
 
       if (result.type === 'success') {
-        setSelectedFile(result.name);
-      } else {
-      }
+        setSelectedFile(result.uri);
+      } 
     } catch (err) {
+      console.error('Error picking document:', err);
     }
   };
 
+  const onSubmitPressed = async () => {
+    try {
+      const options = {
+        indices: false,
+        nullsAsUndefineds: false,
+        booleansAsIntegers: false,
+        allowEmptyArrays: false,
+        noFilesWithArrayNotation: false,
+        dotsForObjectNotation: true,
+      };
+  
+      const formData = serialize(FData, options);
+  
+      formData.append('jobName', selectedJob);
+      formData.append('image', {
+        uri: selectedFile,
+        name: FData.name + ".pdf",
+        type: 'application/pdf',
+      });
+  
+      console.log(formData);
+  
+      const response = await fetch(`${baseUrl}/uploadjobs/uploadjob`, {
+        method: 'POST',
+        body: formData,
+      });
+  
+      const responseData = await response.json(); // Parse the response body as JSON
+  
+      if (response.ok) {
+        console.log(responseData);
+        toast.show({
+          render: () => (
+            <Box bg="emerald.500" px="5" py="5" rounded="sm" mb={5}>
+              Added successfully
+            </Box>
+          ),
+        });
+      } else {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+    } catch (error) {
+      console.error('Fetch error:', error);
+    }
+  };
+  
+  
+
+
   return (
+
     <ImageBackground source={require('../../assets/11.jpg')} style={styles.container}>
       <TouchableOpacity
         style={{ marginLeft: Spacing * 2, marginTop: Spacing * 3 }}
@@ -59,17 +131,22 @@ const ApplyForaJob = () => {
       <View style={{ flex: 1, justifyContent: 'center', marginTop: -200 }}>
         <Text style={styles.labelStyle}>Choose The Job:</Text>
 
+
+
         <View style={styles.labeledContainerStyle}>
-          <Picker
-            selectedValue={selectedJob}
-            onValueChange={(itemValue, itemIndex) => setSelectedJob(itemValue)}
-            style={styles.pickerStyle}
-          >
-            {items.map((item) => (
-              <Picker.Item key={item.id} label={item.jobName} value={item.jobName} />
-            ))}
-          </Picker>
-        </View>
+            <Select
+              placeholder="Select Job"
+              selectedValue={selectedJob}
+              onValueChange={(itemValue, itemIndex) => setSelectedJob(itemValue)}
+              style={styles.pickerStyle}
+            >
+              {items.map((item) => (
+                <Select.Item key={item.id} label={item.jobName} value={item.jobName} />
+              ))}
+            </Select>
+          </View>
+
+
 
         <Text style={[styles.labelStyle, { marginTop: 20 }]}>Attach your CV (PDF):</Text>
 
@@ -87,7 +164,7 @@ const ApplyForaJob = () => {
       </View>
 
       <View style={styles.buttonContainer}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={onSubmitPressed} >
           <Text style={styles.buttonStyle}>
             <Ionicons name="paper-plane" size={25} color="#ebebeb" /> Submit Form
           </Text>
@@ -135,8 +212,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 100,
     fontWeight: '400',
     fontSize: 20,
-    textAlign: "center",
-    color: "#ebebeb",
+    textAlign: 'center',
+    color: '#ebebeb',
     backgroundColor: Color.background,
     borderRadius: 5,
   },
@@ -170,7 +247,9 @@ const styles = StyleSheet.create({
     height: 50,
     width: '100%',
     color: 'gray',
+    fontSize: 16,
   },
+  
 });
 
 export default ApplyForaJob;
