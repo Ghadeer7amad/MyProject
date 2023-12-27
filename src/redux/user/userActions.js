@@ -4,6 +4,8 @@ import {
   INC_NOTIFICATION,
   SET_IS_PROVIDER,
   EDIT_USER,
+  ADD_TO_FAVORITES,
+  REMOVE_FROM_FAVORITES // New action 
 } from './userActionTypes';
 
 export const setIsProvider = isProvider => {
@@ -38,10 +40,23 @@ export const storeUsedSalon = salonData => {
 export const incNotifications = () => {
   return {
     type: INC_NOTIFICATION,
+  }};
+
+  export const addToFavorites = product => {
+    return {
+      type: ADD_TO_FAVORITES,
+      payload: product,
+    };
   };
-};
 
-
+  export const removeFromFavorites = (productId) => {
+    console.log('Removing product with ID:', productId);
+  
+    return {
+      type: REMOVE_FROM_FAVORITES,
+      payload: productId,
+    };
+  };
 
 
 

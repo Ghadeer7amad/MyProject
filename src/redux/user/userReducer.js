@@ -4,6 +4,8 @@ import {
   INC_NOTIFICATION,
   TOGGLE_LIKE,
   EDIT_USER,
+  ADD_TO_FAVORITES,
+  REMOVE_FROM_FAVORITES
 } from './userActionTypes';
 
 const initialState = {
@@ -13,6 +15,7 @@ const initialState = {
     isLiked: false, // حالة اللايك
   },
   usedSalonData: '',
+   favorites: [],
 };
 
 const userReducer = (state = initialState, action) => {
@@ -50,6 +53,18 @@ const userReducer = (state = initialState, action) => {
           isLiked: !state.userData.isLiked, // يعكس حالة اللايك عند الضغط على الزر
         },
       };
+
+      case ADD_TO_FAVORITES:
+      return {
+        ...state,
+        favorites: [...state.favorites, action.payload],
+      };
+      
+      case REMOVE_FROM_FAVORITES:
+        return {
+          ...state,
+          favorites: state.favorites.filter(product => product._id !== action.payload),
+        };
 
     default:
       return state;

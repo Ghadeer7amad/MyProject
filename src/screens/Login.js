@@ -47,7 +47,7 @@ const  dispatch = useDispatch()
       });
       setEmail("");
       setPassword("");
-      navigation.navigate('PathologicalCase'); 
+      navigation.navigate('SalonScreen'); 
     } else {
       toast.show({
           render: () => (
