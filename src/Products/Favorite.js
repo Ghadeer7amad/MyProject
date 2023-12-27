@@ -48,7 +48,8 @@ const FavoriteScreens = ({ favoriteProducts }) => {
       </View>
 
       <ScrollView style={{ marginTop: 5 }}>
-      {favoriteProducts && favoriteProducts.map((product, index) => (
+      {favoriteProducts && favoriteProducts.length > 0 ? (
+      favoriteProducts && favoriteProducts.map((product, index) => (
           <TouchableOpacity
             key={index}
             style={styles.productContainer}
@@ -71,7 +72,12 @@ const FavoriteScreens = ({ favoriteProducts }) => {
          </View>
       </View>
         </TouchableOpacity>
-        ))}
+        ))
+       ): (
+          <View style={styles.noFavoritesContainer}>
+            <Text style={styles.noFavoritesText}>No favorite products available</Text>
+          </View>
+        )}
       </ScrollView>
     </View>
   );
@@ -136,7 +142,19 @@ removeButton: {
   position: "absolute",
   top: Spacing*5,
   left: Spacing*20,
-  padding: Spacing /12,
+  padding: Spacing/10,
   zIndex: 1, 
+},
+noFavoritesContainer: {
+  flex: 1,
+  justifyContent: 'center',
+  alignItems: 'center',
+  marginTop: 20,
+},
+
+noFavoritesText: {
+  textAlign: 'center',
+  fontSize: 16,
+  color: '#929aab',
 },
 })
