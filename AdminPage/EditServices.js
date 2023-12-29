@@ -24,18 +24,34 @@ import {
   import { Box, useToast } from "native-base";
   import RNPickerSelect from "react-native-picker-select";
   import axios from "axios";
+  import { Select } from "native-base";
+  import {useEffect } from 'react';
   
   const EditServices = ({ route }) => {
     const { item } = route.params;
+
+    const [selectedStatus, setSelectedStatus] = useState();
+    const [selectedSubServices, setSelectedSubServices] = useState();
   
-    const subServices = [
-      { label: "Face", value: "Face" },
-      { label: "Body", value: "Body" },
-    ];
-    const status = [
-      { label: "Active", value: "Active" },
-      { label: "Inactive", value: "Inactive" },
-    ];
+    const handleSubServicesChange = (selectedsubServices) => {
+      setFData((prevData) => ({
+        ...prevData,
+        subServices: selectedsubServices,
+      }));
+      setSelectedSubServices(selectedsubServices);
+    };
+    
+    const handleStautsChange = (selectedStauts) => {
+      setFData((prevData) => ({
+        ...prevData,
+        status: selectedStauts,
+      }));
+      setSelectedStatus(selectedStauts); 
+    };
+    useEffect(() => {
+      setSelectedStatus(item.status); 
+      setSelectedSubServices(item.subServices);
+    }, [item]);
   
    const initialValues = item
       ? {...item}
@@ -51,22 +67,9 @@ import {
     const [FData, setFData] = useState({
       ...initialValues,
     });
+
     const toast = useToast();
-   
-    const handleSubServicesChange = (selectedsubServices) => {
-      setFData((prevData) => ({
-        ...prevData,
-        subServices: selectedsubServices,
-      }));
-    };
-  
-    const handleStautsChange = (selectedStauts) => {
-      setFData((prevData) => ({
-        ...prevData,
-        status: selectedStauts,
-      }));
-    };
-        
+
     const baseUrl = "https://ayabeautyn.onrender.com";
       const handleEditService = (itemId) => {
         const configurationObject = {
@@ -76,6 +79,7 @@ import {
         };
         axios(configurationObject)
           .then((response) => {
+            console.log("Response:", response);
             if (response.status === 200) {
                 toast.show({
                     render: () => (
@@ -94,14 +98,13 @@ import {
                   status: "",
                   image: "",
                 });
-                setImage(null);
-                setButtonText("Upload Image");
               }
                else {
               throw new Error("An error has occurred");
             }
           })
           .catch((error) => {
+            console.error("Error during fetch:", error);
             toast.show({
                 render: () => (
                   <Box bg="red.500" px="5" py="5" rounded="sm" mb={5}>
@@ -173,61 +176,56 @@ import {
           </View>
   
           <SafeAreaView
-            style={{
-              justifyContent: "center",
-              alignItems: "center",
-              borderWidth: 2,
-              borderColor: "#c3b4d2",
-              marginHorizontal: 10,
-              marginTop: 20,
-            }}
-          >
-            <RNPickerSelect
-              items={subServices}
-              onValueChange={(value) => handleSubServicesChange(value)}
-              style={{
-                inputIOS: {
-                  fontSize: 16,
-                  paddingVertical: 14,
-                  paddingHorizontal: 10,
-                  width: 200,
-                },
-                placeholder: {
-                  color: "#757a79",
-                },
-              }}
-              placeholder={{ label: "Chose SubServices", value: null }}
-              value={FData.subServices}
+          style={{
+            marginTop: 20,
+          }}
+        >
+          <View style={styles.serviceListContainer}>
+          <Select
+           placeholder="Select subservices"
+           color={Color.primary}
+           style={{ width: 180, fontSize: 14 }}
+           selectedValue={selectedSubServices}
+           onValueChange={(value) => handleSubServicesChange(value)}
+         >
+           {[
+             { id: 1, name: "Body" },
+             { id: 2, name: "Face" },
+           ].map((item) => (
+             <Select.Item
+               key={item.id}
+               label={item?.name}
+               value={item.name}
+             />
+           ))}
+         </Select>
+       </View>
+
+
+          <View style={styles.serviceListContainer}>
+          <Select
+          placeholder="Select status"
+          color={Color.primary}
+          style={{ width: 150, fontSize: 14 }}
+          selectedValue={selectedStatus}
+          onValueChange={(valueitem) => {handleStautsChange(valueitem);
+          }}
+        >
+          {[
+            { id: 1, name: "Active" },
+            { id: 2, name: "Inactive" },
+          ].map((item) => (
+            <Select.Item
+              key={item.id}
+              label={item?.name}
+              value={item.name}
             />
-          </SafeAreaView>
-  
-          <SafeAreaView
-            style={{
-              justifyContent: "center",
-              alignItems: "center",
-              borderWidth: 2,
-              borderColor: "#c3b4d2",
-              marginHorizontal: 10,
-              marginTop: 20,
-            }}
-          >
-            <RNPickerSelect
-              items={status}
-              onValueChange={(value) => handleStautsChange(value)}
-              style={{
-                inputIOS: {
-                  paddingVertical: 20,
-                  paddingHorizontal: 10,
-                  width: 200,
-                },
-                placeholder: {
-                  color: "#757a79",
-                },
-              }}
-              placeholder={{ label: "Stauts Services", value: null }}
-              value={FData.status}
-            />
-          </SafeAreaView>
+          ))}
+        </Select>
+
+          </View>
+        </SafeAreaView>
+
   
           <TouchableOpacity onPress={() => handleEditService(item._id)}>
             <Text style={styles.buttonStyle}>Edit Services</Text>
@@ -305,5 +303,12 @@ import {
       color: Color.primary,
       marginTop: 10,
     },
+    serviceListContainer: {
+      width: "95%",
+      marginBottom: 20,
+      borderWidth: 2,
+      borderColor: "#c3b4d2",
+      marginHorizontal: 10,
+    }
   });
   

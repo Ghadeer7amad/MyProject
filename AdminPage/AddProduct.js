@@ -8,17 +8,13 @@ import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 import { serialize } from "object-to-formdata";
 import { Box, useToast } from "native-base";
-import RNPickerSelect from 'react-native-picker-select';
+import { Select } from "native-base";
+import {useEffect } from 'react';
 
 const AddProduct = ({route}) => {
-  const subProducts = [
-    { label: 'Face', value: 'Face' },
-    { label: 'Body', value: 'Body' },
-  ];
-  const status = [
-    { label: 'Active', value: 'Active' },
-    { label: 'Inactive', value: 'Inactive' },
-  ];
+  const [selectedStatus, setSelectedStatus] = useState("Active");
+  const [selectedSubProduct, setSelectedSubProducts] = useState("Body");
+
   const [FData, setFData] = useState({
     name: "",
     description: "",
@@ -33,19 +29,26 @@ const AddProduct = ({route}) => {
   const [buttonText, setButtonText] = useState("Upload Image");
   const [image, setImage] = useState(null);
 
-  const handlesubProductsChange = (selectedsubProducts) => {
+  const handleSubProductsChange = (selectedSubProduct) => {
     setFData((prevData) => ({
       ...prevData,
-      subProducts: selectedsubProducts
+      subProducts: selectedSubProduct,
     }));
+    setSelectedSubProducts(selectedSubProduct); 
   };
-
+  
   const handleStautsChange = (selectedStauts) => {
     setFData((prevData) => ({
       ...prevData,
-      status: selectedStauts
+      status: selectedStauts,
     }));
+    setSelectedStatus(selectedStauts); 
   };
+  
+  
+  useEffect(() => {
+    console.log("FData updated:", FData);
+  }, [FData]);
   
 
   const pickImage = async () => {
@@ -115,7 +118,7 @@ const AddProduct = ({route}) => {
         description: "",
         price: "",
         discount: "",
-        rte: "",
+        rate: "",
         subProducts: "",
         status: "",
         image: "",
@@ -184,46 +187,56 @@ const AddProduct = ({route}) => {
        <FontAwesomeIcon icon={faClock} style={styles.icon} />
       </View>
 
-      <SafeAreaView style={{justifyContent: 'center', alignItems: 'center', borderWidth: 2, borderColor: "#c3b4d2",
-       marginHorizontal: 10, marginTop: 20 }}>
-      <RNPickerSelect
-        items={subProducts}
-        onValueChange={(value) => handlesubProductsChange(value)}
-        style={{
-          inputIOS: {
-            fontSize: 16,
-            paddingVertical: 14,
-            paddingHorizontal: 10,
-            width: 200,
-          },
-          placeholder: {
-            color: "#757a79",
-          }
-        }} 
-        placeholder={{ label: 'Chose SubProducts', value: null}}
-        value={FData.subProducts}
-      />
-      </SafeAreaView>
+      <SafeAreaView
+          style={{
+            marginTop: 20,
+          }}
+        >
+          <View style={styles.serviceListContainer}>
+          <Select
+           placeholder="Select subProducts"
+           color={Color.primary}
+           style={{ width: 180, fontSize: 14 }}
+           selectedValue={selectedSubProduct}
+           onValueChange={(value) => handleSubProductsChange(value)}
+         >
+           {[
+             { id: 1, name: "Body" },
+             { id: 2, name: "Face" },
+           ].map((item) => (
+             <Select.Item
+               key={item.id}
+               label={item?.name}
+               value={item.name}
+             />
+           ))}
+         </Select>
+       </View>
 
-      <SafeAreaView style={{justifyContent: 'center', alignItems: 'center', borderWidth: 2, borderColor: "#c3b4d2",
-       marginHorizontal: 10, marginTop: 20 }}>
-      <RNPickerSelect
-        items={status}
-        onValueChange={(value) => handleStautsChange(value)}
-        style={{
-          inputIOS: {
-            paddingVertical: 20,
-            paddingHorizontal: 10,
-            width: 200,
-          },
-          placeholder: {
-            color: "#757a79",
-          }
-        }} 
-        placeholder={{ label: 'Stauts Product', value: null}}
-        value={FData.status}
-      />
-      </SafeAreaView>
+
+          <View style={styles.serviceListContainer}>
+          <Select
+          placeholder="Select status"
+          color={Color.primary}
+          style={{ width: 150, fontSize: 14 }}
+          selectedValue={selectedStatus}
+          onValueChange={(valueitem) => {handleStautsChange(valueitem);
+          }}
+        >
+          {[
+            { id: 1, name: "Active" },
+            { id: 2, name: "Inactive" },
+          ].map((item) => (
+            <Select.Item
+              key={item.id}
+              label={item?.name}
+              value={item.name}
+            />
+          ))}
+        </Select>
+
+          </View>
+        </SafeAreaView>
       
       <View style={{ marginHorizontal: 10, marginTop: 20 }}>
         <Button
@@ -332,5 +345,12 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     color: Color.primary,
     marginTop: 10
+  },
+  serviceListContainer: {
+    width: "95%",
+    marginBottom: 20,
+    borderWidth: 2,
+    borderColor: "#c3b4d2",
+    marginHorizontal: 10,
   }
 })
