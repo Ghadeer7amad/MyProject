@@ -1,12 +1,12 @@
 import {
   View,
-  Text, 
+  Text,
   FlatList,
   StyleSheet,
   Image,
   TextInput,
   TouchableOpacity,
-  Alert 
+  Alert,
 } from "react-native";
 import CustomSearchBar from "../Common/SearchBarComponent.js";
 import Header from "../screens/Header.js";
@@ -47,9 +47,7 @@ const AppointmentsScreen = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch(
-        `${baseUrl}/appointments/appointment`
-      );
+      const response = await fetch(`${baseUrl}/appointments/appointment`);
       const data = await response.json();
       setItems(data);
       setIsLoading(false);
@@ -57,8 +55,6 @@ const AppointmentsScreen = () => {
       console.error("Error fetching data:", error);
     }
   };
-
-  
 
   const handleCancleAppointment = async (itemId) => {
     console.log("Deleting item with ID:", itemId);
@@ -101,7 +97,7 @@ const AppointmentsScreen = () => {
         keyExtractor={(item) => item._id}
         renderItem={({ item }) => (
           <View style={styles.appointmentContainer}>
-                <View style={styles.userContainer}>
+            <View style={styles.userContainer}>
               <Text style={styles.userName}>{item.user_name}</Text>
               <Text style={styles.appointmentContent}>
                 Date: {item.appointment_date}
@@ -139,19 +135,17 @@ const styles = StyleSheet.create({
   appointmentContainer: {
     backgroundColor: "#ffffff",
     margin: 15,
-    marginBottom:2,
+    marginBottom: 2,
     flexDirection: "row",
     borderWidth: 1,
     borderColor: Color.primary,
-     position: "relative",
+    position: "relative",
   },
   userContainer: {
     flexDirection: "column",
     justifyContent: "center",
     width: "100%",
     padding: 20,
-   
-
   },
   userName: {
     fontSize: 20,
@@ -191,10 +185,10 @@ const styles = StyleSheet.create({
   },
   removeButton: {
     position: "absolute",
-    top: Spacing/2,
-    left: Spacing*22,
+    top: Spacing / 2,
+    left: Spacing * 22,
     padding: Spacing / 2,
-    zIndex: 1, 
+    zIndex: 1,
   },
 });
 

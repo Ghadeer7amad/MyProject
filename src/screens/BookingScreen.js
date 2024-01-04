@@ -29,7 +29,7 @@ const BookingScreen = () => {
   const { id: userId, name: userName } = useSelector(
     (state) => state.user.userData
   );
-  const { _id: salonId, name: salonName } = useSelector( 
+  const { _id: salonId, name: salonName } = useSelector(
     (state) => state.user.usedSalonData
   );
 
@@ -90,9 +90,7 @@ const BookingScreen = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch(
-        `${baseUrl}/appointments/appointment`
-      );
+      const response = await fetch(`${baseUrl}/appointments/appointment`);
       const data = await response.json();
       setBookedAppointments(data.map((appointment) => appointment.uniqueDate));
       setIsLoading(false);
@@ -158,17 +156,14 @@ const BookingScreen = () => {
     };
 
     try {
-      const response = await fetch(
-        `${baseUrl}/appointments/appointment`,
-        {
-          method: "POST",
-          body: JSON.stringify(data),
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-        }
-      );
+      const response = await fetch(`${baseUrl}/appointments/appointment`, {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+      });
       const json = await response.json();
 
       if (!response.ok) {

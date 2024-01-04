@@ -24,22 +24,21 @@ import * as ImagePicker from "expo-image-picker";
 import { serialize } from "object-to-formdata";
 import { Box, useToast } from "native-base";
 import { Select } from "native-base";
-import {useEffect } from 'react';
+import { useEffect } from "react";
 
 const AddServices = () => {
-
   const [selectedStatus, setSelectedStatus] = useState("Active");
   const [selectedSubServices, setSelectedSubServices] = useState("Body");
 
   const [FData, setFData] = useState({
-        name: "",
-        description: "",
-        price: "",
-        discount: "",
-        time: "",
-        subServices: [],
-        status: [],
-        image: "",
+    name: "",
+    description: "",
+    price: "",
+    discount: "",
+    time: "",
+    subServices: [],
+    status: [],
+    image: "",
   });
   const toast = useToast();
   const [buttonText, setButtonText] = useState("Upload Image");
@@ -52,7 +51,7 @@ const AddServices = () => {
     }));
     setSelectedSubServices(selectedsubServices); // هنا تم تحديث selectedStatus
   };
-  
+
   const handleStautsChange = (selectedStauts) => {
     setFData((prevData) => ({
       ...prevData,
@@ -60,8 +59,7 @@ const AddServices = () => {
     }));
     setSelectedStatus(selectedStauts); // هنا تم تحديث selectedSubServices
   };
-  
-  
+
   useEffect(() => {
     console.log("FData updated:", FData);
   }, [FData]);
@@ -100,13 +98,10 @@ const AddServices = () => {
       });
       const baseUrl = "https://ayabeautyn.onrender.com";
 
-      const response = await fetch(
-        `${baseUrl}/services/CreateServices`,
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
+      const response = await fetch(`${baseUrl}/services/CreateServices`, {
+        method: "POST",
+        body: formData,
+      });
 
       const responseData = await response.json();
       if (!response.ok) {
@@ -220,48 +215,47 @@ const AddServices = () => {
           }}
         >
           <View style={styles.serviceListContainer}>
-          <Select
-           placeholder="Select subservices"
-           color={Color.primary}
-           style={{ width: 180, fontSize: 14 }}
-           selectedValue={selectedSubServices}
-           onValueChange={(value) => handleSubServicesChange(value)}
-         >
-           {[
-             { id: 1, name: "Body" },
-             { id: 2, name: "Face" },
-           ].map((item) => (
-             <Select.Item
-               key={item.id}
-               label={item?.name}
-               value={item.name}
-             />
-           ))}
-         </Select>
-       </View>
-
+            <Select
+              placeholder="Select subservices"
+              color={Color.primary}
+              style={{ width: 180, fontSize: 14 }}
+              selectedValue={selectedSubServices}
+              onValueChange={(value) => handleSubServicesChange(value)}
+            >
+              {[
+                { id: 1, name: "Body" },
+                { id: 2, name: "Face" },
+              ].map((item) => (
+                <Select.Item
+                  key={item.id}
+                  label={item?.name}
+                  value={item.name}
+                />
+              ))}
+            </Select>
+          </View>
 
           <View style={styles.serviceListContainer}>
-          <Select
-          placeholder="Select status"
-          color={Color.primary}
-          style={{ width: 150, fontSize: 14 }}
-          selectedValue={selectedStatus}
-          onValueChange={(valueitem) => {handleStautsChange(valueitem);
-          }}
-        >
-          {[
-            { id: 1, name: "Active" },
-            { id: 2, name: "Inactive" },
-          ].map((item) => (
-            <Select.Item
-              key={item.id}
-              label={item?.name}
-              value={item.name}
-            />
-          ))}
-        </Select>
-
+            <Select
+              placeholder="Select status"
+              color={Color.primary}
+              style={{ width: 150, fontSize: 14 }}
+              selectedValue={selectedStatus}
+              onValueChange={(valueitem) => {
+                handleStautsChange(valueitem);
+              }}
+            >
+              {[
+                { id: 1, name: "Active" },
+                { id: 2, name: "Inactive" },
+              ].map((item) => (
+                <Select.Item
+                  key={item.id}
+                  label={item?.name}
+                  value={item.name}
+                />
+              ))}
+            </Select>
           </View>
         </SafeAreaView>
 
@@ -284,7 +278,7 @@ const AddServices = () => {
           />
           {image && (
             <Image
-              source={{ uri:  image.uri }}
+              source={{ uri: image.uri }}
               style={{
                 width: 335,
                 height: 180,
@@ -377,5 +371,5 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: "#c3b4d2",
     marginHorizontal: 10,
-  }
+  },
 });

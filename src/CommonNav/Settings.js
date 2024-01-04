@@ -78,9 +78,11 @@ export default function Example() {
   const [isLoading, setIsLoading] = useState(true);
   const [items, setItems] = useState([]);
   // Assuming your Redux store structure has 'name' and 'email' properties
-  const { id: userId, name: userName, email: userEmail } = useSelector(
-    (state) => state.user.userData
-  );
+  const {
+    id: userId,
+    name: userName,
+    email: userEmail,
+  } = useSelector((state) => state.user.userData);
 
   const baseUrl = "https://ayabeautyn.onrender.com";
 
@@ -94,8 +96,6 @@ export default function Example() {
       console.error("Error fetching data:", error);
     }
   };
-
-  
 
   useEffect(() => {
     fetchData();
@@ -131,9 +131,6 @@ export default function Example() {
           <Text style={styles.profileName}>{userName}</Text>
           <Text style={styles.profileAddress}>{userEmail}</Text>
         </View>
-
-        
-          
 
         {SECTIONS.map(({ header, items }) => {
           return (
@@ -192,44 +189,40 @@ export default function Example() {
 }
 
 const styles = StyleSheet.create({
-
   container: {
     paddingVertical: 24,
-    backgroundColor: 'white'
+    backgroundColor: "white",
   },
 
   profile: {
     padding: 24,
-    alignItems: 'center',
-    justifyContent: 'center',
-
-  }, 
+    alignItems: "center",
+    justifyContent: "center",
+  },
 
   profileName: {
     marginTop: 20,
     fontSize: 19,
-    fontWeight: '600',
+    fontWeight: "600",
     color: Color.primary,
-    textAlign: 'center',
+    textAlign: "center",
   },
 
   profileAddress: {
     marginTop: 5,
     fontSize: 16,
-    color: '#989898',
-    textAlign: 'center',
-
-  }, 
+    color: "#989898",
+    textAlign: "center",
+  },
 
   profileAvatar: {
     width: 72,
     height: 72,
     borderRadius: 9999,
-
   },
 
   profileAvatarWrapper: {
-    position: 'relative',
+    position: "relative",
   },
 
   /////////////////////
@@ -237,13 +230,12 @@ const styles = StyleSheet.create({
     width: 28,
     height: 28,
     borderRadius: 9999,
-    backgroundColor: '#f2f2f2',
-    position: 'absolute',
+    backgroundColor: "#f2f2f2",
+    position: "absolute",
     right: -4,
     bottom: -10,
-    alignItems: 'center',
-    justifyContent: 'center',
-
+    alignItems: "center",
+    justifyContent: "center",
   },
 
   section: {
@@ -253,41 +245,34 @@ const styles = StyleSheet.create({
   sectionHeader: {
     paddingVertical: 12,
     fontSize: 12,
-    fontWeight: '600',
-    color: '#9e9e9e',
-    textTransform: 'uppercase',
+    fontWeight: "600",
+    color: "#9e9e9e",
+    textTransform: "uppercase",
     letterSpacing: 1.1,
   },
 
   row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-start",
     height: 50,
-    backgroundColor: '#f2f2f2',
+    backgroundColor: "#f2f2f2",
     borderRadius: 8,
     marginBottom: 12,
     paddingHorizontal: 12,
-
-
   },
 
   rowLabel: {
     fontSize: 17,
-    color: '#0c0c0c',
-
-
+    color: "#0c0c0c",
   },
 
   rowIcon: {
     width: 32,
     height: 32,
     borderRadius: 9999,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     marginRight: 12,
-
-
-  }
-
+  },
 });

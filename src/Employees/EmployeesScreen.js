@@ -5,7 +5,7 @@ import {
   StyleSheet,
   Image,
   TouchableOpacity,
-  Alert
+  Alert,
 } from "react-native";
 import CustomSearchBar from "../Common/SearchBarComponent.js";
 import Header from "../screens/Header.js";
@@ -15,15 +15,17 @@ import Color from "../Common/Color.js";
 import Spacing from "../Common/Spacing.js";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 
 const EmployeesScreen = () => {
   const navigation = useNavigation();
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const { role } = useSelector((state) => state.user.userData);
 
   const handleDetailsPress = (item) => {
-    navigation.navigate('EmployeesDetails', { item });
+    navigation.navigate("EmployeesDetails", { item });
   };
 
   const handleEditEmployee = async (item) => {
@@ -31,7 +33,7 @@ const EmployeesScreen = () => {
   };
 
   const baseUrl = "https://ayabeautyn.onrender.com";
-  
+
   const fetchData = async () => {
     try {
       const response = await fetch(`${baseUrl}/employees/employee`);
@@ -39,7 +41,7 @@ const EmployeesScreen = () => {
       setItems(data);
       setIsLoading(false);
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error("Error fetching data:", error);
     }
   };
 
@@ -57,26 +59,26 @@ const EmployeesScreen = () => {
           onPress: () => handleDeletePress(itemId),
         },
       ],
-      { cancelable: false } 
+      { cancelable: false }
     );
   };
 
   const handleDeletePress = async (itemId) => {
-    console.log('Deleting item with ID:', itemId);
+    console.log("Deleting item with ID:", itemId);
 
     try {
       const response = await fetch(`${baseUrl}/employees/employee/${itemId}`, {
-        method: 'DELETE',
+        method: "DELETE",
       });
 
       if (response.ok) {
         fetchData();
       } else {
         const responseData = await response.json();
-        console.error('Failed to delete item. Server response:', responseData);
+        console.error("Failed to delete item. Server response:", responseData);
       }
     } catch (error) {
-      console.error('Error deleting item:', error);
+      console.error("Error deleting item:", error);
     }
   };
 
@@ -91,20 +93,24 @@ const EmployeesScreen = () => {
         <Text style={[styles.styleText, styles.styleText2]}>
           Beauty Employees.
         </Text>
-        <CustomSearchBar placeholder={'search Employee'} />
+        <CustomSearchBar placeholder={"search Employee"} />
       </View>
-      <TouchableOpacity onPress={() => navigation.navigate("AddEmployee")}>
+      {role === "Admin" && (
+        <TouchableOpacity onPress={() => navigation.navigate("AddEmployee")}>
           <Text style={styles.buttonStyle}>Add Employee</Text>
         </TouchableOpacity>
-  
+      )}
+
       <FlatList
         data={items}
         keyExtractor={(item) => item._id}
         renderItem={({ item }) => (
           <View style={styles.employeeContainer}>
-           
             <View style={styles.ImageContainer}>
-              <Image source={{uri: item?.image?.secure_url}} style={styles.userImage} />
+              <Image
+                source={{ uri: item?.image?.secure_url }}
+                style={styles.userImage}
+              />
             </View>
             <View style={styles.userContainer}>
               <Text style={styles.userName}>{item.name}</Text>
@@ -114,30 +120,35 @@ const EmployeesScreen = () => {
                   <Icon name="star" color="gold" size={20} />
                   <Text style={styles.employeeContent}>4.5</Text>
                   <TouchableOpacity
-              style={styles.button}
-              onPress={() => handleDetailsPress(item)}
-            >
-              <Ionicons name="ios-arrow-forward" size={24} color="white" />
-            </TouchableOpacity>
-            <TouchableOpacity
-               style={styles.editIcon}
-                onPress={() => handleEditEmployee(item)}
-              >
-                
-                <Icon name="pencil" color="#5e366a" size={20} />
-              </TouchableOpacity>
-             <TouchableOpacity
-              style={styles.deleteIcon}
-              onPress={() => confirmDelete(item._id)}
-            >
-              <Icon name="close" color="#5e366a" size={20} />
-            </TouchableOpacity>
-              
+                    style={styles.button}
+                    onPress={() => handleDetailsPress(item)}
+                  >
+                    <Ionicons
+                      name="ios-arrow-forward"
+                      size={24}
+                      color="white"
+                    />
+                  </TouchableOpacity>
+                  {role === "Admin" && (
+                    <TouchableOpacity
+                      style={styles.editIcon}
+                      onPress={() => handleEditEmployee(item)}
+                    >
+                      <Icon name="pencil" color="#5e366a" size={20} />
+                    </TouchableOpacity>
+                  )}
+                  {role === "Admin" && (
+                    <TouchableOpacity
+                      style={styles.deleteIcon}
+                      onPress={() => confirmDelete(item._id)}
+                    >
+                      <Icon name="close" color="#5e366a" size={20} />
+                    </TouchableOpacity>
+                  )}
                 </View>
               </TouchableOpacity>
             </View>
-            
-          </View> 
+          </View>
         )}
       />
       <NavbarButtom onChange={(selectedIcon) => console.log(selectedIcon)} />
@@ -150,8 +161,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Color.secondary,
   },
-  container2: {
-  },
+  container2: {},
   employeeContainer: {
     backgroundColor: "#ffffff",
     padding: 5,
@@ -172,7 +182,7 @@ const styles = StyleSheet.create({
   userImage: {
     width: 150,
     height: 150,
-    borderRadius: 25
+    borderRadius: 25,
   },
   userName: {
     fontSize: 20,
@@ -180,7 +190,6 @@ const styles = StyleSheet.create({
   },
   employeeContent: {
     fontSize: 15,
-
   },
   styleText: {
     color: Color.primary,
@@ -194,7 +203,7 @@ const styles = StyleSheet.create({
   starContainer: {
     flexDirection: "row",
     gap: 3,
-    marginTop:10,
+    marginTop: 10,
   },
   button: {
     backgroundColor: "#caabd8",
@@ -202,11 +211,11 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     flexDirection: "column",
     alignSelf: "center",
-    justifyContent:"center",
-    marginLeft:100
+    justifyContent: "center",
+    marginLeft: 100,
   },
   buttonStyle: {
-    width:"35%",
+    width: "35%",
     padding: 10,
     marginHorizontal: 250,
     fontWeight: "400",
@@ -214,17 +223,17 @@ const styles = StyleSheet.create({
     letterSpacing: 2,
     textAlign: "center",
     color: Color.primary,
-    borderWidth:1,
-    borderColor:Color.primary,
+    borderWidth: 1,
+    borderColor: Color.primary,
   },
-  deleteIcon:{
-    marginTop:-80,
-    marginLeft:10,
+  deleteIcon: {
+    marginTop: -80,
+    marginLeft: 10,
   },
-  editIcon:{
-    marginTop:-80,
-   
- marginLeft:-20,
+  editIcon: {
+    marginTop: -80,
+
+    marginLeft: -20,
   },
 });
 

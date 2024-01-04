@@ -47,7 +47,6 @@ const AddEmployee = () => {
       setImage(result.assets[0]);
       setButtonText("Image is uploaded successfully");
     }
-
   };
 
   const addEmployee = async () => {
@@ -77,7 +76,7 @@ const AddEmployee = () => {
       });
 
       const responseData = await response.json();
-   
+
       toast.show({
         render: () => {
           return (
@@ -86,7 +85,7 @@ const AddEmployee = () => {
             </Box>
           );
         },
-      }); 
+      });
     } catch (error) {
       console.error(error);
     }

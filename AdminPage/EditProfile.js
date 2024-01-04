@@ -19,30 +19,31 @@ import { useNavigation } from "@react-navigation/native";
 import { Box, useToast } from "native-base";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import { useDispatch} from 'react-redux';
+import { useDispatch } from "react-redux";
 import { editCurrentUser } from "../src/redux/user/userActions.js";
-
-
 
 const EditProfile = ({ route }) => {
   const navigation = useNavigation();
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const  dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  const { id: userId, name: userName, age: userAge, phone: userPhone, address: userAddress } = useSelector(
-    (state) => state.user.userData 
-  );
+  const {
+    id: userId,
+    name: userName,
+    age: userAge,
+    phone: userPhone,
+    address: userAddress,
+  } = useSelector((state) => state.user.userData);
 
   const baseUrl = "https://ayabeautyn.onrender.com";
-  
 
-  const initialValues =  {
-      userName,
-      age: userAge,
-      phone: userPhone,
-      address: userAddress,
-      };
+  const initialValues = {
+    userName,
+    age: userAge,
+    phone: userPhone,
+    address: userAddress,
+  };
   const [FData, setFData] = useState({
     ...initialValues,
   });
@@ -58,8 +59,10 @@ const EditProfile = ({ route }) => {
     axios(configurationObject)
       .then((response) => {
         if (response.status === 200) {
-          console.log(response.data)
-          dispatch(editCurrentUser({...response.data, name: response.data.userName}))
+          console.log(response.data);
+          dispatch(
+            editCurrentUser({ ...response.data, name: response.data.userName })
+          );
           toast.show({
             render: () => (
               <Box bg="emerald.500" px="5" py="5" rounded="sm" mb={5}>
@@ -67,16 +70,16 @@ const EditProfile = ({ route }) => {
               </Box>
             ),
           });
-
         } else {
           throw new Error(`An error has occurred`);
         }
       })
       .catch((error) => {
         console.error("Error updating profile:", error);
-      
-        const errorMessage = error.response?.data?.message || "An error has occurred";
-        
+
+        const errorMessage =
+          error.response?.data?.message || "An error has occurred";
+
         toast.show({
           render: () => (
             <Box bg="red.500" px="5" py="5" rounded="sm" mb={5}>
@@ -85,10 +88,7 @@ const EditProfile = ({ route }) => {
           ),
         });
       });
-      
   };
-
-
 
   return (
     <ScrollView>
@@ -112,7 +112,10 @@ const EditProfile = ({ route }) => {
             style={[styles.input]}
             placeholder={`${userAge}`}
           />
-          <FontAwesomeIcon icon={faUser} style={[styles.icon, styles.iconDis]} />
+          <FontAwesomeIcon
+            icon={faUser}
+            style={[styles.icon, styles.iconDis]}
+          />
         </View>
 
         <View style={styles.formGroup}>
@@ -122,7 +125,10 @@ const EditProfile = ({ route }) => {
             style={[styles.input]}
             placeholder={`${userPhone}`}
           />
-          <FontAwesomeIcon icon={faPhone} style={[styles.icon, styles.iconDis]} />
+          <FontAwesomeIcon
+            icon={faPhone}
+            style={[styles.icon, styles.iconDis]}
+          />
         </View>
 
         <View style={styles.formGroup}>
@@ -132,7 +138,10 @@ const EditProfile = ({ route }) => {
             style={[styles.input]}
             placeholder={userAddress}
           />
-          <FontAwesomeIcon icon={faMapMarkerAlt} style={[styles.icon, styles.iconDis]} />
+          <FontAwesomeIcon
+            icon={faMapMarkerAlt}
+            style={[styles.icon, styles.iconDis]}
+          />
         </View>
 
         <TouchableOpacity onPress={() => handleEditProfile()}>

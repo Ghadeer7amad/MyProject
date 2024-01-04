@@ -1,19 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { View, FlatList, Image, StyleSheet,Alert } from "react-native";
+import { View, FlatList, Image, StyleSheet, Alert } from "react-native";
 import { Card, Text, Button } from "react-native-elements";
 import { FontAwesome as Icon } from "@expo/vector-icons";
 import CustomSearchBar from "../Common/SearchBarComponent.js";
 import { useNavigation } from "@react-navigation/native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import Color from "../Common/Color";
-import { useDispatch} from 'react-redux';
-import {storeUsedSalon} from "../redux/user/userActions.js";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { storeUsedSalon } from "../redux/user/userActions.js";
 
 const SalonScreen = () => {
   const navigation = useNavigation();
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const  dispatch = useDispatch()
+  const dispatch = useDispatch();
+
+  const { role } = useSelector((state) => state.user.userData);
 
   const handleContinuePress = (item) => {
     dispatch(storeUsedSalon(item));
@@ -59,12 +62,9 @@ const SalonScreen = () => {
     console.log("Deleting item with ID:", itemId);
 
     try {
-      const response = await fetch(
-        `${baseUrl}/salons/salon/${itemId}`,
-        {
-          method: "DELETE",
-        }
-      );
+      const response = await fetch(`${baseUrl}/salons/salon/${itemId}`, {
+        method: "DELETE",
+      });
 
       if (response.ok) {
         fetchData();
@@ -84,28 +84,28 @@ const SalonScreen = () => {
   return (
     <View style={styles.container}>
       <CustomSearchBar placeholder="Search your BeautyCenter" />
-      <TouchableOpacity onPress={() => navigation.navigate("AddSalon")}>
-        <Text style={styles.buttonStyle}>Add Salon</Text>
-      </TouchableOpacity>
+      {role === "Admin" && (
+        <TouchableOpacity onPress={() => navigation.navigate("AddSalon")}>
+          <Text style={styles.buttonStyle}>Add Salon</Text>
+        </TouchableOpacity>
+      )}
 
       <FlatList
         data={items}
         keyExtractor={(item) => item._id}
         renderItem={({ item }) => (
           <Card containerStyle={styles.card}>
-            <View style={styles.Icons}>
-              <TouchableOpacity
-                onPress={() => handleEditSalon(item)}
-              >
-                <Icon name="pencil" color="#5e366a" size={20} />
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => confirmDelete(item._id)}
-              >
-                <Icon name="close" color="#5e366a" size={20} />
-              </TouchableOpacity>
-              
-            </View>
+            {role === "Admin" && (
+              <View style={styles.Icons}>
+                <TouchableOpacity onPress={() => handleEditSalon(item)}>
+                  <Icon name="pencil" color="#5e366a" size={20} />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => confirmDelete(item._id)}>
+                  <Icon name="close" color="#5e366a" size={20} />
+                </TouchableOpacity>
+              </View>
+            )}
+
             <TouchableOpacity onPress={() => handleContinuePress(item)}>
               <Card.Title style={styles.cardTitle}>{item.name}</Card.Title>
               <Image
@@ -191,10 +191,10 @@ const styles = StyleSheet.create({
   // editButton: {
   //   left: 30,
   // },
-  Icons:{
-  flexDirection:"row",
-   justifyContent:"space-between"
-  }
+  Icons: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
 });
 
 export default SalonScreen;
