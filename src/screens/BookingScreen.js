@@ -173,7 +173,6 @@ const BookingScreen = () => {
       if (response.ok) {
         console.log("appointment details", json);
 
-        // Add the booked appointment to the list
         setBookedAppointments([...bookedAppointments, data.uniqueDate]);
 
         toast.show({

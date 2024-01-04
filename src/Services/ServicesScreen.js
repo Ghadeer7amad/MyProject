@@ -29,6 +29,14 @@ const ServicesScreen = () => {
 
   const [selectedItem, setSelectedItem] = useState("Body");
   const { role } = useSelector((state) => state.user.userData);
+  const [filteredItems, setFilteredItems] = useState([]);
+
+  const handleSearch = (searchText) => {
+    const filteredData = Services.filter((service) =>
+      service.name.toLowerCase().includes(searchText.toLowerCase())
+    );
+    setFilteredItems(filteredData);
+  };
 
   const handleBodyPress = async () => {
     try {
@@ -182,7 +190,10 @@ const ServicesScreen = () => {
             </TouchableOpacity>
           )}
 
-          <SearchProANDSer placeholder="Search your service" />
+          <SearchProANDSer
+            placeholder="Search your service"
+            onSearch={handleSearch}
+          />
         </View>
 
         <View style={{ flexDirection: "row" }}>
@@ -210,98 +221,196 @@ const ServicesScreen = () => {
         </View>
 
         <View style={styles.ServiceStyle}>
-          {Services &&
-            Services.length > 0 &&
-            Services.map((service, index) => (
-              <View key={index} style={styles.EveryService}>
-                <BlurView
-                  tint="default"
-                  intensity={90}
-                  style={{ padding: Spacing * 3 }}
-                >
-                  {role === "Admin" && (
-                    <TouchableOpacity
-                      style={styles.removeButton}
-                      onPress={() => confirmDelete(service._id)}
-                    >
-                      <Ionicons name="close" color="red" size={Spacing * 1.5} />
-                    </TouchableOpacity>
-                  )}
-                  {role === "Admin" && (
-                    <TouchableOpacity
-                      style={styles.removeButton1}
-                      onPress={() => handleSoftDeleteService(service._id)}
-                    >
-                      <Ionicons
-                        name="trash-bin"
-                        color="#fff"
-                        size={Spacing * 1.2}
-                      />
-                    </TouchableOpacity>
-                  )}
-                  {role === "Admin" && (
-                    <TouchableOpacity
-                      style={styles.editButton}
-                      onPress={() => handleEditService(service)}
-                    >
-                      <Ionicons name="pencil" color="red" size={Spacing} />
-                    </TouchableOpacity>
-                  )}
-
-                  <TouchableOpacity
-                    style={{ width: 300, height: 250 }}
-                    onPress={() => handleDetailsPress(service)}
+          {filteredItems.length > 0
+            ? filteredItems.map((service, index) => (
+                <View key={index} style={styles.EveryService}>
+                  <BlurView
+                    tint="default"
+                    intensity={90}
+                    style={{ padding: Spacing * 3 }}
                   >
-                    <Image
-                      source={{ uri: service?.image?.secure_url }}
-                      style={styles.ImageStyle}
-                    />
-                    <View style={styles.StyleTop}>
-                      <BlurView style={styles.BlurViewTop}>
+                    {role === "Admin" && (
+                      <TouchableOpacity
+                        style={styles.removeButton}
+                        onPress={() => confirmDelete(service._id)}
+                      >
                         <Ionicons
-                          name="ios-calendar"
-                          style={styles.BookStyle}
-                          color={Color.primary}
-                          size={Spacing * 1.8}
-                          onPress={handleBookPress}
+                          name="close"
+                          color="red"
+                          size={Spacing * 1.5}
                         />
-                      </BlurView>
-                    </View>
-                  </TouchableOpacity>
+                      </TouchableOpacity>
+                    )}
+                    {role === "Admin" && (
+                      <TouchableOpacity
+                        style={styles.removeButton1}
+                        onPress={() => handleSoftDeleteService(service._id)}
+                      >
+                        <Ionicons
+                          name="trash-bin"
+                          color="#fff"
+                          size={Spacing * 1.2}
+                        />
+                      </TouchableOpacity>
+                    )}
+                    {role === "Admin" && (
+                      <TouchableOpacity
+                        style={styles.editButton}
+                        onPress={() => handleEditService(service)}
+                      >
+                        <Ionicons name="pencil" color="red" size={Spacing} />
+                      </TouchableOpacity>
+                    )}
 
-                  <Text style={styles.NameStyle}>{service.name}</Text>
-
-                  <View style={styles.styleRow}>
-                    <View style={{ flexDirection: "row" }}>
-                      <Text style={styles.PriceStyle}>
-                        {service.finalPrice}
-                        <Text style={{ color: "black" }}> LIS</Text>
-                      </Text>
-                      {service.price && (
-                        <Text style={styles.OldPriceStyle}>
-                          {service.price}
-                          <Text
-                            style={{
-                              color: "red",
-                              textDecorationLine: "line-through",
-                            }}
-                          >
-                            {" "}
-                            LIS
-                          </Text>
-                        </Text>
-                      )}
-                    </View>
                     <TouchableOpacity
-                      style={styles.styleIcons}
+                      style={{ width: 300, height: 250 }}
                       onPress={() => handleDetailsPress(service)}
                     >
-                      <Text style={styles.details}>More Details</Text>
+                      <Image
+                        source={{ uri: service?.image?.secure_url }}
+                        style={styles.ImageStyle}
+                      />
+                      <View style={styles.StyleTop}>
+                        <BlurView style={styles.BlurViewTop}>
+                          <Ionicons
+                            name="ios-calendar"
+                            style={styles.BookStyle}
+                            color={Color.primary}
+                            size={Spacing * 1.8}
+                            onPress={handleBookPress}
+                          />
+                        </BlurView>
+                      </View>
                     </TouchableOpacity>
-                  </View>
-                </BlurView>
-              </View>
-            ))}
+
+                    <Text style={styles.NameStyle}>{service.name}</Text>
+
+                    <View style={styles.styleRow}>
+                      <View style={{ flexDirection: "row" }}>
+                        <Text style={styles.PriceStyle}>
+                          {service.finalPrice}
+                          <Text style={{ color: "black" }}> LIS</Text>
+                        </Text>
+                        {service.price && (
+                          <Text style={styles.OldPriceStyle}>
+                            {service.price}
+                            <Text
+                              style={{
+                                color: "red",
+                                textDecorationLine: "line-through",
+                              }}
+                            >
+                              {" "}
+                              LIS
+                            </Text>
+                          </Text>
+                        )}
+                      </View>
+                      <TouchableOpacity
+                        style={styles.styleIcons}
+                        onPress={() => handleDetailsPress(service)}
+                      >
+                        <Text style={styles.details}>More Details</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </BlurView>
+                </View>
+              ))
+            : Services &&
+              Services.map((service, index) => (
+                <View key={index} style={styles.EveryService}>
+                  <BlurView
+                    tint="default"
+                    intensity={90}
+                    style={{ padding: Spacing * 3 }}
+                  >
+                    {role === "Admin" && (
+                      <TouchableOpacity
+                        style={styles.removeButton}
+                        onPress={() => confirmDelete(service._id)}
+                      >
+                        <Ionicons
+                          name="close"
+                          color="red"
+                          size={Spacing * 1.5}
+                        />
+                      </TouchableOpacity>
+                    )}
+                    {role === "Admin" && (
+                      <TouchableOpacity
+                        style={styles.removeButton1}
+                        onPress={() => handleSoftDeleteService(service._id)}
+                      >
+                        <Ionicons
+                          name="trash-bin"
+                          color="#fff"
+                          size={Spacing * 1.2}
+                        />
+                      </TouchableOpacity>
+                    )}
+                    {role === "Admin" && (
+                      <TouchableOpacity
+                        style={styles.editButton}
+                        onPress={() => handleEditService(service)}
+                      >
+                        <Ionicons name="pencil" color="red" size={Spacing} />
+                      </TouchableOpacity>
+                    )}
+
+                    <TouchableOpacity
+                      style={{ width: 300, height: 250 }}
+                      onPress={() => handleDetailsPress(service)}
+                    >
+                      <Image
+                        source={{ uri: service?.image?.secure_url }}
+                        style={styles.ImageStyle}
+                      />
+                      <View style={styles.StyleTop}>
+                        <BlurView style={styles.BlurViewTop}>
+                          <Ionicons
+                            name="ios-calendar"
+                            style={styles.BookStyle}
+                            color={Color.primary}
+                            size={Spacing * 1.8}
+                            onPress={handleBookPress}
+                          />
+                        </BlurView>
+                      </View>
+                    </TouchableOpacity>
+
+                    <Text style={styles.NameStyle}>{service.name}</Text>
+
+                    <View style={styles.styleRow}>
+                      <View style={{ flexDirection: "row" }}>
+                        <Text style={styles.PriceStyle}>
+                          {service.finalPrice}
+                          <Text style={{ color: "black" }}> LIS</Text>
+                        </Text>
+                        {service.price && (
+                          <Text style={styles.OldPriceStyle}>
+                            {service.price}
+                            <Text
+                              style={{
+                                color: "red",
+                                textDecorationLine: "line-through",
+                              }}
+                            >
+                              {" "}
+                              LIS
+                            </Text>
+                          </Text>
+                        )}
+                      </View>
+                      <TouchableOpacity
+                        style={styles.styleIcons}
+                        onPress={() => handleDetailsPress(service)}
+                      >
+                        <Text style={styles.details}>More Details</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </BlurView>
+                </View>
+              ))}
         </View>
       </ScrollView>
       <NavbarButtom onChange={(selectedIcon) => console.log(selectedIcon)} />

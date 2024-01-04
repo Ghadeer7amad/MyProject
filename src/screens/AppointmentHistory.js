@@ -9,6 +9,7 @@ import {
   Alert,
 } from "react-native";
 import CustomSearchBar from "../Common/SearchBarComponent.js";
+import { Picker } from "@react-native-picker/picker";
 import Header from "../screens/Header.js";
 import NavbarButtom from "../Common/NavbarButtom.js";
 import Color from "../Common/Color.js";
@@ -16,14 +17,30 @@ import Spacing from "../Common/Spacing.js";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import React, { useState, useEffect } from "react";
+import { Select } from "native-base";
 
 const AppointmentsScreen = () => {
   const navigation = useNavigation();
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [filteredItems, setFilteredItems] = useState([]);
+  const [sortType, setSortType] = useState("closest"); // or "furthest"
+  const [sortOrder, setSortOrder] = useState("asc"); // or "desc"
+
+  const handleSearch = (searchText) => {
+    const filteredData = items.filter((item) =>
+      item.user_name.toLowerCase().includes(searchText.toLowerCase())
+    );
+    setFilteredItems(filteredData);
+  };
 
   const handleHomePress = (item) => {
     navigation.navigate("MainScreen2", { item });
+  };
+
+  const handleSortChange = (type) => {
+    setSortType(type);
+    setSortOrder(sortOrder === "asc" ? "desc" : "asc");
   };
 
   const confirmDelete = (itemId) => {
@@ -49,13 +66,24 @@ const AppointmentsScreen = () => {
     try {
       const response = await fetch(`${baseUrl}/appointments/appointment`);
       const data = await response.json();
-      setItems(data);
+
+      const sortedData = data.sort((a, b) => {
+        const dateA = new Date(a.appointment_date);
+        const dateB = new Date(b.appointment_date);
+
+        if (sortOrder === "asc") {
+          return sortType === "closest" ? dateA - dateB : dateB - dateA;
+        } else {
+          return sortType === "closest" ? dateB - dateA : dateA - dateB;
+        }
+      });
+
+      setItems(sortedData);
       setIsLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
-
   const handleCancleAppointment = async (itemId) => {
     console.log("Deleting item with ID:", itemId);
 
@@ -77,10 +105,9 @@ const AppointmentsScreen = () => {
       console.error("Error deleting item:", error);
     }
   };
-
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [sortType, sortOrder]);
 
   return (
     <View style={styles.container}>
@@ -89,11 +116,42 @@ const AppointmentsScreen = () => {
         <Text style={[styles.styleText, styles.styleText2]}>
           Appointment History.
         </Text>
-        <CustomSearchBar placeholder={"Search Customer"} />
+        <CustomSearchBar
+          placeholder={"Search Customer"}
+          onSearch={handleSearch}
+        />
+      </View>
+      <View
+        style={{
+          width: "40%",
+          marginLeft: 15,
+          borderWidth: 1,
+          borderColor: Color.primary,
+        }}
+      >
+        <Select
+          placeholder="Select Service"
+          style={{ width: 10, fontSize: 18 }}
+          color={Color.primary}
+          selectedValue={sortType}
+          onValueChange={(value) => handleSortChange(value)}
+        >
+          {[
+            { id: 1, name: "closest" },
+            { id: 2, name: "furthest" },
+          ].map((item) => (
+            <Select.Item
+              key={item.id}
+              label={item?.name}
+              placeholder={item?.name}
+              value={item.name}
+            />
+          ))}
+        </Select>
       </View>
 
       <FlatList
-        data={items}
+        data={filteredItems.length > 0 ? filteredItems : items}
         keyExtractor={(item) => item._id}
         renderItem={({ item }) => (
           <View style={styles.appointmentContainer}>

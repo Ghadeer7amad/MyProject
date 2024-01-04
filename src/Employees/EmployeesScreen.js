@@ -22,6 +22,14 @@ const EmployeesScreen = () => {
   const navigation = useNavigation();
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [filteredItems, setFilteredItems] = useState([]);
+
+  const handleSearch = (searchText) => {
+    const filteredData = items.filter((item) =>
+      item.name.toLowerCase().includes(searchText.toLowerCase())
+    );
+    setFilteredItems(filteredData);
+  };
   const { role } = useSelector((state) => state.user.userData);
 
   const handleDetailsPress = (item) => {
@@ -93,7 +101,10 @@ const EmployeesScreen = () => {
         <Text style={[styles.styleText, styles.styleText2]}>
           Beauty Employees.
         </Text>
-        <CustomSearchBar placeholder={"search Employee"} />
+        <CustomSearchBar
+          placeholder="Search Employee"
+          onSearch={handleSearch}
+        />
       </View>
       {role === "Admin" && (
         <TouchableOpacity onPress={() => navigation.navigate("AddEmployee")}>
@@ -102,7 +113,7 @@ const EmployeesScreen = () => {
       )}
 
       <FlatList
-        data={items}
+        data={filteredItems.length > 0 ? filteredItems : items}
         keyExtractor={(item) => item._id}
         renderItem={({ item }) => (
           <View style={styles.employeeContainer}>

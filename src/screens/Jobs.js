@@ -10,7 +10,6 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { Card, Button } from "react-native-elements";
 import { FontAwesome as Icon } from "@expo/vector-icons";
-import CustomSearchBar from "../Common/SearchBarComponent.js";
 import { Ionicons } from "@expo/vector-icons";
 import Color from "../Common/Color.js";
 import Spacing from "../Common/Spacing.js";

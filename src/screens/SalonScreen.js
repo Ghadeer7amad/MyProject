@@ -15,6 +15,14 @@ const SalonScreen = () => {
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
+  const [filteredItems, setFilteredItems] = useState([]);
+
+  const handleSearch = (searchText) => {
+    const filteredData = items.filter((item) =>
+      item.name.toLowerCase().includes(searchText.toLowerCase())
+    );
+    setFilteredItems(filteredData);
+  };
 
   const { role } = useSelector((state) => state.user.userData);
 
@@ -83,7 +91,10 @@ const SalonScreen = () => {
 
   return (
     <View style={styles.container}>
-      <CustomSearchBar placeholder="Search your BeautyCenter" />
+      <CustomSearchBar
+        placeholder="Search your BeautyCenter"
+        onSearch={handleSearch}
+      />
       {role === "Admin" && (
         <TouchableOpacity onPress={() => navigation.navigate("AddSalon")}>
           <Text style={styles.buttonStyle}>Add Salon</Text>
@@ -91,7 +102,7 @@ const SalonScreen = () => {
       )}
 
       <FlatList
-        data={items}
+        data={filteredItems.length > 0 ? filteredItems : items}
         keyExtractor={(item) => item._id}
         renderItem={({ item }) => (
           <Card containerStyle={styles.card}>

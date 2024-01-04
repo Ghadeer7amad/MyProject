@@ -25,6 +25,14 @@ const ProductsScreens = () => {
   const [products, setproducts] = useState([]);
   const [selectedItem, setSelectedItem] = useState("Body");
   const { role } = useSelector((state) => state.user.userData);
+  const [filteredProducts, setFilteredItems] = useState([]);
+
+  const handleSearch = (searchText) => {
+    const filteredData = products.filter((product) =>
+      product.name.toLowerCase().includes(searchText.toLowerCase())
+    );
+    setFilteredItems(filteredData);
+  };
 
   const handleBookPress = () => {
     navigation.navigate("BookingScreen");
@@ -166,8 +174,10 @@ const ProductsScreens = () => {
               </Text>
             </TouchableOpacity>
           )}
-
-          <SearchProANDSer />
+          <SearchProANDSer
+            placeholder="Search products"
+            onSearch={handleSearch}
+          />
           <View style={{ flexDirection: "row" }}>
             <TouchableOpacity onPress={handleBodyPress}>
               <Text
@@ -210,68 +220,138 @@ const ProductsScreens = () => {
         </View>
 
         <View style={styles.ProductStyle}>
-          {products &&
-            products.length > 0 &&
-            products.map((product, index) => (
-              <View key={index} style={styles.EveryProduct}>
-                <BlurView
-                  tint="default"
-                  intensity={90}
-                  style={{ padding: Spacing / 2 }}
-                >
-                  {role === "Admin" && (
-                    <TouchableOpacity
-                      style={styles.removeButton}
-                      onPress={() => confirmDelete(product._id)}
-                    >
-                      <Ionicons name="close" color="red" size={Spacing * 1.5} />
-                    </TouchableOpacity>
-                  )}
-
-                  <TouchableOpacity
-                    style={{ width: "100%", height: 150 }}
-                    onPress={() => handleDetailsPress(product)}
+          {filteredProducts.length > 0
+            ? filteredProducts.map((product, index) => (
+                <View key={index} style={styles.EveryProduct}>
+                  <BlurView
+                    tint="default"
+                    intensity={90}
+                    style={{ padding: Spacing / 2 }}
                   >
-                    <Image
-                      source={{ uri: product?.image?.secure_url }}
-                      style={styles.ImageStyle}
-                    />
-                    <View style={styles.StyleTop}>
-                      <BlurView style={styles.BlurViewTop}>
+                    {role === "Admin" && (
+                      <TouchableOpacity
+                        style={styles.removeButton}
+                        onPress={() => confirmDelete(product._id)}
+                      >
                         <Ionicons
-                          name="star"
-                          color={Color.primary}
-                          size={Spacing * 1.4}
-                          onPress={handleFavoritePress}
+                          name="close"
+                          color="red"
+                          size={Spacing * 1.5}
                         />
-                        <Text style={styles.RatingStyle}>{product.rate}</Text>
-                      </BlurView>
-                    </View>
-                  </TouchableOpacity>
-                  <Text style={styles.NameStyle}>{product.name}</Text>
-                  <Text style={styles.includedStyle}>
-                    Quantity {product.stock}
-                  </Text>
+                      </TouchableOpacity>
+                    )}
 
-                  <View style={styles.styleRow}>
-                    <Text style={styles.PriceStyle}>
-                      $ {product.finalPrice}
+                    <TouchableOpacity
+                      style={{ width: "100%", height: 150 }}
+                      onPress={() => handleDetailsPress(product)}
+                    >
+                      <Image
+                        source={{ uri: product?.image?.secure_url }}
+                        style={styles.ImageStyle}
+                      />
+                      <View style={styles.StyleTop}>
+                        <BlurView style={styles.BlurViewTop}>
+                          <Ionicons
+                            name="star"
+                            color={Color.primary}
+                            size={Spacing * 1.4}
+                            onPress={handleFavoritePress}
+                          />
+                          <Text style={styles.RatingStyle}>{product.rate}</Text>
+                        </BlurView>
+                      </View>
+                    </TouchableOpacity>
+                    <Text style={styles.NameStyle}>{product.name}</Text>
+                    <Text style={styles.includedStyle}>
+                      Quantity {product.stock}
                     </Text>
 
+                    <View style={styles.styleRow}>
+                      <Text style={styles.PriceStyle}>
+                        $ {product.finalPrice}
+                      </Text>
+
+                      <TouchableOpacity
+                        style={styles.styleIcons}
+                        onPress={handleCardsPress}
+                      >
+                        <Ionicons
+                          name="add"
+                          size={Spacing * 2}
+                          color={Color.secondary}
+                        />
+                      </TouchableOpacity>
+                    </View>
+                  </BlurView>
+                </View>
+              ))
+            : // If no filtered products, render all products
+              products &&
+              products.length > 0 &&
+              products.map((product, index) => (
+                <View key={index} style={styles.EveryProduct}>
+                  <BlurView
+                    tint="default"
+                    intensity={90}
+                    style={{ padding: Spacing / 2 }}
+                  >
+                    {role === "Admin" && (
+                      <TouchableOpacity
+                        style={styles.removeButton}
+                        onPress={() => confirmDelete(product._id)}
+                      >
+                        <Ionicons
+                          name="close"
+                          color="red"
+                          size={Spacing * 1.5}
+                        />
+                      </TouchableOpacity>
+                    )}
+
                     <TouchableOpacity
-                      style={styles.styleIcons}
-                      onPress={handleCardsPress}
+                      style={{ width: "100%", height: 150 }}
+                      onPress={() => handleDetailsPress(product)}
                     >
-                      <Ionicons
-                        name="add"
-                        size={Spacing * 2}
-                        color={Color.secondary}
+                      <Image
+                        source={{ uri: product?.image?.secure_url }}
+                        style={styles.ImageStyle}
                       />
+                      <View style={styles.StyleTop}>
+                        <BlurView style={styles.BlurViewTop}>
+                          <Ionicons
+                            name="star"
+                            color={Color.primary}
+                            size={Spacing * 1.4}
+                            onPress={handleFavoritePress}
+                          />
+                          <Text style={styles.RatingStyle}>{product.rate}</Text>
+                        </BlurView>
+                      </View>
                     </TouchableOpacity>
-                  </View>
-                </BlurView>
-              </View>
-            ))}
+                    <Text style={styles.NameStyle}>{product.name}</Text>
+                    <Text style={styles.includedStyle}>
+                      Quantity {product.stock}
+                    </Text>
+
+                    <View style={styles.styleRow}>
+                      <Text style={styles.PriceStyle}>
+                        $ {product.finalPrice}
+                      </Text>
+
+                      <TouchableOpacity
+                        style={styles.styleIcons}
+                        onPress={handleCardsPress}
+                      >
+                        <Ionicons
+                          name="add"
+                          size={Spacing * 2}
+                          color={Color.secondary}
+                        />
+                      </TouchableOpacity>
+                    </View>
+                  </BlurView>
+                </View>
+              ))}
         </View>
       </ScrollView>
       <NavbarButtom onChange={(selectedIcon) => console.log(selectedIcon)} />
