@@ -6,7 +6,7 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
-  Alert 
+  Alert  
 } from "react-native";
 import CustomSearchBar from "../Common/SearchBarComponent.js";
 import Header from "../screens/Header.js";

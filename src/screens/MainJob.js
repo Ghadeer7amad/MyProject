@@ -32,13 +32,22 @@ const MainJob = () => {
           }}>
        <Text style={[styles.buttonStyle, styles.buttonStyle2]}>Apply for a Job</Text>
       </TouchableOpacity>  
+
+      <TouchableOpacity onPress={() => {
+            navigation.navigate('JobHistory');
+          }}>
+       <Text style={[styles.buttonStyle, styles.buttonStyle1]}>Job History</Text>
+      </TouchableOpacity> 
+
+      
+
         </ImageBackground>
     );
 };
 
 export default MainJob;
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create({ 
     image: {
         flex: 1,
     },

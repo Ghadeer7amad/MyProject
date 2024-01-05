@@ -42,6 +42,7 @@ import Jobs from "./src/screens/Jobs.js";
 import MainJob from "./src/screens/MainJob.js";
 import ApplyForaJob from "./src/screens/ApplyForaJob.js";
 import AppointmentHistory from "./src/screens/AppointmentHistory";
+import JobHistory from "./src/screens/JobHistory";
 import EditServices from './AdminPage/EditServices.js'
 import EditProfile from './AdminPage/EditProfile.js'
 import Advice from './src/screens/Advice.js'
@@ -83,6 +84,7 @@ const HomeStack = () => (
     <Stack.Screen name="AddServices" component={AddServices} options={{ headerShown: false }}/> 
     <Stack.Screen name="AddPost" component={AddPost} options={{ headerShown: false }}/> 
     <Stack.Screen name="AddJob" component={AddJob} options={{ headerShown: false }}/> 
+    <Stack.Screen name="JobHistory" component={JobHistory} options={{ headerShown: false }}  />
 
 
    

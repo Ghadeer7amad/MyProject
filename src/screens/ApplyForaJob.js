@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, ImageBackground } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ImageBackground, Image, Button } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import Spacing from '../Common/Spacing.js';
@@ -11,10 +11,18 @@ import { useSelector } from 'react-redux';
 import { Select } from "native-base";
 import { serialize } from "object-to-formdata";
 
-const ApplyForaJob = () => {
+const ApplyForaJob = () => { 
   const [selectedFile, setSelectedFile] = useState(null);
   const [selectedJob, setSelectedJob] = useState('Laser Specialist');
   const [isLoading, setIsLoading] = useState(false);
+  
+
+  const [buttonText, setButtonText] = useState("Upload File");
+  const [image, setImage] = useState(null);
+
+  
+
+
 
   const navigation = useNavigation();
   const [items, setItems] = useState([]);
@@ -30,8 +38,10 @@ const ApplyForaJob = () => {
     user_id: userId,
     salon_id: salonId,
     user_name: userName,
-
+    jobName: "", // إضافة jobName إلى FData
+    image: "", // إضافة image إلى FData
   });
+  
 
   const toast = useToast();
 
@@ -58,14 +68,17 @@ const ApplyForaJob = () => {
       const result = await DocumentPicker.getDocumentAsync({
         type: 'application/pdf',
       });
-
-      if (result.type === 'success') {
-        setSelectedFile(result.uri);
-      } 
+  
+      if (!result.canceled) {
+        setSelectedFile(result);
+        setButtonText("File is uploaded successfully");
+      }
     } catch (err) {
       console.error('Error picking document:', err);
     }
   };
+  
+  
 
   const onSubmitPressed = async () => {
     try {
@@ -78,26 +91,36 @@ const ApplyForaJob = () => {
         dotsForObjectNotation: true,
       };
   
-      const formData = serialize(FData, options);
+      
+      const updatedFData = {
+        ...FData,
+        jobName: selectedJob,
+        image: selectedFile.uri,
+      };
   
-      formData.append('jobName', selectedJob);
+      const formData = serialize(updatedFData, options);
+  
       formData.append('image', {
-        uri: selectedFile,
-        name: FData.name + ".pdf",
+        uri: selectedFile.uri,
+        name: `${FData.name}.pdf`,
         type: 'application/pdf',
+        formData: 'file',
       });
+        
+      console.log('FormData:', formData);
+      console.log('Selected Job:', selectedJob);
+      console.log('Selected File:', selectedFile);
   
-      console.log(formData);
-  
-      const response = await fetch(`${baseUrl}/uploadjobs/uploadjob`, {
-        method: 'POST',
-        body: formData,
+      const response = await axios.post(`${baseUrl}/uploadjobs/uploadjob`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
       });
+        
+      console.log('Server Response:', response);
   
-      const responseData = await response.json(); // Parse the response body as JSON
-  
-      if (response.ok) {
-        console.log(responseData);
+      if (response.status === 201) {
+    
         toast.show({
           render: () => (
             <Box bg="emerald.500" px="5" py="5" rounded="sm" mb={5}>
@@ -106,15 +129,20 @@ const ApplyForaJob = () => {
           ),
         });
       } else {
+        console.error('Server Error:', response.status, response.statusText);
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
     } catch (error) {
       console.error('Fetch error:', error);
     }
+
+
   };
   
-  
 
+
+  
+  
 
   return (
 
@@ -134,24 +162,26 @@ const ApplyForaJob = () => {
 
 
         <View style={styles.labeledContainerStyle}>
-            <Select
-              placeholder="Select Job"
-              selectedValue={selectedJob}
-              onValueChange={(itemValue, itemIndex) => setSelectedJob(itemValue)}
-              style={styles.pickerStyle}
-            >
-              {items.map((item) => (
-                <Select.Item key={item.id} label={item.jobName} value={item.jobName} />
-              ))}
-            </Select>
+        <Select
+  placeholder="Select Job"
+  selectedValue={selectedJob}
+  onValueChange={(itemValue, itemIndex) => setSelectedJob(itemValue)}
+  style={styles.pickerStyle}
+>
+  {items.map((item) => (
+    <Select.Item key={item.id} label={item.jobName} value={item.jobName} />
+  ))}
+</Select>
+
           </View>
 
 
 
         <Text style={[styles.labelStyle, { marginTop: 20 }]}>Attach your CV (PDF):</Text>
 
-        <TouchableOpacity onPress={pickDocument} style={styles.fileUploadButton}>
-          <Text style={styles.fileUploadText}>Upload File</Text>
+        <TouchableOpacity 
+        onPress={pickDocument} style={styles.fileUploadButton}>
+        <Text style={styles.fileUploadText}>{buttonText}</Text>
         </TouchableOpacity>
 
         {selectedFile && (
@@ -161,6 +191,8 @@ const ApplyForaJob = () => {
         <Text style={styles.uploadInfoText}>
           Upload your CV (PDF) by tapping the "Upload File" button.
         </Text>
+
+
       </View>
 
       <View style={styles.buttonContainer}>
