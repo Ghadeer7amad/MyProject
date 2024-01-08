@@ -19,8 +19,6 @@ import { useNavigation} from "@react-navigation/native";
 import NavbarButtom from "../Common/NavbarButtom";
 import { Alert } from "react-native";
 import { useDispatch, useSelector } from 'react-redux';
-import { addToCart } from '../redux/user/userActions';
-
 
 const ProductsScreens = () => {
   const navigation = useNavigation();
@@ -53,6 +51,33 @@ const handleAddToCart = async (productId) => {
       }
   } catch (error) {
       console.error('Error adding product to cart:', error.message);
+      alert('An unexpected error occurred. Please try again.');
+  }
+};
+
+const handleAddToFavorite = async (productId) => {
+  const baseUrl = "https://ayabeautyn.onrender.com";
+  try {
+      const response = await fetch(`${baseUrl}/favorite/`, {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Nada__${token}`
+          },
+          body: JSON.stringify({ productId }),
+      });
+
+      if (response.status == 201) {
+          const responseData = await response.json();
+          console.log('Response data:', responseData);
+          navigation.navigate('Favorite');
+      }else{
+          //const errorData = await response.json();
+          Alert.alert("Product already in favorites")
+          //console.error('Error data:', errorData);
+      }
+  } catch (error) {
+      console.error('Error adding product to Favorite:', error.message);
       alert('An unexpected error occurred. Please try again.');
   }
 };
@@ -211,7 +236,7 @@ const handleAddToCart = async (productId) => {
                    <Image source={{uri: product?.image?.secure_url}} style={styles.ImageStyle} />
                     <View style={styles.StyleTop}>
                       <BlurView style={styles.BlurViewTop}>
-                      <Ionicons name="star" color={Color.primary} size={Spacing*1.4} onPress={handleFavoritePress}/>
+                      <Ionicons name="star" color={Color.primary} size={Spacing*1.4} onPress={() => handleAddToFavorite(product._id)}/>
                       <Text style={styles.RatingStyle}>{product.rate}</Text>
                       </BlurView>
                     </View>

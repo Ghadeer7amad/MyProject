@@ -1,17 +1,16 @@
 import { View, Text, Image, StyleSheet, ScrollView,TouchableOpacity, Alert} from 'react-native'
 import React from 'react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Color from '../Common/Color.js';
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from '@react-navigation/native';
 import Spacing from "../Common/Spacing.js"
-import { connect } from 'react-redux';
-import { useDispatch } from 'react-redux';
-import {removeFromFavorites} from '../redux/user/userActions.js'
+import { useSelector } from 'react-redux';
 
 const FavoriteScreens = ({ favoriteProducts }) => {
   const navigation = useNavigation();
-  const dispatch = useDispatch();
+  const token = useSelector((state) => state.user.userData.token);
+  const [FavoriteData, setFavoriteData] = useState([]);
   const [isTouched, setIsTouched] = useState(false);
   const handlePressIn = () => {
     setIsTouched(true);
@@ -23,10 +22,53 @@ const FavoriteScreens = ({ favoriteProducts }) => {
   const handleProductPress = (product) => {
     navigation.navigate('ProductsDetails', { product });
   };
-  const confirmDelete = (productId) => {
-    console.log('Confirm delete for product with ID:', productId);
-    dispatch(removeFromFavorites(productId));
+
+  const fetchFavoriteData = async () => {
+    try {
+      const baseUrl = "https://ayabeautyn.onrender.com";
+      const response = await fetch(`${baseUrl}/favorite/getFavorite`, {
+        headers: {
+          'Authorization': `Nada__${token}`
+        },
+      });
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+  
+      const data = await response.json();
+      setFavoriteData(data.Favorite.products);
+    } catch (error) {
+      console.error('Error fetching favorite data:', error.message);
+    }
+  };  
+  useEffect(() => {
+    fetchFavoriteData();
+  }, [token]);
+  
+  useEffect(() => {
+  }, [FavoriteData]);
+
+  const onRemoveItem = async (productId) => {
+    try {
+      const baseUrl = "https://ayabeautyn.onrender.com";
+      const response = await fetch(`${baseUrl}/favorite/removeItem`, {
+        method: 'patch',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Nada__${token}`
+        },
+        body: JSON.stringify({ productId }),
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      fetchFavoriteData();
+    } catch (error) {
+      console.error('Error removing item:', error.message);
+    }
   };
+
   return (
     <View style={{ backgroundColor: "#fff", height: "100%" }}>
       <View style={{ padding: 40 }}>
@@ -48,8 +90,8 @@ const FavoriteScreens = ({ favoriteProducts }) => {
       </View>
 
       <ScrollView style={{ marginTop: 5 }}>
-      {favoriteProducts && favoriteProducts.length > 0 ? (
-      favoriteProducts && favoriteProducts.map((product, index) => (
+      {FavoriteData && FavoriteData.length > 0 ? (
+      FavoriteData && FavoriteData.map((product, index) => (
           <TouchableOpacity
             key={index}
             style={styles.productContainer}
@@ -59,15 +101,15 @@ const FavoriteScreens = ({ favoriteProducts }) => {
           >
       <TouchableOpacity
          style={styles.removeButton}
-         onPress={() => confirmDelete(product._id)}>
+         onPress={() => onRemoveItem(product.productId?._id)}>
          <Ionicons name="trash" color="red" size={Spacing} />
       </TouchableOpacity>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Image source={{ uri: product.image.secure_url }} style={styles.productImage} />
+          <Image source={{uri: product.productId?.image?.secure_url}} style={styles.productImage} />
           <View style={{ flexDirection: 'column' }}>
-          <Text style={styles.productName}>{product.name}</Text>
+          <Text style={styles.productName}>{product.productId?.name}</Text>
           <View style={{ flexDirection: 'row', width: '70%', marginBottom: 10 }}>
-          <Text style={styles.productPrice}>${product.finalPrice}</Text>
+          <Text style={styles.productPrice}>${product.productId?.finalPrice}</Text>
           </View>
          </View>
       </View>
@@ -82,10 +124,7 @@ const FavoriteScreens = ({ favoriteProducts }) => {
     </View>
   );
 };
-const mapStateToProps = (state) => ({
-  favoriteProducts: state.user.favorites,
-});
-export default connect(mapStateToProps)(FavoriteScreens);
+export default FavoriteScreens;
 
 const styles = StyleSheet.create({
   productContainer: {
