@@ -1,17 +1,32 @@
-import { StyleSheet, Text, View,TextInput, Image, TouchableOpacity, SafeAreaView, ScrollView} from 'react-native'
-import { Button } from 'react-native-elements';
-import React, { useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faBook, faFileSignature, faDollarSign, faCloudUploadAlt, faClock} from '@fortawesome/free-solid-svg-icons';
-import Color from '../src/Common/Color.js';
-import { useNavigation } from '@react-navigation/native';
-import * as ImagePicker from 'expo-image-picker';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  Image,
+  TouchableOpacity,
+  SafeAreaView,
+  ScrollView,
+} from "react-native";
+import { Button } from "react-native-elements";
+import React, { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import {
+  faBook,
+  faFileSignature,
+  faDollarSign,
+  faCloudUploadAlt,
+  faClock,
+} from "@fortawesome/free-solid-svg-icons";
+import Color from "../src/Common/Color.js";
+import { useNavigation } from "@react-navigation/native";
+import * as ImagePicker from "expo-image-picker";
 import { serialize } from "object-to-formdata";
 import { Box, useToast } from "native-base";
 import { Select } from "native-base";
-import {useEffect } from 'react';
+import { useEffect } from "react";
 
-const AddProduct = ({route}) => {
+const AddProduct = ({ route }) => {
   const [selectedStatus, setSelectedStatus] = useState("Active");
   const [selectedSubProduct, setSelectedSubProducts] = useState("Body");
 
@@ -34,22 +49,20 @@ const AddProduct = ({route}) => {
       ...prevData,
       subProducts: selectedSubProduct,
     }));
-    setSelectedSubProducts(selectedSubProduct); 
+    setSelectedSubProducts(selectedSubProduct);
   };
-  
+
   const handleStautsChange = (selectedStauts) => {
     setFData((prevData) => ({
       ...prevData,
       status: selectedStauts,
     }));
-    setSelectedStatus(selectedStauts); 
+    setSelectedStatus(selectedStauts);
   };
-  
-  
+
   useEffect(() => {
     console.log("FData updated:", FData);
   }, [FData]);
-  
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -63,7 +76,6 @@ const AddProduct = ({route}) => {
       setButtonText("Image is uploaded successfully");
     }
   };
-
 
   const handleAddProducts = async () => {
     try {
@@ -93,26 +105,26 @@ const AddProduct = ({route}) => {
 
       const responseData = await response.json();
       if (!response.ok) {
-        console.error('Error during fetch:', response.status, responseData);
+        console.error("Error during fetch:", response.status, responseData);
         toast.show({
-            render: () => (
-                <Box bg='#c81912' px="5" py="5" rounded="sm" mb={5}>
-                    Error adding product: {responseData.message}
-                </Box>
-            ),
+          render: () => (
+            <Box bg="#c81912" px="5" py="5" rounded="sm" mb={5}>
+              Error adding product: {responseData.message}
+            </Box>
+          ),
         });
         return;
-    }
-    console.log('Request successful:', responseData);
+      }
+      console.log("Request successful:", responseData);
       toast.show({
         render: () => {
           return (
-            <Box bg='#55a44e' px="5" py="5" rounded="sm" mb={5}>
+            <Box bg="#55a44e" px="5" py="5" rounded="sm" mb={5}>
               product added successfully
             </Box>
           );
         },
-      }); 
+      });
       setFData({
         name: "",
         description: "",
@@ -122,229 +134,237 @@ const AddProduct = ({route}) => {
         subProducts: "",
         status: "",
         image: "",
-    });
-    setImage(null);
-    setButtonText("Upload Image");
-    
+      });
+      setImage(null);
+      setButtonText("Upload Image");
     } catch (error) {
-      console.error('Error during fetch:', error);
+      console.error("Error during fetch:", error);
       toast.show({
-          render: () => (
-              <Box bg="red.500" px="5" py="5" rounded="sm" mb={5}>
-                  Error adding product
-              </Box>
-          ),
+        render: () => (
+          <Box bg="red.500" px="5" py="5" rounded="sm" mb={5}>
+            Error adding product
+          </Box>
+        ),
       });
     }
   };
-  
- const navigation = useNavigation();
+
+  const navigation = useNavigation();
   return (
     <ScrollView>
-    <View style={styles.contanier}>
-      <Text style={styles.TextStyleHeader}>add Products</Text>
+      <View style={styles.contanier}>
+        <Text style={styles.TextStyleHeader}>add Products</Text>
 
-      <View style={styles.formgroup}>
-        <TextInput
-        value={FData.name}
-        onChangeText={(text) => setFData({ ...FData, name: text })}
-        style={styles.input} placeholder='Name Product'/>
-        <FontAwesomeIcon icon={faFileSignature} style={styles.icon} />
-        
-      </View>
+        <View style={styles.formgroup}>
+          <TextInput
+            value={FData.name}
+            onChangeText={(text) => setFData({ ...FData, name: text })}
+            style={styles.input}
+            placeholder="Name Product"
+          />
+          <FontAwesomeIcon icon={faFileSignature} style={styles.icon} />
+        </View>
 
+        <View style={styles.formgroup}>
+          <TextInput
+            value={FData.description}
+            onChangeText={(text) => setFData({ ...FData, description: text })}
+            style={[styles.input, styles.inputDis]}
+            placeholder="Discrption Product"
+            multiline={true}
+          />
+          <FontAwesomeIcon
+            icon={faBook}
+            style={[styles.icon, styles.iconDis]}
+          />
+        </View>
 
-      <View style={styles.formgroup}>
-        <TextInput 
-         value={FData.description}
-         onChangeText={(text) => setFData({ ...FData, description: text })}
-        style={[styles.input, styles.inputDis]} placeholder='Discrption Product'
-        multiline={true} />
-       <FontAwesomeIcon icon={faBook} style={[styles.icon, styles.iconDis]} />
-      </View>
+        <View style={styles.formgroup}>
+          <TextInput
+            value={FData.price}
+            onChangeText={(text) => setFData({ ...FData, price: text })}
+            style={styles.input}
+            placeholder="Prise Product"
+          />
+          <FontAwesomeIcon icon={faDollarSign} style={styles.icon} />
+        </View>
 
-      <View style={styles.formgroup}>
-        <TextInput 
-        value={FData.price}
-        onChangeText={(text) => setFData({ ...FData, price: text })}
-        style={styles.input} placeholder='Prise Product'/>
-       <FontAwesomeIcon icon={faDollarSign} style={styles.icon} />
-      </View>
+        <View style={styles.formgroup}>
+          <TextInput
+            value={FData.discount}
+            onChangeText={(text) => setFData({ ...FData, discount: text })}
+            style={styles.input}
+            placeholder="discount Product"
+          />
+          <FontAwesomeIcon icon={faDollarSign} style={styles.icon} />
+        </View>
 
-      <View style={styles.formgroup}>
-        <TextInput 
-         value={FData.discount}
-         onChangeText={(text) => setFData({ ...FData, discount: text })}
-        style={styles.input} placeholder='discount Product'/>
-       <FontAwesomeIcon icon={faDollarSign} style={styles.icon} />
-      </View>
+        <View style={styles.formgroup}>
+          <TextInput
+            value={FData.rate}
+            onChangeText={(text) => setFData({ ...FData, rate: text })}
+            style={styles.input}
+            placeholder="rate Product"
+          />
+          <FontAwesomeIcon icon={faClock} style={styles.icon} />
+        </View>
 
-      <View style={styles.formgroup}>
-        <TextInput 
-        value={FData.rate}
-        onChangeText={(text) => setFData({ ...FData, rate: text })}
-        style={styles.input} placeholder='rate Product'/>
-       <FontAwesomeIcon icon={faClock} style={styles.icon} />
-      </View>
-
-      <SafeAreaView
+        <SafeAreaView
           style={{
             marginTop: 20,
           }}
         >
           <View style={styles.serviceListContainer}>
-          <Select
-           placeholder="Select subProducts"
-           color={Color.primary}
-           style={{ width: 180, fontSize: 14 }}
-           selectedValue={selectedSubProduct}
-           onValueChange={(value) => handleSubProductsChange(value)}
-         >
-           {[
-             { id: 1, name: "Body" },
-             { id: 2, name: "Face" },
-           ].map((item) => (
-             <Select.Item
-               key={item.id}
-               label={item?.name}
-               value={item.name}
-             />
-           ))}
-         </Select>
-       </View>
-
+            <Select
+              placeholder="Select subProducts"
+              color={Color.primary}
+              style={{ width: 180, fontSize: 14 }}
+              selectedValue={selectedSubProduct}
+              onValueChange={(value) => handleSubProductsChange(value)}
+            >
+              {[
+                { id: 1, name: "Body" },
+                { id: 2, name: "Face" },
+              ].map((item) => (
+                <Select.Item
+                  key={item.id}
+                  label={item?.name}
+                  value={item.name}
+                />
+              ))}
+            </Select>
+          </View>
 
           <View style={styles.serviceListContainer}>
-          <Select
-          placeholder="Select status"
-          color={Color.primary}
-          style={{ width: 150, fontSize: 14 }}
-          selectedValue={selectedStatus}
-          onValueChange={(valueitem) => {handleStautsChange(valueitem);
-          }}
-        >
-          {[
-            { id: 1, name: "Active" },
-            { id: 2, name: "Inactive" },
-          ].map((item) => (
-            <Select.Item
-              key={item.id}
-              label={item?.name}
-              value={item.name}
-            />
-          ))}
-        </Select>
-
+            <Select
+              placeholder="Select status"
+              color={Color.primary}
+              style={{ width: 150, fontSize: 14 }}
+              selectedValue={selectedStatus}
+              onValueChange={(valueitem) => {
+                handleStautsChange(valueitem);
+              }}
+            >
+              {[
+                { id: 1, name: "Active" },
+                { id: 2, name: "Inactive" },
+              ].map((item) => (
+                <Select.Item
+                  key={item.id}
+                  label={item?.name}
+                  value={item.name}
+                />
+              ))}
+            </Select>
           </View>
         </SafeAreaView>
-      
-      <View style={{ marginHorizontal: 10, marginTop: 20 }}>
-        <Button
-          title={buttonText}
-          onPress={pickImage}
-          buttonStyle={{
-            backgroundColor: "transparent",
-            width: "100%",
-            height: 60,
-            borderWidth: 2,
-            borderColor: "#c3b4d2",
-          }}
-          titleStyle={{ color: "#757a79", fontSize: 15, marginLeft: 0 }}
-        />
-        <FontAwesomeIcon
-          icon={faCloudUploadAlt}
-          style={[styles.icon, styles.iconDis]}
-        />
-        {image && (
-          <Image
-            source={{ uri: image.uri }}
-            style={{
-              width: 335,
-              height: 180,
-              margin: 20,
-              borderRadius: 10,
-              marginLeft: 15,
+
+        <View style={{ marginHorizontal: 10, marginTop: 20 }}>
+          <Button
+            title={buttonText}
+            onPress={pickImage}
+            buttonStyle={{
+              backgroundColor: "transparent",
+              width: "100%",
+              height: 60,
+              borderWidth: 2,
+              borderColor: "#c3b4d2",
             }}
+            titleStyle={{ color: "#757a79", fontSize: 15, marginLeft: 0 }}
           />
-        )}
+          <FontAwesomeIcon
+            icon={faCloudUploadAlt}
+            style={[styles.icon, styles.iconDis]}
+          />
+          {image && (
+            <Image
+              source={{ uri: image.uri }}
+              style={{
+                width: 335,
+                height: 180,
+                margin: 20,
+                borderRadius: 10,
+                marginLeft: 15,
+              }}
+            />
+          )}
+        </View>
+
+        <TouchableOpacity onPress={() => handleAddProducts()}>
+          <Text style={styles.buttonStyle}>Publish Services</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+          <Text style={[styles.buttonStyle, styles.buttonStyle1]}>cancel</Text>
+        </TouchableOpacity>
       </View>
-
-      <TouchableOpacity onPress={()=>handleAddProducts()}>
-       <Text style={styles.buttonStyle}>Publish Services</Text>
-      </TouchableOpacity>  
-
-      <TouchableOpacity onPress={()=>navigation.navigate('Home')}>
-       <Text style={[styles.buttonStyle, styles.buttonStyle1]}>cancel</Text>
-      </TouchableOpacity>  
-
-    </View>
     </ScrollView>
-  )
-}
+  );
+};
 
-export default AddProduct
+export default AddProduct;
 
 const styles = StyleSheet.create({
-  contanier:{
-    width:"100%",
-    height:"100%",
+  contanier: {
+    width: "100%",
+    height: "100%",
   },
-  TextStyleHeader:{
-    fontWeight:"500",
-    color:Color.primary, 
+  TextStyleHeader: {
+    fontWeight: "500",
+    color: Color.primary,
     fontSize: 24,
-    marginTop:70,
+    marginTop: 70,
     marginBottom: 5,
     textAlign: "center",
-    textTransform:"uppercase"
+    textTransform: "uppercase",
   },
-  formgroup:{
-    display:"flex",
-    position:"relative",
+  formgroup: {
+    display: "flex",
+    position: "relative",
     marginTop: 20,
-    flexDirection: 'row',
-    
-    alignItems: 'center',
+    flexDirection: "row",
+
+    alignItems: "center",
   },
   icon: {
-    position: 'absolute',
+    position: "absolute",
     color: Color.primary,
     marginHorizontal: 20,
     padding: 11,
   },
   input: {
-    flex: 1, 
-    borderBottomWidth: 1, 
-    paddingVertical: 15, 
+    flex: 1,
+    borderBottomWidth: 1,
+    paddingVertical: 15,
     padding: 50,
     marginHorizontal: 10,
     borderColor: "#c3b4d2",
-    borderWidth: 2, 
+    borderWidth: 2,
   },
-  inputDis:{
+  inputDis: {
     paddingBottom: 100,
   },
   iconDis: {
-    marginHorizontal: 20, 
+    marginHorizontal: 20,
     top: 20,
   },
 
-  buttonStyle:{
+  buttonStyle: {
     padding: 20,
     marginTop: 80,
     marginHorizontal: 10,
     backgroundColor: Color.primary,
-    fontWeight: '400',
+    fontWeight: "400",
     fontSize: 19,
     letterSpacing: 2,
     textTransform: "uppercase",
-    textAlign:"center",
-    color:"#fff",
+    textAlign: "center",
+    color: "#fff",
   },
   buttonStyle1: {
     backgroundColor: "transparent",
     color: Color.primary,
-    marginTop: 10
+    marginTop: 10,
   },
   serviceListContainer: {
     width: "95%",
@@ -352,5 +372,5 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: "#c3b4d2",
     marginHorizontal: 10,
-  }
-})
+  },
+});
