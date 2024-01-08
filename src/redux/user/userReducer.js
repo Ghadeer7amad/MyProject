@@ -5,7 +5,8 @@ import {
   TOGGLE_LIKE,
   EDIT_USER,
   ADD_TO_FAVORITES,
-  REMOVE_FROM_FAVORITES
+  REMOVE_FROM_FAVORITES,
+  ADD_TO_CART
 } from './userActionTypes';
 
 const initialState = {
@@ -13,15 +14,24 @@ const initialState = {
   userData: {
     numofNotifications: 0,
     isLiked: false, // حالة اللايك
+    token: null
   },
   usedSalonData: '',
    favorites: [],
+   cart: [],
 };
 
 const userReducer = (state = initialState, action) => {
   switch (action.type) {
     case SUCCESS_LOGIN:
-      return { ...state, isLoggedIn: true, userData: action.payload };
+      return {
+        ...state,
+        isLoggedIn: true,
+        userData: {
+          ...action.payload,
+          token: action.payload.token,
+        },
+      }
 
     case ADD_SALON:
       return { ...state, usedSalonData: action.payload };
@@ -65,7 +75,11 @@ const userReducer = (state = initialState, action) => {
           ...state,
           favorites: state.favorites.filter(product => product._id !== action.payload),
         };
-
+        case ADD_TO_CART:
+          return {
+            ...state,
+            cart: [...state.cart, action.payload],
+          };
     default:
       return state;
   }

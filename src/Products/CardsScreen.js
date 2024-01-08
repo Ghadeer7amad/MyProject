@@ -1,16 +1,43 @@
-import { View, Text, Image, StyleSheet, ScrollView,TouchableOpacity} from 'react-native'
+import { View, Text, Image, StyleSheet, ScrollView,TouchableOpacity, Alert} from 'react-native'
 import React from 'react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import Color from '../Common/Color.js';
 import Products from "./ProductData.js"
 import { Ionicons } from "@expo/vector-icons";
 import { BlurView } from 'expo-blur';
 import Spacing from "../Common/Spacing.js"
+import {useSelector } from 'react-redux';
+
+/*const calculateTotalPrice = (products) => {
+  if (!products || products.length === 0) {
+    return 0;
+  }
+
+  const totalPrice = products.reduce((total, product) => {
+    const productPrice = product.productId?.finalPrice || 0;
+    const productQuantity = product.quantity || 1; // Assuming default quantity is 1
+
+    return total + (productPrice * productQuantity);
+  }, 0);
+
+  return totalPrice;
+};*/
 
 const CardsScreen = () => {
   const navigation = useNavigation();
+  const token = useSelector((state) => state.user.userData.token);
+  const [cartData, setCartData] = useState([]);
   const [isTouched, setIsTouched] = useState(false);
+  const [errorMessage, setErrorMessage] = useState({});
+  const [totalPrice, setTotalPrice] = useState(0);
+
+
+  /*const handleCheckOut = () => {
+    const calculatedTotalPrice = calculateTotalPrice(cartData?.products || []);
+    setTotalPrice(calculatedTotalPrice);
+  };*/
+
   const handlePressIn = () => {
     setIsTouched(true);
   };
@@ -19,8 +46,134 @@ const CardsScreen = () => {
   };
   const handleProductPress = () => {
       navigation.navigate('ProductsScreens');
+    }
+    
+    const handleCheckOut = async () => {
+      try {
+        const baseUrl = "https://ayabeautyn.onrender.com";
+        const response = await fetch(`${baseUrl}/cart/calculateTotalPrice`, {
+          headers: {
+            'Authorization': `Nada__${token}`
+          },
+        });
+    
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+    
+        const data = await response.json();
+        const totalPrice = data.totalCartPrice; 
+        setTotalPrice(totalPrice);
+        console.log("Total Priceeeeeeeeeeee:", totalPrice);
+      } catch (error) {
+        console.error('Error during checkout:', error.message);
+      }
+    };
+    useEffect(() => {
+  handleCheckOut();
+}, [token]);
+    
+    const fetchCartData = async () => {
+      try {
+        const baseUrl = "https://ayabeautyn.onrender.com";
+        const response = await fetch(`${baseUrl}/cart/getCart`, {
+          headers: {
+            'Authorization': `Nada__${token}`
+          },
+        });
+    
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+    
+        const data = await response.json();
+        setCartData(data.cart);
+      } catch (error) {
+        console.error('Error from favs screen:', error.message);
+      }
+    };
+    useEffect(() => {
+      fetchCartData();
+    }, [token]);
+    
+    useEffect(() => {
+    }, [cartData]);
+    
+    const onRemoveItem = async (productId) => {
+      try {
+        const baseUrl = "https://ayabeautyn.onrender.com";
+        const response = await fetch(`${baseUrl}/cart/removeItem`, {
+          method: 'patch',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Nada__${token}`
+          },
+          body: JSON.stringify({ productId }),
+        });
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        fetchCartData();
+      } catch (error) {
+        console.error('Error removing item:', error.message);
+      }
     };
 
+    const increaseQuantity = async (productId) => {
+      try {
+        const baseUrl = "https://ayabeautyn.onrender.com";
+        const response = await fetch(`${baseUrl}/cart/increaseQuantity`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Nada__${token}`,
+          },
+          body: JSON.stringify({ productId }),
+        });
+    
+        if (response.status === 401) {
+          setErrorMessage((prevMessages) => ({
+            ...prevMessages,
+            [productId]: "This product is sold out.\n Quantity will be renewed soon",
+          }));
+        }
+        fetchCartData();
+      } catch (error) {
+        console.error('Error updating quantity:', error.message);
+      }
+    };
+
+    const decreaseQuantity = async (productId) => {
+      try {
+        const baseUrl = "https://ayabeautyn.onrender.com";
+        const response = await fetch(`${baseUrl}/cart/decreaseQuantity`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Nada__${token}`,
+          },
+          body: JSON.stringify({ productId }),
+        });
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(`HTTP error! Status: ${response.status}, Message: ${errorData.message}`);
+        }
+    
+        if (response.status === 400) {
+          await onRemoveItem(productId);
+          fetchCartData(); 
+        } else {
+          fetchCartData(); 
+        }
+    
+      } catch (error) {
+        console.error('Error updating quantity:', error.message);
+      }
+    };
+    
+    
+    
+    
   return (
     <View style={{backgroundColor: "#fff", height:"100%"}}>
       <View style={{padding: 40}}>
@@ -42,49 +195,55 @@ const CardsScreen = () => {
       
         
     
-        <ScrollView style={{marginTop: 10}}>
-        {Products.map((product) => (
-          <View key={product.id} style={styles.productContainer}>
-            <View style={{width:"100%",flexDirection:"row", justifyContent:"flex-start"}}>
-            <Image source={product.image} style={styles.productImage} />
+  <ScrollView style={{marginTop: 10}}>
+  {cartData && cartData.products && cartData.products.map((product) => (
+  <View key={product._id} style={styles.productContainer}>
+    <View style={{width:"100%",flexDirection:"row", justifyContent:"flex-start"}}>
+      <Image source={{uri: product.productId?.image?.secure_url}} style={styles.productImage} />
 
-            <View style={{flexDirection:"column"}}>
+      <View style={{flexDirection:"column"}}>
 
-            <View style={{flexDirection: "row", width: "70%", marginBottom: 10}}>
-            <Text style={styles.productName}>{product.name}</Text>
-            <Ionicons name="heart" color={Color.primary} style={{marginLeft: "auto", fontSize: 25}}/>
-            </View>
-            
-            <View style={{flexDirection:"row", width: "70%", marginBottom: 10}}>
-            <Text style={styles.productIncluded}>{product.included}</Text>
-            <Text style={styles.productPrice}>${product.price}</Text>
-            </View>
+        <View style={{flexDirection: "row", width: "70%", marginBottom: 10}}>
+          <Text style={styles.productName}>{product.productId?.name}</Text>
+          <Ionicons name="heart" color={Color.primary} style={{marginLeft: "auto", fontSize: 20}}  onPress={() => navigation.navigate('Favorite')}/>
+        </View>
+        
+        <View style={{flexDirection:"row", width: "70%", marginBottom: 10}}>
+        <Text style={styles.productPrice}>${product.productId?.finalPrice}</Text>
+        </View>
 
+        <View style={{flexDirection:"row"}}>
+        <TouchableOpacity onPress={() => onRemoveItem(product.productId?._id)}>
+        <Ionicons name="trash-bin" color={Color.background} style={{ fontSize: 25, marginRight: 70 }} />
+        </TouchableOpacity>
+           
+        <View
+         style={{ flexDirection: "row", backgroundColor: Color.background, alignItems: "center", borderRadius: 5, padding: 5, paddingLeft: 10, paddingRight: 10 }}>
+         <Ionicons name="add" color={Color.background} style={{ fontSize: 30, backgroundColor: "#f0fbff" }}
+          onPress={() => increaseQuantity(product.productId?._id)}/>
 
-            <View style={{flexDirection:"row"}}>
+         <Text style={{ textAlign: "center", marginLeft: 10, marginRight: 10, color: Color.secondary }}>{product.quantity}</Text>
 
-            <View>
-            <Ionicons name="trash-bin" color={Color.background} style={{fontSize: 25, marginRight: 70}}/>
-            </View>
-             
-            <View style={{flexDirection:"row", backgroundColor:Color.background, alignItems:"center", borderRadius: 5, padding: 5, paddingLeft: 10, paddingRight: 10}}>
-              <Ionicons name="add" color={Color.background} style={{fontSize: 30, backgroundColor: "#f0fbff"}}/>  
-              <Text style={{textAlign:"center", marginLeft: 10, marginRight: 10, color: Color.secondary}}>1</Text>
-              <Ionicons name="remove-outline" color={Color.background} style={{marginLeft: "auto", fontSize: 30, backgroundColor: "#f0fbff"}}/>
-            </View> 
-            </View>
-            </View>
-            </View>
-          </View>
+         <Ionicons name="remove-outline" color={Color.background} style={{ marginLeft: "auto", fontSize: 30, backgroundColor: "#f0fbff" }}
+         onPress={() => decreaseQuantity(product.productId?._id)}/>
+       </View>
 
-          
-        ))}
-          <View style={{flexDirection:"row", justifyContent: "space-between", margin: 20, borderBottomWidth: 1, borderColor:"black"}}>
+        </View>
+        <Text style={{ textAlign: "center", color: 'red', fontSize: 10 }}>
+        {errorMessage[product.productId?._id]}
+        </Text>
+      </View>
+    </View>
+  </View>
+))}
+
+<View style={{flexDirection:"row", justifyContent: "space-between", margin: 20, borderBottomWidth: 1, borderColor:"black"}}>
             <Text style={{fontSize: 25, color: "black"}}>Total Price</Text>
-            <Text style={{fontSize: 25, color: "#929aab"}}>$40</Text>
+            <Text style={{fontSize: 25, color: "#929aab"}}>${totalPrice}</Text>
           </View>
 
-        <TouchableOpacity  
+        <TouchableOpacity 
+         onPress={() => handleCheckOut()} 
         onPressIn={handlePressIn}
         onPressOut={handlePressOut}
         activeOpacity={1}
@@ -97,6 +256,7 @@ const CardsScreen = () => {
               isTouched ? styles.touchedTextButton : null]}>Check Out</Text>
 
         </TouchableOpacity>
+        
         
       </ScrollView>
       
@@ -118,13 +278,10 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   productName: {
-    fontSize: 18,
+    fontSize: 15,
     fontWeight: "bold",
     color: "black", 
-  },
-  productIncluded:{
-    fontSize: 15,
-    color: "#929aab"
+    marginRight: 20
   },
   productPrice:{
     fontSize: 15,

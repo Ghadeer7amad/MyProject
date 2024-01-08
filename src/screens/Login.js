@@ -37,8 +37,8 @@ const  dispatch = useDispatch()
 
     if (response.status === 200) {
       dispatch(storeCurrentUser(response.data))
+      console.log('Login Response:', response.data.token);
       toast.show({
-
         render: () => (
           <Box bg='#55a44e' px="8" py="5" rounded="sm" mb={5}>
             login successfully

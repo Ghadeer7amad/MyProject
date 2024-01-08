@@ -18,11 +18,44 @@ import { Ionicons } from "@expo/vector-icons";
 import { useNavigation} from "@react-navigation/native";
 import NavbarButtom from "../Common/NavbarButtom";
 import { Alert } from "react-native";
+import { useDispatch, useSelector } from 'react-redux';
+import { addToCart } from '../redux/user/userActions';
+
 
 const ProductsScreens = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   const [products, setproducts] = useState([]);
   const [selectedItem, setSelectedItem] = useState('Body');
+
+  const token = useSelector((state) => state.user.userData.token);
+  console.log(token)
+
+const handleAddToCart = async (productId) => {
+  const baseUrl = "https://ayabeautyn.onrender.com";
+  try {
+      const response = await fetch(`${baseUrl}/cart/`, {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Nada__${token}`
+          },
+          body: JSON.stringify({ productId }),
+      });
+
+      if (response.status == 201) {
+          const responseData = await response.json();
+          console.log('Response data:', responseData);
+          navigation.navigate('CardsScreen');
+      }else{
+          const errorData = await response.json();
+          console.error('Error data:', errorData);
+      }
+  } catch (error) {
+      console.error('Error adding product to cart:', error.message);
+      alert('An unexpected error occurred. Please try again.');
+  }
+};
 
   const handleBookPress = () => {
     navigation.navigate("BookingScreen");
@@ -79,7 +112,6 @@ const ProductsScreens = () => {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
         const data = await response.json();
-        console.log("Received data:", data);
         setproducts(data.products);
         setSelectedItem('Body');
       } catch (error) {
@@ -95,7 +127,6 @@ const ProductsScreens = () => {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
         const data = await response.json();
-        console.log("Received data:", data);
         setproducts(data.products);
         setSelectedItem('Face');
       } catch (error) {
@@ -105,7 +136,6 @@ const ProductsScreens = () => {
 
   const baseUrl = "https://ayabeautyn.onrender.com";
   useEffect(() => {
-      console.log("Fetching products...");
       fetch(`${baseUrl}/products/getProducts`)
         .then((res) => {
           if (!res.ok) {
@@ -114,7 +144,6 @@ const ProductsScreens = () => {
           return res.json();
         })
         .then((data) => {
-          console.log("Received data:", data);
           setproducts(data.products);
         })
         .catch((error) => console.log('Error from favs screen: ', error.message));
@@ -189,12 +218,12 @@ const ProductsScreens = () => {
     
                   </TouchableOpacity>
                   <Text style={styles.NameStyle}>{product.name}</Text>
-                  <Text style={styles.includedStyle}>Quantity  {product.stock}</Text>
+                  <Text style={styles.includedStyle}>Stock  {product.stock}</Text>
     
               <View style={styles.styleRow}>
                     <Text style={styles.PriceStyle}>$ {product.finalPrice}</Text>
     
-                  <TouchableOpacity style={styles.styleIcons} onPress={handleCardsPress}>
+                  <TouchableOpacity style={styles.styleIcons} onPress={() => handleAddToCart(product._id)}>
                     <Ionicons name="add" size={Spacing*2} color={Color.secondary}/>
                   </TouchableOpacity>
                   </View>
