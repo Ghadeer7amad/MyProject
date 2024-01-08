@@ -25,6 +25,7 @@ import {
   MenuOption,
   MenuTrigger,
 } from "react-native-popup-menu";
+import WhatsApp from "../Common/WhatsApp.js";
 
 const PostsScreen = () => {
   const navigation = useNavigation();
@@ -381,6 +382,8 @@ const PostsScreen = () => {
   return (
     <MenuProvider>
       <View style={styles.container}>
+        <WhatsApp />
+
         <Header />
 
         <View style={styles.postInputContainer}>

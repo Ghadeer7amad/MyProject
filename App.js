@@ -52,7 +52,7 @@ const Drawer = createDrawerNavigator();
 
 const HomeStack = () => (
   <Stack.Navigator>
-    <Stack.Screen name="Homee" component={Homee} options={{ headerShown: false }}  />
+    {/* <Stack.Screen name="Homee" component={Homee} options={{ headerShown: false }}  />
     <Stack.Screen name="Employee" component={Employee} options={{ headerShown: false }}  />
     <Stack.Screen name="Offers" component={Offers} options={{ headerShown: false }}  /> 
     <Stack.Screen name="ChoseScreen" component={ChoseScreen} options={{ headerShown: false }} /> 
@@ -61,7 +61,7 @@ const HomeStack = () => (
     <Stack.Screen name="ForgetPage" component={ForgetPage} options={{ headerShown: false }}/>
     <Stack.Screen name="ResetPassword" component={ResetPassword} options={{ headerShown: false }}/>
     <Stack.Screen name="SendCode" component={SendCode} options={{ headerShown: false }}/>
-    <Stack.Screen name="PathologicalCase" component={PathologicalCase} options={{ headerShown: false }}/>
+    <Stack.Screen name="PathologicalCase" component={PathologicalCase} options={{ headerShown: false }}/> */}
     <Stack.Screen name="SalonScreen" component={SalonScreen} options={{ headerShown: false }}/>
     <Stack.Screen name="MainScreen2" component={MainScreen2} options={{ headerShown: false }} />
     <Stack.Screen name="Settings" component={Settings} options={{ headerShown: false }}/>

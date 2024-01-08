@@ -19,6 +19,7 @@ import { useNavigation } from "@react-navigation/native";
 import NavbarButtom from "../Common/NavbarButtom";
 import { Alert } from "react-native";
 import { useSelector } from "react-redux";
+import WhatsApp from "../Common/WhatsApp.js";
 
 const ServicesScreen = () => {
   const navigation = useNavigation();
@@ -149,6 +150,8 @@ const ServicesScreen = () => {
 
   return (
     <View style={styles.container}>
+      <WhatsApp />
+
       <ScrollView style={{ padding: Spacing }}>
         <NavbarTop />
 

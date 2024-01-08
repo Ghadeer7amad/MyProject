@@ -17,6 +17,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import WhatsApp from "../Common/WhatsApp.js";
 
 const EmployeesScreen = () => {
   const navigation = useNavigation();
@@ -96,6 +97,8 @@ const EmployeesScreen = () => {
 
   return (
     <View style={styles.container}>
+      <WhatsApp />
+
       <Header />
       <View style={styles.container2}>
         <Text style={[styles.styleText, styles.styleText2]}>

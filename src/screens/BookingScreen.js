@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   Dimensions,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { Calendar } from "react-native-calendars";
 import Color from "../Common/Color";
@@ -17,13 +16,11 @@ import { Select } from "native-base";
 import { useSelector } from "react-redux";
 import { serialize } from "object-to-formdata";
 import { Box, useToast } from "native-base";
+import WhatsApp from "../Common/WhatsApp";
 
 const screenwidth = Dimensions.get("window").width;
 
 const BookingScreen = () => {
-  const navigation = useNavigation();
-  const [isLoading, setIsLoading] = useState(true);
-  const [items, setItems] = useState([]);
   const toast = useToast();
 
   const { id: userId, name: userName } = useSelector(
@@ -196,6 +193,8 @@ const BookingScreen = () => {
 
   return (
     <View style={styles.container}>
+      <WhatsApp />
+
       <Header />
       <ScrollView style={styles.scrollView}>
         <View style={styles.root}>
@@ -308,8 +307,8 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start",
 
     flexDirection: "row",
-    borderBottomWidth: 2, // Add a bottom border
-    borderBottomColor: Color.primary, // Border color
+    borderBottomWidth: 2,
+    borderBottomColor: Color.primary,
     marginBottom: 20,
     padding: 10,
     marginTop: 10,
