@@ -9,21 +9,6 @@ import { BlurView } from 'expo-blur';
 import Spacing from "../Common/Spacing.js"
 import {useSelector } from 'react-redux';
 
-/*const calculateTotalPrice = (products) => {
-  if (!products || products.length === 0) {
-    return 0;
-  }
-
-  const totalPrice = products.reduce((total, product) => {
-    const productPrice = product.productId?.finalPrice || 0;
-    const productQuantity = product.quantity || 1; // Assuming default quantity is 1
-
-    return total + (productPrice * productQuantity);
-  }, 0);
-
-  return totalPrice;
-};*/
-
 const CardsScreen = () => {
   const navigation = useNavigation();
   const token = useSelector((state) => state.user.userData.token);
@@ -31,12 +16,6 @@ const CardsScreen = () => {
   const [isTouched, setIsTouched] = useState(false);
   const [errorMessage, setErrorMessage] = useState({});
   const [totalPrice, setTotalPrice] = useState(0);
-
-
-  /*const handleCheckOut = () => {
-    const calculatedTotalPrice = calculateTotalPrice(cartData?.products || []);
-    setTotalPrice(calculatedTotalPrice);
-  };*/
 
   const handlePressIn = () => {
     setIsTouched(true);
