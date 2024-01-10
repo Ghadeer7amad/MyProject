@@ -18,11 +18,13 @@ import { Ionicons } from "@expo/vector-icons";
 import { useNavigation} from "@react-navigation/native";
 import NavbarButtom from "../Common/NavbarButtom";
 import { Alert } from "react-native";
+import { Box, useToast } from "native-base";
 import { useDispatch, useSelector } from 'react-redux';
 
 const ProductsScreens = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const toast = useToast();
   const [products, setproducts] = useState([]);
   const [selectedItem, setSelectedItem] = useState('Body');
 
@@ -72,9 +74,14 @@ const handleAddToFavorite = async (productId) => {
           console.log('Response data:', responseData);
           navigation.navigate('Favorite');
       }else{
-          //const errorData = await response.json();
-          Alert.alert("Product already in favorites")
-          //console.error('Error data:', errorData);
+          toast.show({
+            render: () => (
+              <Box bg='#c81912' px="8" py="5" rounded="sm" mb={5}>
+                Product already in favorites
+              </Box>
+            )
+          });
+          navigation.navigate('Favorite');
       }
   } catch (error) {
       console.error('Error adding product to Favorite:', error.message);
