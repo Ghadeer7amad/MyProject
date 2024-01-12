@@ -68,7 +68,7 @@ const ForgetPage = () => {
     }
   };
 
-  // {t('Book Now')} 
+  // {t('aboutcream')} 
   return (
     <View style={styles.contanier}>
       <Image

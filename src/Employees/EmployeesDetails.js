@@ -59,7 +59,7 @@ const EmployeesDetailsScreen = ({ route }) => {
           >
             <Text style={styles.buttonText}>{t('Book Now')}</Text>
           </TouchableOpacity>
-
+ 
           <TouchableOpacity
             style={[styles.button, styles.button1]}
             onPress={handleCancelAppointment}

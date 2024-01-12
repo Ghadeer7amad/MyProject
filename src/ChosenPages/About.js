@@ -13,6 +13,9 @@ import Header from "../screens/Header";
 import Color from "../Common/Color";
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { useNavigation } from "@react-navigation/native";
+import {useSelector} from 'react-redux';
+import { useTranslation } from 'react-i18next'; 
+
 
 const About = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -20,7 +23,7 @@ const About = () => {
   const images = [
     require("../../assets/hh.jpg"),
     require("../../assets/oo.jpg"),
-    require("../../assets/hhhh.jpg"),
+    require("../../assets/hhhh.jpg"), 
   ];
 
   const handleSlideChange = (index) => {
@@ -30,6 +33,9 @@ const About = () => {
   const windowWidth = Dimensions.get("window").width;
 
   const navigation = useNavigation();
+  const {id: salonId , name: salonName} = useSelector(state => state.user.usedSalonData)
+  const [t, i18n] = useTranslation();
+
 
 
   const handleBookPress = () => {
@@ -103,14 +109,12 @@ const About = () => {
         </View>
 
         <View style={styles.titleContainer}>
-          <Text style={styles.title}>Aya Beauty Center</Text>
+          <Text style={styles.title}> {salonName} Center</Text>
           <View style={styles.titleLine} />
         </View>
 
         <Text style={styles.paragraph}>
-          A selected group of consultants and specialists are waiting for
-          you to provide distinguished cosmetic and therapeutic services with
-          the latest cosmetic devices and techniques.
+        {t('aboutus')}
         </Text>
 
         <View style={styles.buttonsContainer}>
@@ -119,7 +123,7 @@ const About = () => {
             onPress={handleContactPress}
           >
             <Text style={[styles.buttonText, { color: Color.primary }]}>
-              Contact Us
+            {t('Contact Us')}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -130,14 +134,14 @@ const About = () => {
             onPress={handleBookPress}
           >
             <Text style={[styles.buttonText, { color: "white" }]}>
-              Book an Appointment
+            {t('Book an Appointment')}
             </Text>
           </TouchableOpacity>
         </View>
 
         <View style={styles.titleContainer}>
           <Text style={styles.DepartmentTitle}>
-            Departments of Aya Beauty Center
+          {t('Departments of')} {salonName} Center
           </Text>
           <View style={styles.titleLine} />
         </View>
@@ -150,11 +154,10 @@ const About = () => {
               style={styles.circularImage}
             />
           </View>
-          <Text style={styles.departmentTitle}>Skin Care 
-          <Text style={{color: Color.background}}> Department</Text></Text>
+          <Text style={styles.departmentTitle}>{t('Skin Care')} </Text>
           <View style={styles.horizontalLine} />
           <Text style={styles.departmentParagraph}>
-            We take care of your beauty and skin with the latest international devices and creams.
+          {t('aboutskincare')}
           </Text>
         </View>
 
@@ -166,11 +169,12 @@ const About = () => {
               style={styles.circularImage}
             />
           </View>
-          <Text style={styles.departmentTitle}>Laser Therapy 
-          <Text style={{color: Color.background}}> Department</Text></Text>
+          <Text style={styles.departmentTitle}>{t('Laser Therapy')} 
+          {/* <Text style={{color: Color.background}}> {t('Department')}</Text> */}
+          </Text>
           <View style={styles.horizontalLine} />
           <Text style={styles.departmentParagraph}>
-          The latest laser technology in hair removal and treatment of a lot of problems.
+          {t('aboutlaser')}
           </Text>
         </View>
 
@@ -182,11 +186,10 @@ const About = () => {
               style={styles.circularImage}
             />
           </View>
-          <Text style={styles.departmentTitle}>Creams 
-          <Text style={{color: Color.background}}> Department</Text></Text>
+          <Text style={styles.departmentTitle}>{t('Creams')} </Text>
           <View style={styles.horizontalLine} />
           <Text style={styles.departmentParagraph}>
-          The best universal products and creams to take care of the freshness of the skin.
+          {t('aboutcream')}
           </Text>
         </View>
 
@@ -333,6 +336,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     color: '#ffa952',
+    
   },
   horizontalLine: {
     width: 220,
@@ -412,6 +416,7 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(0, 0, 0, 0.1)', // Color of the border
     elevation: 5,
   },
+  
 
 
 
