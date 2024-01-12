@@ -93,7 +93,7 @@ import {
           <View style={styles.container2}>
             <Text style={[styles.styleText, styles.styleText2]}>Job History.</Text>
             <SearchProANDSer
-            placeholder="Search your service"
+            placeholder="Search person"
             onSearch={handleSearch}
           />
           </View>

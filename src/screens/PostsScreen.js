@@ -26,10 +26,14 @@ import {
   MenuTrigger,
 } from "react-native-popup-menu";
 import { useSelector } from "react-redux";
+import { useTranslation } from 'react-i18next'; 
+
 
 
 const PostsScreen = () => {
   const navigation = useNavigation();
+  const [t, i18n] = useTranslation();
+
   const { role } = useSelector((state) => state.user.userData);
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -108,15 +112,15 @@ const PostsScreen = () => {
 
   const confirmDelete = (itemId) => {
     Alert.alert(
-      "Delete Confirmation",
-      "Are you sure you want to delete this post?",
+      t('Confirm deletion'),
+      t('Are you sure you want to delete this salon?'),
       [
         {
-          text: "Cancel",
-          style: "cancel",
+          text: t('Cancel'),
+          style: "cancel", 
         },
         {
-          text: "Yes, Delete",
+          text: t('Yes, Delete'),
           onPress: () => handleDeletePress(itemId),
         },
       ],
@@ -187,7 +191,7 @@ const PostsScreen = () => {
     const timeDifference = now - postDate;
   
     if (timeDifference < 60000) {
-      return "Just Now";
+      return t('Just Now');
     }
   
     const seconds = Math.floor(timeDifference / 1000);
@@ -220,18 +224,19 @@ const PostsScreen = () => {
   
 
   const handleToggleLike = async (itemId) => {
+   
     try {
-      const response = await fetch(`${baseUrl}/posts/post/${itemId}/like`, {
+      const response = await fetch(`${baseUrl}/posts/post/${itemId}/${userId}`, {
         method: "POST", 
       });
-
+      
       if (response.ok) {
         const responseData = await response.json();
         const updatedItems = items.map((item) => {
           if (item._id === itemId) {
             return {
               ...item,
-              likes: responseData.likes,
+              likes: new Array( responseData.likes),
             };
           }
           return item;
@@ -243,51 +248,14 @@ const PostsScreen = () => {
           [itemId]: true,
         }));
       } else {
+        console.log("error");
       }
     } catch (error) {
       console.error("Error toggling like:", error);
     }
   };
 
-  const handleUnlike = async (itemId) => {
-    try {
-      const response = await fetch(`${baseUrl}/posts/post/${itemId}/unlike`, {
-        method: "POST",
-      });
 
-      if (response.ok) {
-        const responseData = await response.json();
-
-        const updatedItems = items.map((item) => {
-          if (item._id === itemId) {
-            return {
-              ...item,
-              likes: responseData.likes,
-            };
-          }
-          return item;
-        });
-
-        setItems(updatedItems);
-
-        setLikeStatus((prevStatus) => ({
-          ...prevStatus,
-          [itemId]: false,
-        }));
-      } else {
-        console.error(
-          "Failed to unlike. Server response:",
-          response.statusText
-        );
-
-        const responseText = await response.text();
-        console.log("HTML error page:", responseText);
-
-      }
-    } catch (error) {
-      console.error("Error handling unlike:", error);
-    }
-  };
 
 
 
@@ -308,7 +276,7 @@ const PostsScreen = () => {
             />
             <View style={styles.postInputWrapper}>
               <Button
-                title="What do you want to share?"
+                title={t('What do you want to share?')}
                 type="outline"
                 onPress={() => navigation.navigate("AddPost")}
                 buttonStyle={styles.postButton}
@@ -372,11 +340,9 @@ const PostsScreen = () => {
               <View style={styles.postInteractions}>
                 <TouchableOpacity
                   onPress={() => {
-                    if (likeStatus[item._id]) {
-                      handleUnlike(item._id);
-                    } else {
+                    
                       handleToggleLike(item._id);
-                    }
+                    
                   }}
                 >
                   <Icon
@@ -385,7 +351,7 @@ const PostsScreen = () => {
                     color={likeStatus[item._id] ? "red" : "#777"}
                   />
                 </TouchableOpacity>
-                <Text>{item.likes}</Text>
+                <Text>{item.likes.length}</Text>
                 <TouchableOpacity>
                   <Icon name="chatbox" size={20} color="#777" />
                 </TouchableOpacity>
@@ -500,7 +466,9 @@ const styles = StyleSheet.create({
   },
   postInteractions: {
     flexDirection: "row",
-    gap: 6,
+    gap: 5,
+    marginTop: 15,
+    marginBottom: -5
   },
   postHeader: {
     gap: 1,

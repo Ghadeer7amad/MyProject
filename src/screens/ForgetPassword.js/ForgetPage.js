@@ -68,7 +68,7 @@ const ForgetPage = () => {
     }
   };
 
-  // {t('aboutcream')} 
+  // {t('What do you want to share?')} 
   return (
     <View style={styles.contanier}>
       <Image
