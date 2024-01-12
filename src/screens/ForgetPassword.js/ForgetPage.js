@@ -68,7 +68,7 @@ const ForgetPage = () => {
     }
   };
 
-  // {t('log')} 
+  // {t('Book Now')} 
   return (
     <View style={styles.contanier}>
       <Image

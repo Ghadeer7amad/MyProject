@@ -58,15 +58,15 @@ const EmployeesScreen = () => {
 
   const confirmDelete = (itemId) => {
     Alert.alert(
-      "Delete Confirmation",
-      "Are you sure you want to delete this employee?",
+      t('Confirm deletion'),
+      t('Are you sure you want to delete this salon?'),
       [
         {
-          text: "Cancel",
-          style: "cancel",
+          text: t('Cancel'),
+          style: "cancel", 
         },
         {
-          text: "Yes, Delete",
+          text: t('Yes, Delete'),
           onPress: () => handleDeletePress(itemId),
         },
       ],
@@ -101,17 +101,17 @@ const EmployeesScreen = () => {
     <View style={styles.container}>
       <Header />
       <View style={styles.container2}>
-        <Text style={[styles.styleText, styles.styleText2]}>
-          Beauty Employees.
+        <Text style={[styles.styleText]}>
+        {t('Beauty Employees')}
         </Text>
         <CustomSearchBar
-          placeholder="Search Employee"
+          placeholder={t('Search for Employee')}
           onSearch={handleSearch}
         />
       </View>
       {role === "Admin" && (
         <TouchableOpacity onPress={() => navigation.navigate("AddEmployee")}>
-          <Text style={styles.buttonStyle}>Add Employee</Text>
+          <Text style={styles.buttonStyle}>{t('Add Employee')}</Text>
         </TouchableOpacity>
       )}
 
