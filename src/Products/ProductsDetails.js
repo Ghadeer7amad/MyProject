@@ -13,12 +13,16 @@ import { Ionicons } from '@expo/vector-icons'
 import Color from '../Common/Color.js'
 import Spacing from '../Common/Spacing.js'
 import { BlurView } from 'expo-blur'
+import { useDispatch, useSelector } from 'react-redux';
+import { addToFavorites, removeFromFavorites } from '../redux/user/userActions.js';
 
 const { height} = Dimensions.get("window");
 
 const ProductsDetails = ({ route }) => {
   const navigation = useNavigation();
   const { product } = route.params;
+  //const [isFavorite, setIsFavorite] = useState(false);
+  const dispatch = useDispatch();
   const [isTouched, setIsTouched] = useState(false);
   const handlePressIn = () => {
     setIsTouched(true);
@@ -26,16 +30,23 @@ const ProductsDetails = ({ route }) => {
   const handlePressOut = () => {
     setIsTouched(false);
   };
-  const handleFavoritePress = (product) => {
-    navigation.navigate('Favorite', { product });
+  const favorites = useSelector(state => state.user.favorites);
+
+  const isFavorite = favorites.some(favorite => favorite._id === product._id);
+
+  const handleFavoritePress = () => {
+    if (isFavorite) {
+      dispatch(removeFromFavorites(product._id));
+    } else {
+      dispatch(addToFavorites(product));
+      navigation.navigate('Favorite')
+    }
   };
-  
   return (
     <View style={{padding: Spacing, backgroundColor: Color.background, height: '100%'}}>
         <SafeAreaView>
         <ImageBackground source={{uri: product?.image?.secure_url}} 
           style={styles.ImageBackgroundStyle}  imageStyle={{borderRadius: Spacing * 1.5, marginTop: 20}}>
-
             <View style={{flexDirection:"row", justifyContent:"space-between"}}>
                 <TouchableOpacity style={{padding: Spacing*2}}  onPress={()=>navigation.navigate('ProductsScreens')}>
                     <Ionicons name="arrow-back" color={Color.primary} size={Spacing*2}/>
@@ -60,17 +71,20 @@ const ProductsDetails = ({ route }) => {
                         <Text style={styles.productRating}>{product.rate}</Text>
                     </View>
 
-                    <View 
-                      style={styles.TowIcaonStyle}>
-                        <View style={styles.icaonPosition}>
-                        <Ionicons name="heart" size={Spacing * 2} color={Color.primary} onPress={handleFavoritePress}/>
-
-                        <TouchableOpacity onPress={handleFavoritePress}>
-                         <Text style={styles.icanNameStyle}>Favorite</Text>
-                        </TouchableOpacity>
-                        </View>
-                    </View>
-
+                    <View style={styles.TowIcaonStyle}>
+                    <View style={styles.icaonPosition}>
+                    <Ionicons
+                     name={isFavorite ? 'heart' : 'heart-outline'}
+                     size={Spacing * 2}
+                     color={Color.primary}
+                     onPress={handleFavoritePress}
+                   />
+               
+                   <TouchableOpacity onPress={handleFavoritePress}>
+                     <Text style={styles.icanNameStyle}>{isFavorite ? 'Favorited' : 'Favorite'}</Text>
+                   </TouchableOpacity>
+                </View>
+                </View>
                     </View>
                    </View>
                 </BlurView>

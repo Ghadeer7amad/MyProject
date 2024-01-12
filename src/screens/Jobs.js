@@ -1,19 +1,27 @@
-import React, {useState, useEffect} from 'react';
-import { View, Image, Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { Card, Button } from 'react-native-elements';
-import { FontAwesome as Icon } from '@expo/vector-icons';
-import CustomSearchBar from "../Common/SearchBarComponent.js";
-import { Ionicons } from '@expo/vector-icons';
-import Color from '../Common/Color.js';
-import Spacing from '../Common/Spacing.js';
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Image,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  FlatList,
+} from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { Card, Button } from "react-native-elements";
+import { FontAwesome as Icon } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
+import Color from "../Common/Color.js";
+import Spacing from "../Common/Spacing.js";
+import { useSelector } from "react-redux";
 
 const Jobs = () => {
   const navigation = useNavigation();
-  const [items, setItems] = useState([]);
-  const [isLoading, setIsLoading] = useState(true); 
+  const { role } = useSelector((state) => state.user.userData);
 
- 
+  const [items, setItems] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
   const baseUrl = "https://ayabeautyn.onrender.com";
   const fetchData = async () => {
     try {
@@ -22,26 +30,26 @@ const Jobs = () => {
       setItems(data);
       setIsLoading(false);
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error("Error fetching data:", error);
     }
   };
 
   const handleDeletePress = async (itemId) => {
-    console.log('Deleting item with ID:', itemId);
+    console.log("Deleting item with ID:", itemId);
 
     try {
       const response = await fetch(`${baseUrl}/jobs/job/${itemId}`, {
-        method: 'DELETE',
+        method: "DELETE",
       });
 
       if (response.ok) {
         fetchData();
       } else {
         const responseData = await response.json();
-        console.error('Failed to delete item. Server response:', responseData);
+        console.error("Failed to delete item. Server response:", responseData);
       }
     } catch (error) {
-      console.error('Error deleting item:', error);
+      console.error("Error deleting item:", error);
     }
   };
 
@@ -54,7 +62,7 @@ const Jobs = () => {
       <TouchableOpacity
         style={{ marginLeft: Spacing * 2, marginTop: Spacing * 3 }}
         onPress={() => {
-          navigation.navigate('MainJob');
+          navigation.navigate("MainJob");
         }}
       >
         <Ionicons name="arrow-back" color={Color.primary} size={Spacing * 2} />
@@ -70,33 +78,40 @@ const Jobs = () => {
           keyExtractor={(item) => item._id}
           renderItem={({ item }) => (
             <>
-              
-            <Card containerStyle={styles.card}>
-            <TouchableOpacity
-              style={styles.deleteIcon}
-              onPress={() => handleDeletePress(item._id)}
-            >
-              <Icon name="close" color="#5e366a" size={20} />
-            </TouchableOpacity>
-            <Card.Title style={styles.cardTitle}>{item.jobName}</Card.Title>
-            <Card.Title style={styles.cardTitlee}>{item.jobDescription}</Card.Title>
-            <Image source={{uri: item?.image?.secure_url}} style={styles.cardImage} />
-            
-            
-          </Card>
+              <Card containerStyle={styles.card}>
+              {role === "Admin" && (
+
+                <TouchableOpacity
+                  style={styles.deleteIcon}
+                  onPress={() => handleDeletePress(item._id)}
+                >
+                  <Icon name="close" color="#5e366a" size={20} />
+                </TouchableOpacity>
+              )}
+                <Card.Title style={styles.cardTitle}>{item.jobName}</Card.Title>
+                <Card.Title style={styles.cardTitlee}>
+                  {item.jobDescription}
+                </Card.Title>
+                <Image
+                  source={{ uri: item?.image?.secure_url }}
+                  style={styles.cardImage}
+                />
+              </Card>
             </>
-            
           )}
         />
+      {role === "Admin" && (
 
         <TouchableOpacity
           style={styles.addButton}
           onPress={() => {
-            navigation.navigate('AddJob');
+            navigation.navigate("AddJob");
           }}
         >
           <Text style={styles.addButtonText}>Add Job</Text>
         </TouchableOpacity>
+      )}
+
       </View>
     </View>
   );
@@ -105,35 +120,32 @@ const Jobs = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: "white",
   },
   container1: {
-    flexDirection: 'row',
+    flexDirection: "row",
     paddingTop: 1,
     paddingLeft: 15,
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    backgroundColor: 'white',
+    justifyContent: "space-between",
+    alignItems: "center",
+    backgroundColor: "white",
   },
   textHeader: {
     fontSize: 25,
-    fontWeight: 'bold',
-    textTransform: 'uppercase',
+    fontWeight: "bold",
+    textTransform: "uppercase",
     marginLeft: 15,
   },
   textHeader1: {
     fontSize: 18,
-    fontWeight: '500',
-    textTransform: 'uppercase',
+    fontWeight: "500",
+    textTransform: "uppercase",
     marginLeft: 15,
     color: Color.primary,
   },
-  
-  
-  
-  
+
   addButton: {
-    alignSelf: 'flex-end',
+    alignSelf: "flex-end",
     marginRight: Spacing,
     marginTop: Spacing,
     marginBottom: Spacing,
@@ -143,23 +155,22 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   addButtonText: {
-    color: 'white',
+    color: "white",
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 
   card: {
     borderRadius: 30,
     backgroundColor: "#f6f6f6",
     marginBottom: 10,
-    position: 'relative',
+    position: "relative",
   },
   cardTitle: {
     color: Color.primary,
     fontSize: 19,
     letterSpacing: 2,
     marginBottom: 10,
-    
   },
   cardTitlee: {
     color: "#4c4c4c",
@@ -168,18 +179,16 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     fontWeight: "800",
     textAlign: "left",
-    
   },
   cardImage: {
-    width: '100%',
+    width: "100%",
     height: 300, // ارتفاع الصورة الثابت داخل الكارت
-    resizeMode: 'cover',
+    resizeMode: "cover",
     borderRadius: 20,
   },
 
-  
   deleteIcon: {
-   left:300,
+    left: 300,
   },
 });
 

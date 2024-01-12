@@ -23,30 +23,23 @@ import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
 import { serialize } from "object-to-formdata";
 import { Box, useToast } from "native-base";
-import RNPickerSelect from "react-native-picker-select";
+import { Select } from "native-base";
+import { useEffect } from "react";
 
 const AddServices = () => {
-
-  const subServices = [
-    { label: "Face", value: "Face" },
-    { label: "Body", value: "Body" },
-  ];
-  const status = [
-    { label: "Active", value: "Active" },
-    { label: "Inactive", value: "Inactive" },
-  ];
+  const [selectedStatus, setSelectedStatus] = useState("Active");
+  const [selectedSubServices, setSelectedSubServices] = useState("Body");
 
   const [FData, setFData] = useState({
-        name: "",
-        description: "",
-        price: "",
-        discount: "",
-        time: "",
-        subServices: [],
-        status: [],
-        image: "",
+    name: "",
+    description: "",
+    price: "",
+    discount: "",
+    time: "",
+    subServices: [],
+    status: [],
+    image: "",
   });
-
   const toast = useToast();
   const [buttonText, setButtonText] = useState("Upload Image");
   const [image, setImage] = useState(image);
@@ -56,6 +49,7 @@ const AddServices = () => {
       ...prevData,
       subServices: selectedsubServices,
     }));
+    setSelectedSubServices(selectedsubServices); // هنا تم تحديث selectedStatus
   };
 
   const handleStautsChange = (selectedStauts) => {
@@ -63,7 +57,12 @@ const AddServices = () => {
       ...prevData,
       status: selectedStauts,
     }));
+    setSelectedStatus(selectedStauts); // هنا تم تحديث selectedSubServices
   };
+
+  useEffect(() => {
+    console.log("FData updated:", FData);
+  }, [FData]);
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -99,13 +98,10 @@ const AddServices = () => {
       });
       const baseUrl = "https://ayabeautyn.onrender.com";
 
-      const response = await fetch(
-        `${baseUrl}/services/CreateServices`,
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
+      const response = await fetch(`${baseUrl}/services/CreateServices`, {
+        method: "POST",
+        body: formData,
+      });
 
       const responseData = await response.json();
       if (!response.ok) {
@@ -215,59 +211,52 @@ const AddServices = () => {
 
         <SafeAreaView
           style={{
-            justifyContent: "center",
-            alignItems: "center",
-            borderWidth: 2,
-            borderColor: "#c3b4d2",
-            marginHorizontal: 10,
             marginTop: 20,
           }}
         >
-          <RNPickerSelect
-            items={subServices}
-            onValueChange={(value) => handleSubServicesChange(value)}
-            style={{
-              inputIOS: {
-                fontSize: 16,
-                paddingVertical: 14,
-                paddingHorizontal: 10,
-                width: 200,
-              },
-              placeholder: {
-                color: "#757a79",
-              },
-            }}
-            placeholder={{ label: "Chose SubServices", value: null }}
-            value={FData.subServices}
-          />
-        </SafeAreaView>
+          <View style={styles.serviceListContainer}>
+            <Select
+              placeholder="Select subservices"
+              color={Color.primary}
+              style={{ width: 180, fontSize: 14 }}
+              selectedValue={selectedSubServices}
+              onValueChange={(value) => handleSubServicesChange(value)}
+            >
+              {[
+                { id: 1, name: "Body" },
+                { id: 2, name: "Face" },
+              ].map((item) => (
+                <Select.Item
+                  key={item.id}
+                  label={item?.name}
+                  value={item.name}
+                />
+              ))}
+            </Select>
+          </View>
 
-        <SafeAreaView
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-            borderWidth: 2,
-            borderColor: "#c3b4d2",
-            marginHorizontal: 10,
-            marginTop: 20,
-          }}
-        >
-          <RNPickerSelect
-            items={status}
-            onValueChange={(value) => handleStautsChange(value)}
-            style={{
-              inputIOS: {
-                paddingVertical: 20,
-                paddingHorizontal: 10,
-                width: 200,
-              },
-              placeholder: {
-                color: "#757a79",
-              },
-            }}
-            placeholder={{ label: "Stauts Services", value: null }}
-            value={FData.status}
-          />
+          <View style={styles.serviceListContainer}>
+            <Select
+              placeholder="Select status"
+              color={Color.primary}
+              style={{ width: 150, fontSize: 14 }}
+              selectedValue={selectedStatus}
+              onValueChange={(valueitem) => {
+                handleStautsChange(valueitem);
+              }}
+            >
+              {[
+                { id: 1, name: "Active" },
+                { id: 2, name: "Inactive" },
+              ].map((item) => (
+                <Select.Item
+                  key={item.id}
+                  label={item?.name}
+                  value={item.name}
+                />
+              ))}
+            </Select>
+          </View>
         </SafeAreaView>
 
         <View style={{ marginHorizontal: 10, marginTop: 20 }}>
@@ -289,7 +278,7 @@ const AddServices = () => {
           />
           {image && (
             <Image
-              source={{ uri:  image.uri }}
+              source={{ uri: image.uri }}
               style={{
                 width: 335,
                 height: 180,
@@ -334,7 +323,6 @@ const styles = StyleSheet.create({
     position: "relative",
     marginTop: 20,
     flexDirection: "row",
-
     alignItems: "center",
   },
   icon: {
@@ -376,5 +364,12 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     color: Color.primary,
     marginTop: 10,
+  },
+  serviceListContainer: {
+    width: "95%",
+    marginBottom: 20,
+    borderWidth: 2,
+    borderColor: "#c3b4d2",
+    marginHorizontal: 10,
   },
 });

@@ -3,5 +3,9 @@ export const ADD_SALON = 'ADD_SALON';
 export const INC_NOTIFICATION = 'INC_NOTIFICATION';
 export const SET_IS_PROVIDER = 'SET_IS_PROVIDER';
 export const EDIT_USER = 'EDIT_USER';
+export const ADD_TO_FAVORITES = 'ADD_TO_FAVORITES';
+export const REMOVE_FROM_FAVORITES = 'REMOVE_FROM_FAVORITES'
+
+
 
 

@@ -1,18 +1,45 @@
-import { StyleSheet, Text, View,TextInput, Image, TouchableOpacity, TouchableWithoutFeedback, Alert, Pressable } from 'react-native'
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faEnvelope, faLock, faUser, faCheck, faHome, faPhone, faBirthdayCake } from '@fortawesome/free-solid-svg-icons';
-import { faFacebookF, faGoogle, faTwitter} from '@fortawesome/free-brands-svg-icons';
-import { Linking } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  Image,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  Alert,
+  Pressable,
+} from "react-native";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import {
+  faEnvelope,
+  faLock,
+  faUser,
+  faCheck,
+  faHome,
+  faPhone,
+  faBirthdayCake,
+} from "@fortawesome/free-solid-svg-icons";
+import {
+  faFacebookF,
+  faGoogle,
+  faTwitter,
+} from "@fortawesome/free-brands-svg-icons";
+import { Linking } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import Color from '../Common/Color.js';
-import React, {useState} from 'react'
-import { useNavigation } from '@react-navigation/native';
-import Spacing from '../Common/Spacing.js'
+import Color from "../Common/Color.js";
+import React, { useState } from "react";
+import { useNavigation } from "@react-navigation/native";
+import Spacing from "../Common/Spacing.js";
 import { Box, useToast, Toast } from "native-base";
-import axios from 'axios';
+import axios from "axios";
+import { useTranslation } from 'react-i18next';
+
+
 
 const Signup = () => {
   const navigation = useNavigation();
+  const [t, i18n] = useTranslation();
+
   const toast = useToast();
   const [isPasswordValid, setPasswordValid] = useState(true);
   const [isPasswordCValid, setPasswordCValid] = useState(true);
@@ -23,9 +50,9 @@ const Signup = () => {
     phone: true,
     address: true,
     password: true,
-    passwordC: true
+    passwordC: true,
   });
-  const handleRegister = async() => {
+  const handleRegister = async () => {
     const errors = {};
     if (userName === "") {
       errors.name = false;
@@ -51,10 +78,10 @@ const Signup = () => {
     setFieldValid({ ...fieldValid, ...errors });
 
     // إذا كان هناك حقول غير صالحة، لا تقم بإرسال الطلب
-    if (Object.values(errors).some(fieldValid => !fieldValid)) {
+    if (Object.values(errors).some((fieldValid) => !fieldValid)) {
       return;
     }
-   }
+  };
   const [userName, setuserName] = useState("");
   const [email, setEmail] = useState("");
   const [age, setage] = useState("");
@@ -90,13 +117,7 @@ const Signup = () => {
   };
   const MyToast = ({ message, bgColor }) => {
     return (
-      <Box
-        px="8"
-        py="5"
-        rounded="sm"
-        mb={5}
-        bg={bgColor || 'gray.500'}
-      >
+      <Box px="8" py="5" rounded="sm" mb={5} bg={bgColor || "gray.500"}>
         <Text>{message}</Text>
       </Box>
     );
@@ -108,7 +129,7 @@ const Signup = () => {
   };
 
   const baseUrl = "https://ayabeautyn.onrender.com";
-   const handleSignUp = async () => {
+  const handleSignUp = async () => {
     try {
       const response = await axios.post(`${baseUrl}/auth/signup`, {
         userName,
@@ -117,15 +138,15 @@ const Signup = () => {
         phone,
         address,
         password,
-        confirmpassword
+        confirmpassword,
       });
       if (response.status === 201) {
         toast.show({
           render: () => (
-            <Box bg='#55a44e' px="8" py="5" rounded="sm" mb={5}>
-              SignUp successfully
+            <Box bg="#55a44e" px="8" py="5" rounded="sm" mb={5}>
+              {t('SignUp successfully')}
             </Box>
-          )
+          ),
         });
         setuserName("");
         setEmail("");
@@ -134,30 +155,30 @@ const Signup = () => {
         setaddress("");
         setpassword("");
         setconfirmpassword("");
-        navigation.navigate('Login'); 
-      }else {
+        navigation.navigate("Login");
+      } else {
         toast.show({
           render: () => (
-              <Box bg='#c81912' px="8" py="5" rounded="sm" mb={5}>
-                  SignUp failed
-              </Box>
+            <Box bg="#c81912" px="8" py="5" rounded="sm" mb={5}>
+              {t('SignUp failed')}
+            </Box>
           ),
-      });
-      return;
+        });
+        return;
       }
     } catch (error) {
-      try{
+      try {
         if (error.response && error.response.status === 404) {
-          showToast("Email Exists. Use another email please", '#c81912');
-        } 
-      }catch(error){
+          showToast(t('Email Exists, Use another email please'), "#c81912");
+        }
+      } catch (error) {
         toast.show({
           render: () => (
-              <Box bg='#c81912' px="8" py="5" rounded="sm" mb={5}>
-                  SignUp failed
-              </Box>
+            <Box bg="#c81912" px="8" py="5" rounded="sm" mb={5}>
+              {t('SignUp failed')}
+            </Box>
           ),
-      });
+        });
       }
     }
   };
@@ -172,190 +193,279 @@ const Signup = () => {
   const togglePasswordVisibilityC = () => {
     setShowPasswordC(!showPasswordC);
   };
-  return (
-    <View style={styles.contanier}> 
-     <Text style={{color:Color.primary, fontSize: 25, fontWeight:"bold", marginLeft: 20, marginTop: 3, marginBottom: 1}}>
 
-     <TouchableOpacity style={{marginLeft: Spacing*3}} 
-                 onPress={() => {
-                 navigation.navigate('ChoseScreen');
-                }}>
-                    <Ionicons name="arrow-back" color={Color.primary} size={Spacing*1.3}/>
-    </TouchableOpacity>
-       Dear Lady,
+
+  return (
+    <View style={styles.contanier}>
+      <Text
+        style={{
+          color: Color.primary,
+          fontSize: 25,
+          fontWeight: "bold",
+          marginLeft: 20,
+          marginTop: 3,
+          marginBottom: 1,
+        }}
+      >
+        <TouchableOpacity
+          style={{marginLeft: Spacing*2, marginTop: Spacing*3}}
+          onPress={() => {
+            navigation.navigate("ChoseScreen");
+          }}
+        >
+        <Ionicons name="arrow-back" color={Color.primary} size={Spacing*2}/>
+
+
+        </TouchableOpacity>
+
+         {t('Dear Lady')}
       </Text>
 
-      <Text style={{color:Color.primary, fontSize: 17, marginLeft: 20, marginBottom: 3}}>please enter your complete information !!</Text>
+      <Text
+        style={{
+          color: Color.primary,
+          fontSize: 17,
+          marginLeft: 20,
+          marginBottom: 3,
+        }}
+      >
+        {t('please enter your complete information!!')}
+      </Text>
       <View style={styles.formgroup}>
-        <TextInput 
-        value={userName}
-        onChangeText={onChangeNameHandler}
-        onBlur={() => setFieldValid({ ...fieldValid, name: userName !== "" })}
-        style={styles.input} 
-        placeholder='Enter Your Name'/>
+        <TextInput
+          value={userName}
+          onChangeText={onChangeNameHandler}
+          onBlur={() => setFieldValid({ ...fieldValid, name: userName !== "" })}
+          style={styles.input}
+          placeholder={t('Enter Your Name')}
+        />
         <FontAwesomeIcon icon={faUser} style={styles.icon} />
       </View>
-      {!fieldValid.name && <Text style={styles.textWrong}> name is required </Text>}
+      {!fieldValid.name && (
+        <Text style={styles.textWrong}> {t('name is required')} </Text>
+      )}
 
       <View style={styles.formgroup}>
-        <TextInput 
-        value={email}
-        onChangeText={onChangeEmailHandler}
-        onBlur={() => setFieldValid({ ...fieldValid, email: email !== "" })}
-        style={styles.input} 
-        placeholder='example@gmail.com'/>
+        <TextInput
+          value={email}
+          onChangeText={onChangeEmailHandler}
+          onBlur={() => setFieldValid({ ...fieldValid, email: email !== "" })}
+          style={styles.input}
+          placeholder="example@gmail.com"
+        />
         <FontAwesomeIcon icon={faEnvelope} style={styles.icon} />
       </View>
-      {!fieldValid.email && <Text style={styles.textWrong}> email is required </Text>}
+      {!fieldValid.email && (
+        <Text style={styles.textWrong}> {t('email is required')} </Text>
+      )}
 
       <View style={styles.formgroup}>
-        <TextInput 
-       value={age}
-       onChangeText={onChangeAgeHandler}
-       onBlur={() => {
-        const isValidAge = age !== "" && parseInt(age) >= 18 && parseInt(age) <= 50;
-        setFieldValid({ ...fieldValid, age: isValidAge });
-      }}
-        style={styles.input} 
-        placeholder='18-50'/>
+        <TextInput
+          value={age}
+          onChangeText={onChangeAgeHandler}
+          onBlur={() => {
+            const isValidAge =
+              age !== "" && parseInt(age) >= 18 && parseInt(age) <= 50;
+            setFieldValid({ ...fieldValid, age: isValidAge });
+          }}
+          style={styles.input}
+          placeholder="18-50"
+        />
         <FontAwesomeIcon icon={faBirthdayCake} style={styles.icon} />
       </View>
-      {!fieldValid.age && age !== "" && parseInt(age) < 18 && <Text style={styles.textWrong}> Age must be 18 or more </Text>}
-      {!fieldValid.age && age !== "" && parseInt(age) > 50 && <Text style={styles.textWrong}> Age must be 50 or less </Text>}
-      {!fieldValid.age && age === "" && <Text style={styles.textWrong}> Age is required </Text>}
-
+      {!fieldValid.age && age !== "" && parseInt(age) < 18 && (
+        <Text style={styles.textWrong}> {t('Age must be 18 or more')} </Text>
+      )}
+      {!fieldValid.age && age !== "" && parseInt(age) > 50 && (
+        <Text style={styles.textWrong}> {t('Age must be 50 or less')} </Text>
+      )}
+      {!fieldValid.age && age === "" && (
+        <Text style={styles.textWrong}> {t('Age is required')} </Text>
+      )}
 
       <View style={styles.formgroup}>
-        <TextInput 
-        value={phone}
-        onChangeText={onChangePhoneHandler}
-        onBlur={() => {
-          const isValidPhone = phone !== "" && /^05\d{8}$/.test(phone);
-          setFieldValid({ ...fieldValid, phone: isValidPhone });
-        }}
-        style={styles.input} 
-        placeholder='+972 56-853-6463'/>
+        <TextInput
+          value={phone}
+          onChangeText={onChangePhoneHandler}
+          onBlur={() => {
+            const isValidPhone = phone !== "" && /^05\d{8}$/.test(phone);
+            setFieldValid({ ...fieldValid, phone: isValidPhone });
+          }}
+          style={styles.input}
+          placeholder="+972 56-853-6463"
+        />
         <FontAwesomeIcon icon={faPhone} style={styles.icon} />
       </View>
-      {!fieldValid.phone && phone === "" && <Text style={styles.textWrong}> Phone is required </Text>}
-      {!fieldValid.phone && phone !== "" && !/^05\d{8}$/.test(phone) && <Text style={styles.textWrong}> Invalid phone format </Text>} 
-      
-      
+      {!fieldValid.phone && phone === "" && (
+        <Text style={styles.textWrong}> {t('Phone is required')} </Text>
+      )}
+      {!fieldValid.phone && phone !== "" && !/^05\d{8}$/.test(phone) && (
+        <Text style={styles.textWrong}> {t('Invalid phone format')} </Text>
+      )}
+
       <View style={styles.formgroup}>
-        <TextInput 
-        value={address}
-        onChangeText={onChangeAddressHandler}
-        onBlur={() => setFieldValid({ ...fieldValid, address: address !== "" })}
-        style={styles.input} 
-        placeholder='City/Village'/>
+        <TextInput
+          value={address}
+          onChangeText={onChangeAddressHandler}
+          onBlur={() =>
+            setFieldValid({ ...fieldValid, address: address !== "" })
+          }
+          style={styles.input}
+          placeholder={t('City/Village')}
+        />
         <FontAwesomeIcon icon={faHome} style={styles.icon} />
       </View>
-      {!fieldValid.address && <Text style={styles.textWrong}> address is required </Text>}
+      {!fieldValid.address && (
+        <Text style={styles.textWrong}> {t('address is required')} </Text>
+      )}
 
       <View style={styles.formgroup}>
-        <TextInput 
-        secureTextEntry={!showPassword}
-        value={password}
-        onChangeText={onChangePasswordHandler}
-        onBlur={() => {
-          setFieldValid({ ...fieldValid, password: password !== "" & password.length >= 5});
-        }}
-         style={styles.input} placeholder='Enter Your password'/>
+        <TextInput
+          secureTextEntry={!showPassword}
+          value={password}
+          onChangeText={onChangePasswordHandler}
+          onBlur={() => {
+            setFieldValid({
+              ...fieldValid,
+              password: (password !== "") & (password.length >= 5),
+            });
+          }}
+          style={styles.input}
+          placeholder={t('Enter Your password')}
+        />
         <TouchableWithoutFeedback onPress={togglePasswordVisibility}>
-        <Ionicons style={styles.iconEye} name={showPassword ? 'eye' : 'eye-off'} size={20} />
-      </TouchableWithoutFeedback>
+          <Ionicons
+            style={styles.iconEye}
+            name={showPassword ? "eye" : "eye-off"}
+            size={20}
+          />
+        </TouchableWithoutFeedback>
         <FontAwesomeIcon icon={faLock} style={styles.icon} />
       </View>
-      {!fieldValid.password && <Text style={styles.textWrong}> Password must be at least 5 characters </Text>}
+      {!fieldValid.password && (
+        <Text style={styles.textWrong}>
+          {" "}
+          {t('Password must be at least 5 characters')}{" "}
+        </Text>
+      )}
 
       <View style={styles.formgroup}>
-        <TextInput secureTextEntry={!showPasswordC}
-        value={confirmpassword}
-        onChangeText={onChangeconfirmpasswordHandler}
-        onBlur={() => {
-          setFieldValid({ ...fieldValid, confirmpassword: confirmpassword !== "" });
-          setPasswordCValid(password === confirmpassword);
-        }}
-        style={styles.input} placeholder='Confirm Your password'/>
+        <TextInput
+          secureTextEntry={!showPasswordC}
+          value={confirmpassword}
+          onChangeText={onChangeconfirmpasswordHandler}
+          onBlur={() => {
+            setFieldValid({
+              ...fieldValid,
+              confirmpassword: confirmpassword !== "",
+            });
+            setPasswordCValid(password === confirmpassword);
+          }}
+          style={styles.input}
+          placeholder={t('Confirm your Password')}
+        />
         <TouchableWithoutFeedback onPress={togglePasswordVisibilityC}>
-        <Ionicons style={styles.iconEye} name={showPasswordC ? 'eye' : 'eye-off'} size={20} />
+          <Ionicons
+            style={styles.iconEye}
+            name={showPasswordC ? "eye" : "eye-off"}
+            size={20}
+          />
         </TouchableWithoutFeedback>
         <FontAwesomeIcon icon={faCheck} style={styles.icon} />
       </View>
-      {!fieldValid.passwordC && <Text style={styles.textWrong}> confirm password is required </Text>}
-      {!isPasswordCValid && <Text style={styles.textWrong}>Your Password not match</Text>}
+      {!fieldValid.passwordC && (
+        <Text style={styles.textWrong}> {t('confirm password is required')} </Text>
+      )}
+      {!isPasswordCValid && (
+        <Text style={styles.textWrong}>{t('Your Password not match')}</Text>
+      )}
 
-   
       <TouchableOpacity onPress={handleSignUpAndRegister}>
-       <Text style={styles.buttonStyle}>Sign Up</Text>
-      </TouchableOpacity>  
+        <Text style={styles.buttonStyle}>{t('Sign Up')}</Text>
+      </TouchableOpacity>
 
       <View style={styles.dividerContainer}>
-      <View style={styles.dividerLine} />
-      <Text style={styles.dividerText}>or with social media</Text>
-      <View style={styles.dividerLine} />
+        <View style={styles.dividerLine} />
+        <Text style={styles.dividerText}>{t('or with social media')}</Text>
+        <View style={styles.dividerLine} />
       </View>
 
       <View style={styles.buttonsStyle}>
-      <View style={styles.buttonFacebook}>
-      <TouchableOpacity onPress={() => { Linking.openURL('https://facebook.com') }}>
-      <FontAwesomeIcon icon={faFacebookF} style={styles.iconsFacebook}/>
-      </TouchableOpacity>
-      </View>
-      
-      <View style={styles.buttonGoogle}>
-      <TouchableOpacity onPress={() => { Linking.openURL('https://google.com') }}> 
-      <FontAwesomeIcon icon={faGoogle} style={styles.iconsGoogle} />
-      </TouchableOpacity>
-      </View>
-     
-      <View style={styles.buttonTiwtter}>
-      <TouchableOpacity onPress={() => { Linking.openURL('https://twitter.com') }}>
-      <FontAwesomeIcon icon={faTwitter} style={styles.iconsTiwtter} />
-      </TouchableOpacity>
-      </View>
+        <View style={styles.buttonFacebook}>
+          <TouchableOpacity
+            onPress={() => {
+              Linking.openURL("https://facebook.com");
+            }}
+          >
+            <FontAwesomeIcon icon={faFacebookF} style={styles.iconsFacebook} />
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.buttonGoogle}>
+          <TouchableOpacity
+            onPress={() => {
+              Linking.openURL("https://google.com");
+            }}
+          >
+            <FontAwesomeIcon icon={faGoogle} style={styles.iconsGoogle} />
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.buttonTiwtter}>
+          <TouchableOpacity
+            onPress={() => {
+              Linking.openURL("https://twitter.com");
+            }}
+          >
+            <FontAwesomeIcon icon={faTwitter} style={styles.iconsTiwtter} />
+          </TouchableOpacity>
+        </View>
       </View>
 
-      <Text style={styles.TextStyle4}> Have An Account?
-      <Text onPress={()=>navigation.navigate('Login')}
-       style={styles.link}> Log in your Account..</Text>
+      <Text style={styles.TextStyle4}>
+        {" "}
+        {t('Have An Account?')}
+        <Text onPress={() => navigation.navigate("Login")} style={styles.link}>
+          {" "}
+          {t('Log in your Account')}
+        </Text>
       </Text>
-      </View>
-  )
-}
+    </View>
+  );
+};
 
 export default Signup;
 
 const styles = StyleSheet.create({
-  contanier:{
+  contanier: {
     marginTop: 55,
     height: "100%",
-    width: "100%"
+    width: "100%",
   },
-  TextStyleHeader:{
-    fontWeight:"500",
-    color: Color.primary, 
+  TextStyleHeader: {
+    fontWeight: "500",
+    color: Color.primary,
     fontSize: 20,
-    marginTop:10,
+    marginTop: 10,
     marginBottom: 5,
     textAlign: "center",
-    textTransform:"uppercase"
+    textTransform: "uppercase",
   },
-  formgroup:{
-    display:"flex",
-    position:"relative",
+  formgroup: {
+    display: "flex",
+    position: "relative",
     marginTop: 10,
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   icon: {
-    position: 'absolute', // تحديد موقع الأيقونة بالنسبة لحقل النص
+    position: "absolute", // تحديد موقع الأيقونة بالنسبة لحقل النص
     color: Color.primary,
     marginHorizontal: 20, // المسافة من اليسار
     padding: 11,
   },
-  iconEye:{
-    position: 'absolute', // تحديد موقع الأيقونة بالنسبة لحقل النص
+  iconEye: {
+    position: "absolute", // تحديد موقع الأيقونة بالنسبة لحقل النص
     marginHorizontal: 370, // المسافة من اليسار
   },
 
@@ -367,10 +477,10 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     borderRadius: 20,
     borderColor: Color.background,
-    borderWidth: 2, // تحديد عرض الإطار 
+    borderWidth: 2, // تحديد عرض الإطار
   },
-  
-  TextStylePassword:{
+
+  TextStylePassword: {
     display: "flex",
     alignItems: "flex-end",
     marginHorizontal: 10,
@@ -378,93 +488,93 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
 
-  buttonStyle:{
+  buttonStyle: {
     padding: 20,
     marginTop: 20,
     marginBottom: 7,
     marginHorizontal: 10,
     backgroundColor: Color.primary,
-    fontWeight: '300',
+    fontWeight: "300",
     fontSize: 20,
-    textAlign:"center",
-    color:"#fff",
-    borderRadius: 30
+    textAlign: "center",
+    color: "#fff",
+    borderRadius: 30,
   },
   dividerContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 10,
   },
   dividerText: {
     flex: 1, // يأخذ المساحة المتاحة بشكل كامل
-    textAlign: 'center', // توسيط النص
-    color: "gray"
+    textAlign: "center", // توسيط النص
+    color: "gray",
   },
   dividerLine: {
     flex: 0.7, // يأخذ المساحة المتاحة بشكل كامل
-    borderBottomColor: 'black', // لون الخط
+    borderBottomColor: "black", // لون الخط
     borderBottomWidth: 0.5, // عرض الخط (بالنقاط)
   },
-  buttonsStyle:{
+  buttonsStyle: {
     flexDirection: "row",
     marginBottom: 10,
-    marginLeft: 115
- },
- buttonFacebook: {
-  flexDirection: 'row', 
-  alignItems: 'center', 
-  backgroundColor: '#4d727e',
-  borderRadius: 50,
-  paddingVertical: 10, 
-  paddingHorizontal: 20, 
-  marginRight: 10,
-},
-iconsFacebook: {
-  fontSize: 14,
-  color: '#fff',
-  marginRight: 3, 
-},
+    marginLeft: 115,
+  },
+  buttonFacebook: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#4d727e",
+    borderRadius: 50,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    marginRight: 10,
+  },
+  iconsFacebook: {
+    fontSize: 14,
+    color: "#fff",
+    marginRight: 3,
+  },
 
-buttonGoogle: {
-    flexDirection: 'row',
-    alignItems: 'center', 
+  buttonGoogle: {
+    flexDirection: "row",
+    alignItems: "center",
     backgroundColor: Color.background,
     borderRadius: 50,
-    paddingVertical: 10, 
-    paddingHorizontal: 20, 
+    paddingVertical: 10,
+    paddingHorizontal: 20,
     marginRight: 10,
-},
-iconsGoogle: {
+  },
+  iconsGoogle: {
     fontSize: 14,
-    color: '#fff',
-    marginRight: 3, 
-},
+    color: "#fff",
+    marginRight: 3,
+  },
 
- buttonTiwtter: {
-      flexDirection: 'row', 
-      alignItems: 'center', 
-      backgroundColor: '#7fc5ca',
-      borderRadius: 50,
-      paddingVertical: 10,
-      paddingHorizontal: 20, 
-      marginRight: 10,
- },
-iconsTiwtter: {
-      fontSize: 14,
-      color: '#fff',
-      marginRight: 3, 
-},
-TextStyle4:{
-  marginHorizontal: 70,
-  marginVertical: 14,
-  marginTop:1,
-},
-link:{
-  color: Color.primary,
-  fontWeight: "bold"
-},
-textWrong:{
-   color: "#ff847c",
-   marginLeft: 10,
-}
-})
+  buttonTiwtter: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#7fc5ca",
+    borderRadius: 50,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    marginRight: 10,
+  },
+  iconsTiwtter: {
+    fontSize: 14,
+    color: "#fff",
+    marginRight: 3,
+  },
+  TextStyle4: {
+    marginHorizontal: 70,
+    marginVertical: 14,
+    marginTop: 1,
+  },
+  link: {
+    color: Color.primary,
+    fontWeight: "bold",
+  },
+  textWrong: {
+    color: "#ff847c",
+    marginLeft: 10,
+  },
+});

@@ -5,9 +5,14 @@ import Color from "../Common/Color.js"
 import { Ionicons } from '@expo/vector-icons'
 import Spacing from '../Common/Spacing.js'
 import One from '../../assets/11.jpg';
+import { useSelector } from "react-redux";
+import { useTranslation } from 'react-i18next'; 
 
 const MainJob = () => {
-    const navigation = useNavigation();
+    const navigation = useNavigation(); 
+    const { role } = useSelector((state) => state.user.userData);
+    const [ t, i18n ] = useTranslation(); 
+
 
     return (
         <ImageBackground source={One} style={styles.image}>
@@ -23,25 +28,28 @@ const MainJob = () => {
         <TouchableOpacity onPress={() => {
             navigation.navigate('Jobs');
           }}>
-       <Text style={[styles.buttonStyle, styles.buttonStyle1]}>Available Jobs</Text>
+       <Text style={[styles.buttonStyle, styles.buttonStyle1]}>{t('AvailableJobs')}</Text>
       </TouchableOpacity>  
 
 
       <TouchableOpacity onPress={() => {
             navigation.navigate('ApplyForaJob');
           }}>
-       <Text style={[styles.buttonStyle, styles.buttonStyle2]}>Apply for a Job</Text>
+       <Text style={[styles.buttonStyle, styles.buttonStyle2]}>{t('ApplyJob')}</Text>
       </TouchableOpacity>  
 
+
+      {role === "Admin" && (
       <TouchableOpacity onPress={() => {
             navigation.navigate('JobHistory');
           }}>
-       <Text style={[styles.buttonStyle, styles.buttonStyle1]}>Job History</Text>
+       <Text style={[styles.buttonStyle, styles.buttonStyle1]}>{t('Job History')}</Text>
       </TouchableOpacity> 
+      )}
 
       
 
-        </ImageBackground>
+        </ImageBackground> 
     );
 };
 

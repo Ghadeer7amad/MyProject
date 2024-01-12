@@ -17,6 +17,9 @@ import {
   import { Ionicons } from "@expo/vector-icons";
   import { useNavigation } from "@react-navigation/native";
   import React, { useState, useEffect } from "react";
+  import SearchProANDSer from "../Common/SerachProANDSer.js";
+
+  
  // import Pdf from 'react-native-pdf';
 
   
@@ -24,9 +27,19 @@ import {
     const navigation = useNavigation();
     const [items, setItems] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [Services, setServices] = useState(null);
+    const [filteredItems, setFilteredItems] = useState([]);
+
   
     const handleHomePress = (item) => {
       navigation.navigate("MainScreen2", { item });
+    };
+
+    const handleSearch = (searchText) => {
+      const filteredData = items.filter((item) =>
+        item.user_name.toLowerCase().includes(searchText.toLowerCase())
+      );
+      setFilteredItems(filteredData);
     };
   
 
@@ -79,7 +92,10 @@ import {
           <Header />
           <View style={styles.container2}>
             <Text style={[styles.styleText, styles.styleText2]}>Job History.</Text>
-            <CustomSearchBar placeholder={"Search Customer"} />
+            <SearchProANDSer
+            placeholder="Search your service"
+            onSearch={handleSearch}
+          />
           </View>
       
          

@@ -62,7 +62,6 @@ const EditEmployee = ({ route }) => {
             name: "",
             job: "",
             experienceYears: "",
-
           });
         } else {
           throw new Error("An error has occurred");
@@ -124,7 +123,9 @@ const EditEmployee = ({ route }) => {
           <Text style={styles.buttonStyle}>Edit Salon</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => navigation.navigate("EmployeesScreen")}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("EmployeesScreen")}
+        >
           <Text style={[styles.buttonStyle, styles.buttonStyle1]}>cancel</Text>
         </TouchableOpacity>
       </View>
