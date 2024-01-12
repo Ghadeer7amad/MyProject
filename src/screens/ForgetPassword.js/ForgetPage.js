@@ -68,7 +68,7 @@ const ForgetPage = () => {
     }
   };
 
-  // {t('Best Offers')} 
+  // {t('log')} 
   return (
     <View style={styles.contanier}>
       <Image

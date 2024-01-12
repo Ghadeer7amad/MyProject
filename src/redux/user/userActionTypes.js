@@ -5,7 +5,4 @@ export const SET_IS_PROVIDER = 'SET_IS_PROVIDER';
 export const EDIT_USER = 'EDIT_USER';
 export const ADD_TO_FAVORITES = 'ADD_TO_FAVORITES';
 export const REMOVE_FROM_FAVORITES = 'REMOVE_FROM_FAVORITES'
-
-
-
-
+export const ADD_TO_CART = 'ADD_TO_CART'

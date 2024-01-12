@@ -4,25 +4,26 @@ import { ImageBackground,
    Text,
    TouchableOpacity,
    View, 
-   Dimensions} from 'react-native'
+   Dimensions,
+   Alert} from 'react-native'
 import { useNavigation } from '@react-navigation/native';
 import React from 'react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { SafeAreaView } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import Color from '../Common/Color.js'
 import Spacing from '../Common/Spacing.js'
 import { BlurView } from 'expo-blur'
-import { useDispatch, useSelector } from 'react-redux';
-import { addToFavorites, removeFromFavorites } from '../redux/user/userActions.js';
+import { useSelector, useDispatch } from 'react-redux';
+import { Box, useToast } from "native-base";
 
 const { height} = Dimensions.get("window");
 
 const ProductsDetails = ({ route }) => {
   const navigation = useNavigation();
+  const token = useSelector((state) => state.user.userData.token);
+  const toast = useToast();
   const { product } = route.params;
-  //const [isFavorite, setIsFavorite] = useState(false);
-  const dispatch = useDispatch();
   const [isTouched, setIsTouched] = useState(false);
   const handlePressIn = () => {
     setIsTouched(true);
@@ -30,18 +31,37 @@ const ProductsDetails = ({ route }) => {
   const handlePressOut = () => {
     setIsTouched(false);
   };
-  const favorites = useSelector(state => state.user.favorites);
 
-  const isFavorite = favorites.some(favorite => favorite._id === product._id);
-
-  const handleFavoritePress = () => {
-    if (isFavorite) {
-      dispatch(removeFromFavorites(product._id));
-    } else {
-      dispatch(addToFavorites(product));
-      navigation.navigate('Favorite')
+  const handleAddToFavorite = async (productId) => {
+    const baseUrl = "https://ayabeautyn.onrender.com";
+    try {
+        const response = await fetch(`${baseUrl}/favorite/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Nada__${token}`
+            },
+            body: JSON.stringify({ productId }),
+        });
+        if (response.status == 201) {
+            const responseData = await response.json();
+            console.log('Response data:', responseData);
+            navigation.navigate('Favorite');
+        }else{
+          toast.show({
+            render: () => (
+              <Box bg='#c81912' px="8" py="5" rounded="sm" mb={5}>
+                Product already in favorites
+              </Box>
+            )
+          });
+          navigation.navigate('Favorite');
+        }
+    } catch (error) {
+        alert('An unexpected error occurred. Please try again.');
     }
-  };
+  }
+
   return (
     <View style={{padding: Spacing, backgroundColor: Color.background, height: '100%'}}>
         <SafeAreaView>
@@ -61,8 +81,8 @@ const ProductsDetails = ({ route }) => {
                 <BlurView tint="light" style={styles.BlurViewStyle}>
                     <View>
                         <Text style={styles.productName}>{product.name}</Text>
-                        <Text style={{color:"black", fontWeight: 'bold'}}>Quantity   {product.stock}</Text>
-                        <Text style={{color:"black", fontWeight: 'bold'}}>Sold   {product.number_sellers}</Text>
+                        <Text style={{color:"black", fontWeight: 'bold'}}>stock   {product.stock}</Text>
+                        <Text style={{color:"black", fontWeight: 'bold'}}>Discount   %{product.discount}</Text>
                         
 
                 <View style={{flexDirection:"row", justifyContent:"space-between"}}>
@@ -74,14 +94,13 @@ const ProductsDetails = ({ route }) => {
                     <View style={styles.TowIcaonStyle}>
                     <View style={styles.icaonPosition}>
                     <Ionicons
-                     name={isFavorite ? 'heart' : 'heart-outline'}
+                     name={'heart-outline'}
                      size={Spacing * 2}
-                     color={Color.primary}
-                     onPress={handleFavoritePress}
+                     onPress={() => handleAddToFavorite(product._id)}
                    />
                
-                   <TouchableOpacity onPress={handleFavoritePress}>
-                     <Text style={styles.icanNameStyle}>{isFavorite ? 'Favorited' : 'Favorite'}</Text>
+                   <TouchableOpacity>
+                   <Text style={styles.icanNameStyle}>Favorite</Text>
                    </TouchableOpacity>
                 </View>
                 </View>

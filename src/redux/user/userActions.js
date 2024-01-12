@@ -5,7 +5,8 @@ import {
   SET_IS_PROVIDER,
   EDIT_USER,
   ADD_TO_FAVORITES,
-  REMOVE_FROM_FAVORITES // New action 
+  REMOVE_FROM_FAVORITES,// New action 
+  ADD_TO_CART
 } from './userActionTypes';
 
 export const setIsProvider = isProvider => {
@@ -58,5 +59,10 @@ export const incNotifications = () => {
     };
   };
 
-
+  export const addToCart = (product) => {
+    return {
+      type: ADD_TO_CART,
+      payload: product,
+    };
+  };
 
