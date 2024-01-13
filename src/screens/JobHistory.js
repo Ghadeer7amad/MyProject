@@ -18,6 +18,7 @@ import {
   import { useNavigation } from "@react-navigation/native";
   import React, { useState, useEffect } from "react";
   import SearchProANDSer from "../Common/SerachProANDSer.js";
+  import { useTranslation } from 'react-i18next'; 
 
   
  // import Pdf from 'react-native-pdf';
@@ -25,6 +26,8 @@ import {
   
   const JobHistory = () => {
     const navigation = useNavigation();
+    const [t, i18n] = useTranslation();
+
     const [items, setItems] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [Services, setServices] = useState(null);
@@ -91,9 +94,9 @@ import {
         <View style={styles.container}>
           <Header />
           <View style={styles.container2}>
-            <Text style={[styles.styleText, styles.styleText2]}>Job History.</Text>
+            <Text style={[styles.styleText]}>{t('Job archive')}</Text>
             <SearchProANDSer
-            placeholder="Search person"
+            placeholder={t('Search person')}
             onSearch={handleSearch}
           />
           </View>
@@ -119,7 +122,7 @@ import {
           />
       
           <TouchableOpacity onPress={handleHomePress}>
-            <Text style={styles.buttonStyle}>Home</Text>
+            <Text style={styles.buttonStyle}>{t('Home')}</Text>
           </TouchableOpacity>
       
           <NavbarButtom onChange={(selectedIcon) => console.log(selectedIcon)} />

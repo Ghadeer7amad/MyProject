@@ -16,21 +16,27 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { Select } from "native-base";
 import { serialize } from "object-to-formdata";
+import { useTranslation } from 'react-i18next'; 
+
 
 const ApplyForaJob = () => { 
+  const navigation = useNavigation();
+  const [t, i18n] = useTranslation();
+
   const [selectedFile, setSelectedFile] = useState(null);
   const [selectedJob, setSelectedJob] = useState("Laser Specialist");
   const [isLoading, setIsLoading] = useState(false);
   
 
-  const [buttonText, setButtonText] = useState("Upload File");
+  const [buttonText, setButtonText] = useState(t('Upload File'));
   const [image, setImage] = useState(null);
 
   
 
 
 
-  const navigation = useNavigation();
+  
+
   const [items, setItems] = useState([]);
 
   const { id: userId, name: userName } = useSelector(
@@ -73,7 +79,7 @@ const ApplyForaJob = () => {
   
       if (!result.canceled) {
         setSelectedFile(result);
-        setButtonText("File is uploaded successfully");
+        setButtonText(t('File is uploaded successfully'));
       }
     } catch (err) {
       console.error("Error picking document:", err);
@@ -163,11 +169,11 @@ const ApplyForaJob = () => {
       </TouchableOpacity>
 
       <View style={{ flex: 1, justifyContent: "center", marginTop: -200 }}>
-        <Text style={styles.labelStyle}>Choose The Job:</Text>
+        <Text style={styles.labelStyle}>{t('Choose The Job:')}</Text>
 
         <View style={styles.labeledContainerStyle}>
         <Select
-  placeholder="Select Job"
+  placeholder={t('Select Job')}
   selectedValue={selectedJob}
   onValueChange={(itemValue, itemIndex) => setSelectedJob(itemValue)}
   style={styles.pickerStyle}
@@ -183,7 +189,7 @@ const ApplyForaJob = () => {
         
 
 
-        <Text style={[styles.labelStyle, { marginTop: 20 }]}>Attach your CV (PDF):</Text>
+        <Text style={[styles.labelStyle, { marginTop: 20 }]}>{t('Attach your CV (PDF):')}</Text>
 
         <TouchableOpacity 
         onPress={pickDocument} style={styles.fileUploadButton}>
@@ -197,7 +203,7 @@ const ApplyForaJob = () => {
         )}
 
         <Text style={styles.uploadInfoText}>
-          Upload your CV (PDF) by tapping the "Upload File" button.
+          {t('Upload your cv')}
         </Text>
 
 
@@ -206,9 +212,7 @@ const ApplyForaJob = () => {
       <View style={styles.buttonContainer}>
         <TouchableOpacity onPress={onSubmitPressed}>
           <Text style={styles.buttonStyle}>
-            <Ionicons name="paper-plane" size={25} color="#ebebeb" /> Submit
-            Form
-          </Text>
+            <Ionicons name="paper-plane" size={25} color="#ebebeb" />{t('Submit Form')}</Text>
         </TouchableOpacity>
       </View>
     </ImageBackground>

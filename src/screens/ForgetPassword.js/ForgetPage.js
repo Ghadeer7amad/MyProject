@@ -68,7 +68,7 @@ const ForgetPage = () => {
     }
   };
 
-  // {t('What do you want to share?')} 
+  // {t('Submit Form')}  
   return (
     <View style={styles.contanier}>
       <Image

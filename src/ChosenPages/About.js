@@ -33,10 +33,10 @@ const About = () => {
   const windowWidth = Dimensions.get("window").width;
 
   const navigation = useNavigation();
-  const {id: salonId , name: salonName} = useSelector(state => state.user.usedSalonData)
+  const {id: salonId , name: salonName, branches: Branch} = useSelector(state => state.user.usedSalonData)
   const [t, i18n] = useTranslation();
 
-
+console.log(Branch);
 
   const handleBookPress = () => {
       navigation.navigate('BookingScreen');
@@ -49,11 +49,7 @@ const About = () => {
 
 
 
-  const branches = [
-    { name: 'Jerusalem', locationIcon: 'map-marker-alt', phoneIcon: 'phone', phoneNumber: '0526053612' },
-    { name: 'Hebron', locationIcon: 'map-marker-alt', phoneIcon: 'phone', phoneNumber: '0595671000' },
-    { name: 'Rahat', locationIcon: 'map-marker-alt', phoneIcon: 'phone', phoneNumber: '0528616847' },
-  ];
+ 
 
   const socialIcons = [
     { name: 'facebook', icon: 'facebook-f', color: '#1877f2', link: 'https://facebook.com/' },
@@ -61,6 +57,7 @@ const About = () => {
     { name: 'whatsapp', icon: 'whatsapp', color: '#25d366', link: 'https://wa.me/' },
   ];
   
+  const locationIcon = "map-marker-alt";
 
   return (
     <SafeAreaView style={styles.container}>
@@ -194,23 +191,19 @@ const About = () => {
         </View>
 
         <View style={styles.titleContainer}>
-          <Text style={styles.title}>Our Branches</Text>
+          <Text style={styles.title}>{t('Our Branches')}</Text>
           <View style={styles.title2Line} />
         </View>
 
-        {branches.map((branch, index) => (
-    <View key={index} style={styles.branchContainer}>
+        
+    <View  style={styles.branchContainer}>
     
     <View style={styles.branchDetails}>
-      <FontAwesome5 name={branch.locationIcon} size={15} color={Color.primary} />
-      <Text style={styles.branchInfo}>{branch.name}</Text>
+      <FontAwesome5 name={locationIcon} size={15} color={Color.primary} />
+      <Text style={styles.branchInfo}>{Branch}</Text>
     </View>
-    <View style={styles.branchDetails}>
-      <FontAwesome5 name={branch.phoneIcon} size={15} color={Color.primary} />
-      <Text style={styles.branchInfo}> {branch.phoneNumber}</Text>
-    </View>
+    
   </View>
-))}
 
 <View style={styles.socialIconsBackground}>
   {socialIcons.map((socialIcon, index) => (
