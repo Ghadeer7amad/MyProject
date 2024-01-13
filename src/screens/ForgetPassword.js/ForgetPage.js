@@ -68,7 +68,7 @@ const ForgetPage = () => {
     }
   };
 
-  // {t('Submit Form')}  
+  // {t('Job Description')}  
   return (
     <View style={styles.contanier}>
       <Image

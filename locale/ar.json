@@ -7,7 +7,7 @@
     "Contact Us": "تواصلي معنا",
     "Preferences": "التفضيلات",
     "Help": "المساعدة",
-    "AvailableJobs": "الوظائف المتاحة",
+    "AvailableJobs": "الوظائف الشاغرة",
     "ApplyJob": "التقديم على وظيفة",
     "Job History": "أرشيف الوظائف",
     "Arabic": "العربية",
@@ -130,7 +130,13 @@
     "File is uploaded successfully": "تم تحميل الملف بنجاح",
     "Upload File": "تحميل الملف",
     "Upload your cv": "قومي بتحميل سيرتك الذاتية (PDF) عن طريق النقر على زر (تحميل الملف).",
-    "Submit Form": "إرسال"
+    "Submit Form": "إرسال",
+    "Add Job": "إضافة وظيفة",
+    "Here are the jobs": "    الوظائف  الشاغرة..",
+    "we currently have available": "   ",
+    "Job added successfully": "تمت إضافة الوظيفةة بنجاح",
+    "Job Name": "                                                                  اسم الوظيفة",
+    "Job Description": "                                                            معلومات الوظيفة"
     
 
 

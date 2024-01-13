@@ -18,7 +18,7 @@ import { Select } from "native-base";
 import { serialize } from "object-to-formdata";
 import { useTranslation } from 'react-i18next'; 
 
-
+ 
 const ApplyForaJob = () => { 
   const navigation = useNavigation();
   const [t, i18n] = useTranslation();
