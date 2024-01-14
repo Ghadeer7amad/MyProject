@@ -29,6 +29,10 @@ const ProductsScreens = () => {
   const [selectedItem, setSelectedItem] = useState('Body');
 
   const token = useSelector((state) => state.user.userData.token);
+  const { _id: salonId } = useSelector(
+    (state) => state.user.usedSalonData
+  );
+  console.log(salonId);
   console.log(token)
 
 const handleAddToCart = async (productId) => {
@@ -139,7 +143,7 @@ const handleAddToFavorite = async (productId) => {
     const handleBodyPress = async () => {
       try {
         console.log("Fetching products...");
-        const response = await fetch(`${baseUrl}/products/getBodyProducts`);
+        const response = await fetch(`${baseUrl}/salons/${salonId}/Product/getBodyProducts`);
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
@@ -154,7 +158,7 @@ const handleAddToFavorite = async (productId) => {
     const handleFacePress = async () => {
       try {
         console.log("Fetching products...");
-        const response = await fetch(`${baseUrl}/products/getFaceProducts`);
+        const response = await fetch(`${baseUrl}/salons/${salonId}/Product/getFaceProducts`);
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
@@ -168,7 +172,7 @@ const handleAddToFavorite = async (productId) => {
 
   const baseUrl = "https://ayabeautyn.onrender.com";
   useEffect(() => {
-      fetch(`${baseUrl}/products/getProducts`)
+      fetch(`${baseUrl}/salons/${salonId}/Product/getProducts`)
         .then((res) => {
           if (!res.ok) {
             throw new Error(`HTTP error! Status: ${res.status}`);
