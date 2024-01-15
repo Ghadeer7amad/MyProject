@@ -11,15 +11,16 @@ import {
 } from "react-native";
 import Header from "../screens/Header";
 import Color from "../Common/Color";
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import { useNavigation } from "@react-navigation/native";
+import WhatsApp from "../Common/WhatsApp";
 import {useSelector} from 'react-redux';
 import { useTranslation } from 'react-i18next'; 
 
 
 const About = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  
+
   const images = [
     require("../../assets/hh.jpg"),
     require("../../assets/oo.jpg"),
@@ -39,8 +40,8 @@ const About = () => {
 console.log(Branch);
 
   const handleBookPress = () => {
-      navigation.navigate('BookingScreen');
-    };
+    navigation.navigate("BookingScreen");
+  };
 
   const handleContactPress = () => {
     // Handle contact button press
@@ -52,15 +53,32 @@ console.log(Branch);
  
 
   const socialIcons = [
-    { name: 'facebook', icon: 'facebook-f', color: '#1877f2', link: 'https://facebook.com/' },
-    { name: 'instagram', icon: 'instagram', color: '#e4405f', link: 'https://instagram.com/' },
-    { name: 'whatsapp', icon: 'whatsapp', color: '#25d366', link: 'https://wa.me/' },
+    {
+      name: "facebook",
+      icon: "facebook-f",
+      color: "#1877f2",
+      link: "https://facebook.com/",
+    },
+    {
+      name: "instagram",
+      icon: "instagram",
+      color: "#e4405f",
+      link: "https://instagram.com/",
+    },
+    {
+      name: "whatsapp",
+      icon: "whatsapp",
+      color: "#25d366",
+      link: "https://wa.me/",
+    },
   ];
   
   const locationIcon = "map-marker-alt";
 
   return (
     <SafeAreaView style={styles.container}>
+      <WhatsApp />
+
       <Header />
       <ScrollView>
         <View style={styles.sliderContainer}>
@@ -80,10 +98,7 @@ console.log(Branch);
               <Image
                 key={index}
                 source={image}
-                style={[
-                  styles.image,
-                  { width: windowWidth, height: 300 },
-                ]}
+                style={[styles.image, { width: windowWidth, height: 300 }]}
                 resizeMode="cover"
               />
             ))}
@@ -124,10 +139,7 @@ console.log(Branch);
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={[
-              styles.button,
-              { backgroundColor: Color.primary },
-            ]}
+            style={[styles.button, { backgroundColor: Color.primary }]}
             onPress={handleBookPress}
           >
             <Text style={[styles.buttonText, { color: "white" }]}>
@@ -219,6 +231,19 @@ console.log(Branch);
 
 
 
+        <View style={styles.socialIconsBackground}>
+          {socialIcons.map((socialIcon, index) => (
+            <TouchableOpacity
+              key={index}
+              style={[styles.socialIcon]}
+              onPress={() =>
+                console.log(`Open ${socialIcon.name} link: ${socialIcon.link}`)
+              }
+            >
+              <FontAwesome5 name={socialIcon.icon} size={20} color="#fff" />
+            </TouchableOpacity>
+          ))}
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -267,14 +292,14 @@ const styles = StyleSheet.create({
   titleLine: {
     width: 340,
     height: 0.5,
-    backgroundColor: 'gray',
+    backgroundColor: "gray",
     marginTop: 5,
   },
 
   title2Line: {
     width: 220,
     height: 0.5,
-    backgroundColor: 'gray',
+    backgroundColor: "gray",
     marginTop: 5,
   },
   paragraph: {
@@ -302,17 +327,16 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   departmentContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     marginVertical: 20,
-    width: '100%',
-
+    width: "100%",
   },
   imageContainer: {
     width: 100,
     height: 100,
     borderRadius: 50,
-    overflow: 'hidden',
+    overflow: "hidden",
     marginBottom: 10,
     marginTop: 30,
   },
@@ -321,7 +345,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     borderRadius: 50,
-    borderColor: 'gray',
+    borderColor: "gray",
     borderWidth: 1,
   },
   departmentTitle: {
@@ -334,16 +358,16 @@ const styles = StyleSheet.create({
   horizontalLine: {
     width: 220,
     height: 0.4,
-    backgroundColor: 'gray',
+    backgroundColor: "gray",
     marginTop: 5,
   },
   departmentParagraph: {
-    textAlign: 'center',
+    textAlign: "center",
     marginHorizontal: 20,
-    color: 'gray',
-    fontWeight: 'bold',
+    color: "gray",
+    fontWeight: "bold",
     marginVertical: 10,
-    fontSize: 14
+    fontSize: 14,
   },
   DepartmentTitle: {
     textAlign: "center",
@@ -357,28 +381,26 @@ const styles = StyleSheet.create({
     textShadowRadius: 2,
   },
 
-
   branchContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     marginVertical: 20,
-    width: '100%',
+    width: "100%",
   },
-  
+
   branchDetails: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 5,
   },
   branchInfo: {
     marginLeft: 5,
-    color: 'gray',
-    
+    color: "gray",
   },
 
   socialIconsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
     marginTop: 20,
     marginBottom: 15,
   },
@@ -387,26 +409,26 @@ const styles = StyleSheet.create({
     height: 30,
     borderRadius: 30,
     marginHorizontal: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     backgroundColor: Color.yell,
-    shadowColor: '#800080', // Same as the background color
+    shadowColor: "#800080", // Same as the background color
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.5,
     shadowRadius: 4,
-    elevation: 5, 
+    elevation: 5,
     borderColor: Color.primary,
-    borderWidth: 0.2
+    borderWidth: 0.2,
   },
 
   socialIconsBackground: {
-    flexDirection: 'row',
-    justifyContent: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
     marginTop: 20,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     paddingVertical: 10,
     borderWidth: 0.2, // Add a small border
-    borderColor: 'rgba(0, 0, 0, 0.1)', // Color of the border
+    borderColor: "rgba(0, 0, 0, 0.1)", // Color of the border
     elevation: 5,
   },
   

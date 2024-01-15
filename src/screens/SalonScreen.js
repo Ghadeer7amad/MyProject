@@ -9,6 +9,7 @@ import Color from "../Common/Color";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { storeUsedSalon } from "../redux/user/userActions.js";
+import WhatsApp from "../Common/WhatsApp.js";
 import { useTranslation } from 'react-i18next';
 
 const SalonScreen = () => {
