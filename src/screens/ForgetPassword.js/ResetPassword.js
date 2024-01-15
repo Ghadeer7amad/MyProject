@@ -2,14 +2,17 @@ import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 import { TextInput } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faLock, faUser, faCheck } from "@fortawesome/free-solid-svg-icons";
+import { faLock, faUser, faCheck, faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import Color from "../../Common/Color.js";
 import React, { useState } from "react";
 import { Box, useToast } from "native-base";
 import axios from "axios";
+import { useTranslation } from 'react-i18next';
+
 
 const ResetPassword = () => {
   const navigation = useNavigation();
+  const [t, i18n] = useTranslation();
   const toast = useToast();
   const [email, setEmail] = useState("");
   const [code, setcode] = useState("");
@@ -43,7 +46,7 @@ const ResetPassword = () => {
         toast.show({
           render: () => (
             <Box bg="#55a44e" px="8" py="5" rounded="sm" mb={5}>
-              The password has been modified successfully
+              {t('The password has been modified successfully')}
             </Box>
           ),
         });
@@ -56,7 +59,7 @@ const ResetPassword = () => {
         toast.show({
           render: () => (
             <Box bg="#c81912" px="8" py="5" rounded="sm" mb={5}>
-              Something error
+              {t('Something error')}
             </Box>
           ),
         });
@@ -68,7 +71,7 @@ const ResetPassword = () => {
           toast.show({
             render: () => (
               <Box bg="#c81912" px="8" py="5" rounded="sm" mb={5}>
-                Password you used
+                {t('The password is used')}
               </Box>
             ),
           });
@@ -78,13 +81,13 @@ const ResetPassword = () => {
         toast.show({
           render: () => (
             <Box bg="#c81912" px="8" py="5" rounded="sm" mb={5}>
-              Something error
+              {t('Something error')}
             </Box>
           ),
         });
         return;
       }
-      //console.error('Error:', error.message)
+      
     }
   };
 
@@ -95,7 +98,7 @@ const ResetPassword = () => {
         source={require("../../../assets/true1.jpg")}
       />
       <View style={styles.contanier2}>
-        <Text style={styles.TextStyleHeader}>Reset password Confirmation</Text>
+        <Text style={styles.TextStyleHeader}>{t('Confirm password reset')}</Text>
 
         <View style={styles.formgroup}>
           <TextInput
@@ -103,9 +106,9 @@ const ResetPassword = () => {
             onChangeText={onChangeEmailHandler}
             //onBlur={() => setFieldValid({ ...fieldValid, password: password !== "" })}
             style={styles.input}
-            placeholder="Enter email"
+            placeholder={t('Enter email')}
           />
-          <FontAwesomeIcon icon={faLock} style={styles.icon} />
+          <FontAwesomeIcon icon={faEnvelope} style={styles.icon} />
         </View>
 
         <View style={styles.formgroup}>
@@ -114,7 +117,7 @@ const ResetPassword = () => {
             onChangeText={onChangeCodeHandler}
             //onBlur={() => setFieldValid({ ...fieldValid, password: password !== "" })}
             style={styles.input}
-            placeholder="Enter Code"
+            placeholder={t('Enter Code')}
           />
           <FontAwesomeIcon icon={faLock} style={styles.icon} />
         </View>
@@ -126,7 +129,7 @@ const ResetPassword = () => {
             //label = {<Text style={{}}>Email</Text>}
             //onBlur={() => setFieldValid({ ...fieldValid, password: password !== "" })}
             style={styles.input}
-            placeholder="New Password"
+            placeholder={t('New Password')}
           />
           <FontAwesomeIcon icon={faLock} style={styles.icon} />
         </View>
@@ -137,7 +140,7 @@ const ResetPassword = () => {
             onChangeText={onChangeconfirmpasswordHandler}
             //onBlur={() => setFieldValid({ ...fieldValid, passwordC: passwordC !== "" })}
             style={styles.input}
-            placeholder="Confirm your Password"
+            placeholder={t('Confirm your Password')}
           />
           <FontAwesomeIcon icon={faCheck} style={styles.icon} />
         </View>
@@ -147,7 +150,7 @@ const ResetPassword = () => {
             handleReset();
           }}
         >
-          <Text style={[styles.buttonStyle, styles.buttonStyle1]}>Submit</Text>
+          <Text style={[styles.buttonStyle, styles.buttonStyle1]}>{t('Submit')}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -156,7 +159,7 @@ const ResetPassword = () => {
           }}
         >
           <Text style={[styles.buttonStyle, styles.buttonStyle2]}>
-            back to login
+          {t('back to login')}
           </Text>
         </TouchableOpacity>
       </View>

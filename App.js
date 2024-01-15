@@ -1,4 +1,7 @@
 import React from "react";
+import './i18n';
+import { useTranslation } from 'react-i18next';
+
 import { Text, View, StyleSheet, Image } from "react-native";
 import {Provider} from 'react-redux';
 import store from './src/redux/store';
@@ -42,15 +45,20 @@ import Jobs from "./src/screens/Jobs.js";
 import MainJob from "./src/screens/MainJob.js";
 import ApplyForaJob from "./src/screens/ApplyForaJob.js";
 import AppointmentHistory from "./src/screens/AppointmentHistory";
+import JobHistory from "./src/screens/JobHistory";
 import EditServices from './AdminPage/EditServices.js'
 import EditProfile from './AdminPage/EditProfile.js'
+import EditSalon from './AdminPage/EditSalon.js'
 import Advice from './src/screens/Advice.js'
 import { NativeBaseProvider } from "native-base";
+
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
+
 const HomeStack = () => (
+  
   <Stack.Navigator>
     {/* <Stack.Screen name="Homee" component={Homee} options={{ headerShown: false }}  />
     <Stack.Screen name="Employee" component={Employee} options={{ headerShown: false }}  />
@@ -83,14 +91,13 @@ const HomeStack = () => (
     <Stack.Screen name="AddServices" component={AddServices} options={{ headerShown: false }}/> 
     <Stack.Screen name="AddPost" component={AddPost} options={{ headerShown: false }}/> 
     <Stack.Screen name="AddJob" component={AddJob} options={{ headerShown: false }}/> 
-
-
-   
+    <Stack.Screen name="JobHistory" component={JobHistory} options={{ headerShown: false }}  />
     <Stack.Screen name="MainJob" component={MainJob} options={{ headerShown: false }}/>
     <Stack.Screen name="Jobs" component={Jobs} options={{ headerShown: false }}/>
     <Stack.Screen name="ApplyForaJob" component={ApplyForaJob} options={{ headerShown: false }}/>
     <Stack.Screen name="EditServices" component={EditServices} options={{ headerShown: false }}/>
     <Stack.Screen name="EditProfile" component={EditProfile} options={{ headerShown: false }}/>
+    <Stack.Screen name="EditSalon" component={EditSalon} options={{ headerShown: false }}/>
 
     <Stack.Screen name="Advice" component={Advice} options={{ headerShown: false }}/>
    
@@ -98,6 +105,7 @@ const HomeStack = () => (
 );
 
 const CustomDrawerContent = (props) => {
+  const [ t, i18n ] = useTranslation(); 
   return (
     <View style={{ flex: 1, justifyContent: "flex-start" }}>
       <Image
@@ -107,7 +115,7 @@ const CustomDrawerContent = (props) => {
 
       <DrawerItem
         style={{ marginVertical: 3, ...styles.drawerItem }}
-        label="HOME"
+        label= "HOME"
         icon={({ color, size }) => (
           <Ionicons name="home" color={Color.primary} size={size} />
         )}
@@ -238,16 +246,18 @@ const CustomDrawerContent = (props) => {
         }}
       />
 
-      <DrawerItem
-        style={{ marginVertical: -95 }}
-        label="LOG OUT"
-        icon={({ color, size }) => (
-          <Ionicons name="log-out" color={Color.primary} size={size} />
-        )}
-        onPress={() => {
-          props.navigation.navigate("Homee");
-        }}
-      />
+<DrawerItem
+  style={{ marginVertical: -95 }}
+  label="LOG OUT"
+  icon={({ color, size }) => (
+    <Ionicons name="log-out" color={Color.primary} size={size} />
+  )}
+  onPress={() => {
+    props.navigation.navigate("Homee");
+  }}
+ 
+/>
+
     </View>
   );
 };

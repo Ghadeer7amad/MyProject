@@ -16,13 +16,27 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { Select } from "native-base";
 import { serialize } from "object-to-formdata";
+import { useTranslation } from 'react-i18next'; 
 
-const ApplyForaJob = () => {
+ 
+const ApplyForaJob = () => { 
+  const navigation = useNavigation();
+  const [t, i18n] = useTranslation();
+
   const [selectedFile, setSelectedFile] = useState(null);
   const [selectedJob, setSelectedJob] = useState("Laser Specialist");
   const [isLoading, setIsLoading] = useState(false);
+  
 
-  const navigation = useNavigation();
+  const [buttonText, setButtonText] = useState(t('Upload File'));
+  const [image, setImage] = useState(null);
+
+  
+
+
+
+  
+
   const [items, setItems] = useState([]);
 
   const { id: userId, name: userName } = useSelector(
@@ -37,6 +51,7 @@ const ApplyForaJob = () => {
     salon_id: salonId,
     user_name: userName,
   });
+  
 
   const toast = useToast();
 
@@ -61,14 +76,17 @@ const ApplyForaJob = () => {
       const result = await DocumentPicker.getDocumentAsync({
         type: "application/pdf",
       });
-
-      if (result.type === "success") {
-        setSelectedFile(result.uri);
+  
+      if (!result.canceled) {
+        setSelectedFile(result);
+        setButtonText(t('File is uploaded successfully'));
       }
     } catch (err) {
       console.error("Error picking document:", err);
     }
   };
+  
+  
 
   const onSubmitPressed = async () => {
     try {
@@ -80,27 +98,41 @@ const ApplyForaJob = () => {
         noFilesWithArrayNotation: false,
         dotsForObjectNotation: true,
       };
+  
+      
+      const updatedFData = {
+        ...FData,
+        jobName: selectedJob,
+        image: selectedFile.uri,
+      };
+  
+      const formData = new FormData();
+  
+      formData.append('image', {name: selectedFile.assets[0]?.name,
+         uri: selectedFile.assets[0]?.uri, 
+         mimetype: selectedFile.assets[0]?.mimeType}
+           )
 
-      const formData = serialize(FData, options);
-
-      formData.append("jobName", selectedJob);
-      formData.append("image", {
-        uri: selectedFile,
-        name: FData.name + ".pdf",
-        type: "application/pdf",
+      formData.append("user_id", userId)
+      formData.append("salon_id", salonId)
+      formData.append("user_name", userName);
+      formData.append("jobName",selectedJob);
+        
+     
+   
+      console.log('Selected File:', selectedFile.assets[0]);
+      console.log(JSON.stringify(formData));
+  
+      const response = await axios.post(`${baseUrl}/uploadjobs/uploadjob`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
       });
-
-      console.log(formData);
-
-      const response = await fetch(`${baseUrl}/uploadjobs/uploadjob`, {
-        method: "POST",
-        body: formData,
-      });
-
-      const responseData = await response.json(); // Parse the response body as JSON
-
-      if (response.ok) {
-        console.log(responseData);
+        
+      console.log('Server Response:', response);
+  
+      if (response.status === 201) {
+    
         toast.show({
           render: () => (
             <Box bg="emerald.500" px="5" py="5" rounded="sm" mb={5}>
@@ -109,12 +141,18 @@ const ApplyForaJob = () => {
           ),
         });
       } else {
+        console.error('Server Error:', response.status, response.statusText);
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
     } catch (error) {
-      console.error("Fetch error:", error);
+      console.error("Fetch error:", error.stack);
     }
+
+
   };
+
+  
+  
 
   return (
     <ImageBackground
@@ -131,34 +169,31 @@ const ApplyForaJob = () => {
       </TouchableOpacity>
 
       <View style={{ flex: 1, justifyContent: "center", marginTop: -200 }}>
-        <Text style={styles.labelStyle}>Choose The Job:</Text>
+        <Text style={styles.labelStyle}>{t('Choose The Job:')}</Text>
 
         <View style={styles.labeledContainerStyle}>
-          <Select
-            placeholder="Select Job"
-            selectedValue={selectedJob}
-            onValueChange={(itemValue, itemIndex) => setSelectedJob(itemValue)}
-            style={styles.pickerStyle}
-          >
-            {items.map((item) => (
-              <Select.Item
-                key={item.id}
-                label={item.jobName}
-                value={item.jobName}
-              />
-            ))}
-          </Select>
-        </View>
+        <Select
+  placeholder={t('Select Job')}
+  selectedValue={selectedJob}
+  onValueChange={(itemValue, itemIndex) => setSelectedJob(itemValue)}
+  style={styles.pickerStyle}
+>
+  {items.map((item) => (
+    <Select.Item key={item.id} label={item.jobName} value={item.jobName} />
+  ))}
+</Select>
 
-        <Text style={[styles.labelStyle, { marginTop: 20 }]}>
-          Attach your CV (PDF):
-        </Text>
 
-        <TouchableOpacity
-          onPress={pickDocument}
-          style={styles.fileUploadButton}
-        >
-          <Text style={styles.fileUploadText}>Upload File</Text>
+          </View>
+
+        
+
+
+        <Text style={[styles.labelStyle, { marginTop: 20 }]}>{t('Attach your CV (PDF):')}</Text>
+
+        <TouchableOpacity 
+        onPress={pickDocument} style={styles.fileUploadButton}>
+        <Text style={styles.fileUploadText}>{buttonText}</Text>
         </TouchableOpacity>
 
         {selectedFile && (
@@ -168,16 +203,16 @@ const ApplyForaJob = () => {
         )}
 
         <Text style={styles.uploadInfoText}>
-          Upload your CV (PDF) by tapping the "Upload File" button.
+          {t('Upload your cv')}
         </Text>
+
+
       </View>
 
       <View style={styles.buttonContainer}>
         <TouchableOpacity onPress={onSubmitPressed}>
           <Text style={styles.buttonStyle}>
-            <Ionicons name="paper-plane" size={25} color="#ebebeb" /> Submit
-            Form
-          </Text>
+            <Ionicons name="paper-plane" size={25} color="#ebebeb" />{t('Submit Form')}</Text>
         </TouchableOpacity>
       </View>
     </ImageBackground>

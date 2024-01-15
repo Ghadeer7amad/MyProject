@@ -11,6 +11,7 @@ import { Box, useToast } from "native-base";
 import axios from 'axios';
 import { useDispatch} from 'react-redux';
 import {storeCurrentUser} from "../redux/user/userActions.js";
+import { useTranslation } from 'react-i18next';
 
 const Login = () => {
   const toast = useToast();
@@ -25,6 +26,8 @@ const  dispatch = useDispatch()
   };
 
  const navigation = useNavigation();
+ const [t, i18n] = useTranslation();
+
 
 
  const handleLogin = async () => {
@@ -41,7 +44,7 @@ const  dispatch = useDispatch()
       toast.show({
         render: () => (
           <Box bg='#55a44e' px="8" py="5" rounded="sm" mb={5}>
-            login successfully
+             {t('login successfully')}
           </Box>
         )
       });
@@ -52,7 +55,7 @@ const  dispatch = useDispatch()
       toast.show({
           render: () => (
               <Box bg='#c81912' px="8" py="5" rounded="sm" mb={5}>
-                  login failed
+                  {t('login failed')}
               </Box>
           ),
       });
@@ -62,7 +65,7 @@ const  dispatch = useDispatch()
     toast.show({
         render: () => (
             <Box bg='#c81912' px="8" py="5" rounded="sm" mb={5}>
-               Login Failed From email or password
+               {t('Login Failed From email or password')}
             </Box>
         ),
     });
@@ -83,14 +86,14 @@ const  dispatch = useDispatch()
       />
     
       <View style={styles.contanier2}>
-      <Text style={styles.TextStyleHeader}>welcome again</Text>
+      <Text style={styles.TextStyleHeader}>{t('welcome again')}</Text>
 
       <View style={styles.formgroup}>
         <TextInput
         value={email}
         onChangeText={onChangeEmailHandler}
         //onFocus={handlePasswordFocus}
-        style={styles.input} placeholder='Enter Your Email'/>
+        style={styles.input} placeholder={t('Enter Your Email')}/>
         <FontAwesomeIcon icon={faEnvelope} style={styles.icon} /> 
       </View>
 
@@ -99,7 +102,7 @@ const  dispatch = useDispatch()
         <TextInput 
         secureTextEntry={!showPassword}
         value={password}
-        onChangeText={onChangePasswordHandler} style={styles.input} placeholder='Enter Your password'/>
+        onChangeText={onChangePasswordHandler} style={styles.input} placeholder={t('Enter Your password')}/>
         <FontAwesomeIcon icon={faLock} style={styles.icon} />
         <TouchableWithoutFeedback onPress={togglePasswordVisibility}>
         <Ionicons style={styles.iconEye} name={showPassword ? 'eye' : 'eye-off'} size={20} />
@@ -109,18 +112,18 @@ const  dispatch = useDispatch()
       <TouchableOpacity onPress={() => {
         handleLogin(); 
         }}>
-       <Text style={styles.buttonStyle}>Log in</Text>
+       <Text style={styles.buttonStyle}>{t('log')}</Text>
       </TouchableOpacity>  
 
       <TouchableOpacity style={styles.TextStylePassword}  onPress={() => {
             navigation.navigate('ForgetPage');
           }}>
-        <Text style={{ color: 'gray' }}>forget your password?</Text>
+        <Text style={{ color: 'gray' }}>{t('forget your password')}</Text>
       </TouchableOpacity>
 
       <View style={styles.dividerContainer}>
       <View style={styles.dividerLine} />
-      <Text style={styles.dividerText}>or with social media</Text>
+      <Text style={styles.dividerText}>{t('or with social media')}</Text>
       <View style={styles.dividerLine} />
       </View>
 
@@ -145,8 +148,8 @@ const  dispatch = useDispatch()
       </View>
       
 
-      <Text style={styles.TextStyle4}>Do Not Have An Account?
-      <Text style={styles.link}  onPress={()=>navigation.navigate('Signup')}> Register Now..</Text>
+      <Text style={styles.TextStyle4}>{t('Do Not Have An Account?')}
+      <Text style={styles.link}  onPress={()=>navigation.navigate('Signup')}>{t('reg')}</Text>
       </Text>
       
       </View>

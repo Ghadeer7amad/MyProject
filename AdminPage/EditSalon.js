@@ -24,9 +24,13 @@ import * as ImagePicker from "expo-image-picker";
 import { Box, useToast } from "native-base";
 import RNPickerSelect from "react-native-picker-select";
 import axios from "axios";
+import { useTranslation } from 'react-i18next';
+
 
 const EditSalon = ({ route }) => {
   const { item } = route.params;
+  const [t, i18n] = useTranslation();
+
 
   const initialValues = item
     ? { ...item }
@@ -52,10 +56,11 @@ const EditSalon = ({ route }) => {
           toast.show({
             render: () => (
               <Box bg="emerald.500" px="5" py="5" rounded="sm" mb={5}>
-                Salon updated successfully
+                {t('Salon has been successfully updated')}
               </Box>
             ),
           });
+          navigation.navigate('SalonScreen');
           setFData({
             name: "",
             branches: "",
@@ -64,11 +69,12 @@ const EditSalon = ({ route }) => {
           throw new Error("An error has occurred");
         }
       })
+      
       .catch((error) => {
         toast.show({
           render: () => (
             <Box bg="red.500" px="5" py="5" rounded="sm" mb={5}>
-              Error updating salon
+              {t('Error in updating the salon')}
             </Box>
           ),
         });
@@ -76,10 +82,11 @@ const EditSalon = ({ route }) => {
   };
 
   const navigation = useNavigation();
+
   return (
     <ScrollView>
       <View style={styles.contanier}>
-        <Text style={styles.TextStyleHeader}>Update Salon</Text>
+        <Text style={styles.TextStyleHeader}>{t('Update Salon')}</Text>
 
         <View style={styles.formgroup}>
           <TextInput
@@ -105,11 +112,11 @@ const EditSalon = ({ route }) => {
         </View>
 
         <TouchableOpacity onPress={() => handleEditSalon(item._id)}>
-          <Text style={styles.buttonStyle}>Edit Salon</Text>
+          <Text style={styles.buttonStyle}>{t('Edit Salon')}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => navigation.navigate("SalonScreen")}>
-          <Text style={[styles.buttonStyle, styles.buttonStyle1]}>cancel</Text>
+          <Text style={[styles.buttonStyle, styles.buttonStyle1]}>{t('Cancel')}</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>

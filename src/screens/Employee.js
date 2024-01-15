@@ -5,12 +5,16 @@ import { FontAwesome as Icon } from "@expo/vector-icons";
 import Color from "../Common/Color.js";
 import { useNavigation } from "@react-navigation/native";
 import React, { useState, useEffect } from "react";
+import { useTranslation } from 'react-i18next';
+
 
 const screenwidth = Dimensions.get("window").width;
 const screenheight = Dimensions.get("window").height;
 
 const Employee = () => {
   const navigation = useNavigation();
+  const [t, i18n] = useTranslation();
+
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const baseUrl = "https://ayabeautyn.onrender.com";
@@ -23,6 +27,7 @@ const Employee = () => {
       })
       .catch((error) => console.log("Error from favs screen: ", error.message));
   }, []);
+
   return (
     <View style={{ marginTop: 30 }}>
       <View style={{ justifyContent: "space-between", flexDirection: "row" }}>
@@ -35,7 +40,7 @@ const Employee = () => {
             fontWeight: "bold",
           }}
         >
-          Beauty Employee
+          {t('Beauty Employee')}
         </Text>
         <Text
           style={{
@@ -45,7 +50,7 @@ const Employee = () => {
             marginRight: 10,
           }}
         >
-          See All
+          {t('See more')}
           <Ionicons name="arrow-forward" color="#f9b248" size={20} />
         </Text>
       </View>
@@ -83,7 +88,7 @@ const Employee = () => {
               {item.name}
             </Text>
             <Text style={{ color: Color.secondary, marginBottom: 3 }}>
-              {item.experienceYears} years of experience
+              {item.experienceYears} {t('years of experience')}
             </Text>
             <View style={styles.starContainer}>
               <Icon name="star" color="gold" size={15} />

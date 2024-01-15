@@ -13,9 +13,17 @@ import { FontAwesome as Icon } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import Color from "../Common/Color.js";
 import Spacing from "../Common/Spacing.js";
+import { useSelector } from "react-redux";
+import { useTranslation } from 'react-i18next';  
 
 const Jobs = () => {
   const navigation = useNavigation();
+  const [t, i18n] = useTranslation();
+
+  const { role } = useSelector((state) => state.user.userData);
+
+
+
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -67,8 +75,8 @@ const Jobs = () => {
 
       <View style={styles.container1}></View>
       <View style={{ flex: 1 }}>
-        <Text style={styles.textHeader}>Here are the jobs</Text>
-        <Text style={styles.textHeader1}>we currently have available</Text>
+        <Text style={styles.textHeader}>{t('Here are the jobs')}</Text>
+        <Text style={styles.textHeader1}>{t('we currently have available')}</Text>
 
         <FlatList
           data={items}
@@ -76,12 +84,15 @@ const Jobs = () => {
           renderItem={({ item }) => (
             <>
               <Card containerStyle={styles.card}>
+              {role === "Admin" && (
+
                 <TouchableOpacity
                   style={styles.deleteIcon}
                   onPress={() => handleDeletePress(item._id)}
                 >
                   <Icon name="close" color="#5e366a" size={20} />
                 </TouchableOpacity>
+              )}
                 <Card.Title style={styles.cardTitle}>{item.jobName}</Card.Title>
                 <Card.Title style={styles.cardTitlee}>
                   {item.jobDescription}
@@ -94,6 +105,7 @@ const Jobs = () => {
             </>
           )}
         />
+      {role === "Admin" && (
 
         <TouchableOpacity
           style={styles.addButton}
@@ -101,8 +113,10 @@ const Jobs = () => {
             navigation.navigate("AddJob");
           }}
         >
-          <Text style={styles.addButtonText}>Add Job</Text>
+          <Text style={styles.addButtonText}>{t('Add Job')}</Text>
         </TouchableOpacity>
+      )}
+
       </View>
     </View>
   );

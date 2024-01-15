@@ -10,9 +10,12 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { storeUsedSalon } from "../redux/user/userActions.js";
 import WhatsApp from "../Common/WhatsApp.js";
+import { useTranslation } from 'react-i18next';
 
 const SalonScreen = () => {
   const navigation = useNavigation();
+  const [t, i18n] = useTranslation();
+
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
@@ -39,15 +42,15 @@ const SalonScreen = () => {
 
   const confirmDelete = (itemId) => {
     Alert.alert(
-      "Delete Confirmation",
-      "Are you sure you want to delete this salon?",
+      t('Confirm deletion'),
+      t('Are you sure you want to delete this salon?'),
       [
         {
-          text: "Cancel",
+          text: t('Cancel'),
           style: "cancel",
         },
         {
-          text: "Yes, Delete",
+          text: t('Yes, Delete'),
           onPress: () => handleDeletePress(itemId),
         },
       ],
@@ -93,12 +96,12 @@ const SalonScreen = () => {
   return (
     <View style={styles.container}>
       <CustomSearchBar
-        placeholder="Search your BeautyCenter"
+        placeholder={t('Search your BeautyCenter')}
         onSearch={handleSearch}
       />
       {role === "Admin" && (
         <TouchableOpacity onPress={() => navigation.navigate("AddSalon")}>
-          <Text style={styles.buttonStyle}>Add Salon</Text>
+          <Text style={styles.buttonStyle}>{t('Add Salon')}</Text>
         </TouchableOpacity>
       )}
 

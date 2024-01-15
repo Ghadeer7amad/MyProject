@@ -23,16 +23,19 @@ import * as ImagePicker from "expo-image-picker";
 import Icon from "react-native-vector-icons/Ionicons";
 import { serialize } from "object-to-formdata";
 import { Box, useToast } from "native-base";
+import { useTranslation } from 'react-i18next';
 
 const AddSalon = () => {
   const navigation = useNavigation();
+  const [t, i18n] = useTranslation();
+
   const [FData, setFData] = useState({
     name: "",
     branches: "",
   });
   const toast = useToast();
 
-  const [buttonText, setButtonText] = useState("Upload Image");
+  const [buttonText, setButtonText] = useState(t('Upload Image'));
   const [image, setImage] = useState(null);
 
   const pickImage = async () => {
@@ -44,7 +47,7 @@ const AddSalon = () => {
     });
     if (!result.canceled) {
       setImage(result.assets[0]);
-      setButtonText("Image is uploaded successfully");
+      setButtonText(t('Image is uploaded successfully'));
     }
   };
 
@@ -78,25 +81,26 @@ const AddSalon = () => {
         render: () => {
           return (
             <Box bg="emerald.500" px="5" py="5" rounded="sm" mb={5}>
-              Salon added successfully
+              {t('Salon added successfully')}
             </Box>
           );
         },
       });
+      navigation.navigate('SalonScreen');
     } catch (error) {
       console.error(error);
     }
   };
   return (
     <View style={styles.container}>
-      <Text style={styles.TextStyleHeader}>Add Salon</Text>
+      <Text style={styles.TextStyleHeader}>{t('Add Salon')}</Text>
 
       <View style={styles.formgroup}>
         <TextInput
           value={FData.name}
           onChangeText={(text) => setFData({ ...FData, name: text })}
           style={styles.input}
-          placeholder="Salon Name"
+          placeholder={t('Salon Name')}
         />
         <FontAwesomeIcon icon={faFileSignature} style={styles.icon} />
       </View>
@@ -106,7 +110,7 @@ const AddSalon = () => {
           value={FData.branches}
           onChangeText={(text) => setFData({ ...FData, branches: text })}
           style={styles.input}
-          placeholder="Branches"
+          placeholder={t('Branches')}
         />
         <FontAwesomeIcon icon={faFileSignature} style={styles.icon} />
       </View>
@@ -143,11 +147,11 @@ const AddSalon = () => {
       </View>
 
       <TouchableOpacity onPress={addSalon}>
-        <Text style={styles.buttonStyle}>Add Salon</Text>
+        <Text style={styles.buttonStyle}>{t('Add Salon')}</Text>
       </TouchableOpacity>
 
       <TouchableOpacity onPress={() => navigation.navigate("SalonScreen")}>
-        <Text style={[styles.buttonStyle, styles.buttonStyle1]}>Cancel</Text>
+        <Text style={[styles.buttonStyle, styles.buttonStyle1]}>{t('Cancel')}</Text>
       </TouchableOpacity>
     </View>
   );
