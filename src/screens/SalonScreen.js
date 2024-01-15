@@ -27,8 +27,8 @@ const SalonScreen = () => {
     setFilteredItems(filteredData);
   };
 
-  const { role } = useSelector((state) => state.user.userData);
-
+  const { role, token } = useSelector((state) => state.user.userData);
+ 
   const handleContinuePress = (item) => {
     dispatch(storeUsedSalon(item));
     console.log(storeUsedSalon(item));
@@ -60,10 +60,16 @@ const SalonScreen = () => {
   const baseUrl = "https://ayabeautyn.onrender.com";
   const fetchData = async () => {
     try {
-      const response = await fetch(`${baseUrl}/salons/salon`);
+      const response = await fetch(`${baseUrl}/salons/salon`, 
+      {headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Nada__${token}`
+    }}
+    
+    );
       const data = await response.json();
       setItems(data);
-      setIsLoading(false);
+      setIsLoading(false); 
     } catch (error) {
       console.error("Error fetching data:", error);
     }

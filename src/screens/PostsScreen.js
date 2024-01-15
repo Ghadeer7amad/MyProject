@@ -83,7 +83,7 @@ const PostsScreen = () => {
   
       if (Array.isArray(data)) {
         const formattedData = [];
-        for (const item of data) {
+        for (const item of data) { 
           if (item && item.createdAt) {
             formattedData.push({
               ...item,
