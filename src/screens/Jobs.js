@@ -22,6 +22,7 @@ const Jobs = () => {
 
   const { role } = useSelector((state) => state.user.userData);
 
+  const {_id: salonId , name: salonName} = useSelector(state => state.user.usedSalonData)
 
 
   const [items, setItems] = useState([]);
@@ -30,7 +31,7 @@ const Jobs = () => {
   const baseUrl = "https://ayabeautyn.onrender.com";
   const fetchData = async () => {
     try {
-      const response = await fetch(`${baseUrl}/jobs/job`);
+      const response = await fetch(`${baseUrl}/salons/${salonId}/Job/job`);
       const data = await response.json();
       setItems(data);
       setIsLoading(false);

@@ -9,20 +9,10 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
-import Color from "../Common/Color.js";
-import MainScreen from "../screens/MainScreen.js";
 import Employee from "../screens/Employee.js";
-import Offers from "../screens/Offers.js";
-import NavbarButtom from "../Common/NavbarButtom.js";
-import { useSelector } from "react-redux";
 import WhatsApp from "../Common/WhatsApp.js";
-import React from 'react';
-import { View, Image, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { Ionicons } from '@expo/vector-icons';
 import Color from '../Common/Color.js';
 import MainScreen from '../screens/MainScreen.js';
-import Employee from '../screens/Employee.js';
 import Offers from '../screens/Offers.js'
 import NavbarButtom from '../Common/NavbarButtom.js'
 import {useSelector} from 'react-redux';

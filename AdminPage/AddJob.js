@@ -23,16 +23,20 @@ import * as ImagePicker from "expo-image-picker";
 import Icon from "react-native-vector-icons/Ionicons";
 import { serialize } from "object-to-formdata";
 import { Box, useToast } from "native-base";
+import { useSelector } from "react-redux";
 import { useTranslation } from 'react-i18next';
 
 const AddJob = () => {
   const navigation = useNavigation();
   const [t, i18n] = useTranslation();
+  const {_id: salonId , name: salonName} = useSelector(state => state.user.usedSalonData)
+
 
   const [FData, setFData] = useState({
     name: "",
     description: "",
     image: "",
+    SalonId: salonId,
   });
   const toast = useToast();
 
@@ -105,7 +109,7 @@ const AddJob = () => {
           placeholder={t('Job Name')}
         />
         <FontAwesomeIcon icon={faFileSignature} style={styles.icon} />
-      </View>
+      </View> 
 
       <View style={styles.formgroup}>
         <TextInput

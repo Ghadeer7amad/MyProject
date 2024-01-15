@@ -231,19 +231,7 @@ console.log(Branch);
 
 
 
-        <View style={styles.socialIconsBackground}>
-          {socialIcons.map((socialIcon, index) => (
-            <TouchableOpacity
-              key={index}
-              style={[styles.socialIcon]}
-              onPress={() =>
-                console.log(`Open ${socialIcon.name} link: ${socialIcon.link}`)
-              }
-            >
-              <FontAwesome5 name={socialIcon.icon} size={20} color="#fff" />
-            </TouchableOpacity>
-          ))}
-        </View>
+
       </ScrollView>
     </SafeAreaView>
   );

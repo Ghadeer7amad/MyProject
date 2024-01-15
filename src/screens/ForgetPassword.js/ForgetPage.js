@@ -64,7 +64,7 @@ const ForgetPage = () => {
             {t('Something error')}
           </Box>
         ),
-      });
+      }); 
     }
   };
 

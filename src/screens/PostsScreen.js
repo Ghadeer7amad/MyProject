@@ -53,7 +53,7 @@ const PostsScreen = () => {
   const {_id: salonId , name: salonName} = useSelector(state => state.user.usedSalonData)
 
 
-  const baseUrl = "https://ayabeautyn.onrender.com";
+  const baseUrl = "https://ayabeautyn.onrender.com"; 
 
   const requestGalleryPermission = async () => {
     try {
@@ -77,7 +77,7 @@ const PostsScreen = () => {
     }
   };
 
-  const fetchData = async () => {
+  const fetchData = async () => { 
     try {
       const response = await fetch(`${baseUrl}/salons/${salonId}/Post/post`);
       const data = await response.json();

@@ -55,12 +55,12 @@ const ApplyForaJob = () => {
 
   const toast = useToast();
 
-  const baseUrl = "https://ayabeautyn.onrender.com";
+  const baseUrl = "https://ayabeautyn.onrender.com"; 
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${baseUrl}/jobs/job`);
+        const response = await axios.get(`${baseUrl}/salons/${salonId}/Job/job`);
         setItems(response.data);
         setIsLoading(false);
       } catch (error) {

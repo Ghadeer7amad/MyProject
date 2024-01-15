@@ -68,7 +68,7 @@ const Employee = () => {
               width: screenwidth - 180,
               height: screenheight - 1000,
               borderRadius: 60,
-              backgroundColor: "#986ead",
+              backgroundColor: Color.background,
               marginHorizontal: 5,
             }}
           >
