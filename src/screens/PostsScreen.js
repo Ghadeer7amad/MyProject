@@ -47,9 +47,9 @@ const PostsScreen = () => {
   const {
     id: userId,
     name: userName,
-  } = useSelector((state) => state.user.userData);
+  } = useSelector((state) => state.user.userData); 
 
-  const {id: salonId , name: salonName, image: imageSalon} = useSelector(state => state.user.usedSalonData)
+  const {_id: salonId , name: salonName} = useSelector(state => state.user.usedSalonData)
 
 
   const baseUrl = "https://ayabeautyn.onrender.com";
@@ -78,18 +78,41 @@ const PostsScreen = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch(`${baseUrl}/posts/post`);
+      const response = await fetch(`${baseUrl}/salons/${salonId}/Post/post`);
       const data = await response.json();
-      const formattedData = data.map((item) => ({
-        ...item,
-        timestamps: new Date(item.createdAt).toLocaleString(),
-      }));
-      setItems(formattedData);
-      setIsLoading(false);
+  
+      if (Array.isArray(data)) {
+        const formattedData = [];
+        for (const item of data) {
+          if (item && item.createdAt) {
+            formattedData.push({
+              ...item,
+              timestamps: new Date(item.createdAt).toLocaleString(),
+            });
+          } else {
+            console.error("Error fetching data: Invalid item format", item);
+          }
+        }
+        setItems(formattedData);
+        setIsLoading(false);
+      } else {
+        console.error("Error fetching data: Invalid data format", data);
+      }
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
+  
+  
+
+  useEffect(() => {
+    fetchData();
+  }, [salonId]);
+
+  useEffect(() => {
+    requestGalleryPermission();
+  }, []); // استخدامها فقط للتنفيذ مرة واحدة عندما يتم تحميل الشاشة
+  
 
   const handleDeletePress = async (itemId) => {
     console.log("Deleting item with ID:", itemId);
@@ -211,15 +234,10 @@ const PostsScreen = () => {
   };
   
 
-  useEffect(() => {
-    requestGalleryPermission();
-    fetchData();
-  
-    const userLoggedInStatus = 
-    setIsLoggedIn(userLoggedInStatus);
-  
-    setLikeStatus({});
-  }, [isLoggedIn]);
+  // useEffect(() => {
+  //   requestGalleryPermission();
+  //   fetchData();
+  // }, [isLoggedIn]);
 
   
 

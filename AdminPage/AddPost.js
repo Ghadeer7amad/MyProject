@@ -18,13 +18,17 @@ import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
 import { serialize } from "object-to-formdata";
 import { Box, useToast } from "native-base";
+import { useSelector } from "react-redux";
 
 const AddPost = () => {
   const navigation = useNavigation();
+  const {_id: salonId , name: salonName} = useSelector(state => state.user.usedSalonData)
+
   const [FData, setFData] = useState({
-    name: "",
-    text: "",
-    image: "",
+    textPost: "",
+    SalonId: salonId,
+    
+    
   });
   const toast = useToast();
 
@@ -46,6 +50,13 @@ const AddPost = () => {
 
   const addPost = async () => {
     try {
+      // تحديث FData بمعلومات الصالون
+      setFData({
+        ...FData,
+        
+        
+      });
+  
       const options = {
         indices: false,
         nullsAsUndefineds: false,
@@ -54,22 +65,27 @@ const AddPost = () => {
         noFilesWithArrayNotation: false,
         dotsForObjectNotation: true,
       };
-
+  
       const formData = serialize(FData, options);
-
+  
       formData.append("image", {
         uri: image.uri,
         name: FData.name + ".jpg",
         type: "image/jpeg",
         size: image.fileSize,
       });
+  
+      
+  
       const baseUrl = "https://ayabeautyn.onrender.com";
-
+  
       const response = await fetch(`${baseUrl}/posts/post`, {
         method: "POST",
         body: formData,
       });
-
+  
+      console.log(formData);
+  
       toast.show({
         render: () => {
           return (
@@ -79,14 +95,13 @@ const AddPost = () => {
           );
         },
       });
-
+  
       navigation.navigate("PostsScreen");
-
     } catch (error) {
       console.error(error);
     }
   };
-
+  
   
 
   return (

@@ -14,13 +14,15 @@ import { Ionicons } from "@expo/vector-icons";
 import Color from "../Common/Color.js";
 import Spacing from "../Common/Spacing.js";
 import { useSelector } from "react-redux";
-import { useTranslation } from 'react-i18next'; 
+import { useTranslation } from 'react-i18next';  
 
 const Jobs = () => {
   const navigation = useNavigation();
   const [t, i18n] = useTranslation();
 
   const { role } = useSelector((state) => state.user.userData);
+
+
 
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);

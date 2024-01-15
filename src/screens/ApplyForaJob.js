@@ -116,7 +116,7 @@ const ApplyForaJob = () => {
       formData.append("user_id", userId)
       formData.append("salon_id", salonId)
       formData.append("user_name", userName);
-      formData.append( "jobName",selectedJob);
+      formData.append("jobName",selectedJob);
         
      
    
