@@ -31,6 +31,7 @@
     "expo-calendar": "~11.3.2",
     "expo-document-picker": "~11.5.4",
     "expo-image-picker": "~14.3.2",
+    "expo-localization": "^14.5.0",
     "expo-react-native-toastify": "^1.0.7",
     "expo-status-bar": "~1.6.0",
     "i18next": "^23.7.16",

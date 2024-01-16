@@ -50,6 +50,8 @@ import EditServices from './AdminPage/EditServices.js'
 import EditProfile from './AdminPage/EditProfile.js'
 import EditSalon from './AdminPage/EditSalon.js'
 import Advice from './src/screens/Advice.js'
+import PdfViewer from "./src/screens/PdfViewer.js";
+
 import { NativeBaseProvider } from "native-base";
 
 
@@ -98,6 +100,7 @@ const HomeStack = () => (
     <Stack.Screen name="EditServices" component={EditServices} options={{ headerShown: false }}/>
     <Stack.Screen name="EditProfile" component={EditProfile} options={{ headerShown: false }}/>
     <Stack.Screen name="EditSalon" component={EditSalon} options={{ headerShown: false }}/>
+    <Stack.Screen name="PdfViewer" component={PdfViewer} options={{ headerShown: false }}/>
 
     <Stack.Screen name="Advice" component={Advice} options={{ headerShown: false }}/>
    
