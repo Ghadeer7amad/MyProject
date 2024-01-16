@@ -18,6 +18,8 @@ import {
   import { useNavigation } from "@react-navigation/native";
   import React, { useState, useEffect } from "react";
   import SearchProANDSer from "../Common/SerachProANDSer.js";
+  import { useSelector } from "react-redux";
+  import axios from "axios";
   import { useTranslation } from 'react-i18next'; 
 
   
@@ -27,6 +29,10 @@ import {
   const JobHistory = () => {
     const navigation = useNavigation();
     const [t, i18n] = useTranslation();
+
+    const { _id: salonId, name: salonName } = useSelector(
+      (state) => state.user.usedSalonData
+    );
 
     const [items, setItems] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -46,47 +52,19 @@ import {
     };
   
 
-    const baseUrl = "https://ayabeautyn.onrender.com";
+    const baseUrl = "https://ayabeautyn.onrender.com"; 
 
-    const requestGalleryPermission = async () => {
+    useEffect(() => {
+      const fetchData = async () => {
         try {
-          const granted = await PermissionsAndroid.request(
-            PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-            {
-              title: 'Gallery Permission',
-              message: 'App needs access to your gallery to choose images.',
-              buttonNeutral: 'Ask Me Later',
-              buttonNegative: 'Cancel',
-              buttonPositive: 'OK',
-            },
-          );
-          if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-            console.log('Gallery permission granted');
-          } else {
-            console.log('Gallery permission denied');
-          }
-        } catch (err) {
-          console.warn(err);
+          const response = await axios.get(`${baseUrl}/salons/${salonId}/Uploadjob/uploadjob`);
+          setItems(response.data);
+          setIsLoading(false);
+        } catch (error) {
+          console.error("Error fetching data:", error);
         }
       };
   
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          `${baseUrl}/uploadjobs/uploadjob`
-        );
-        const data = await response.json();
-        setItems(data);
-        setIsLoading(false);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-  
-    
-  
-    useEffect(() => {
-      requestGalleryPermission();
       fetchData();
     }, []);
   

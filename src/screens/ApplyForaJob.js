@@ -48,7 +48,6 @@ const ApplyForaJob = () => {
 
   const [FData, setFData] = useState({
     user_id: userId,
-    salon_id: salonId,
     user_name: userName,
   });
   
@@ -114,7 +113,6 @@ const ApplyForaJob = () => {
            )
 
       formData.append("user_id", userId)
-      formData.append("salon_id", salonId)
       formData.append("user_name", userName);
       formData.append("jobName",selectedJob);
         
