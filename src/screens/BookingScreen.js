@@ -23,12 +23,9 @@ const screenwidth = Dimensions.get("window").width;
 const BookingScreen = () => {
   const toast = useToast();
 
-  const { id: userId, name: userName } = useSelector(
-    (state) => state.user.userData
-  );
-  const { _id: salonId, name: salonName } = useSelector(
-    (state) => state.user.usedSalonData
-  );
+  const { userData, usedSalonData } = useSelector((state) => state.user);
+  const { id: userId, name: userName } = userData;
+  const { _id: salonId, name: salonName } = usedSalonData;
 
   const generateAvailableTimes = () => {
     const startHour = 8;
@@ -83,6 +80,7 @@ const BookingScreen = () => {
 
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [bookedAppointments, setBookedAppointments] = useState([]);
 
   const fetchData = async () => {
@@ -95,6 +93,40 @@ const BookingScreen = () => {
       console.error("Error fetching data:", error);
     }
   };
+
+  const [selectedBranch, setSelectedBranch] = useState(null);
+  const [branches, setBranches] = useState([]);
+
+  useEffect(() => {
+    const fetchBranches = async () => {
+      try {
+        if (salonId) {
+          const response = await fetch(
+            `${baseUrl}/salons/salon/${salonId}/branches`
+          );
+
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+
+          const data = await response.json();
+          console.log("Data received:", data);
+
+          if (data) {
+            setBranches(data);
+          } else {
+            console.error("Invalid data structure:", data);
+          }
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchBranches();
+  }, [salonId]);
 
   const isSlotAvailable = (date, time) => {
     const uniqueDate = date + time;
@@ -110,13 +142,11 @@ const BookingScreen = () => {
       setSelectedTime(time);
     } else {
       toast.show({
-        render: () => {
-          return (
-            <Box bg="#c81912" px="5" py="5" rounded="sm" mb={5}>
-              Selected time is not available. Please choose another time.
-            </Box>
-          );
-        },
+        render: () => (
+          <Box bg="#c81912" px="5" py="5" rounded="sm" mb={5}>
+            Selected time is not available. Please choose another time.
+          </Box>
+        ),
       });
     }
   };
@@ -146,6 +176,7 @@ const BookingScreen = () => {
       user_id: userId,
       salon_id: salonId,
       user_name: userName,
+      branch: selectedBranch,
       appointment_date: selectedDate,
       appointment_time: selectedTime,
       uniqueDate: selectedDate + selectedTime,
@@ -173,13 +204,11 @@ const BookingScreen = () => {
         setBookedAppointments([...bookedAppointments, data.uniqueDate]);
 
         toast.show({
-          render: () => {
-            return (
-              <Box bg="emerald.500" px="5" py="5" rounded="sm" mb={5}>
-                Your appointment is booked successfully
-              </Box>
-            );
-          },
+          render: () => (
+            <Box bg="emerald.500" px="5" py="5" rounded="sm" mb={5}>
+              Your appointment is booked successfully
+            </Box>
+          ),
         });
       }
     } catch (err) {
@@ -229,6 +258,28 @@ const BookingScreen = () => {
                   key={item.id}
                   label={item?.name}
                   value={item.name}
+                />
+              ))}
+            </Select>
+          </View>
+
+          <View style={styles.sectionTitleContainer}>
+            <Text style={styles.sectionTitle}>Select Branch </Text>
+            <Icon name="star" color={Color.background} size={25} />
+          </View>
+          <View style={styles.serviceListContainer}>
+            <Select
+              placeholder="Select Branch"
+              style={{ width: 150, fontSize: 18 }}
+              selectedValue={selectedBranch}
+              onValueChange={(itemValue) => setSelectedBranch(itemValue)}
+              accessibilityLabel="Select Branch"
+            >
+              {branches.map((item, index) => (
+                <Select.Item
+                  key={`${item}_${index}`}
+                  label={item}
+                  value={item}
                 />
               ))}
             </Select>

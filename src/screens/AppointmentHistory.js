@@ -158,6 +158,9 @@ const AppointmentsScreen = () => {
             <View style={styles.userContainer}>
               <Text style={styles.userName}>{item.user_name}</Text>
               <Text style={styles.appointmentContent}>
+                Branch: {item.branch}
+              </Text>
+              <Text style={styles.appointmentContent}>
                 Date: {item.appointment_date}
               </Text>
               <Text style={styles.appointmentContent}>
