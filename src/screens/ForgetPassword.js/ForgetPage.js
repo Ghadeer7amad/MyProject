@@ -14,8 +14,7 @@ import Color from "../../Common/Color.js";
 import React, { useState } from "react";
 import axios from "axios";
 import { Box, useToast } from "native-base";
-import { useTranslation } from 'react-i18next'; 
-
+import { useTranslation } from "react-i18next";
 
 const ForgetPage = () => {
   const navigation = useNavigation();
@@ -42,7 +41,7 @@ const ForgetPage = () => {
         toast.show({
           render: () => (
             <Box bg="#55a44e" px="8" py="5" rounded="sm" mb={5}>
-              {t('You received a 4-digit code')}
+              {t("You received a 4-digit code")}
             </Box>
           ),
         });
@@ -52,7 +51,7 @@ const ForgetPage = () => {
         toast.show({
           render: () => (
             <Box bg="#c81912" px="8" py="5" rounded="sm" mb={5}>
-              {t('Something error')}
+              {t("Something error")}
             </Box>
           ),
         });
@@ -61,14 +60,14 @@ const ForgetPage = () => {
       toast.show({
         render: () => (
           <Box bg="#c81912" px="8" py="5" rounded="sm" mb={5}>
-            {t('Something error')}
+            {t("Something error")}
           </Box>
         ),
-      }); 
+      });
     }
   };
 
-  // {t('Job Description')}  
+  // {t('Job Description')}
   return (
     <View style={styles.contanier}>
       <Image
@@ -76,10 +75,8 @@ const ForgetPage = () => {
         source={require("../../../assets/forgetpassword.png")}
       />
       <View style={styles.contanier2}>
-        <Text style={styles.TextStyleHeader}>{t('forget password')}</Text>
-        <Text style={styles.TextSub}>
-        {t('resetpass')}
-        </Text>
+        <Text style={styles.TextStyleHeader}>{t("forget password")}</Text>
+        <Text style={styles.TextSub}>{t("resetpass")}</Text>
         <View style={styles.formgroup}>
           <TextInput
             value={email}
@@ -91,7 +88,7 @@ const ForgetPage = () => {
           <FontAwesomeIcon icon={faEnvelope} style={styles.icon} />
         </View>
         {!fieldValid.email && (
-          <Text style={styles.textWrong}> {t('email is required')} </Text>
+          <Text style={styles.textWrong}> {t("email is required")} </Text>
         )}
 
         <TouchableOpacity
@@ -100,7 +97,7 @@ const ForgetPage = () => {
           }}
         >
           <Text style={[styles.buttonStyle, styles.buttonStyle1]}>
-          {t('Reset Password')}
+            {t("Reset Password")}
           </Text>
         </TouchableOpacity>
 
@@ -110,7 +107,7 @@ const ForgetPage = () => {
           }}
         >
           <Text style={[styles.buttonStyle, styles.buttonStyle2]}>
-          {t('back to login')}
+            {t("back to login")}
           </Text>
         </TouchableOpacity>
       </View>

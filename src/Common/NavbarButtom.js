@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
       marginBottom: 15,
       marginHorizontal: 10,
       borderTopColor:"#000",
-      
+      elevation: 5,
     },
     iconStyle: {
         color: 'gray',

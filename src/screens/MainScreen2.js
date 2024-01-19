@@ -11,20 +11,18 @@ import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import Employee from "../screens/Employee.js";
 import WhatsApp from "../Common/WhatsApp.js";
-import Color from '../Common/Color.js';
-import MainScreen from '../screens/MainScreen.js';
-import Offers from '../screens/Offers.js'
-import NavbarButtom from '../Common/NavbarButtom.js'
-import {useSelector} from 'react-redux';
-import { useTranslation } from 'react-i18next';
-
+import Color from "../Common/Color.js";
+import MainScreen from "../screens/MainScreen.js";
+import Offers from "../screens/Offers.js";
+import NavbarButtom from "../Common/NavbarButtom.js";
+import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 const MainScreen2 = () => {
   const navigation = useNavigation();
   const [t, i18n] = useTranslation();
 
-
-  const handleMenuPress = () => { 
+  const handleMenuPress = () => {
     navigation.openDrawer();
   };
 
@@ -46,15 +44,20 @@ const MainScreen2 = () => {
       </View>
       <ScrollView>
         <Text style={styles.textHeader}>
-        {t('hello')} {userName}
-          <Image style={{ width: 50, height: 50 }} source={require("../../assets/pic3.jpg")} />
+          {t("hello")} {userName}
+          <Image
+            style={{ width: 50, height: 50 }}
+            source={require("../../assets/pic3.jpg")}
+          />
         </Text>
-        <Text style={styles.textHeader1}>{t('welcome to')} {salonName} center</Text>
+        <Text style={styles.textHeader1}>
+          {t("welcome to")} {salonName} center
+        </Text>
         <MainScreen />
         <Employee />
         <Offers />
-        <NavbarButtom onChange={(selectedIcon) => console.log(selectedIcon)} />
       </ScrollView>
+      <NavbarButtom onChange={(selectedIcon) => console.log(selectedIcon)} />
     </View>
   );
 };

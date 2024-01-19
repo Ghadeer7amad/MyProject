@@ -24,13 +24,14 @@ import Icon from "react-native-vector-icons/Ionicons";
 import { serialize } from "object-to-formdata";
 import { Box, useToast } from "native-base";
 import { useSelector } from "react-redux";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 
 const AddJob = () => {
   const navigation = useNavigation();
   const [t, i18n] = useTranslation();
-  const {_id: salonId , name: salonName} = useSelector(state => state.user.usedSalonData)
-
+  const { _id: salonId, name: salonName } = useSelector(
+    (state) => state.user.usedSalonData
+  );
 
   const [FData, setFData] = useState({
     name: "",
@@ -40,7 +41,7 @@ const AddJob = () => {
   });
   const toast = useToast();
 
-  const [buttonText, setButtonText] = useState(t('Upload Image'));
+  const [buttonText, setButtonText] = useState(t("Upload Image"));
   const [image, setImage] = useState(null);
 
   const pickImage = async () => {
@@ -52,7 +53,7 @@ const AddJob = () => {
     });
     if (!result.canceled) {
       setImage(result.assets[0]);
-      setButtonText(t('Image is uploaded successfully'));
+      setButtonText(t("Image is uploaded successfully"));
     }
   };
 
@@ -86,7 +87,7 @@ const AddJob = () => {
         render: () => {
           return (
             <Box bg="emerald.500" px="5" py="5" rounded="sm" mb={5}>
-              {t('Job added successfully')}
+              {t("Job added successfully")}
             </Box>
           );
         },
@@ -99,24 +100,24 @@ const AddJob = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.TextStyleHeader}>{t('Add Job')}</Text>
+      <Text style={styles.TextStyleHeader}>{t("Add Job")}</Text>
 
       <View style={styles.formgroup}>
         <TextInput
           value={FData.jobName}
           onChangeText={(text) => setFData({ ...FData, jobName: text })}
           style={styles.input}
-          placeholder={t('Job Name')}
+          placeholder={t("Job Name")}
         />
         <FontAwesomeIcon icon={faFileSignature} style={styles.icon} />
-      </View> 
+      </View>
 
       <View style={styles.formgroup}>
         <TextInput
           value={FData.jobDescription}
           onChangeText={(text) => setFData({ ...FData, jobDescription: text })}
           style={styles.input}
-          placeholder={t('Job Description')}
+          placeholder={t("Job Description")}
         />
         <FontAwesomeIcon icon={faFileSignature} style={styles.icon} />
       </View>
@@ -153,11 +154,13 @@ const AddJob = () => {
       </View>
 
       <TouchableOpacity onPress={addJob}>
-        <Text style={styles.buttonStyle}>{t('Add Job')}</Text>
+        <Text style={styles.buttonStyle}>{t("Add Job")}</Text>
       </TouchableOpacity>
 
       <TouchableOpacity onPress={() => navigation.navigate("Jobs")}>
-        <Text style={[styles.buttonStyle, styles.buttonStyle1]}>{t('Cancel')}</Text>
+        <Text style={[styles.buttonStyle, styles.buttonStyle1]}>
+          {t("Cancel")}
+        </Text>
       </TouchableOpacity>
     </View>
   );

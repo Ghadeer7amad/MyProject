@@ -9,7 +9,6 @@ import {
   Alert,
 } from "react-native";
 import CustomSearchBar from "../Common/SearchBarComponent.js";
-import { Picker } from "@react-native-picker/picker";
 import Header from "../screens/Header.js";
 import NavbarButtom from "../Common/NavbarButtom.js";
 import Color from "../Common/Color.js";
@@ -17,6 +16,7 @@ import Spacing from "../Common/Spacing.js";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import React, { useState, useEffect } from "react";
+import Icon from "react-native-vector-icons/FontAwesome";
 import { Select } from "native-base";
 
 const AppointmentsScreen = () => {
@@ -24,8 +24,20 @@ const AppointmentsScreen = () => {
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [filteredItems, setFilteredItems] = useState([]);
-  const [sortType, setSortType] = useState("closest"); // or "furthest"
+  const [sortType, setSortType] = useState("Closest"); // or "Furthest"
   const [sortOrder, setSortOrder] = useState("asc"); // or "desc"
+
+  const currentDate = new Date();
+
+  const getStatus = (appointmentDate) => {
+    const appointmentDateTime = new Date(appointmentDate);
+
+    if (appointmentDateTime < currentDate) {
+      return "Done";
+    } else {
+      return "Coming";
+    }
+  };
 
   const handleSearch = (searchText) => {
     const filteredData = items.filter((item) =>
@@ -76,9 +88,9 @@ const AppointmentsScreen = () => {
         const dateB = new Date(b.appointment_date);
 
         if (sortOrder === "asc") {
-          return sortType === "closest" ? dateA - dateB : dateB - dateA;
+          return sortType === "Closest" ? dateA - dateB : dateB - dateA;
         } else {
-          return sortType === "closest" ? dateB - dateA : dateA - dateB;
+          return sortType === "Closest" ? dateB - dateA : dateA - dateB;
         }
       });
 
@@ -125,24 +137,23 @@ const AppointmentsScreen = () => {
           onSearch={handleSearch}
         />
       </View>
+
       <View
         style={{
-          width: "40%",
+          width: "30%",
           marginLeft: 15,
-          borderWidth: 1,
-          borderColor: Color.primary,
         }}
       >
         <Select
           placeholder="Select Service"
-          style={{ width: 10, fontSize: 18 }}
+          style={styles.select}
           color={Color.primary}
           selectedValue={sortType}
           onValueChange={(value) => handleSortChange(value)}
         >
           {[
-            { id: 1, name: "closest" },
-            { id: 2, name: "furthest" },
+            { id: 1, name: "Closest" },
+            { id: 2, name: "Furthest" },
           ].map((item) => (
             <Select.Item
               key={item.id}
@@ -170,6 +181,9 @@ const AppointmentsScreen = () => {
               <Text style={styles.appointmentContent}>
                 Time: {item.appointment_time}
               </Text>
+              <Text style={styles.appointmentContent}>
+                Service: {item.serviceType}
+              </Text>
               <View
                 style={{
                   display: "flex",
@@ -179,8 +193,9 @@ const AppointmentsScreen = () => {
                 }}
               >
                 <Text style={styles.appointmentContent}>
-                  Service: {item.serviceType}
+                  Status: {getStatus(item.appointment_date)}
                 </Text>
+
                 <TouchableOpacity
                   style={styles.styleIcons}
                   onPress={() => handleDetailsPress(item)}
@@ -282,6 +297,10 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: "400",
     padding: 4,
+  },
+  select: {
+    flex: 1,
+    fontSize: 18,
   },
 });
 

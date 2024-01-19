@@ -22,13 +22,13 @@ import { useSelector } from "react-redux";
 
 const AddPost = () => {
   const navigation = useNavigation();
-  const {_id: salonId , name: salonName} = useSelector(state => state.user.usedSalonData)
+  const { _id: salonId, name: salonName } = useSelector(
+    (state) => state.user.usedSalonData
+  );
 
   const [FData, setFData] = useState({
     textPost: "",
     SalonId: salonId,
-    
-    
   });
   const toast = useToast();
 
@@ -39,7 +39,7 @@ const AddPost = () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      aspect: [4, 3], 
+      aspect: [4, 3],
       quality: 1,
     });
     if (!result.canceled) {
@@ -53,10 +53,8 @@ const AddPost = () => {
       // تحديث FData بمعلومات الصالون
       setFData({
         ...FData,
-        
-        
       });
-  
+
       const options = {
         indices: false,
         nullsAsUndefineds: false,
@@ -65,27 +63,25 @@ const AddPost = () => {
         noFilesWithArrayNotation: false,
         dotsForObjectNotation: true,
       };
-  
+
       const formData = serialize(FData, options);
-  
+
       formData.append("image", {
         uri: image.uri,
         name: FData.name + ".jpg",
         type: "image/jpeg",
         size: image.fileSize,
       });
-  
-      
-  
+
       const baseUrl = "https://ayabeautyn.onrender.com";
-  
+
       const response = await fetch(`${baseUrl}/posts/post`, {
         method: "POST",
         body: formData,
       });
-  
+
       console.log(formData);
-  
+
       toast.show({
         render: () => {
           return (
@@ -95,14 +91,12 @@ const AddPost = () => {
           );
         },
       });
-  
+
       navigation.navigate("PostsScreen");
     } catch (error) {
       console.error(error);
     }
   };
-  
-  
 
   return (
     <View style={styles.container}>

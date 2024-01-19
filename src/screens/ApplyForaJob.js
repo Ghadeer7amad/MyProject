@@ -16,26 +16,18 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { Select } from "native-base";
 import { serialize } from "object-to-formdata";
-import { useTranslation } from 'react-i18next'; 
+import { useTranslation } from "react-i18next";
 
- 
-const ApplyForaJob = () => { 
+const ApplyForaJob = () => {
   const navigation = useNavigation();
   const [t, i18n] = useTranslation();
 
   const [selectedFile, setSelectedFile] = useState(null);
   const [selectedJob, setSelectedJob] = useState("Laser Specialist");
   const [isLoading, setIsLoading] = useState(false);
-  
 
-  const [buttonText, setButtonText] = useState(t('Upload File'));
+  const [buttonText, setButtonText] = useState(t("Upload File"));
   const [image, setImage] = useState(null);
-
-  
-
-
-
-  
 
   const [items, setItems] = useState([]);
 
@@ -50,16 +42,17 @@ const ApplyForaJob = () => {
     user_id: userId,
     user_name: userName,
   });
-  
 
   const toast = useToast();
 
-  const baseUrl = "https://ayabeautyn.onrender.com"; 
+  const baseUrl = "https://ayabeautyn.onrender.com";
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${baseUrl}/salons/${salonId}/Job/job`);
+        const response = await axios.get(
+          `${baseUrl}/salons/${salonId}/Job/job`
+        );
         setItems(response.data);
         setIsLoading(false);
       } catch (error) {
@@ -75,17 +68,15 @@ const ApplyForaJob = () => {
       const result = await DocumentPicker.getDocumentAsync({
         type: "application/pdf",
       });
-  
+
       if (!result.canceled) {
         setSelectedFile(result);
-        setButtonText(t('File is uploaded successfully'));
+        setButtonText(t("File is uploaded successfully"));
       }
     } catch (err) {
       console.error("Error picking document:", err);
     }
   };
-  
-  
 
   const onSubmitPressed = async () => {
     try {
@@ -97,40 +88,41 @@ const ApplyForaJob = () => {
         noFilesWithArrayNotation: false,
         dotsForObjectNotation: true,
       };
-  
-      
+
       const updatedFData = {
         ...FData,
         jobName: selectedJob,
         image: selectedFile.uri,
       };
-  
-      const formData = new FormData();
-  
-      formData.append('image', {name: selectedFile.assets[0]?.name,
-         uri: selectedFile.assets[0]?.uri, 
-         mimetype: selectedFile.assets[0]?.mimeType}
-           )
 
-      formData.append("user_id", userId)
-      formData.append("user_name", userName);
-      formData.append("jobName",selectedJob);
-        
-     
-   
-      console.log('Selected File:', selectedFile.assets[0]);
-      console.log(JSON.stringify(formData));
-  
-      const response = await axios.post(`${baseUrl}/uploadjobs/uploadjob`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+      const formData = new FormData();
+
+      formData.append("image", {
+        name: selectedFile.assets[0]?.name,
+        uri: selectedFile.assets[0]?.uri,
+        mimetype: selectedFile.assets[0]?.mimeType,
       });
-        
-      console.log('Server Response:', response);
-  
+
+      formData.append("user_id", userId);
+      formData.append("user_name", userName);
+      formData.append("jobName", selectedJob);
+
+      console.log("Selected File:", selectedFile.assets[0]);
+      console.log(JSON.stringify(formData));
+
+      const response = await axios.post(
+        `${baseUrl}/uploadjobs/uploadjob`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      console.log("Server Response:", response);
+
       if (response.status === 201) {
-    
         toast.show({
           render: () => (
             <Box bg="emerald.500" px="5" py="5" rounded="sm" mb={5}>
@@ -139,18 +131,13 @@ const ApplyForaJob = () => {
           ),
         });
       } else {
-        console.error('Server Error:', response.status, response.statusText);
+        console.error("Server Error:", response.status, response.statusText);
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
     } catch (error) {
       console.error("Fetch error:", error.stack);
     }
-
-
   };
-
-  
-  
 
   return (
     <ImageBackground
@@ -167,31 +154,34 @@ const ApplyForaJob = () => {
       </TouchableOpacity>
 
       <View style={{ flex: 1, justifyContent: "center", marginTop: -200 }}>
-        <Text style={styles.labelStyle}>{t('Choose The Job:')}</Text>
+        <Text style={styles.labelStyle}>{t("Choose The Job:")}</Text>
 
         <View style={styles.labeledContainerStyle}>
-        <Select
-  placeholder={t('Select Job')}
-  selectedValue={selectedJob}
-  onValueChange={(itemValue, itemIndex) => setSelectedJob(itemValue)}
-  style={styles.pickerStyle}
->
-  {items.map((item) => (
-    <Select.Item key={item.id} label={item.jobName} value={item.jobName} />
-  ))}
-</Select>
+          <Select
+            placeholder={t("Select Job")}
+            selectedValue={selectedJob}
+            onValueChange={(itemValue, itemIndex) => setSelectedJob(itemValue)}
+            style={styles.pickerStyle}
+          >
+            {items.map((item) => (
+              <Select.Item
+                key={item.id}
+                label={item.jobName}
+                value={item.jobName}
+              />
+            ))}
+          </Select>
+        </View>
 
+        <Text style={[styles.labelStyle, { marginTop: 20 }]}>
+          {t("Attach your CV (PDF):")}
+        </Text>
 
-          </View>
-
-        
-
-
-        <Text style={[styles.labelStyle, { marginTop: 20 }]}>{t('Attach your CV (PDF):')}</Text>
-
-        <TouchableOpacity 
-        onPress={pickDocument} style={styles.fileUploadButton}>
-        <Text style={styles.fileUploadText}>{buttonText}</Text>
+        <TouchableOpacity
+          onPress={pickDocument}
+          style={styles.fileUploadButton}
+        >
+          <Text style={styles.fileUploadText}>{buttonText}</Text>
         </TouchableOpacity>
 
         {selectedFile && (
@@ -200,17 +190,15 @@ const ApplyForaJob = () => {
           >{`Selected File: ${selectedFile}`}</Text>
         )}
 
-        <Text style={styles.uploadInfoText}>
-          {t('Upload your cv')}
-        </Text>
-
-
+        <Text style={styles.uploadInfoText}>{t("Upload your cv")}</Text>
       </View>
 
       <View style={styles.buttonContainer}>
         <TouchableOpacity onPress={onSubmitPressed}>
           <Text style={styles.buttonStyle}>
-            <Ionicons name="paper-plane" size={25} color="#ebebeb" />{t('Submit Form')}</Text>
+            <Ionicons name="paper-plane" size={25} color="#ebebeb" />
+            {t("Submit Form")}
+          </Text>
         </TouchableOpacity>
       </View>
     </ImageBackground>

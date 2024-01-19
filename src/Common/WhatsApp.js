@@ -16,8 +16,8 @@ const WhatsApp = () => {
       onPress={openWhatsAppChat}
       style={{
         position: "absolute",
-        bottom: 70,
-        right: 22,
+        bottom: 84,
+        right: 14,
         zIndex: 1000,
         backgroundColor: Color.primary,
         padding: 20,

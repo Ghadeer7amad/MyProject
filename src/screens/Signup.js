@@ -32,9 +32,7 @@ import { useNavigation } from "@react-navigation/native";
 import Spacing from "../Common/Spacing.js";
 import { Box, useToast, Toast } from "native-base";
 import axios from "axios";
-import { useTranslation } from 'react-i18next';
-
-
+import { useTranslation } from "react-i18next";
 
 const Signup = () => {
   const navigation = useNavigation();
@@ -139,13 +137,12 @@ const Signup = () => {
         address,
         password,
         confirmpassword,
-        
       });
       if (response.status === 201) {
         toast.show({
           render: () => (
             <Box bg="#55a44e" px="8" py="5" rounded="sm" mb={5}>
-              {t('SignUp successfully')}
+              {t("SignUp successfully")}
             </Box>
           ),
         });
@@ -161,7 +158,7 @@ const Signup = () => {
         toast.show({
           render: () => (
             <Box bg="#c81912" px="8" py="5" rounded="sm" mb={5}>
-              {t('SignUp failed')}
+              {t("SignUp failed")}
             </Box>
           ),
         });
@@ -170,13 +167,13 @@ const Signup = () => {
     } catch (error) {
       try {
         if (error.response && error.response.status === 404) {
-          showToast(t('Email Exists, Use another email please'), "#c81912");
+          showToast(t("Email Exists, Use another email please"), "#c81912");
         }
       } catch (error) {
         toast.show({
           render: () => (
             <Box bg="#c81912" px="8" py="5" rounded="sm" mb={5}>
-              {t('SignUp failed')}
+              {t("SignUp failed")}
             </Box>
           ),
         });
@@ -195,7 +192,6 @@ const Signup = () => {
     setShowPasswordC(!showPasswordC);
   };
 
-
   return (
     <View style={styles.contanier}>
       <Text
@@ -209,17 +205,19 @@ const Signup = () => {
         }}
       >
         <TouchableOpacity
-          style={{marginLeft: Spacing*2, marginTop: Spacing*3}}
+          style={{ marginLeft: Spacing * 2, marginTop: Spacing * 3 }}
           onPress={() => {
             navigation.navigate("ChoseScreen");
           }}
         >
-        <Ionicons name="arrow-back" color={Color.primary} size={Spacing*2}/>
-
-
+          <Ionicons
+            name="arrow-back"
+            color={Color.primary}
+            size={Spacing * 2}
+          />
         </TouchableOpacity>
 
-         {t('Dear Lady')}
+        {t("Dear Lady")}
       </Text>
 
       <Text
@@ -230,7 +228,7 @@ const Signup = () => {
           marginBottom: 3,
         }}
       >
-        {t('please enter your complete information!!')}
+        {t("please enter your complete information!!")}
       </Text>
       <View style={styles.formgroup}>
         <TextInput
@@ -238,12 +236,12 @@ const Signup = () => {
           onChangeText={onChangeNameHandler}
           onBlur={() => setFieldValid({ ...fieldValid, name: userName !== "" })}
           style={styles.input}
-          placeholder={t('Enter Your Name')}
+          placeholder={t("Enter Your Name")}
         />
         <FontAwesomeIcon icon={faUser} style={styles.icon} />
       </View>
       {!fieldValid.name && (
-        <Text style={styles.textWrong}> {t('name is required')} </Text>
+        <Text style={styles.textWrong}> {t("name is required")} </Text>
       )}
 
       <View style={styles.formgroup}>
@@ -257,7 +255,7 @@ const Signup = () => {
         <FontAwesomeIcon icon={faEnvelope} style={styles.icon} />
       </View>
       {!fieldValid.email && (
-        <Text style={styles.textWrong}> {t('email is required')} </Text>
+        <Text style={styles.textWrong}> {t("email is required")} </Text>
       )}
 
       <View style={styles.formgroup}>
@@ -275,13 +273,13 @@ const Signup = () => {
         <FontAwesomeIcon icon={faBirthdayCake} style={styles.icon} />
       </View>
       {!fieldValid.age && age !== "" && parseInt(age) < 18 && (
-        <Text style={styles.textWrong}> {t('Age must be 18 or more')} </Text>
+        <Text style={styles.textWrong}> {t("Age must be 18 or more")} </Text>
       )}
       {!fieldValid.age && age !== "" && parseInt(age) > 50 && (
-        <Text style={styles.textWrong}> {t('Age must be 50 or less')} </Text>
+        <Text style={styles.textWrong}> {t("Age must be 50 or less")} </Text>
       )}
       {!fieldValid.age && age === "" && (
-        <Text style={styles.textWrong}> {t('Age is required')} </Text>
+        <Text style={styles.textWrong}> {t("Age is required")} </Text>
       )}
 
       <View style={styles.formgroup}>
@@ -298,10 +296,10 @@ const Signup = () => {
         <FontAwesomeIcon icon={faPhone} style={styles.icon} />
       </View>
       {!fieldValid.phone && phone === "" && (
-        <Text style={styles.textWrong}> {t('Phone is required')} </Text>
+        <Text style={styles.textWrong}> {t("Phone is required")} </Text>
       )}
       {!fieldValid.phone && phone !== "" && !/^05\d{8}$/.test(phone) && (
-        <Text style={styles.textWrong}> {t('Invalid phone format')} </Text>
+        <Text style={styles.textWrong}> {t("Invalid phone format")} </Text>
       )}
 
       <View style={styles.formgroup}>
@@ -312,12 +310,12 @@ const Signup = () => {
             setFieldValid({ ...fieldValid, address: address !== "" })
           }
           style={styles.input}
-          placeholder={t('City/Village')}
+          placeholder={t("City/Village")}
         />
         <FontAwesomeIcon icon={faHome} style={styles.icon} />
       </View>
       {!fieldValid.address && (
-        <Text style={styles.textWrong}> {t('address is required')} </Text>
+        <Text style={styles.textWrong}> {t("address is required")} </Text>
       )}
 
       <View style={styles.formgroup}>
@@ -332,7 +330,7 @@ const Signup = () => {
             });
           }}
           style={styles.input}
-          placeholder={t('Enter Your password')}
+          placeholder={t("Enter Your password")}
         />
         <TouchableWithoutFeedback onPress={togglePasswordVisibility}>
           <Ionicons
@@ -346,7 +344,7 @@ const Signup = () => {
       {!fieldValid.password && (
         <Text style={styles.textWrong}>
           {" "}
-          {t('Password must be at least 5 characters')}{" "}
+          {t("Password must be at least 5 characters")}{" "}
         </Text>
       )}
 
@@ -363,7 +361,7 @@ const Signup = () => {
             setPasswordCValid(password === confirmpassword);
           }}
           style={styles.input}
-          placeholder={t('Confirm your Password')}
+          placeholder={t("Confirm your Password")}
         />
         <TouchableWithoutFeedback onPress={togglePasswordVisibilityC}>
           <Ionicons
@@ -375,19 +373,22 @@ const Signup = () => {
         <FontAwesomeIcon icon={faCheck} style={styles.icon} />
       </View>
       {!fieldValid.passwordC && (
-        <Text style={styles.textWrong}> {t('confirm password is required')} </Text>
+        <Text style={styles.textWrong}>
+          {" "}
+          {t("confirm password is required")}{" "}
+        </Text>
       )}
       {!isPasswordCValid && (
-        <Text style={styles.textWrong}>{t('Your Password not match')}</Text>
+        <Text style={styles.textWrong}>{t("Your Password not match")}</Text>
       )}
 
       <TouchableOpacity onPress={handleSignUpAndRegister}>
-        <Text style={styles.buttonStyle}>{t('Sign Up')}</Text>
+        <Text style={styles.buttonStyle}>{t("Sign Up")}</Text>
       </TouchableOpacity>
 
       <View style={styles.dividerContainer}>
         <View style={styles.dividerLine} />
-        <Text style={styles.dividerText}>{t('or with social media')}</Text>
+        <Text style={styles.dividerText}>{t("or with social media")}</Text>
         <View style={styles.dividerLine} />
       </View>
 
@@ -425,10 +426,10 @@ const Signup = () => {
 
       <Text style={styles.TextStyle4}>
         {" "}
-        {t('Have An Account?')}
+        {t("Have An Account?")}
         <Text onPress={() => navigation.navigate("Login")} style={styles.link}>
           {" "}
-          {t('Log in your Account')}
+          {t("Log in your Account")}
         </Text>
       </Text>
     </View>

@@ -27,9 +27,7 @@ import {
 } from "react-native-popup-menu";
 import WhatsApp from "../Common/WhatsApp.js";
 import { useSelector } from "react-redux";
-import { useTranslation } from 'react-i18next'; 
-
-
+import { useTranslation } from "react-i18next";
 
 const PostsScreen = () => {
   const navigation = useNavigation();
@@ -45,15 +43,15 @@ const PostsScreen = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [likeStatus, setLikeStatus] = useState({});
 
-  const {
-    id: userId,
-    name: userName,
-  } = useSelector((state) => state.user.userData); 
+  const { id: userId, name: userName } = useSelector(
+    (state) => state.user.userData
+  );
 
-  const {_id: salonId , name: salonName} = useSelector(state => state.user.usedSalonData)
+  const { _id: salonId, name: salonName } = useSelector(
+    (state) => state.user.usedSalonData
+  );
 
-
-  const baseUrl = "https://ayabeautyn.onrender.com"; 
+  const baseUrl = "https://ayabeautyn.onrender.com";
 
   const requestGalleryPermission = async () => {
     try {
@@ -77,14 +75,14 @@ const PostsScreen = () => {
     }
   };
 
-  const fetchData = async () => { 
+  const fetchData = async () => {
     try {
       const response = await fetch(`${baseUrl}/salons/${salonId}/Post/post`);
       const data = await response.json();
-  
+
       if (Array.isArray(data)) {
         const formattedData = [];
-        for (const item of data) { 
+        for (const item of data) {
           if (item && item.createdAt) {
             formattedData.push({
               ...item,
@@ -103,8 +101,6 @@ const PostsScreen = () => {
       console.error("Error fetching data:", error);
     }
   };
-  
-  
 
   useEffect(() => {
     fetchData();
@@ -113,7 +109,6 @@ const PostsScreen = () => {
   useEffect(() => {
     requestGalleryPermission();
   }, []); // استخدامها فقط للتنفيذ مرة واحدة عندما يتم تحميل الشاشة
-  
 
   const handleDeletePress = async (itemId) => {
     console.log("Deleting item with ID:", itemId);
@@ -136,15 +131,15 @@ const PostsScreen = () => {
 
   const confirmDelete = (itemId) => {
     Alert.alert(
-      t('Confirm deletion'),
-      t('Are you sure you want to delete this salon?'),
+      t("Confirm deletion"),
+      t("Are you sure you want to delete this salon?"),
       [
         {
-          text: t('Cancel'),
-          style: "cancel", 
+          text: t("Cancel"),
+          style: "cancel",
         },
         {
-          text: t('Yes, Delete'),
+          text: t("Yes, Delete"),
           onPress: () => handleDeletePress(itemId),
         },
       ],
@@ -159,15 +154,11 @@ const PostsScreen = () => {
     setEditModalVisible(true);
   };
 
- 
-
- 
-
   const handleSaveEdit = async () => {
     try {
       if (editedItemId) {
         const newText = editedText || null;
-  
+
         const response = await fetch(`${baseUrl}/posts/post/${editedItemId}`, {
           method: "PUT",
           headers: {
@@ -177,7 +168,7 @@ const PostsScreen = () => {
             textPost: newText,
           }),
         });
-  
+
         if (response.ok) {
           const updatedItems = items.map((item) => {
             if (item._id === editedItemId) {
@@ -188,22 +179,24 @@ const PostsScreen = () => {
             }
             return item;
           });
-  
+
           setItems(updatedItems);
           setEditModalVisible(false);
-  
+
           // Call fetchData after successfully updating the post
           fetchData();
         } else {
           const responseData = await response.json();
-          console.error("Failed to update item. Server response:", responseData);
+          console.error(
+            "Failed to update item. Server response:",
+            responseData
+          );
         }
       }
     } catch (error) {
       console.error("Error updating item:", error);
     }
   };
-  
 
   const handleCancelEdit = () => {
     setEditModalVisible(false);
@@ -213,16 +206,16 @@ const PostsScreen = () => {
     const now = new Date();
     const postDate = new Date(createdAt);
     const timeDifference = now - postDate;
-  
+
     if (timeDifference < 60000) {
-      return t('Just Now');
+      return t("Just Now");
     }
-  
+
     const seconds = Math.floor(timeDifference / 1000);
     const minutes = Math.floor(seconds / 60);
     const hours = Math.floor(minutes / 60);
     const days = Math.floor(hours / 24);
-  
+
     if (minutes < 60) {
       return `${minutes}m`;
     } else if (hours < 24) {
@@ -233,29 +226,28 @@ const PostsScreen = () => {
       return postDate.toLocaleDateString("en-GB");
     }
   };
-  
 
   // useEffect(() => {
   //   requestGalleryPermission();
   //   fetchData();
   // }, [isLoggedIn]);
 
-  
-
   const handleToggleLike = async (itemId) => {
-   
     try {
-      const response = await fetch(`${baseUrl}/posts/post/${itemId}/${userId}`, {
-        method: "POST", 
-      });
-      
+      const response = await fetch(
+        `${baseUrl}/posts/post/${itemId}/${userId}`,
+        {
+          method: "POST",
+        }
+      );
+
       if (response.ok) {
         const responseData = await response.json();
         const updatedItems = items.map((item) => {
           if (item._id === itemId) {
             return {
               ...item,
-              likes: new Array( responseData.likes),
+              likes: new Array(responseData.likes),
             };
           }
           return item;
@@ -274,13 +266,6 @@ const PostsScreen = () => {
     }
   };
 
-
-
-
-
-
-
-
   return (
     <MenuProvider>
       <View style={styles.container}>
@@ -289,23 +274,23 @@ const PostsScreen = () => {
         <Header />
 
         <View style={styles.postInputContainer}>
-        {role === "Admin" && (
-          <View style={styles.postingContainer}>
-            <Image
-              source={require("../../assets/3.jpg")}
-              style={styles.userImage}
-            />
-            <View style={styles.postInputWrapper}>
-              <Button
-                title={t('What do you want to share?')}
-                type="outline"
-                onPress={() => navigation.navigate("AddPost")}
-                buttonStyle={styles.postButton}
-                titleStyle={styles.postButtonTitle}
+          {role === "Admin" && (
+            <View style={styles.postingContainer}>
+              <Image
+                source={require("../../assets/3.jpg")}
+                style={styles.userImage}
               />
+              <View style={styles.postInputWrapper}>
+                <Button
+                  title={t("What do you want to share?")}
+                  type="outline"
+                  onPress={() => navigation.navigate("AddPost")}
+                  buttonStyle={styles.postButton}
+                  titleStyle={styles.postButtonTitle}
+                />
+              </View>
             </View>
-          </View>
-        )}
+          )}
         </View>
 
         <FlatList
@@ -314,27 +299,28 @@ const PostsScreen = () => {
           renderItem={({ item }) => (
             <Card containerStyle={styles.card}>
               {role === "Admin" && (
-              <Menu>
-                <MenuTrigger style={styles.pointsContainer}>
-                  <Icon name="ellipsis-vertical" color="#5e366a" size={20} />
-                </MenuTrigger>
-                <MenuOptions>
-                  <MenuOption
-                    onSelect={() => confirmDelete(item._id)}
-                    text="Delete"
-                  />
-                  <MenuOption
-                    onSelect={() =>
-                      handleEditPress(
-                        item._id,
-                        item.textPost,
-                        item?.image?.secure_url || ""
-                      )
-                    }
-                    text="Edit"
-                  />
-                </MenuOptions>
-              </Menu> )}
+                <Menu>
+                  <MenuTrigger style={styles.pointsContainer}>
+                    <Icon name="ellipsis-vertical" color="#5e366a" size={20} />
+                  </MenuTrigger>
+                  <MenuOptions>
+                    <MenuOption
+                      onSelect={() => confirmDelete(item._id)}
+                      text="Delete"
+                    />
+                    <MenuOption
+                      onSelect={() =>
+                        handleEditPress(
+                          item._id,
+                          item.textPost,
+                          item?.image?.secure_url || ""
+                        )
+                      }
+                      text="Edit"
+                    />
+                  </MenuOptions>
+                </Menu>
+              )}
 
               <View style={styles.cardContentContainer}>
                 {/* New section for the small circular image and name */}
@@ -361,9 +347,7 @@ const PostsScreen = () => {
               <View style={styles.postInteractions}>
                 <TouchableOpacity
                   onPress={() => {
-                    
-                      handleToggleLike(item._id);
-                    
+                    handleToggleLike(item._id);
                   }}
                 >
                   <Icon
@@ -489,7 +473,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: 5,
     marginTop: 15,
-    marginBottom: -5
+    marginBottom: -5,
   },
   postHeader: {
     gap: 1,
