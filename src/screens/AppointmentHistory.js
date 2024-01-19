@@ -43,6 +43,10 @@ const AppointmentsScreen = () => {
     setSortOrder(sortOrder === "asc" ? "desc" : "asc");
   };
 
+  const handleDetailsPress = (item) => {
+    navigation.navigate("UserDetails", { item });
+  };
+
   const confirmDelete = (itemId) => {
     Alert.alert(
       "Delete Confirmation",
@@ -166,10 +170,26 @@ const AppointmentsScreen = () => {
               <Text style={styles.appointmentContent}>
                 Time: {item.appointment_time}
               </Text>
-              <Text style={styles.appointmentContent}>
-                Service: {item.serviceType}
-              </Text>
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  width: "100%",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Text style={styles.appointmentContent}>
+                  Service: {item.serviceType}
+                </Text>
+                <TouchableOpacity
+                  style={styles.styleIcons}
+                  onPress={() => handleDetailsPress(item)}
+                >
+                  <Text style={styles.details}>User Details</Text>
+                </TouchableOpacity>
+              </View>
             </View>
+
             <TouchableOpacity
               style={styles.removeButton}
               onPress={() => confirmDelete(item._id)}
@@ -250,6 +270,18 @@ const styles = StyleSheet.create({
     left: Spacing * 22,
     padding: Spacing / 2,
     zIndex: 1,
+  },
+  styleIcons: {
+    backgroundColor: Color.primary,
+    padding: Spacing / 2,
+    borderRadius: Spacing,
+    marginTop: -8,
+  },
+  details: {
+    color: "#fff",
+    fontSize: 15,
+    fontWeight: "400",
+    padding: 4,
   },
 });
 

@@ -17,12 +17,13 @@ import { useSelector } from "react-redux";
 import { serialize } from "object-to-formdata";
 import { Box, useToast } from "native-base";
 import WhatsApp from "../Common/WhatsApp";
+import { useNavigation } from "@react-navigation/native";
 
 const screenwidth = Dimensions.get("window").width;
 
 const BookingScreen = () => {
   const toast = useToast();
-
+  const navigation = useNavigation();
   const { userData, usedSalonData } = useSelector((state) => state.user);
   const { id: userId, name: userName } = userData;
   const { _id: salonId, name: salonName } = usedSalonData;
@@ -210,6 +211,7 @@ const BookingScreen = () => {
             </Box>
           ),
         });
+        navigation.navigate("PathologicalCase");
       }
     } catch (err) {
       console.log(err.message);

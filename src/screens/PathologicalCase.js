@@ -10,34 +10,61 @@ import Color from "../Common/Color.js";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { Ionicons } from "@expo/vector-icons";
 import React, { useState } from "react";
-import axios from "axios";
+import { Box, useToast } from "native-base";
 import { useSelector } from "react-redux";
 
 const PathologicalCase = () => {
   const [problem, setProblem] = useState("");
+  const toast = useToast();
+  const { userData } = useSelector((state) => state.user);
+  const { id: userId } = userData;
 
   const onChangeProblemHandler = (problem) => {
     setProblem(problem);
   };
 
   const navigation = useNavigation();
+  const baseUrl = "https://ayabeautyn.onrender.com";
+
+  const handleHomePress = () => {
+    navigation.navigate("MainScreen2");
+  };
 
   const handleProblem = async () => {
-    const baseUrl = "https://ayabeautyn.onrender.com";
-    //const token ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1NzA5N2FmYTBlMTZmZmRjZmMwNTBkMCIsInJvbGUiOiJBZG1pbiIsImlhdCI6MTcwMjIyNzgwNSwiZXhwIjoxNzAyMjMxNDA1fQ.hmV060BPh5uYiBGrghwJSTrHR4JTw_wfk7U5iDmVKZc"
-    try {
-      const response = await axios.post(`${baseUrl}/problems/problem`, {
-        problem,
-      });
+    const data = {
+      problem: problem,
+      user_id: userId,
+    };
 
-      if (response.status === 201) {
-        setProblem("");
-        navigation.navigate("SalonScreen");
-      } else {
-        console.error("Error:", error.response.status, error.response.data);
+    try {
+      const response = await fetch(`${baseUrl}/problems/problem`, {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+      });
+      const json = await response.json();
+
+      if (!response.ok) {
+        console.warn(json.error);
       }
-    } catch (error) {
-      console.error("Error:", error.message);
+
+      if (response.ok) {
+        console.log("Response JSON:", json);
+
+        toast.show({
+          render: () => (
+            <Box bg="emerald.500" px="5" py="5" rounded="sm" mb={5}>
+              Your status is submitted successfully
+            </Box>
+          ),
+        });
+        navigation.navigate("MainScreen2");
+      }
+    } catch (err) {
+      console.log(err.message);
     }
   };
 
@@ -74,16 +101,31 @@ const PathologicalCase = () => {
           placeholder="    write here..."
         />
       </View>
-
-      <TouchableOpacity
-        onPress={() => {
-          handleProblem();
+      <View
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          width: "100%",
+          justifyContent: "space-around",
         }}
       >
-        <Text style={styles.buttonStyle}>
-          <Ionicons name="paper-plane" size={25} color="#ebebeb" /> Submit Form
-        </Text>
-      </TouchableOpacity>
+        <TouchableOpacity onPress={handleProblem}>
+          <Text style={styles.buttonStyle}>
+            <Ionicons name="paper-plane" size={25} color="#ebebeb" /> Submit
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={handleHomePress}>
+          <Text style={styles.buttonStyle}>
+            <Ionicons
+              name="home"
+              size={25}
+              color="#ebebeb"
+              style={styles.icon}
+            />
+            Home
+          </Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -128,12 +170,10 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   buttonStyle: {
-    padding: 15,
+    padding: 18,
     marginTop: 230,
-    marginHorizontal: 100,
     fontWeight: "400",
     fontSize: 20,
-    textAlign: "center",
     color: "#ebebeb",
     backgroundColor: Color.primary,
   },
