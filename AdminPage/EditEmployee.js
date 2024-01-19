@@ -1,7 +1,7 @@
 import {
   StyleSheet,
   Text,
-  View,
+  View, 
   TextInput,
   Image,
   TouchableOpacity,
@@ -25,8 +25,11 @@ import * as ImagePicker from "expo-image-picker";
 import { Box, useToast } from "native-base";
 import RNPickerSelect from "react-native-picker-select";
 import axios from "axios";
+import { useTranslation } from 'react-i18next'; 
 
 const EditEmployee = ({ route }) => {
+  const [t] = useTranslation();
+
   const { item } = route.params;
 
   const initialValues = item
@@ -51,10 +54,11 @@ const EditEmployee = ({ route }) => {
     axios(configurationObject)
       .then((response) => {
         if (response.status === 200) {
+          navigation.navigate("EmployeesScreen");
           toast.show({
             render: () => (
               <Box bg="emerald.500" px="5" py="5" rounded="sm" mb={5}>
-                Employee updated successfully
+                {t('Employee information')}
               </Box>
             ),
           });
@@ -63,15 +67,18 @@ const EditEmployee = ({ route }) => {
             job: "",
             experienceYears: "",
           });
-        } else {
+        } 
+        
+        else {
           throw new Error("An error has occurred");
         }
       })
+      
       .catch((error) => {
         toast.show({
           render: () => (
             <Box bg="red.500" px="5" py="5" rounded="sm" mb={5}>
-              Error updating employee
+              {t('Error in update')}
             </Box>
           ),
         });
@@ -82,14 +89,14 @@ const EditEmployee = ({ route }) => {
   return (
     <ScrollView>
       <View style={styles.contanier}>
-        <Text style={styles.TextStyleHeader}>Update Employee</Text>
+        <Text style={styles.TextStyleHeader}>{t('Update Employee')}</Text>
 
         <View style={styles.formgroup}>
           <TextInput
             value={FData.name}
             onChangeText={(text) => setFData({ ...FData, name: text })}
             style={styles.input}
-            placeholder="Employee Name "
+            placeholder={t('EmpName')}
           />
           <FontAwesomeIcon icon={faFileSignature} style={styles.icon} />
         </View>
@@ -99,7 +106,7 @@ const EditEmployee = ({ route }) => {
             value={FData.job}
             onChangeText={(text) => setFData({ ...FData, job: text })}
             style={[styles.input]}
-            placeholder="Employee Job"
+            placeholder={t('EmpJob')}
           />
           <FontAwesomeIcon
             icon={faBook}
@@ -114,19 +121,19 @@ const EditEmployee = ({ route }) => {
               setFData({ ...FData, experienceYears: text })
             }
             style={styles.input}
-            placeholder="Years of experience"
+            placeholder={t('Year')}
           />
           <Icon name="checkmark-circle" size={22} style={styles.icon} />
         </View>
 
         <TouchableOpacity onPress={() => handleEditSalon(item._id)}>
-          <Text style={styles.buttonStyle}>Edit Salon</Text>
+          <Text style={styles.buttonStyle}>{t('Update')}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           onPress={() => navigation.navigate("EmployeesScreen")}
         >
-          <Text style={[styles.buttonStyle, styles.buttonStyle1]}>cancel</Text>
+          <Text style={[styles.buttonStyle, styles.buttonStyle1]}>{t('Cancel')}</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>

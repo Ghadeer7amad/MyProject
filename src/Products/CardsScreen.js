@@ -8,9 +8,12 @@ import { Ionicons } from "@expo/vector-icons";
 import { BlurView } from 'expo-blur';
 import Spacing from "../Common/Spacing.js"
 import {useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';  
 
 const CardsScreen = () => {
   const navigation = useNavigation();
+  const [t] = useTranslation();
+
   const token = useSelector((state) => state.user.userData.token);
   const [cartData, setCartData] = useState([]);
   const [isTouched, setIsTouched] = useState(false);
@@ -43,7 +46,6 @@ const CardsScreen = () => {
         const data = await response.json();
         const totalPrice = data.totalCartPrice; 
         setTotalPrice(totalPrice);
-        console.log("Total Priceeeeeeeeeeee:", totalPrice);
       } catch (error) {
         console.error('Error during checkout:', error.message);
       }
@@ -113,7 +115,7 @@ const CardsScreen = () => {
         if (response.status === 401) {
           setErrorMessage((prevMessages) => ({
             ...prevMessages,
-            [productId]: "This product is sold out.\n Quantity will be renewed soon",
+            [productId]: t('This product'),
           }));
         }
         fetchCartData();
@@ -146,7 +148,7 @@ const CardsScreen = () => {
         }
     
       } catch (error) {
-        console.error('Error updating quantity:', error.message);
+        console.error(t('Error updating quantity'), error.message);
       }
     };
     
@@ -167,8 +169,8 @@ const CardsScreen = () => {
       </TouchableOpacity>
       
       <View style={{flexDirection:"column"}}>
-        <Text style={{fontSize: 30, textAlign:"left", color: "#929aab"}}>Shopping</Text>
-        <Text style={{fontSize: 30, fontWeight:"bold", textAlign:"left", color:"black"}}>Cart</Text>
+        <Text style={{fontSize: 30, textAlign:"left", color: "#929aab"}}>{t('Shopping')}</Text>
+        <Text style={{fontSize: 30, fontWeight:"bold", textAlign:"left", color:"black"}}>{t('Cart')}</Text>
         </View>
       </View>
       
@@ -217,7 +219,7 @@ const CardsScreen = () => {
 ))}
 
 <View style={{flexDirection:"row", justifyContent: "space-between", margin: 20, borderBottomWidth: 1, borderColor:"black"}}>
-            <Text style={{fontSize: 25, color: "black"}}>Total Price</Text>
+            <Text style={{fontSize: 25, color: "black"}}>{t('Total Price')}</Text>
             <Text style={{fontSize: 25, color: "#929aab"}}>${totalPrice}</Text>
           </View>
 
@@ -232,7 +234,7 @@ const CardsScreen = () => {
           <Text
             style={[
               styles.styleTextButton,
-              isTouched ? styles.touchedTextButton : null]}>Check Out</Text>
+              isTouched ? styles.touchedTextButton : null]}>{t('Check Out')}</Text>
 
         </TouchableOpacity>
         

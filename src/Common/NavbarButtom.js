@@ -24,6 +24,10 @@ const NavbarButtom = ({ onChange }) => {
     navigation.navigate('MainScreen2');
   };
 
+  const handlefavPress = () => {
+    navigation.navigate('Favorite');
+  };
+
   return (
     <View >
       <View style={styles.container}>
@@ -72,6 +76,7 @@ const NavbarButtom = ({ onChange }) => {
 
         <TouchableOpacity
           onPress={() => {
+            handlefavPress();
             handleIconPress("favorite");
           }}
         >

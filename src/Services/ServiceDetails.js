@@ -4,10 +4,14 @@ import Color from "../Common/Color.js";
 import Icon from "react-native-vector-icons/Ionicons";
 import { FontAwesome as Iconn } from '@expo/vector-icons';
 import { useNavigation } from "@react-navigation/native";
+import { useTranslation } from 'react-i18next';  
+
 
 const ServiceDetailsScreen = ({ route }) => {
   const { service } = route.params;
   const navigation = useNavigation();
+  const [t] = useTranslation();
+
 
   const handleBookAppointment = () => {
     navigation.navigate("BookingScreen", { service });
@@ -44,20 +48,20 @@ const ServiceDetailsScreen = ({ route }) => {
         </View>
 
         <Text style={{ fontSize: 23, color: "black", fontWeight: "bold", marginLeft: 20 }}>
-          Description
+        {t('Des')}
         </Text>
         <Text style={styles.description}>{service.description}</Text>
 
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.button} onPress={handleBookAppointment}>
-            <Text style={styles.buttonText}>Book Now</Text>
+            <Text style={styles.buttonText}>{t('Book Now')}</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
             style={[styles.button, styles.button1]}
             onPress={handleCancelAppointment}
           >
-            <Text style={styles.buttonText1}>Cancel</Text>
+            <Text style={styles.buttonText1}>{t('Cancel')}</Text>
           </TouchableOpacity>
         </View>
       </View>

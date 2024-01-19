@@ -1,4 +1,3 @@
-//import * as Localization from 'expo-localization';
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import translationEN from "./locale/en.json"
@@ -20,7 +19,7 @@ i18n
   .init({
     resources,
     lng: 'ar',
-    fallbackLng: 'en',
+    //fallbackLng: 'en',
     interpolation: {
       escapeValue: false,
     },

@@ -153,7 +153,7 @@ const AddJob = () => {
       </View>
 
       <TouchableOpacity onPress={addJob}>
-        <Text style={styles.buttonStyle}>{t('Add Job')}</Text>
+        <Text style={styles.buttonStyle}>{t('Add')}</Text>
       </TouchableOpacity>
 
       <TouchableOpacity onPress={() => navigation.navigate("Jobs")}>

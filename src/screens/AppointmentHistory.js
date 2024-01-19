@@ -18,9 +18,13 @@ import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import React, { useState, useEffect } from "react";
 import { Select } from "native-base";
+import { useTranslation } from 'react-i18next'; 
+
 
 const AppointmentsScreen = () => {
   const navigation = useNavigation();
+  const [t, i18n] = useTranslation();
+
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [filteredItems, setFilteredItems] = useState([]);
@@ -45,15 +49,15 @@ const AppointmentsScreen = () => {
 
   const confirmDelete = (itemId) => {
     Alert.alert(
-      "Delete Confirmation",
-      "Are you sure you want to cancle this appointment?",
+      t('Confirm deletion'),
+      t('Are you sure you want to delete this salon?'),
       [
         {
-          text: "Cancel",
+          text: t('Cancel'),
           style: "cancel",
         },
         {
-          text: "Yes, Delete",
+          text: t('Yes, Delete'),
           onPress: () => handleCancleAppointment(itemId),
         },
       ],
@@ -114,10 +118,10 @@ const AppointmentsScreen = () => {
       <Header />
       <View style={styles.container2}>
         <Text style={[styles.styleText, styles.styleText2]}>
-          Appointment History.
+        {t('Appointment Archive')}
         </Text>
         <CustomSearchBar
-          placeholder={"Search Customer"}
+          placeholder={t('Customer search')}
           onSearch={handleSearch}
         />
       </View>
@@ -130,15 +134,15 @@ const AppointmentsScreen = () => {
         }}
       >
         <Select
-          placeholder="Select Service"
+          placeholder={t('closest')}
           style={{ width: 10, fontSize: 18 }}
           color={Color.primary}
           selectedValue={sortType}
           onValueChange={(value) => handleSortChange(value)}
         >
           {[
-            { id: 1, name: "closest" },
-            { id: 2, name: "furthest" },
+            { id: 1, name: t('closest') },
+            { id: 2, name: t('furthest') },
           ].map((item) => (
             <Select.Item
               key={item.id}
@@ -177,7 +181,7 @@ const AppointmentsScreen = () => {
         )}
       />
       <TouchableOpacity onPress={handleHomePress}>
-        <Text style={styles.buttonStyle}>Home</Text>
+        <Text style={styles.buttonStyle}>{t('Home')}</Text>
       </TouchableOpacity>
 
       <NavbarButtom onChange={(selectedIcon) => console.log(selectedIcon)} />

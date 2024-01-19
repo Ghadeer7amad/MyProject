@@ -12,6 +12,8 @@ import { Ionicons } from "@expo/vector-icons";
 import React, { useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import { useTranslation } from 'react-i18next'; 
+
 
 const PathologicalCase = () => {
   const [problem, setProblem] = useState("");
@@ -21,10 +23,11 @@ const PathologicalCase = () => {
   };
 
   const navigation = useNavigation();
+  const [t, i18n] = useTranslation();
+
 
   const handleProblem = async () => {
     const baseUrl = "https://ayabeautyn.onrender.com";
-    //const token ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1NzA5N2FmYTBlMTZmZmRjZmMwNTBkMCIsInJvbGUiOiJBZG1pbiIsImlhdCI6MTcwMjIyNzgwNSwiZXhwIjoxNzAyMjMxNDA1fQ.hmV060BPh5uYiBGrghwJSTrHR4JTw_wfk7U5iDmVKZc"
     try {
       const response = await axios.post(`${baseUrl}/problems/problem`, {
         problem,

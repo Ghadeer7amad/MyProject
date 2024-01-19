@@ -21,9 +21,12 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { editCurrentUser } from "../src/redux/user/userActions.js";
+import { useTranslation } from 'react-i18next'; 
 
 const EditProfile = ({ route }) => {
   const navigation = useNavigation();
+  const [t] = useTranslation();
+
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
@@ -59,6 +62,7 @@ const EditProfile = ({ route }) => {
     axios(configurationObject)
       .then((response) => {
         if (response.status === 200) {
+          navigation.navigate("Settings");
           console.log(response.data);
           dispatch(
             editCurrentUser({ ...response.data, name: response.data.userName })
@@ -66,7 +70,7 @@ const EditProfile = ({ route }) => {
           toast.show({
             render: () => (
               <Box bg="emerald.500" px="5" py="5" rounded="sm" mb={5}>
-                Profile updated successfully
+                {t('Profile updated successfully')}
               </Box>
             ),
           });
@@ -93,7 +97,7 @@ const EditProfile = ({ route }) => {
   return (
     <ScrollView>
       <View style={styles.container}>
-        <Text style={styles.textStyleHeader}>Update Profile</Text>
+        <Text style={styles.textStyleHeader}>{t('Update Profile')}</Text>
 
         <View style={styles.formGroup}>
           <TextInput
@@ -145,11 +149,11 @@ const EditProfile = ({ route }) => {
         </View>
 
         <TouchableOpacity onPress={() => handleEditProfile()}>
-          <Text style={styles.buttonStyle}>Update Profile</Text>
+          <Text style={styles.buttonStyle}>{t('Update')}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
-          <Text style={[styles.buttonStyle, styles.buttonStyle1]}>Cancel</Text>
+          <Text style={[styles.buttonStyle, styles.buttonStyle1]}>{t('Cancel')}</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>

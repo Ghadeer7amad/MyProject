@@ -1,30 +1,25 @@
 import {
   View,
-  Text, 
+  Text,
   FlatList,
   StyleSheet,
-  Image,
-  TextInput,
   TouchableOpacity,
-  Alert,
-  PermissionsAndroid 
+  ActivityIndicator,
+  Linking,
 } from "react-native";
 import CustomSearchBar from "../Common/SearchBarComponent.js";
 import Header from "../screens/Header.js";
 import NavbarButtom from "../Common/NavbarButtom.js";
 import Color from "../Common/Color.js";
 import Spacing from "../Common/Spacing.js";
-import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import React, { useState, useEffect } from "react";
-import SearchProANDSer from "../Common/SerachProANDSer.js";
 import { useSelector } from "react-redux";
 import axios from "axios";
-import { useTranslation } from 'react-i18next'; 
-
+import { useTranslation } from "react-i18next";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 // import Pdf from 'react-native-pdf';
-
 
 const JobHistory = () => {
   const navigation = useNavigation();
@@ -39,7 +34,6 @@ const JobHistory = () => {
   const [Services, setServices] = useState(null);
   const [filteredItems, setFilteredItems] = useState([]);
 
-
   const handleHomePress = (item) => {
     navigation.navigate("MainScreen2", { item });
   };
@@ -51,8 +45,7 @@ const JobHistory = () => {
     setFilteredItems(filteredData);
   };
 
-
-  const baseUrl = "https://ayabeautyn.onrender.com"; 
+  const baseUrl = "https://ayabeautyn.onrender.com";
 
   useEffect(() => {
     const fetchData = async () => {
@@ -69,44 +62,58 @@ const JobHistory = () => {
   }, []);
 
   return (
-      <View style={styles.container}>
-        <Header />
-        <View style={styles.container2}>
-          <Text style={[styles.styleText]}>{t('Job archive')}</Text>
-          <SearchProANDSer
-          placeholder={t('Search person')}
+    <View style={styles.container}>
+      <Header />
+      <View style={styles.container2}>
+        <Text style={[styles.styleText]}>{t("Job archive")}</Text>
+        <CustomSearchBar
+          placeholder={t("Search person")}
           onSearch={handleSearch}
         />
-        </View>
-    
-       
-    
+      </View>
+
+      {isLoading ? (
+        <ActivityIndicator size="large" color="#000" />
+      ) : (
         <FlatList
-          data={items}
+          data={filteredItems.length > 0 ? filteredItems : items}
           keyExtractor={(item) => item._id}
           renderItem={({ item }) => (
             <View style={styles.appointmentContainer}>
               <View style={styles.userContainer}>
                 <Text style={styles.userName}>{item.user_name}</Text>
-                <Text style={styles.appointmentContent}>
-                  Job Name: {item.jobName}
-                </Text>
-              
-                <Text>CV File: {item.image.secure_url}</Text>
-
+                <View
+                  style={{ display: "flex", gap: 15, flexDirection: "row" }}
+                >
+                  <Icon name="briefcase" size={25} color="#555555" />
+                  <Text style={styles.appointmentContent}>
+                    Job name: {item.jobName}
+                  </Text>
+                </View>
+                <View
+                  style={{ display: "flex", gap: 15, flexDirection: "row" }}
+                >
+                  <Icon name="file-pdf-o" size={25} color="#555555" />
+                  <Text style={styles.appointmentContent}>CV File:</Text>
+                  <TouchableOpacity
+                    onPress={() => Linking.openURL(item.image.secure_url)}
+                  >
+                    <Icon name="download" size={25} color="#555555" />
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
           )}
         />
-    
-        <TouchableOpacity onPress={handleHomePress}>
-          <Text style={styles.buttonStyle}>{t('Home')}</Text>
-        </TouchableOpacity>
-    
-        <NavbarButtom onChange={(selectedIcon) => console.log(selectedIcon)} />
-      </View>
-    );
-    
+      )}
+
+      <TouchableOpacity onPress={handleHomePress}>
+        <Text style={styles.buttonStyle}>{t("Home")}</Text>
+      </TouchableOpacity>
+
+      <NavbarButtom onChange={(selectedIcon) => console.log(selectedIcon)} />
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
@@ -117,30 +124,29 @@ const styles = StyleSheet.create({
   appointmentContainer: {
     backgroundColor: "#ffffff",
     margin: 15,
-    marginBottom:2,
+    marginBottom: 2,
     flexDirection: "row",
     borderWidth: 1,
     borderColor: Color.primary,
-     position: "relative",
+    position: "relative",
   },
   userContainer: {
     flexDirection: "column",
     justifyContent: "center",
     width: "100%",
     padding: 20,
-   
-
   },
   userName: {
-    fontSize: 20,
+    fontSize: 23,
     fontWeight: "bold",
-    marginBottom: 5,
+    marginBottom: 15,
     color: "#555555",
   },
   appointmentContent: {
-    fontSize: 17,
+    fontSize: 20,
     color: "#848482",
     fontWeight: "bold",
+    marginBottom: 15,
   },
   styleText: {
     color: Color.primary,
@@ -169,10 +175,10 @@ const styles = StyleSheet.create({
   },
   removeButton: {
     position: "absolute",
-    top: Spacing/2,
-    left: Spacing*22,
+    top: Spacing / 2,
+    left: Spacing * 22,
     padding: Spacing / 2,
-    zIndex: 1, 
+    zIndex: 1,
   },
 });
 

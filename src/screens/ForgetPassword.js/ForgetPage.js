@@ -14,7 +14,7 @@ import Color from "../../Common/Color.js";
 import React, { useState } from "react";
 import axios from "axios";
 import { Box, useToast } from "native-base";
-import { useTranslation } from 'react-i18next'; 
+import { useTranslation } from 'react-i18next';  
 
 
 const ForgetPage = () => {
@@ -68,9 +68,9 @@ const ForgetPage = () => {
     }
   };
 
-  // {t('Job Description')}  
+  // {t('two')}          
   return (
-    <View style={styles.contanier}>
+    <View style={styles.contanier}> 
       <Image
         style={styles.contanier1}
         source={require("../../../assets/forgetpassword.png")}

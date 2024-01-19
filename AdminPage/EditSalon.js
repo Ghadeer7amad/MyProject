@@ -112,7 +112,7 @@ const EditSalon = ({ route }) => {
         </View>
 
         <TouchableOpacity onPress={() => handleEditSalon(item._id)}>
-          <Text style={styles.buttonStyle}>{t('Edit Salon')}</Text>
+          <Text style={styles.buttonStyle}>{t('Update')}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => navigation.navigate("SalonScreen")}>

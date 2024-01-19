@@ -3,7 +3,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Card, Button } from "react-native-elements";
 import Icon from "react-native-vector-icons/Ionicons";
 import Header from "./Header.js";
-import NavbarButtom from "../Common/NavbarButtom.js";
+import NavbarButtom from "../Common/NavbarButtom.js"; 
 import Modal from "react-native-modal";
 import * as ImagePicker from "expo-image-picker";
 import {
@@ -33,7 +33,7 @@ import { useTranslation } from 'react-i18next';
 
 const PostsScreen = () => {
   const navigation = useNavigation();
-  const [t, i18n] = useTranslation();
+  const [t, i18n] = useTranslation();  
 
   const { role } = useSelector((state) => state.user.userData);
   const [items, setItems] = useState([]);
@@ -291,10 +291,7 @@ const PostsScreen = () => {
         <View style={styles.postInputContainer}>
         {role === "Admin" && (
           <View style={styles.postingContainer}>
-            <Image
-              source={require("../../assets/3.jpg")}
-              style={styles.userImage}
-            />
+
             <View style={styles.postInputWrapper}>
               <Button
                 title={t('What do you want to share?')}
@@ -429,13 +426,7 @@ const styles = StyleSheet.create({
   userContainer: {
     flexDirection: "row",
     alignItems: "center",
-  },
-  userImage: {
-    width: 35,
-    height: 50,
-    borderRadius: 25,
-    marginRight: 10,
-  },
+  }, 
   userName: {
     fontSize: 18,
     fontWeight: "bold",

@@ -16,11 +16,15 @@ import Spacing from '../Common/Spacing.js'
 import { BlurView } from 'expo-blur'
 import { useSelector, useDispatch } from 'react-redux';
 import { Box, useToast } from "native-base";
+import { useTranslation } from 'react-i18next';  
 
-const { height} = Dimensions.get("window");
+
+const { height} = Dimensions.get("window");  
 
 const ProductsDetails = ({ route }) => {
   const navigation = useNavigation();
+  const [t] = useTranslation();
+
   const token = useSelector((state) => state.user.userData.token);
   const toast = useToast();
   const { product } = route.params;
@@ -51,7 +55,7 @@ const ProductsDetails = ({ route }) => {
           toast.show({
             render: () => (
               <Box bg='#c81912' px="8" py="5" rounded="sm" mb={5}>
-                Product already in favorites
+                {t('Product already in favorites')}
               </Box>
             )
           });
@@ -81,8 +85,8 @@ const ProductsDetails = ({ route }) => {
                 <BlurView tint="light" style={styles.BlurViewStyle}>
                     <View>
                         <Text style={styles.productName}>{product.name}</Text>
-                        <Text style={{color:"black", fontWeight: 'bold'}}>stock   {product.stock}</Text>
-                        <Text style={{color:"black", fontWeight: 'bold'}}>Discount   %{product.discount}</Text>
+                        <Text style={{color:"black", fontWeight: 'bold'}}>{t('stock')}   {product.stock}</Text>
+                        <Text style={{color:"black", fontWeight: 'bold'}}>{t('Discount')}   %{product.discount}</Text>
                         
 
                 <View style={{flexDirection:"row", justifyContent:"space-between"}}>
@@ -100,7 +104,7 @@ const ProductsDetails = ({ route }) => {
                    />
                
                    <TouchableOpacity>
-                   <Text style={styles.icanNameStyle}>Favorite</Text>
+                   <Text style={styles.icanNameStyle}>{t('fav')}</Text>
                    </TouchableOpacity>
                 </View>
                 </View>
@@ -112,7 +116,7 @@ const ProductsDetails = ({ route }) => {
     <View>    
       <View>
       <View>
-        <Text style={styles.descriptionText}> Description </Text>
+        <Text style={styles.descriptionText}> {t('Description')} </Text>
       </View>
       </View>
         <Text style={styles.DiscriptionStyle}>{product.description}</Text>
@@ -121,7 +125,7 @@ const ProductsDetails = ({ route }) => {
     <View style={{flexDirection:"row"}}>
           <View style={{marginTop: 30, paddingLeft: 5}}>
           <Text style={styles.priceStyle}>
-            Price
+          {t('Price')}
           </Text>
             <Text style={styles.priceStyle}>${product.finalPrice}</Text>
         </View>
@@ -135,7 +139,7 @@ const ProductsDetails = ({ route }) => {
           <Text
             style={[
               styles.styleTextButton,
-              isTouched ? styles.touchedTextButton : null]} onPress={()=>navigation.navigate('CardsScreen')}>Buy Now</Text>
+              isTouched ? styles.touchedTextButton : null]} onPress={()=>navigation.navigate('CardsScreen')}>{t('Buy Now')}</Text>
 
         </TouchableOpacity>
     </View>

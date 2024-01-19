@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import './i18n';
 import { useTranslation } from 'react-i18next';
 
@@ -50,7 +50,9 @@ import EditServices from './AdminPage/EditServices.js'
 import EditProfile from './AdminPage/EditProfile.js'
 import EditSalon from './AdminPage/EditSalon.js'
 import Advice from './src/screens/Advice.js'
-import PdfViewer from "./src/screens/PdfViewer.js";
+import EditEmployee from './AdminPage/EditEmployee.js'
+
+
 
 import { NativeBaseProvider } from "native-base";
 
@@ -100,15 +102,14 @@ const HomeStack = () => (
     <Stack.Screen name="EditServices" component={EditServices} options={{ headerShown: false }}/>
     <Stack.Screen name="EditProfile" component={EditProfile} options={{ headerShown: false }}/>
     <Stack.Screen name="EditSalon" component={EditSalon} options={{ headerShown: false }}/>
-    <Stack.Screen name="PdfViewer" component={PdfViewer} options={{ headerShown: false }}/>
-
+    <Stack.Screen name="EditEmployee" component={EditEmployee} options={{ headerShown: false }}/>
     <Stack.Screen name="Advice" component={Advice} options={{ headerShown: false }}/>
    
   </Stack.Navigator>
 );
 
 const CustomDrawerContent = (props) => {
-  const [ t, i18n ] = useTranslation(); 
+  
   return (
     <View style={{ flex: 1, justifyContent: "flex-start" }}>
       <Image
@@ -118,7 +119,7 @@ const CustomDrawerContent = (props) => {
 
       <DrawerItem
         style={{ marginVertical: 3, ...styles.drawerItem }}
-        label= "HOME"
+        label="HOME"
         icon={({ color, size }) => (
           <Ionicons name="home" color={Color.primary} size={size} />
         )}
@@ -267,11 +268,11 @@ const CustomDrawerContent = (props) => {
 
 const styles = StyleSheet.create({
   drawerItem: {
-    backgroundColor: "white", // لون الخلفية
+    backgroundColor: "white", 
   },
 });
 
-// ... الكود السابق
+
 
 const App = () => {
   return (

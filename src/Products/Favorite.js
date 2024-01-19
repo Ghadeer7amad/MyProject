@@ -6,9 +6,14 @@ import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from '@react-navigation/native';
 import Spacing from "../Common/Spacing.js"
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';  
 
 const FavoriteScreens = ({ favoriteProducts }) => {
   const navigation = useNavigation();
+  const [t, i18n] = useTranslation();
+
+
+
   const token = useSelector((state) => state.user.userData.token);
   const [FavoriteData, setFavoriteData] = useState([]);
   const [isTouched, setIsTouched] = useState(false);
@@ -83,8 +88,8 @@ const FavoriteScreens = ({ favoriteProducts }) => {
 
         <View style={{ flexDirection: "row" }}>
           <View style={{ flexDirection: "column" }}>
-            <Text style={{ fontSize: 30, textAlign: "left", color: "#929aab" }}>Favorite</Text>
-            <Text style={{ fontSize: 30, fontWeight: "bold", textAlign: "left", color: "black" }}>Products</Text>
+            <Text style={{ fontSize: 30, textAlign: "left", color: "#929aab" }}>{t('Favorite')}</Text>
+            <Text style={{ fontSize: 30, fontWeight: "bold", textAlign: "left", color: "black" }}>{t('Products')}</Text>
           </View>
         </View>
       </View>
@@ -117,7 +122,7 @@ const FavoriteScreens = ({ favoriteProducts }) => {
         ))
        ): (
           <View style={styles.noFavoritesContainer}>
-            <Text style={styles.noFavoritesText}>No favorite products available</Text>
+            <Text style={styles.noFavoritesText}>{t('Favorite products are not available')}</Text>
           </View>
         )}
       </ScrollView>
