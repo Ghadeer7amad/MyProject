@@ -29,6 +29,8 @@ import { useTranslation } from "react-i18next";
 const AddJob = () => {
   const navigation = useNavigation();
   const [t] = useTranslation();
+  const token = useSelector((state) => state.user.userData.token);
+
   const { _id: salonId, name: salonName } = useSelector(
     (state) => state.user.usedSalonData
   );
@@ -80,6 +82,9 @@ const AddJob = () => {
 
       const response = await fetch(`${baseUrl}/jobs/job`, {
         method: "POST",
+        headers: {
+          'Authorization': `Nada__${token}`
+        },
         body: formData,
       });
 

@@ -35,7 +35,7 @@ const PostsScreen = () => {
   const navigation = useNavigation();
   const [t] = useTranslation();  
 
-  const { role } = useSelector((state) => state.user.userData);
+  const { role, token } = useSelector((state) => state.user.userData);
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [editedText, setEditedText] = useState("");
@@ -79,7 +79,12 @@ const PostsScreen = () => {
 
   const fetchData = async () => { 
     try {
-      const response = await fetch(`${baseUrl}/salons/${salonId}/Post/post`);
+      const response = await fetch(`${baseUrl}/salons/${salonId}/Post/post`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Nada__${token}`,
+        },
+      });
       const data = await response.json();
   
       if (Array.isArray(data)) {
@@ -121,6 +126,10 @@ const PostsScreen = () => {
     try {
       const response = await fetch(`${baseUrl}/posts/post/${itemId}`, {
         method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Nada__${token}`,
+        },
       });
 
       if (response.ok) {
@@ -172,6 +181,7 @@ const PostsScreen = () => {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Nada__${token}`,
           },
           body: JSON.stringify({
             textPost: newText,

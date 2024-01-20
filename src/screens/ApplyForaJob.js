@@ -20,6 +20,8 @@ import { useTranslation } from "react-i18next";
 const ApplyForaJob = () => {
   const navigation = useNavigation();
   const [t] = useTranslation();
+  const token = useSelector((state) => state.user.userData.token);
+
 
   const [selectedFile, setSelectedFile] = useState(null);
   const [selectedJob, setSelectedJob] = useState("Laser Specialist");
@@ -50,7 +52,12 @@ const ApplyForaJob = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `${baseUrl}/salons/${salonId}/Job/job`
+          `${baseUrl}/salons/${salonId}/Job/job`, {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Nada__${token}`,
+            },
+          }
         );
         setItems(response.data);
         setIsLoading(false);
@@ -96,11 +103,13 @@ const ApplyForaJob = () => {
 
       const formData = new FormData();
 
+    
       formData.append("image", {
         name: selectedFile.assets[0]?.name,
         uri: selectedFile.assets[0]?.uri,
-        mimetype: selectedFile.assets[0]?.mimeType,
+        type: selectedFile.assets[0]?.type,
       });
+      
 
       formData.append("user_id", userId);
       formData.append("user_name", userName);
@@ -111,10 +120,11 @@ const ApplyForaJob = () => {
 
       const response = await axios.post(
         `${baseUrl}/uploadjobs/uploadjob`,
+        
         formData,
-        {
+        { 
           headers: {
-            "Content-Type": "multipart/form-data",
+            'Authorization': `Nada__${token}`
           },
         }
       );

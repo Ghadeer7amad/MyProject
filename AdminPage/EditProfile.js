@@ -26,6 +26,8 @@ import { useTranslation } from 'react-i18next';
 const EditProfile = ({ route }) => {
   const navigation = useNavigation();
   const [t] = useTranslation();
+  const token = useSelector((state) => state.user.userData.token);
+
 
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -47,7 +49,7 @@ const EditProfile = ({ route }) => {
     phone: userPhone,
     address: userAddress,
   };
-  const [FData, setFData] = useState({
+  const [FData, setFData] = useState({  
     ...initialValues,
   });
   const toast = useToast();
@@ -56,6 +58,9 @@ const EditProfile = ({ route }) => {
     const configurationObject = {
       url: `${baseUrl}/profiles/profile/${userId}`,
       method: "PUT",
+      headers: {
+        'Authorization': `Nada__${token}`
+      },
       data: FData,
     };
 

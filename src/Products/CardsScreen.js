@@ -49,7 +49,7 @@ const CardsScreen = () => {
         console.error('Error during checkout:', error.message);
       }
     };
-    useEffect(() => {
+    useEffect(() => { 
   handleCheckOut();
 }, [token]);
     

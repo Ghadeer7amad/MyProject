@@ -17,22 +17,27 @@ import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 
 const Jobs = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation(); 
   const [t] = useTranslation();
 
-  const { role } = useSelector((state) => state.user.userData);
+  const { role, token } = useSelector((state) => state.user.userData);
 
   const { _id: salonId, name: salonName } = useSelector(
     (state) => state.user.usedSalonData
   );
 
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState([]); 
   const [isLoading, setIsLoading] = useState(true);
 
   const baseUrl = "https://ayabeautyn.onrender.com";
   const fetchData = async () => {
     try {
-      const response = await fetch(`${baseUrl}/salons/${salonId}/Job/job`);
+      const response = await fetch(`${baseUrl}/salons/${salonId}/Job/job`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Nada__${token}`,
+        },
+      });
       const data = await response.json();
       setItems(data);
       setIsLoading(false);
@@ -47,6 +52,10 @@ const Jobs = () => {
     try {
       const response = await fetch(`${baseUrl}/jobs/job/${itemId}`, {
         method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Nada__${token}`,
+        },
       });
 
       if (response.ok) {

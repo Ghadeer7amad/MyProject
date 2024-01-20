@@ -6,7 +6,7 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
-import { Button } from "react-native-elements";
+import { Button } from "react-native-elements"; 
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import {
@@ -24,6 +24,8 @@ import { useTranslation } from 'react-i18next';
 const AddPost = () => {
   const navigation = useNavigation();
   const [t] = useTranslation();
+  const token = useSelector((state) => state.user.userData.token);
+
 
   const { _id: salonId, name: salonName } = useSelector(
     (state) => state.user.usedSalonData
@@ -81,6 +83,9 @@ const AddPost = () => {
 
       const response = await fetch(`${baseUrl}/posts/post`, {
         method: "POST",
+        headers: {
+          'Authorization': `Nada__${token}`
+        },
         body: formData,
       });
 
