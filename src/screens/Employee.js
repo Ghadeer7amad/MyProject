@@ -5,8 +5,7 @@ import { FontAwesome as Icon } from "@expo/vector-icons";
 import Color from "../Common/Color.js";
 import { useNavigation } from "@react-navigation/native";
 import React, { useState, useEffect } from "react";
-import { useTranslation } from 'react-i18next';
-
+import { useTranslation } from "react-i18next";
 
 const screenwidth = Dimensions.get("window").width;
 const screenheight = Dimensions.get("window").height;
@@ -40,7 +39,7 @@ const Employee = () => {
             fontWeight: "bold",
           }}
         >
-          {t('Beauty Employee')}
+          {t("Beauty Employee")}
         </Text>
         <Text
           style={{
@@ -50,7 +49,7 @@ const Employee = () => {
             marginRight: 10,
           }}
         >
-          {t('See more')}
+          {t("See more")}
           <Ionicons name="arrow-forward" color="#f9b248" size={20} />
         </Text>
       </View>
@@ -88,7 +87,7 @@ const Employee = () => {
               {item.name}
             </Text>
             <Text style={{ color: Color.secondary, marginBottom: 3 }}>
-              {item.experienceYears} {t('years of experience')}
+              {item.experienceYears} {t("years of experience")}
             </Text>
             <View style={styles.starContainer}>
               <Icon name="star" color="gold" size={15} />

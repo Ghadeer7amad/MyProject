@@ -152,6 +152,7 @@
     "Your appointment is booked successfully": "Your appointment is booked successfully",
     "Select Service": "Select Service",
     "Select Time": "Select Time",
+    "Select Branch": "Select Branch",
     "Send": "Send",
 
     "find the best": "find the best",
@@ -221,8 +222,23 @@
     "one": "-Avoid tanning products and direct exposure to the sun Before and after the session for 7 days.\n\n- Avoid chemical peeling for two weeks before the laser session and for a period of time 5 days later.",
     "two": "-Avoid warm showers and saunas for two days after the session.\n\n- Do hair removal with a shaving razor before the session 48 hours.",
     "three": "-Avoid using scented creams, scrubbing creams or perfumes Directly on the body after the session for 48 hours.\n\n- Commit to the session dates every 3-4 weeks during the course of treatment So you can get a better result.",
-    "four": "-Use cold compresses and prescribed skin conditioners Through the doctor to soothe the skin after the session for 3 days."
-    
+    "four": "-Use cold compresses and prescribed skin conditioners Through the doctor to soothe the skin after the session for 3 days.",
+
+    "User Details": "User Details",
+    "Name": "Name",
+    "Address": "Address",
+    "Age": "Age",
+    "Phone Number": "Phone Number",
+    "User Status": "User Status", 
+    "Back": "Back",
+    "Your status is submitted successfully": "Your status is submitted successfully",
+    "Status": "In order to complete the services as you want and with the desired results, we ask you to mention if you have any health problems orallergies to some things, or even if you are taking medications.",
+    "Sub": "Submit",
+    "dear": "Dear Lady,",
+    "write": "Write here...",
+    "Verification Code": "Verification Code",
+    "Verifiy": "Verifiy",
+    "You will receive a 4digit code": "You will receive a 4-digit code"    
     
 
 

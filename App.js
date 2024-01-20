@@ -40,6 +40,7 @@ import AddPost from "./AdminPage/AddPost.js";
 import AddJob from "./AdminPage/AddJob.js";
 import MainScreen2 from "./src/screens/MainScreen2.js";
 import Employee from "./src/screens/Employee.js";
+import UserDetails from "./src/screens/UserDetails";
 import Offers from "./src/screens/Offers.js";
 import Jobs from "./src/screens/Jobs.js";
 import MainJob from "./src/screens/MainJob.js";
@@ -68,7 +69,7 @@ const HomeStack = () => (
     <Stack.Screen name="Employee" component={Employee} options={{ headerShown: false }}  />
     <Stack.Screen name="Offers" component={Offers} options={{ headerShown: false }}  /> 
     <Stack.Screen name="ChoseScreen" component={ChoseScreen} options={{ headerShown: false }} /> 
-    <Stack.Screen name="Signup" component={Signup} options={{ headerShown: false }}/>
+    <Stack.Screen name="Signup" component={Signup} options={{ headerShown: false }}/> 
     <Stack.Screen name="Login" component={Login} options={{ headerShown: false }}/>
     <Stack.Screen name="ForgetPage" component={ForgetPage} options={{ headerShown: false }}/>
     <Stack.Screen name="ResetPassword" component={ResetPassword} options={{ headerShown: false }}/>
@@ -85,6 +86,7 @@ const HomeStack = () => (
     <Stack.Screen name="ProductsDetails" component={ProductsDetails}options={{ headerShown: false }} />
     <Stack.Screen name="BookingScreen" component={BookingScreen}options={{ headerShown: false }} />
     <Stack.Screen name="AppointmentHistory" component={AppointmentHistory} options={{ headerShown: false }}  />
+    <Stack.Screen name="UserDetails" component={UserDetails} options={{ headerShown: false }}  />
     <Stack.Screen name="EmployeesScreen" component={EmployeesScreen} options={{ headerShown: false }} />
     <Stack.Screen name="EmployeesDetails" component={EmployeesDetailsScreen} options={{ headerShown: false }}/>
     <Stack.Screen name="AddEmployee" component={AddEmployee} options={{ headerShown: false }}/>

@@ -9,7 +9,6 @@ import {
   Alert,
 } from "react-native";
 import CustomSearchBar from "../Common/SearchBarComponent.js";
-import { Picker } from "@react-native-picker/picker";
 import Header from "../screens/Header.js";
 import NavbarButtom from "../Common/NavbarButtom.js";
 import Color from "../Common/Color.js";
@@ -17,6 +16,7 @@ import Spacing from "../Common/Spacing.js";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import React, { useState, useEffect } from "react";
+import Icon from "react-native-vector-icons/FontAwesome";
 import { Select } from "native-base";
 import { useTranslation } from 'react-i18next'; 
 
@@ -28,8 +28,20 @@ const AppointmentsScreen = () => {
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [filteredItems, setFilteredItems] = useState([]);
-  const [sortType, setSortType] = useState("closest"); // or "furthest"
+  const [sortType, setSortType] = useState("Closest"); // or "Furthest"
   const [sortOrder, setSortOrder] = useState("asc"); // or "desc"
+
+  const currentDate = new Date();
+
+  const getStatus = (appointmentDate) => {
+    const appointmentDateTime = new Date(appointmentDate);
+
+    if (appointmentDateTime < currentDate) {
+      return "Done";
+    } else {
+      return "Coming";
+    }
+  };
 
   const handleSearch = (searchText) => {
     const filteredData = items.filter((item) =>
@@ -45,6 +57,10 @@ const AppointmentsScreen = () => {
   const handleSortChange = (type) => {
     setSortType(type);
     setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+  };
+
+  const handleDetailsPress = (item) => {
+    navigation.navigate("UserDetails", { item });
   };
 
   const confirmDelete = (itemId) => {
@@ -76,9 +92,9 @@ const AppointmentsScreen = () => {
         const dateB = new Date(b.appointment_date);
 
         if (sortOrder === "asc") {
-          return sortType === "closest" ? dateA - dateB : dateB - dateA;
+          return sortType === "Closest" ? dateA - dateB : dateB - dateA;
         } else {
-          return sortType === "closest" ? dateB - dateA : dateA - dateB;
+          return sortType === "Closest" ? dateB - dateA : dateA - dateB;
         }
       });
 
@@ -125,12 +141,11 @@ const AppointmentsScreen = () => {
           onSearch={handleSearch}
         />
       </View>
+
       <View
         style={{
-          width: "40%",
+          width: "30%",
           marginLeft: 15,
-          borderWidth: 1,
-          borderColor: Color.primary,
         }}
       >
         <Select
@@ -162,6 +177,9 @@ const AppointmentsScreen = () => {
             <View style={styles.userContainer}>
               <Text style={styles.userName}>{item.user_name}</Text>
               <Text style={styles.appointmentContent}>
+                Branch: {item.branch}
+              </Text>
+              <Text style={styles.appointmentContent}>
                 Date: {item.appointment_date}
               </Text>
               <Text style={styles.appointmentContent}>
@@ -170,7 +188,27 @@ const AppointmentsScreen = () => {
               <Text style={styles.appointmentContent}>
                 Service: {item.serviceType}
               </Text>
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  width: "100%",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Text style={styles.appointmentContent}>
+                  Status: {getStatus(item.appointment_date)}
+                </Text>
+
+                <TouchableOpacity
+                  style={styles.styleIcons}
+                  onPress={() => handleDetailsPress(item)}
+                >
+                  <Text style={styles.details}>{t('User Details')}</Text>
+                </TouchableOpacity>
+              </View>
             </View>
+
             <TouchableOpacity
               style={styles.removeButton}
               onPress={() => confirmDelete(item._id)}
@@ -251,6 +289,22 @@ const styles = StyleSheet.create({
     left: Spacing * 22,
     padding: Spacing / 2,
     zIndex: 1,
+  },
+  styleIcons: {
+    backgroundColor: Color.primary,
+    padding: Spacing / 2,
+    borderRadius: Spacing,
+    marginTop: -8,
+  },
+  details: {
+    color: "#fff",
+    fontSize: 15,
+    fontWeight: "400",
+    padding: 4,
+  },
+  select: {
+    flex: 1,
+    fontSize: 18,
   },
 });
 

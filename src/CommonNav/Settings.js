@@ -12,7 +12,6 @@ import {
   Modal,
   Pressable,
   Appearance,
-
 } from "react-native";
 import One from "../Common/ah.jpg";
 import FeatherIcon from "react-native-vector-icons/Feather";
@@ -23,14 +22,10 @@ import { Ionicons } from "@expo/vector-icons";
 import Spacing from "../Common/Spacing.js";
 import Dark from "../Common/Dark.js";
 
-
-
-import { useTranslation } from 'react-i18next';
-
-
+import { useTranslation } from "react-i18next";
 
 export default function Example() {
-  const [ t, i18n ] = useTranslation(); 
+  const [t, i18n] = useTranslation();
   const navigation = useNavigation();
 
   // Dark Mode
@@ -40,7 +35,6 @@ export default function Example() {
 
   // })
   //  ...(theme === 'light' ? styles.modalView : Dark.modalView)
-
 
   const [isLoading, setIsLoading] = useState(true);
   const [items, setItems] = useState([]);
@@ -63,7 +57,6 @@ export default function Example() {
     }
   };
 
-  
   useEffect(() => {
     fetchData();
   }, []);
@@ -80,62 +73,63 @@ export default function Example() {
 
   const SECTIONS = [
     {
-      header: t('Preferences'),
+      header: t("Preferences"),
       icon: "settings",
       items: [
-
-        { id: "language", 
-        icon: "globe", 
-        color: "#fe9400", 
-        label: t('Language'), 
-        type: "link" },
-      {
-        id: "darkMode",
-        icon: "moon",
-        color: "#807afe",
-        label: t('Dark'),
-        type: "toggle",
-      },
+        {
+          id: "language",
+          icon: "globe",
+          color: "#fe9400",
+          label: t("Language"),
+          type: "link",
+        },
+        {
+          id: "darkMode",
+          icon: "moon",
+          color: "#807afe",
+          label: t("Dark"),
+          type: "toggle",
+        },
         {
           id: "wifi",
           icon: "wifi",
           color: "#807afe",
-          label: t('WiFi'),
+          label: t("WiFi"),
           type: "toggle",
         },
-        { icon: "navigation", 
-        color: "#32c795", 
-        label: t('Location'), 
-        type: "link" },
+        {
+          icon: "navigation",
+          color: "#32c795",
+          label: t("Location"),
+          type: "link",
+        },
 
         {
           id: "accessibilityMode",
           icon: "airplay",
           color: "#fd2d54",
-          label: t('Accessibility'),
+          label: t("Accessibility"),
           type: "toggle",
         },
       ],
     },
 
     {
-      header: t('Help'),
+      header: t("Help"),
       icon: "help-circle",
       items: [
-    
-        { icon: "mail", color: "#a07afe", label: t('Contact Us'), type: "link" },
+        {
+          icon: "mail",
+          color: "#a07afe",
+          label: t("Contact Us"),
+          type: "link",
+        },
       ],
     },
-
   ];
- 
-  
-  
-  
 
-  
   return (
-<SafeAreaView style={{ flex: 1, backgroundColor: "white", }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
       <ScrollView contentContainerStyle={styles.container}>
         <TouchableOpacity
           style={{ marginLeft: Spacing * 2, marginTop: Spacing * 3 }}
@@ -192,9 +186,7 @@ export default function Example() {
                       >
                         <FeatherIcon name={icon} color="#fff" size={18} />
                       </View>
-                      <Text style={styles.rowLabel}>
-                        {label}
-                      </Text>
+                      <Text style={styles.rowLabel}>{label}</Text>
 
                       <View style={{ flex: 1 }} />
 
@@ -227,48 +219,42 @@ export default function Example() {
           );
         })}
 
-<Modal
-  animationType="slide"
-  transparent={true}
-  visible={languageModalVisible}
-  onRequestClose={() => {
-    setLanguageModalVisible(!languageModalVisible);
-  }}
->
-  <View style={styles.centeredView}>
-    <View style={styles.modalView}>
-      <Text style={styles.modalText}>{t('Select Language')}</Text>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={languageModalVisible}
+          onRequestClose={() => {
+            setLanguageModalVisible(!languageModalVisible);
+          }}
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalText}>{t("Select Language")}</Text>
 
-<Pressable
-  style={[styles.button, styles.buttonClose]}
-  onPress={() => {
- 
-    setSelectedLanguage("Arabic");
-    i18n.changeLanguage('ar')
-    setLanguageModalVisible(false);
+              <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => {
+                  setSelectedLanguage("Arabic");
+                  i18n.changeLanguage("ar");
+                  setLanguageModalVisible(false);
+                }}
+              >
+                <Text style={styles.textStyle}>{t("Arabic")}</Text>
+              </Pressable>
 
-  }}
-> 
-  <Text style={styles.textStyle}>{t('Arabic')}</Text>
-</Pressable> 
-
-<Pressable
-  style={[styles.button, styles.buttonClose]}
-  onPress={() => {
- 
-    setSelectedLanguage("English");
-    i18n.changeLanguage('en')
-    setLanguageModalVisible(false);
-    
-  }}
->
-  <Text style={styles.textStyle}>{t('English')}</Text>
-</Pressable> 
-
-    </View>
-  </View>
-</Modal>
-
+              <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => {
+                  setSelectedLanguage("English");
+                  i18n.changeLanguage("en");
+                  setLanguageModalVisible(false);
+                }}
+              >
+                <Text style={styles.textStyle}>{t("English")}</Text>
+              </Pressable>
+            </View>
+          </View>
+        </Modal>
       </ScrollView>
     </SafeAreaView>
   );
@@ -368,9 +354,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
-  
+
   modalView: {
-    width: '80%', 
+    width: "80%",
     backgroundColor: "white",
     borderRadius: 20,
     padding: 35,
@@ -389,7 +375,7 @@ const styles = StyleSheet.create({
     padding: 10,
     elevation: 2,
     margin: 10,
-    width: '80%',
+    width: "80%",
   },
   buttonClose: {
     backgroundColor: Color.background,

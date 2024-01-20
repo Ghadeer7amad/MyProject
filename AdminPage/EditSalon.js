@@ -24,19 +24,17 @@ import * as ImagePicker from "expo-image-picker";
 import { Box, useToast } from "native-base";
 import RNPickerSelect from "react-native-picker-select";
 import axios from "axios";
-import { useTranslation } from 'react-i18next';
-
+import { useTranslation } from "react-i18next";
 
 const EditSalon = ({ route }) => {
   const { item } = route.params;
   const [t, i18n] = useTranslation();
 
-
   const initialValues = item
     ? { ...item }
     : {
         name: "",
-        branches: "",
+        branches: [],
       };
   const [FData, setFData] = useState({
     ...initialValues,
@@ -56,25 +54,25 @@ const EditSalon = ({ route }) => {
           toast.show({
             render: () => (
               <Box bg="emerald.500" px="5" py="5" rounded="sm" mb={5}>
-                {t('Salon has been successfully updated')}
+                {t("Salon has been successfully updated")}
               </Box>
             ),
           });
-          navigation.navigate('SalonScreen');
+          navigation.navigate("SalonScreen");
           setFData({
             name: "",
-            branches: "",
+            branches: [],
           });
         } else {
           throw new Error("An error has occurred");
         }
       })
-      
+
       .catch((error) => {
         toast.show({
           render: () => (
             <Box bg="red.500" px="5" py="5" rounded="sm" mb={5}>
-              {t('Error in updating the salon')}
+              {t("Error in updating the salon")}
             </Box>
           ),
         });
@@ -86,7 +84,7 @@ const EditSalon = ({ route }) => {
   return (
     <ScrollView>
       <View style={styles.contanier}>
-        <Text style={styles.TextStyleHeader}>{t('Update Salon')}</Text>
+        <Text style={styles.TextStyleHeader}>{t("Update Salon")}</Text>
 
         <View style={styles.formgroup}>
           <TextInput
@@ -100,10 +98,15 @@ const EditSalon = ({ route }) => {
 
         <View style={styles.formgroup}>
           <TextInput
-            value={FData.branches}
-            onChangeText={(text) => setFData({ ...FData, branches: text })}
-            style={[styles.input]}
-            placeholder="Branches"
+            value={FData.branches.join(", ")}
+            onChangeText={(text) =>
+              setFData({
+                ...FData,
+                branches: text.split(",").map((branch) => branch.trim()),
+              })
+            }
+            style={styles.input}
+            placeholder={t("Branches")}
           />
           <FontAwesomeIcon
             icon={faBook}
@@ -116,7 +119,9 @@ const EditSalon = ({ route }) => {
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => navigation.navigate("SalonScreen")}>
-          <Text style={[styles.buttonStyle, styles.buttonStyle1]}>{t('Cancel')}</Text>
+          <Text style={[styles.buttonStyle, styles.buttonStyle1]}>
+            {t("Cancel")}
+          </Text>
         </TouchableOpacity>
       </View>
     </ScrollView>

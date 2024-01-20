@@ -9,8 +9,7 @@ import Color from "../Common/Color";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { storeUsedSalon } from "../redux/user/userActions.js";
-import WhatsApp from "../Common/WhatsApp.js";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 
 const SalonScreen = () => {
   const navigation = useNavigation();
@@ -29,7 +28,7 @@ const SalonScreen = () => {
   };
 
   const { role, token } = useSelector((state) => state.user.userData);
- 
+
   const handleContinuePress = (item) => {
     dispatch(storeUsedSalon(item));
     console.log(storeUsedSalon(item));
@@ -42,15 +41,15 @@ const SalonScreen = () => {
 
   const confirmDelete = (itemId) => {
     Alert.alert(
-      t('Confirm deletion'),
-      t('Are you sure you want to delete this salon?'),
+      t("Confirm deletion"),
+      t("Are you sure you want to delete this salon?"),
       [
         {
-          text: t('Cancel'),
+          text: t("Cancel"),
           style: "cancel",
         },
         {
-          text: t('Yes, Delete'),
+          text: t("Yes, Delete"),
           onPress: () => handleDeletePress(itemId),
         },
       ],
@@ -61,16 +60,15 @@ const SalonScreen = () => {
   const baseUrl = "https://ayabeautyn.onrender.com";
   const fetchData = async () => {
     try {
-      const response = await fetch(`${baseUrl}/salons/salon`, 
-      {headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Nada__${token}`
-    }}
-    
-    );
+      const response = await fetch(`${baseUrl}/salons/salon`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Nada__${token}`,
+        },
+      });
       const data = await response.json();
       setItems(data);
-      setIsLoading(false); 
+      setIsLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -102,12 +100,12 @@ const SalonScreen = () => {
   return (
     <View style={styles.container}>
       <CustomSearchBar
-        placeholder={t('Search your BeautyCenter')}
+        placeholder={t("Search your BeautyCenter")}
         onSearch={handleSearch}
       />
       {role === "Admin" && (
         <TouchableOpacity onPress={() => navigation.navigate("AddSalon")}>
-          <Text style={styles.buttonStyle}>{t('Add Salon')}</Text>
+          <Text style={styles.buttonStyle}>{t("Add Salon")}</Text>
         </TouchableOpacity>
       )}
 
@@ -151,7 +149,7 @@ const SalonScreen = () => {
                 fontWeight: "bold",
               }}
             >
-              {item.branches}
+              {item.branches.join(" | ")}
             </Text>
           </Card>
         )}

@@ -18,7 +18,7 @@ import { useNavigation } from "@react-navigation/native";
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import WhatsApp from "../Common/WhatsApp.js";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 
 const EmployeesScreen = () => {
   const navigation = useNavigation();
@@ -59,15 +59,15 @@ const EmployeesScreen = () => {
 
   const confirmDelete = (itemId) => {
     Alert.alert(
-      t('Confirm deletion'),
-      t('Are you sure you want to delete this salon?'),
+      t("Confirm deletion"),
+      t("Are you sure you want to delete this salon?"),
       [
         {
-          text: t('Cancel'),
-          style: "cancel", 
+          text: t("Cancel"),
+          style: "cancel",
         },
         {
-          text: t('Yes, Delete'),
+          text: t("Yes, Delete"),
           onPress: () => handleDeletePress(itemId),
         },
       ],
@@ -104,17 +104,15 @@ const EmployeesScreen = () => {
 
       <Header />
       <View style={styles.container2}>
-        <Text style={[styles.styleText]}>
-        {t('Beauty Employees')}
-        </Text>
+        <Text style={[styles.styleText]}>{t("Beauty Employees")}</Text>
         <CustomSearchBar
-          placeholder={t('Search for Employee')}
+          placeholder={t("Search for Employee")}
           onSearch={handleSearch}
         />
       </View>
       {role === "Admin" && (
         <TouchableOpacity onPress={() => navigation.navigate("AddEmployee")}>
-          <Text style={styles.buttonStyle}>{t('Add Employee')}</Text>
+          <Text style={styles.buttonStyle}>{t("Add Employee")}</Text>
         </TouchableOpacity>
       )}
 
