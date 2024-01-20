@@ -13,7 +13,7 @@ const screenheight = Dimensions.get("window").height;
 
 const Employee = () => {
   const navigation = useNavigation();
-  const [t, i18n] = useTranslation();
+  const [t] = useTranslation();
 
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);

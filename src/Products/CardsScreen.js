@@ -3,7 +3,6 @@ import React from 'react'
 import { useState, useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import Color from '../Common/Color.js';
-import Products from "./ProductData.js"
 import { Ionicons } from "@expo/vector-icons";
 import { BlurView } from 'expo-blur';
 import Spacing from "../Common/Spacing.js"

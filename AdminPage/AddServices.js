@@ -113,7 +113,7 @@ const AddServices = () => {
         toast.show({
           render: () => (
             <Box bg="#c81912" px="5" py="5" rounded="sm" mb={5}>
-              Error adding services: {responseData.message}
+              {t('Error adding services')} {responseData.message}
             </Box>
           ),
         });
@@ -124,7 +124,7 @@ const AddServices = () => {
         render: () => {
           return (
             <Box bg="#55a44e" px="5" py="5" rounded="sm" mb={5}>
-              Services added successfully
+              {t('Services added successfully')}
             </Box>
           );
         },

@@ -78,7 +78,7 @@
     "Cancel": "Cancel",
     "Upload Image": "Upload Image",
     "Salon Name": "Center Name",
-    "Branches": "Branches",
+    "Branches": "Branch1,Branch2,...",
     "Confirm deletion": "Confirm deletion",
     "Are you sure you want to delete this salon?": "Are you sure you want to delete this center?",
     "Yes, Delete": "Yes, Delete",
@@ -238,7 +238,14 @@
     "write": "Write here...",
     "Verification Code": "Verification Code",
     "Verifiy": "Verifiy",
-    "You will receive a 4digit code": "You will receive a 4-digit code"    
+    "You will receive a 4digit code": "You will receive a 4-digit code",
+    "Error adding services": "Error adding services:",
+    "Services added successfully": "Services added successfully",
+    "Branch": "Branch:",
+    "Date": "Date:",
+    "Time": "Time:",
+    "Service": "Service:",
+    "Statu": "Status:"    
     
 
 

@@ -8,7 +8,7 @@ import {
   FlatList,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { Card, Button } from "react-native-elements";
+import { Card } from "react-native-elements";
 import { FontAwesome as Icon } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import Color from "../Common/Color.js";
@@ -18,7 +18,7 @@ import { useTranslation } from "react-i18next";
 
 const Jobs = () => {
   const navigation = useNavigation();
-  const [t, i18n] = useTranslation();
+  const [t] = useTranslation();
 
   const { role } = useSelector((state) => state.user.userData);
 

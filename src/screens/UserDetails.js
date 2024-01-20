@@ -9,7 +9,6 @@ import Header from "../screens/Header.js";
 import NavbarButtom from "../Common/NavbarButtom.js";
 import Color from "../Common/Color.js";
 import Spacing from "../Common/Spacing.js";
-import { Ionicons } from "@expo/vector-icons";
 import Icon from "react-native-vector-icons/FontAwesome"; // Import the icon library you are using
 import { useNavigation } from "@react-navigation/native";
 import React, { useState, useEffect } from "react";

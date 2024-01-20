@@ -23,7 +23,7 @@ import { useTranslation } from 'react-i18next';
 
 const AddPost = () => {
   const navigation = useNavigation();
-  const [t, i18n] = useTranslation();
+  const [t] = useTranslation();
 
   const { _id: salonId, name: salonName } = useSelector(
     (state) => state.user.usedSalonData

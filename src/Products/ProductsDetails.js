@@ -1,14 +1,13 @@
 import { ImageBackground,
-  ScrollView, 
   StyleSheet, 
   Text,
   TouchableOpacity,
   View, 
   Dimensions,
-  Alert} from 'react-native'
+  } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
 import React from 'react'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { SafeAreaView } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import Color from '../Common/Color.js'

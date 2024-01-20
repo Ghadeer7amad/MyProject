@@ -4,7 +4,6 @@ import {
   View,
   TextInput,
   Image,
-  Alert,
   TouchableOpacity,
   TouchableWithoutFeedback,
 } from "react-native";
@@ -39,7 +38,7 @@ const Login = () => {
   };
 
   const navigation = useNavigation();
-  const [t, i18n] = useTranslation();
+  const [t] = useTranslation();
 
   const handleLogin = async () => {
     const baseUrl = "https://ayabeautyn.onrender.com";

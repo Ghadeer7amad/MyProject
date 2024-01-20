@@ -3,8 +3,6 @@ import {
   Text,
   FlatList,
   StyleSheet,
-  Image,
-  TextInput,
   TouchableOpacity,
   Alert,
 } from "react-native";
@@ -16,14 +14,13 @@ import Spacing from "../Common/Spacing.js";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import React, { useState, useEffect } from "react";
-import Icon from "react-native-vector-icons/FontAwesome";
 import { Select } from "native-base";
 import { useTranslation } from 'react-i18next'; 
 
 
 const AppointmentsScreen = () => {
   const navigation = useNavigation();
-  const [t, i18n] = useTranslation();
+  const [t] = useTranslation();
 
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);

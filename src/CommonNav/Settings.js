@@ -4,7 +4,6 @@ import {
   Text,
   StyleSheet,
   Image,
-  FlatList,
   SafeAreaView,
   ScrollView,
   TouchableOpacity,

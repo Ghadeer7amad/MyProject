@@ -8,7 +8,6 @@ import {
   Dimensions,
 } from "react-native";
 import Color from "../Common/Color.js";
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTranslation } from 'react-i18next';
 
 const Advice = () => {

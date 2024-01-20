@@ -4,7 +4,6 @@ import {
   View,
   TouchableOpacity,
   Image,
-  Alert,
 } from "react-native";
 import { TextInput } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
@@ -19,7 +18,7 @@ import { useTranslation } from 'react-i18next';
 
 const ForgetPage = () => {
   const navigation = useNavigation();
-  const [t, i18n] = useTranslation();
+  const [t] = useTranslation();
 
   const toast = useToast();
   const [email, setEmail] = useState("");
@@ -65,10 +64,10 @@ const ForgetPage = () => {
           </Box>
         ),
       });
-    }
+    } 
   };
-
-  // {t('You will receive a 4digit code')}           
+ 
+  // {t('Branch')}            
   return (
     <View style={styles.contanier}> 
       <Image

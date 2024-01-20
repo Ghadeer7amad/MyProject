@@ -23,17 +23,22 @@ import * as ImagePicker from "expo-image-picker";
 import Icon from "react-native-vector-icons/Ionicons";
 import { serialize } from "object-to-formdata";
 import { Box, useToast } from "native-base";
+import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 
 const AddEmployee = () => {
-  const [FData, setFData] = useState({
+  const { _id: salonId, name: salonName } = useSelector(
+    (state) => state.user.usedSalonData
+  );
+  const [FData, setFData] = useState({ 
     name: "",
     job: "",
     experienceYears: "",
+    SalonId: salonId,
   });
   const toast = useToast();
   const navigation = useNavigation();
-  const [t, i18n] = useTranslation();
+  const [t] = useTranslation();
 
   const [buttonText, setButtonText] = useState(t("Upload Image"));
   const [image, setImage] = useState(null);

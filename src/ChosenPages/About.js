@@ -35,7 +35,7 @@ const About = () => {
 
   const navigation = useNavigation();
   const {id: salonId , name: salonName, branches: Branch} = useSelector(state => state.user.usedSalonData)
-  const [t, i18n] = useTranslation();
+  const [t] = useTranslation();
 
 console.log(Branch);
 

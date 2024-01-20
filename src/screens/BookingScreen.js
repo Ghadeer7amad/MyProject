@@ -14,7 +14,6 @@ import Header from "./Header";
 import NavbarButtom from "../Common/NavbarButtom";
 import { Select } from "native-base";
 import { useSelector } from "react-redux";
-import { serialize } from "object-to-formdata";
 import { Box, useToast } from "native-base";
 import WhatsApp from "../Common/WhatsApp";
 import { useTranslation } from 'react-i18next'; 
@@ -25,7 +24,7 @@ const screenwidth = Dimensions.get("window").width;
 
 const BookingScreen = () => {
   const toast = useToast();
-  const [t, i18n] = useTranslation();
+  const [t] = useTranslation();
 
 
 

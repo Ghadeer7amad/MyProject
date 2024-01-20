@@ -17,7 +17,7 @@ import {
   
   const AddManager = () => {
     const navigation = useNavigation();
-    const [t, i18n] = useTranslation();
+    const [t] = useTranslation();
   
 
   

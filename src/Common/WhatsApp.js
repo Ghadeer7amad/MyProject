@@ -1,7 +1,6 @@
 import React from "react";
-import { View, TouchableOpacity, Linking } from "react-native";
+import {  TouchableOpacity, Linking } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
-import ActionButton from "react-native-action-button";
 import Color from "../Common/Color.js";
 
 const WhatsApp = () => {

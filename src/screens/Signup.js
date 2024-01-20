@@ -3,11 +3,8 @@ import {
   Text,
   View,
   TextInput,
-  Image,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  Alert,
-  Pressable,
 } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import {
@@ -36,7 +33,7 @@ import { useTranslation } from "react-i18next";
 
 const Signup = () => {
   const navigation = useNavigation();
-  const [t, i18n] = useTranslation();
+  const [t] = useTranslation();
 
   const toast = useToast();
   const [isPasswordValid, setPasswordValid] = useState(true);

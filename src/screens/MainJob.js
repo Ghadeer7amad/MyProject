@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, ImageBackground, StyleSheet, SafeAreaView, TouchableOpacity } from "react-native";
+import { View, Text, ImageBackground, StyleSheet, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Color from "../Common/Color.js"
 import { Ionicons } from '@expo/vector-icons'
@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next';
 const MainJob = () => {
     const navigation = useNavigation(); 
     const { role } = useSelector((state) => state.user.userData);
-    const [ t, i18n ] = useTranslation(); 
+    const [t] = useTranslation(); 
 
 
     return (

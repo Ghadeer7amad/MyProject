@@ -15,12 +15,11 @@ import { Box, useToast } from "native-base";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { Select } from "native-base";
-import { serialize } from "object-to-formdata";
 import { useTranslation } from "react-i18next";
 
 const ApplyForaJob = () => {
   const navigation = useNavigation();
-  const [t, i18n] = useTranslation();
+  const [t] = useTranslation();
 
   const [selectedFile, setSelectedFile] = useState(null);
   const [selectedJob, setSelectedJob] = useState("Laser Specialist");

@@ -5,29 +5,24 @@ import {
   TextInput,
   Image,
   TouchableOpacity,
-  SafeAreaView,
-  ToastAndroid,
 } from "react-native";
 import { Button } from "react-native-elements";
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import {
-  faBook,
   faFileSignature,
-  faDollarSign,
   faCloudUploadAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import Color from "../src/Common/Color.js";
 import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
-import Icon from "react-native-vector-icons/Ionicons";
 import { serialize } from "object-to-formdata";
 import { Box, useToast } from "native-base";
 import { useTranslation } from "react-i18next";
 
 const AddSalon = () => {
   const navigation = useNavigation();
-  const [t, i18n] = useTranslation();
+  const [t] = useTranslation();
 
   const [FData, setFData] = useState({
     name: "",
@@ -120,7 +115,7 @@ const AddSalon = () => {
             })
           }
           style={styles.input}
-          placeholder={t("Branch1,Branch2,...")}
+          placeholder={t("Branches")}
         />
         <FontAwesomeIcon icon={faFileSignature} style={styles.icon} />
       </View>

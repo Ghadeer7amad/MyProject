@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View, FlatList, Image, StyleSheet, Alert } from "react-native";
-import { Card, Text, Button } from "react-native-elements";
+import { Card, Text } from "react-native-elements";
 import { FontAwesome as Icon } from "@expo/vector-icons";
 import CustomSearchBar from "../Common/SearchBarComponent.js";
 import { useNavigation } from "@react-navigation/native";
@@ -13,7 +13,7 @@ import { useTranslation } from "react-i18next";
 
 const SalonScreen = () => {
   const navigation = useNavigation();
-  const [t, i18n] = useTranslation();
+  const [t] = useTranslation();
 
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);

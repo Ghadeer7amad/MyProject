@@ -29,7 +29,7 @@ import { useTranslation } from 'react-i18next';
 
 
 const AddProduct = ({ route }) => {
-  const [t, i18n] = useTranslation();
+  const [t] = useTranslation();
 
   const [selectedStatus, setSelectedStatus] = useState("Active");
   const [selectedSubProduct, setSelectedSubProducts] = useState("Body");

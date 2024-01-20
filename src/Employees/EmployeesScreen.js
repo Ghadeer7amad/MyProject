@@ -22,7 +22,7 @@ import { useTranslation } from "react-i18next";
 
 const EmployeesScreen = () => {
   const navigation = useNavigation();
-  const [t, i18n] = useTranslation();
+  const [t] = useTranslation();
 
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);

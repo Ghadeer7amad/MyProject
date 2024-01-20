@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 
 const ChoseScreen = () => {
     const navigation = useNavigation();
-    const [ t, i18n ] = useTranslation(); 
+    const [ t] = useTranslation(); 
 
 
     return (

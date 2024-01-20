@@ -4,13 +4,11 @@ import {
   Text,
   Image,
   StyleSheet,
-  ScrollView,
   TouchableOpacity,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Color from "../Common/Color.js";
 import Icon from "react-native-vector-icons/Ionicons";
-import { FontAwesome as Iconn } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { useTranslation } from 'react-i18next'; 
 
@@ -18,7 +16,7 @@ import { useTranslation } from 'react-i18next';
 const EmployeesDetailsScreen = ({ route }) => {
   const { item } = route.params;
   const navigation = useNavigation();
-  const [t, i18n] = useTranslation();
+  const [t] = useTranslation();
 
 
   const handleBookAppointment = () => {

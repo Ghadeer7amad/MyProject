@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native'
 import { TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Color from '../../Common/Color.js';
-import React, {useState} from 'react'
+import React from 'react'
 import { useTranslation } from "react-i18next";
 
 const SendCode = () => {

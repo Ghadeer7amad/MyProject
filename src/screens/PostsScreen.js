@@ -33,7 +33,7 @@ import { useTranslation } from 'react-i18next';
 
 const PostsScreen = () => {
   const navigation = useNavigation();
-  const [t, i18n] = useTranslation();  
+  const [t] = useTranslation();  
 
   const { role } = useSelector((state) => state.user.userData);
   const [items, setItems] = useState([]);

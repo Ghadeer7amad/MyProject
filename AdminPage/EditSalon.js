@@ -3,9 +3,7 @@ import {
   Text,
   View,
   TextInput,
-  Image,
   TouchableOpacity,
-  SafeAreaView,
   ScrollView,
 } from "react-native";
 import { Button } from "react-native-elements";
@@ -14,21 +12,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import {
   faBook,
   faFileSignature,
-  faDollarSign,
-  faCloudUploadAlt,
-  faClock,
 } from "@fortawesome/free-solid-svg-icons";
 import Color from "../src/Common/Color.js";
 import { useNavigation } from "@react-navigation/native";
-import * as ImagePicker from "expo-image-picker";
 import { Box, useToast } from "native-base";
-import RNPickerSelect from "react-native-picker-select";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
 
 const EditSalon = ({ route }) => {
   const { item } = route.params;
-  const [t, i18n] = useTranslation();
+  const [t] = useTranslation();
 
   const initialValues = item
     ? { ...item }

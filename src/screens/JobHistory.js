@@ -19,11 +19,10 @@ import axios from "axios";
 import { useTranslation } from "react-i18next";
 import Icon from "react-native-vector-icons/FontAwesome";
 
-// import Pdf from 'react-native-pdf';
 
 const JobHistory = () => {
   const navigation = useNavigation();
-  const [t, i18n] = useTranslation();
+  const [t] = useTranslation();
 
   const { _id: salonId, name: salonName } = useSelector(
     (state) => state.user.usedSalonData

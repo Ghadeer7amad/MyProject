@@ -16,7 +16,7 @@ import { useTranslation } from "react-i18next";
 
 const ResetPassword = () => {
   const navigation = useNavigation();
-  const [t, i18n] = useTranslation();
+  const [t] = useTranslation();
   const toast = useToast();
   const [email, setEmail] = useState("");
   const [code, setcode] = useState("");
