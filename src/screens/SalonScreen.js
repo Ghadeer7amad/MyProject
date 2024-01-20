@@ -74,7 +74,7 @@ const SalonScreen = () => {
     }
   };
 
-  const handleDeletePress = async (itemId) => {
+  const handleDeletePress = async (itemId) => { 
     console.log("Deleting item with ID:", itemId);
 
     try {
@@ -110,7 +110,7 @@ const SalonScreen = () => {
          </TouchableOpacity>
 
          <TouchableOpacity onPress={() => navigation.navigate("AddManager")}>
-           <Text style={styles.buttonStyle}>Add Manager</Text>
+           <Text style={styles.buttonStyle}>{t("Add Manager")}</Text>
          </TouchableOpacity>
        </View>
 

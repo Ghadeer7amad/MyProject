@@ -6,20 +6,26 @@ import {
   StyleSheet,
   ScrollView,
   Dimensions,
+  TouchableOpacity
 } from "react-native";
 import Color from "../Common/Color.js";
+import { useNavigation } from "@react-navigation/native";
+import Spacing from '../Common/Spacing.js'
+import { Ionicons } from '@expo/vector-icons'
 import { useTranslation } from 'react-i18next';
 
 const Advice = () => {
   const [t] = useTranslation();
+  const navigation = useNavigation(); 
+
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const images = [
-    require("../../assets/new.jpg"),
-    require("../../assets/new.jpg"),
-    require("../../assets/new.jpg"),
-    require("../../assets/new.jpg"),
+    require("../../assets/advice.jpg"),
+    require("../../assets/advice.jpg"),
+    require("../../assets/advice.jpg"),
+    require("../../assets/advice.jpg"),
   ];
 
   const texts = [
@@ -29,7 +35,7 @@ const Advice = () => {
     t('four'),
   ];
 
-  const handleSlideChange = (index) => {
+  const handleSlideChange = (index) => { 
     setCurrentIndex(index);
   };
 
@@ -37,7 +43,11 @@ const Advice = () => {
 
   return (
     <ScrollView>
+      
       <View style={styles.sliderContainer}>
+
+        
+
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
@@ -54,7 +64,7 @@ const Advice = () => {
             <View key={index} style={{ width: windowWidth, height: 900 }}>
               <Image
                 source={image}
-                style={[styles.image, { width: "100%", height: "100%" }]}
+                style={[styles.image, { width: "100%", height: "100%", position: 'relative', }]}
                 resizeMode="cover"
               />
 
@@ -101,16 +111,17 @@ const styles = StyleSheet.create({
     height: 8,
     borderRadius: 4,
     margin: 5,
+    
   },
   textContainer: {
     position: 'absolute',
-    bottom: 200,
+    bottom: 400, 
     width: '100%',
     backgroundColor: 'rgba(255, 255, 255, 0.8)',
     padding: 20,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
+    borderRadius: 30,
   },
+  
   title: {
     color: 'black',
     fontSize: 24,

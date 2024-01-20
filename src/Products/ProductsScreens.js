@@ -64,7 +64,7 @@ const handleAddToCart = async (productId) => {
   }
 };
 
-const handleAddToFavorite = async (productId) => {
+const handleAddToFavorite = async (productId) => { 
   const baseUrl = "https://ayabeautyn.onrender.com"; 
   try {
       const response = await fetch(`${baseUrl}/favorite/`, {
