@@ -3,24 +3,21 @@ import {
   Text,
   FlatList,
   StyleSheet,
-  Image,
-  TextInput,
   TouchableOpacity,
-  Alert,
-  PermissionsAndroid,
+  ActivityIndicator,
+  Linking,
 } from "react-native";
 import CustomSearchBar from "../Common/SearchBarComponent.js";
 import Header from "../screens/Header.js";
 import NavbarButtom from "../Common/NavbarButtom.js";
 import Color from "../Common/Color.js";
 import Spacing from "../Common/Spacing.js";
-import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import React, { useState, useEffect } from "react";
-import SearchProANDSer from "../Common/SerachProANDSer.js";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 // import Pdf from 'react-native-pdf';
 
@@ -71,28 +68,46 @@ const JobHistory = () => {
       <Header />
       <View style={styles.container2}>
         <Text style={[styles.styleText]}>{t("Job archive")}</Text>
-        <SearchProANDSer
+        <CustomSearchBar
           placeholder={t("Search person")}
           onSearch={handleSearch}
         />
       </View>
 
-      <FlatList
-        data={items}
-        keyExtractor={(item) => item._id}
-        renderItem={({ item }) => (
-          <View style={styles.appointmentContainer}>
-            <View style={styles.userContainer}>
-              <Text style={styles.userName}>{item.user_name}</Text>
-              <Text style={styles.appointmentContent}>
-                Job Name: {item.jobName}
-              </Text>
-
-              <Text>CV File: {item.image.secure_url}</Text>
+      {isLoading ? (
+        <ActivityIndicator size="large" color="#000" />
+      ) : (
+        <FlatList
+          data={filteredItems.length > 0 ? filteredItems : items}
+          keyExtractor={(item) => item._id}
+          renderItem={({ item }) => (
+            <View style={styles.appointmentContainer}>
+              <View style={styles.userContainer}>
+                <Text style={styles.userName}>{item.user_name}</Text>
+                <View
+                  style={{ display: "flex", gap: 15, flexDirection: "row" }}
+                >
+                  <Icon name="briefcase" size={25} color="#555555" />
+                  <Text style={styles.appointmentContent}>
+                    Job name: {item.jobName}
+                  </Text>
+                </View>
+                <View
+                  style={{ display: "flex", gap: 15, flexDirection: "row" }}
+                >
+                  <Icon name="file-pdf-o" size={25} color="#555555" />
+                  <Text style={styles.appointmentContent}>CV File:</Text>
+                  <TouchableOpacity
+                    onPress={() => Linking.openURL(item.image.secure_url)}
+                  >
+                    <Icon name="download" size={25} color="#555555" />
+                  </TouchableOpacity>
+                </View>
+              </View>
             </View>
-          </View>
-        )}
-      />
+          )}
+        />
+      )}
 
       <TouchableOpacity onPress={handleHomePress}>
         <Text style={styles.buttonStyle}>{t("Home")}</Text>
@@ -124,15 +139,16 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   userName: {
-    fontSize: 20,
+    fontSize: 23,
     fontWeight: "bold",
-    marginBottom: 5,
+    marginBottom: 15,
     color: "#555555",
   },
   appointmentContent: {
-    fontSize: 17,
+    fontSize: 20,
     color: "#848482",
     fontWeight: "bold",
+    marginBottom: 15,
   },
   styleText: {
     color: Color.primary,
