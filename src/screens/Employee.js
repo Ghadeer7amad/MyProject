@@ -6,6 +6,7 @@ import Color from "../Common/Color.js";
 import { useNavigation } from "@react-navigation/native";
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 
 const screenwidth = Dimensions.get("window").width;
 const screenheight = Dimensions.get("window").height;
@@ -16,9 +17,12 @@ const Employee = () => {
 
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const { _id: salonId, name: salonName } = useSelector(
+    (state) => state.user.usedSalonData
+  );
   const baseUrl = "https://ayabeautyn.onrender.com";
   useEffect(() => {
-    fetch(`${baseUrl}/employees/employee/`)
+    fetch(`${baseUrl}/salons/${salonId}/Employee/employee`)
       .then((res) => res.json())
       .then((data) => {
         setItems(data);

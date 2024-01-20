@@ -52,6 +52,8 @@ import EditProfile from './AdminPage/EditProfile.js'
 import EditSalon from './AdminPage/EditSalon.js'
 import Advice from './src/screens/Advice.js'
 import EditEmployee from './AdminPage/EditEmployee.js'
+import AddManager from "./AdminPage/AddManager.js";
+
 
 
 
@@ -106,7 +108,7 @@ const HomeStack = () => (
     <Stack.Screen name="EditSalon" component={EditSalon} options={{ headerShown: false }}/>
     <Stack.Screen name="EditEmployee" component={EditEmployee} options={{ headerShown: false }}/>
     <Stack.Screen name="Advice" component={Advice} options={{ headerShown: false }}/>
-   
+    <Stack.Screen name="AddManager" component={AddManager} options={{ headerShown: false }}/>
   </Stack.Navigator>
 );
 

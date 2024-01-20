@@ -32,9 +32,12 @@ const EmployeesScreen = () => {
     const filteredData = items.filter((item) =>
       item.name.toLowerCase().includes(searchText.toLowerCase())
     );
-    setFilteredItems(filteredData);
+    setFilteredItems(filteredData); 
   };
   const { role } = useSelector((state) => state.user.userData);
+  const { _id: salonId, name: salonName } = useSelector(
+    (state) => state.user.usedSalonData
+  );
 
   const handleDetailsPress = (item) => {
     navigation.navigate("EmployeesDetails", { item });
@@ -48,7 +51,7 @@ const EmployeesScreen = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch(`${baseUrl}/employees/employee`);
+      const response = await fetch(`${baseUrl}/salons/${salonId}/Employee/employee`);
       const data = await response.json();
       setItems(data);
       setIsLoading(false);

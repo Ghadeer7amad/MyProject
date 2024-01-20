@@ -104,9 +104,16 @@ const SalonScreen = () => {
         onSearch={handleSearch}
       />
       {role === "Admin" && (
-        <TouchableOpacity onPress={() => navigation.navigate("AddSalon")}>
-          <Text style={styles.buttonStyle}>{t("Add Salon")}</Text>
-        </TouchableOpacity>
+        <View style={styles.buttonContainer}>
+         <TouchableOpacity onPress={() => navigation.navigate("AddSalon")}>
+            <Text style={styles.buttonStyle}>{t("Add Salon")}</Text>
+         </TouchableOpacity>
+
+         <TouchableOpacity onPress={() => navigation.navigate("AddManager")}>
+           <Text style={styles.buttonStyle}>Add Manager</Text>
+         </TouchableOpacity>
+       </View>
+
       )}
 
       <FlatList
@@ -182,7 +189,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 200,
     resizeMode: "cover",
-    borderRadius: 20,
+    borderRadius: 20, 
   },
   iconContainer: {
     flexDirection: "row",
@@ -194,9 +201,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   buttonStyle: {
-    width: "30%",
+    width: "100", 
     padding: 10,
-    marginHorizontal: 250,
     backgroundColor: Color.primary,
     fontWeight: "400",
     fontSize: 15,
@@ -204,12 +210,11 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#fff",
   },
-  // deleteIcon: {
-  //   left: 300,
-  // },
-  // editButton: {
-  //   left: 30,
-  // },
+  
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   Icons: {
     flexDirection: "row",
     justifyContent: "space-between",
