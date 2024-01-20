@@ -59,7 +59,7 @@ const JobHistory = () => {
         console.error("Error fetching data:", error);
       }
     };
-
+    
     fetchData();
   }, []);
 
