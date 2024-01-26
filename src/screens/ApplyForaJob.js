@@ -40,9 +40,10 @@ const ApplyForaJob = () => {
   );
 
   const [FData, setFData] = useState({
-    user_id: userId,
-    user_name: userName,
+    user_name: userName, 
+    SalonId: salonId,
   });
+
 
   const toast = useToast();
 
@@ -84,47 +85,35 @@ const ApplyForaJob = () => {
     }
   };
 
+
+
   const onSubmitPressed = async () => {
     try {
-      const options = {
-        indices: false,
-        nullsAsUndefineds: false,
-        booleansAsIntegers: false,
-        allowEmptyArrays: false,
-        noFilesWithArrayNotation: false,
-        dotsForObjectNotation: true,
-      };
 
-      const updatedFData = {
+      setFData({
         ...FData,
         jobName: selectedJob,
-        image: selectedFile.uri,
-      };
-
-      const formData = new FormData();
-
-    
-      formData.append("image", {
-        name: selectedFile.assets[0]?.name,
-        uri: selectedFile.assets[0]?.uri,
-        type: selectedFile.assets[0]?.type,
       });
+
+
       
 
-      formData.append("user_id", userId);
-      formData.append("user_name", userName);
-      formData.append("jobName", selectedJob);
+      const formData = new FormData();
+      formData.append('cvFile', selectedFile.assets[0]);
+      
 
-      console.log("Selected File:", selectedFile.assets[0]);
-      console.log(JSON.stringify(formData));
+      console.log("data:", formData);
+  
 
-      const response = await axios.post(
-        `${baseUrl}/uploadjobs/uploadjob`,
-        
+
+
+      const response = await axios.post(`${baseUrl}/uploadjobs/uploadjob`,
         formData,
         { 
           headers: {
-            'Authorization': `Nada__${token}`
+            "Content-Type": "application/json",
+            Accept: 'application/json',
+            Authorization: `Nada__${token}`,
           },
         }
       );

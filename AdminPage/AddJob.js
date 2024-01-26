@@ -27,7 +27,7 @@ import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 
 const AddJob = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation(); 
   const [t] = useTranslation();
   const token = useSelector((state) => state.user.userData.token);
 

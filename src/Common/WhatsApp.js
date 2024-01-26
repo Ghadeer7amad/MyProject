@@ -5,7 +5,7 @@ import Color from "../Common/Color.js";
 
 const WhatsApp = () => {
   const openWhatsAppChat = () => {
-    const whatsappNumber = "+970592953343";
+    const whatsappNumber = "+972595671000";
     const url = `https://api.whatsapp.com/send?phone=${whatsappNumber}`;
     Linking.openURL(url);
   };

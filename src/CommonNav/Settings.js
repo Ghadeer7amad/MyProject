@@ -6,20 +6,20 @@ import {
   Image,
   SafeAreaView,
   ScrollView,
-  TouchableOpacity,
+  TouchableOpacity, 
   Switch,
   Modal,
   Pressable,
   Appearance,
 } from "react-native";
-import One from "../Common/ah.jpg";
+import One from "../../assets/profile.jpg";
 import FeatherIcon from "react-native-vector-icons/Feather";
 import { useNavigation } from "@react-navigation/native";
 import Color from "../Common/Color.js";
 import { useDispatch, useSelector } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
 import Spacing from "../Common/Spacing.js";
-import Dark from "../Common/Dark.js";
+import NavbarButtom from "../Common/NavbarButtom";
 
 import { useTranslation } from "react-i18next";
 
@@ -27,13 +27,7 @@ export default function Example() {
   const [t, i18n] = useTranslation();
   const navigation = useNavigation();
 
-  // Dark Mode
-  // const [theme, setTheme] = useState(Appearance.getColorScheme);
-  // Appearance.addChangeListener((scheme) => {
-  //   setTheme(scheme.colorScheme)
 
-  // })
-  //  ...(theme === 'light' ? styles.modalView : Dark.modalView)
 
   const [isLoading, setIsLoading] = useState(true);
   const [items, setItems] = useState([]);
@@ -72,7 +66,7 @@ export default function Example() {
 
   const SECTIONS = [
     {
-      header: t("Preferences"),
+     
       icon: "settings",
       items: [
         {
@@ -83,44 +77,40 @@ export default function Example() {
           type: "link",
         },
         {
-          id: "darkMode",
-          icon: "moon",
-          color: "#807afe",
-          label: t("Dark"),
-          type: "toggle",
+          id: "Favorites",
+          icon: "heart",
+          color: "#f95959",
+          label: t("Favorites"),
+          type: "link",
         },
         {
-          id: "wifi",
-          icon: "wifi",
+          id: "My Appointments",
+          icon: "calendar",
           color: "#807afe",
-          label: t("WiFi"),
-          type: "toggle",
+          label: t("My Appointments"),
+          type: "link",
         },
         {
-          icon: "navigation",
+          id: "Notifications",
+          icon: "bell",
           color: "#32c795",
-          label: t("Location"),
+          label: t("Notifications"),
           type: "link",
         },
 
-        {
-          id: "accessibilityMode",
-          icon: "airplay",
-          color: "#fd2d54",
-          label: t("Accessibility"),
-          type: "toggle",
-        },
+
       ],
     },
 
     {
-      header: t("Help"),
+      
       icon: "help-circle",
       items: [
         {
-          icon: "mail",
+          id: "Log Out",
+          icon: "log-out",
           color: "#a07afe",
-          label: t("Contact Us"),
+          label: t("Log Out"),
           type: "link",
         },
       ],
@@ -175,7 +165,17 @@ export default function Example() {
                     onPress={() => {
                       if (id === "language") {
                         setLanguageModalVisible(true);
-                      } else {
+                      }
+                      else if (id === "Favorites"){
+                        navigation.navigate("Favorite");
+                      }
+                      else if (id === "Log Out"){
+                        navigation.navigate("Homee");
+                      }
+                      else if (id === "My Appointments"){
+                        navigation.navigate("UserHistory");
+                      }
+                      else {
                       }
                     }}
                   >
@@ -189,19 +189,7 @@ export default function Example() {
 
                       <View style={{ flex: 1 }} />
 
-                      {type == "toggle" && (
-                        <Switch
-                          value={form[id]}
-                          onValueChange={(value) =>
-                            setForm({ ...form, [id]: value })
-                          }
-                          trackColor={{
-                            false: "grey",
-                            true: Color.background,
-                          }}
-                          thumbColor={form[id] ? Color.primary : "white"}
-                        />
-                      )}
+                    
 
                       {type === "link" && (
                         <FeatherIcon
@@ -214,6 +202,7 @@ export default function Example() {
                   </TouchableOpacity>
                 );
               })}
+
             </View>
           );
         })}
@@ -255,6 +244,8 @@ export default function Example() {
           </View>
         </Modal>
       </ScrollView>
+      <NavbarButtom onChange={(selectedIcon) => console.log(selectedIcon)} />
+
     </SafeAreaView>
   );
 }
@@ -275,7 +266,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     fontSize: 19,
     fontWeight: "600",
-    color: Color.primary,
+    color: "#393e46",
     textAlign: "center",
   },
 

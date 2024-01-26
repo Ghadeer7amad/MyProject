@@ -115,12 +115,12 @@ const EditProfile = ({ route }) => {
         </View>
 
         <View style={styles.formGroup}>
-          <TextInput
-            value={FData.age}
-            onChangeText={(text) => setFData({ ...FData, age: text })}
-            style={[styles.input]}
-            placeholder={`${userAge}`}
-          />
+        <TextInput
+         value={`${FData.age}`}  // Convert number to string
+         onChangeText={(text) => setFData({ ...FData, age: text })}
+        style={[styles.input]}
+        placeholder={`${userAge}`}
+/>
           <FontAwesomeIcon
             icon={faUser}
             style={[styles.icon, styles.iconDis]}

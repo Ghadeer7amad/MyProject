@@ -11,10 +11,11 @@ import Header from "../screens/Header.js";
 import NavbarButtom from "../Common/NavbarButtom.js";
 import Color from "../Common/Color.js";
 import Spacing from "../Common/Spacing.js";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons"; 
 import { useNavigation } from "@react-navigation/native";
 import React, { useState, useEffect } from "react";
 import { Select } from "native-base";
+import { useSelector } from "react-redux";
 import { useTranslation } from 'react-i18next'; 
 
 
@@ -28,12 +29,16 @@ const AppointmentsScreen = () => {
   const [sortType, setSortType] = useState("Closest"); // or "Furthest"
   const [sortOrder, setSortOrder] = useState("asc"); // or "desc"
 
+  const { _id: salonId, name: salonName } = useSelector(
+    (state) => state.user.usedSalonData
+  );
+
   const currentDate = new Date();
 
   const getStatus = (appointmentDate) => {
     const appointmentDateTime = new Date(appointmentDate);
 
-    if (appointmentDateTime < currentDate) {
+    if (appointmentDateTime < currentDate) { 
       return "Done";
     } else {
       return "Coming";
@@ -81,7 +86,7 @@ const AppointmentsScreen = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch(`${baseUrl}/appointments/appointment`);
+      const response = await fetch(`${baseUrl}/salons/${salonId}/Appointment/appointment`); 
       const data = await response.json();
 
       const sortedData = data.sort((a, b) => {

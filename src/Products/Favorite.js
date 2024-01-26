@@ -25,7 +25,7 @@ const FavoriteScreens = ({ favoriteProducts }) => {
   };
 
   const handleProductPress = (product) => {
-    navigation.navigate('ProductsDetails', { product });
+    navigation.navigate('ProductsDetails', { product }); 
   };
 
   const fetchFavoriteData = async () => {

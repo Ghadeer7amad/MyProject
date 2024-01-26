@@ -89,7 +89,7 @@ const AddPost = () => {
         body: formData,
       });
 
-      if (!response.ok) {
+      if (!response.ok) { 
         console.error('Failed to upload post:', response.statusText);
        
       }

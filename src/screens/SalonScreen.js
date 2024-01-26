@@ -168,7 +168,7 @@ const SalonScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Color.background,
+    backgroundColor: "white",
     paddingHorizontal: 10,
     paddingTop: 30,
   },
@@ -203,12 +203,13 @@ const styles = StyleSheet.create({
   buttonStyle: {
     width: "100", 
     padding: 10,
-    backgroundColor: Color.primary,
+    backgroundColor: Color.background,
     fontWeight: "400",
     fontSize: 15,
     letterSpacing: 2,
     textAlign: "center",
     color: "#fff",
+    borderRadius: 7
   },
   
   buttonContainer: {

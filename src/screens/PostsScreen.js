@@ -5,6 +5,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 import Header from "./Header.js";
 import NavbarButtom from "../Common/NavbarButtom.js"; 
 import Modal from "react-native-modal";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as ImagePicker from "expo-image-picker";
 import {
   View,
@@ -33,7 +34,7 @@ import { useTranslation } from 'react-i18next';
 
 const PostsScreen = () => {
   const navigation = useNavigation();
-  const [t] = useTranslation();  
+  const [t] = useTranslation();   
 
   const { role, token } = useSelector((state) => state.user.userData);
   const [items, setItems] = useState([]);
@@ -109,7 +110,25 @@ const PostsScreen = () => {
     }
   };
   
-  
+  //عشان يحافظ على لون اللايك
+  const persistLikeStatus = async () => {
+    try {
+      await AsyncStorage.setItem("likeStatus", JSON.stringify(likeStatus));
+    } catch (error) {
+      console.error("Error storing likeStatus:", error);
+    }
+  };
+
+  const retrieveLikeStatus = async () => {
+    try {
+      const storedLikeStatus = await AsyncStorage.getItem("likeStatus");
+      if (storedLikeStatus !== null) {
+        setLikeStatus(JSON.parse(storedLikeStatus));
+      }
+    } catch (error) {
+      console.error("Error retrieving likeStatus:", error);
+    }
+  };
 
   useEffect(() => {
     fetchData();
@@ -117,7 +136,12 @@ const PostsScreen = () => {
 
   useEffect(() => {
     requestGalleryPermission();
-  }, []); // استخدامها فقط للتنفيذ مرة واحدة عندما يتم تحميل الشاشة
+    retrieveLikeStatus();
+  }, []); 
+
+  useEffect(() => {
+    persistLikeStatus();
+  }, [likeStatus])        
   
 
   const handleDeletePress = async (itemId) => {
@@ -245,37 +269,37 @@ const PostsScreen = () => {
   };
   
 
-  // useEffect(() => {
-  //   requestGalleryPermission();
-  //   fetchData();
-  // }, [isLoggedIn]);
 
-  
+
+
+
+
 
   const handleToggleLike = async (itemId) => {
-   
     try {
       const response = await fetch(`${baseUrl}/posts/post/${itemId}/${userId}`, {
-        method: "POST", 
+        method: "POST",
       });
-      
+
       if (response.ok) {
         const responseData = await response.json();
+
+        setLikeStatus((prevStatus) => ({
+          ...prevStatus,
+          [itemId]: !prevStatus[itemId],
+        }));
+
         const updatedItems = items.map((item) => {
           if (item._id === itemId) {
             return {
               ...item,
-              likes: new Array( responseData.likes),
+              likes: new Array(responseData.likes),
             };
           }
           return item;
         });
-        setItems(updatedItems);
 
-        setLikeStatus((prevStatus) => ({
-          ...prevStatus,
-          [itemId]: true,
-        }));
+        setItems(updatedItems);
       } else {
         console.log("error");
       }
@@ -344,7 +368,7 @@ const PostsScreen = () => {
               </Menu> )}
 
               <View style={styles.cardContentContainer}>
-                {/* New section for the small circular image and name */}
+             
                 <View style={styles.userInfoContainer}>
                   <Image
                     // source={{ uri: imageSalon.image }}
@@ -366,12 +390,8 @@ const PostsScreen = () => {
                 />
               </View>
               <View style={styles.postInteractions}>
-                <TouchableOpacity
-                  onPress={() => {
-                    
-                      handleToggleLike(item._id);
-                    
-                  }}
+              <TouchableOpacity
+                  onPress={() => handleToggleLike(item._id)}
                 >
                   <Icon
                     name="heart"
@@ -380,10 +400,10 @@ const PostsScreen = () => {
                   />
                 </TouchableOpacity>
                 <Text>{item.likes.length}</Text>
-                <TouchableOpacity>
+                {/* <TouchableOpacity>
                   <Icon name="chatbox" size={20} color="#777" />
                 </TouchableOpacity>
-                <Text>{item.comments}</Text>
+                <Text>{item.comments}</Text> */}
               </View>
             </Card>
           )}

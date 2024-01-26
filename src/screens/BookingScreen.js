@@ -31,7 +31,9 @@ const BookingScreen = () => {
   const navigation = useNavigation();
   const { userData, usedSalonData } = useSelector((state) => state.user);
   const { id: userId, name: userName } = userData;
-  const { _id: salonId, name: salonName } = usedSalonData;
+  const { _id: salonId } = useSelector(
+    (state) => state.user.usedSalonData
+  );
 
   const generateAvailableTimes = () => {
     const startHour = 8;
@@ -91,7 +93,7 @@ const BookingScreen = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch(`${baseUrl}/appointments/appointment`);
+      const response = await fetch(`${baseUrl}/salons/${salonId}/Appointment/appointment`); 
       const data = await response.json();
       setBookedAppointments(data.map((appointment) => appointment.uniqueDate));
       setIsLoading(false);
@@ -179,16 +181,16 @@ const BookingScreen = () => {
     textAlign: "center",
   };
 
-  const onSubmitPressed = async () => {
+  const onSubmitPressed = async () => { 
     const data = {
       user_id: userId,
-      salon_id: salonId,
       user_name: userName,
       branch: selectedBranch,
       appointment_date: selectedDate,
       appointment_time: selectedTime,
       uniqueDate: selectedDate + selectedTime,
       serviceType: selectedValue,
+      SalonId: salonId,
     };
 
     try {
