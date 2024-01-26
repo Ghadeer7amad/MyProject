@@ -2,7 +2,7 @@ import {
   StyleSheet,
   Text,
   View,
-  TextInput,
+  TextInput, 
   Image,
   TouchableOpacity,
 } from "react-native";
@@ -46,6 +46,7 @@ const AddSalon = () => {
       setButtonText(t("Image is uploaded successfully"));
     }
   };
+  const baseUrl = "https://ayabeautyn.onrender.com";
 
   const addSalon = async () => {
     try {
