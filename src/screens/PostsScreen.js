@@ -118,6 +118,7 @@ const PostsScreen = () => {
       console.error("Error storing likeStatus:", error);
     }
   };
+  
 
   const retrieveLikeStatus = async () => {
     try {
@@ -129,6 +130,7 @@ const PostsScreen = () => {
       console.error("Error retrieving likeStatus:", error);
     }
   };
+  
 
   useEffect(() => {
     fetchData();
@@ -274,21 +276,20 @@ const PostsScreen = () => {
 
 
 
-
   const handleToggleLike = async (itemId) => {
     try {
       const response = await fetch(`${baseUrl}/posts/post/${itemId}/${userId}`, {
         method: "POST",
       });
-
+  
       if (response.ok) {
         const responseData = await response.json();
-
+  
         setLikeStatus((prevStatus) => ({
           ...prevStatus,
           [itemId]: !prevStatus[itemId],
         }));
-
+  
         const updatedItems = items.map((item) => {
           if (item._id === itemId) {
             return {
@@ -298,8 +299,11 @@ const PostsScreen = () => {
           }
           return item;
         });
-
+  
         setItems(updatedItems);
+  
+        // حفظ حالة اللايك في AsyncStorage
+        await AsyncStorage.setItem("likeStatus", JSON.stringify(likeStatus));
       } else {
         console.log("error");
       }
@@ -307,6 +311,7 @@ const PostsScreen = () => {
       console.error("Error toggling like:", error);
     }
   };
+  
 
 
 
