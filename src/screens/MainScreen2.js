@@ -18,8 +18,8 @@ import NavbarButtom from "../Common/NavbarButtom.js";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 
-const MainScreen2 = () => {
-  const navigation = useNavigation();
+const MainScreen2 = () => { 
+   const navigation = useNavigation();
   const [t] = useTranslation();
 
   const handleMenuPress = () => {
@@ -29,6 +29,8 @@ const MainScreen2 = () => {
   const { id: userId, name: userName } = useSelector(
     (state) => state.user.userData
   );
+  
+
   const { id: salonId, name: salonName } = useSelector(
     (state) => state.user.usedSalonData
   );
