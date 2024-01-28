@@ -147,7 +147,7 @@ const SalonScreen = ({route}) => {
         keyExtractor={(item) => item._id}
         renderItem={({ item }) => (
           <Card containerStyle={styles.card}>
-            {role === "Admin" && (
+            {(role === "Admin" || role === "Manager") && (
               <View style={styles.Icons}>
                 <TouchableOpacity onPress={() => handleEditSalon(item)}>
                   <Icon name="pencil" color="#5e366a" size={20} />
