@@ -90,14 +90,12 @@ import {
     };
     const baseUrl = "https://ayabeautyn.onrender.com";
   
+    
     const fetchData = async () => {
       try {
         const response = await fetch(`${baseUrl}/auth/${userId}/Appointment/userAppointment`);
         const data = await response.json();
-  
-
-  
-      
+        setItems(data); // Set the fetched data to items state
         setIsLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -118,12 +116,15 @@ import {
           fetchData();
         } else {
           const responseData = await response.json();
+          console.log( "Data:",responseData);
           console.error("Failed to delete item. Server response:", responseData);
         }
       } catch (error) {
         console.error("Error deleting item:", error);
       }
     };
+
+    
     useEffect(() => {
       fetchData();
     }, [sortType, sortOrder]);

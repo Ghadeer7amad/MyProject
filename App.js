@@ -207,16 +207,7 @@ const CustomDrawerContent = (props) => {
         }}
       />
 
-      <DrawerItem
-        style={{ marginVertical: 3, ...styles.drawerItem }}
-        label="HISTORY"
-        icon={({ color, size }) => (
-          <Ionicons name="checkmark-circle" color={Color.primary} size={size} />
-        )}
-        onPress={() => {
-          props.navigation.navigate("AppointmentHistory");
-        }}
-      />
+
 
      <DrawerItem
         style={{ marginVertical: 3, ...styles.drawerItem }}
