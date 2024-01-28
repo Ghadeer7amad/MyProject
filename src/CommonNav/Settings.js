@@ -3,7 +3,7 @@ import {
   View,
   Text,
   StyleSheet,
-  Image,
+  Image, 
   SafeAreaView,
   ScrollView,
   TouchableOpacity, 
@@ -35,7 +35,10 @@ export default function Example() {
     id: userId,
     name: userName,
     email: userEmail,
+    
   } = useSelector((state) => state.user.userData);
+  const { role } = useSelector((state) => state.user.userData);
+  
 
   const baseUrl = "https://ayabeautyn.onrender.com";
 
@@ -173,7 +176,11 @@ export default function Example() {
                         navigation.navigate("Homee");
                       }
                       else if (id === "My Appointments"){
-                        navigation.navigate("UserHistory");
+                        if (role === "Admin") {
+                          navigation.navigate("AppointmentHistory");
+                        } else {
+                          navigation.navigate("UserHistory");
+                        }
                       }
                       else {
                       }

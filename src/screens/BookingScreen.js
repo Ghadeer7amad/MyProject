@@ -268,7 +268,7 @@ const BookingScreen = () => {
             >
               {services.map((item) => (
                 <Select.Item
-                  key={item.name}
+                  key={item._id}
                   label={item?.name}
                   value={item.name}
                 />

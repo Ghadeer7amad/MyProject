@@ -36,6 +36,8 @@ import {
       const { _id: salonId } = useSelector(
         (state) => state.user.usedSalonData
       );
+
+      console.log(userId);
   
     const currentDate = new Date();
   
@@ -90,7 +92,7 @@ import {
   
     const fetchData = async () => {
       try {
-        const response = await fetch(`${baseUrl}/appointments/appointment/${userId}/info`);
+        const response = await fetch(`${baseUrl}/auth/${userId}/Appointment/userAppointment`);
         const data = await response.json();
   
 
@@ -157,7 +159,7 @@ import {
                 <Text style={styles.appointmentContent}>
                   Time: {item.appointment_time}
                 </Text>
-                <Text style={styles.appointmentContent}>
+                <Text style={styles.appointmentContent}> 
                   Service: {item.serviceType}
                 </Text>
                 <View

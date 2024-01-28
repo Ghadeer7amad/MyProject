@@ -260,11 +260,11 @@ const PostsScreen = () => {
     const days = Math.floor(hours / 24);
   
     if (minutes < 60) {
-      return `${minutes}m`;
+      return `${minutes}m ago`;
     } else if (hours < 24) {
-      return `${hours}h`;
+      return `${hours}h ago`;
     } else if (days <= 2) {
-      return `${days}d`;
+      return `${days}d ago`;
     } else {
       return postDate.toLocaleDateString("en-GB");
     }
