@@ -161,10 +161,10 @@ export default function Example() {
             <View style={styles.section} key={header}>
               <Text style={styles.sectionHeader}>{header}</Text>
 
-              {items.map(({ id, label, type, icon, color }) => {
+              {items.map(({ id, label, type, icon, color, index }) => {
                 return (
                   <TouchableOpacity
-                    key={id}
+                    key={index}
                     onPress={() => {
                       if (id === "language") {
                         setLanguageModalVisible(true);
@@ -176,7 +176,7 @@ export default function Example() {
                         navigation.navigate("Homee");
                       }
                       else if (id === "My Appointments"){
-                        if (role === "Admin") {
+                        if (role === "Admin" || role === "Manager") {
                           navigation.navigate("AppointmentHistory");
                         } else {
                           navigation.navigate("UserHistory");

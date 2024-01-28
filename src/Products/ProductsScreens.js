@@ -196,7 +196,7 @@ const handleAddToFavorite = async (productId) => {
           <View style={{width:"100%"}}>
           <Text style={styles.styleText}>{t('find the best')} <Image style={{ width: 50, height: 50 }} source={require("../../assets/122.jpg")} /></Text>
           <Text style={[styles.styleText, styles.styleText2]}>{t('product for you')}</Text>
-          {role === "Admin" && (
+          {(role === "Admin" || role === "Manager") && (
           <TouchableOpacity
              onPress={() => navigation.navigate("AddProduct")} 
              style={{
@@ -240,7 +240,7 @@ const handleAddToFavorite = async (productId) => {
           {products && products.length > 0 && products.map((product, index) => (
                 <View key={index} style={styles.EveryProduct}>
                 <BlurView tint= 'default' intensity={90} style={{padding: Spacing/2}}>
-                {role === "Admin" && (
+                {(role === "Admin" || role === "Manager") && (
                 <TouchableOpacity
                     style={styles.removeButton}
                     onPress={() => confirmDelete(product._id)}>

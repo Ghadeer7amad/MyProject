@@ -61,19 +61,19 @@ const About = () => {
       name: "facebook",
       icon: "facebook-f",
       color: "#1877f2",
-      link: "https://facebook.com/",
+      link: "https://www.facebook.com/aya.beauty.villa1?locale=ar_AR&paipv=0&eav=Afaw8ARYkvdMVws5MTn3LPhYLe4UDWzmlm457FhA5iKZt9ZWEv6qJ46CHCvluDalsIw&_rdr",
     },
     {
       name: "instagram",
       icon: "instagram",
       color: "#e4405f",
-      link: "https://instagram.com/",
+      link: "https://www.instagram.com/ayabeautyctr/?igsh=MXhidXR0OWx0aWducw%3D%3D",
     },
     {
       name: "whatsapp",
       icon: "whatsapp",
       color: "#25d366",
-      link: "https://wa.me/",
+      link: "https://api.whatsapp.com/send?phone=+972595671000",
     },
   ];
   
@@ -82,9 +82,9 @@ const About = () => {
   return (
     <SafeAreaView style={styles.container}>
       
+      <ScrollView >
+      <Header /> 
 
-      <Header />
-      <ScrollView>
         <View style={styles.sliderContainer}>
           <ScrollView
             horizontal
@@ -184,7 +184,6 @@ const About = () => {
             />
           </View>
           <Text style={styles.departmentTitle}>{t('Laser Therapy')} 
-          {/* <Text style={{color: Color.background}}> {t('Department')}</Text> */}
           </Text>
           <View style={styles.horizontalLine} />
           <Text style={styles.departmentParagraph}>
@@ -227,7 +226,7 @@ const About = () => {
     <TouchableOpacity
       key={index}
       style={[styles.socialIcon]}
-      onPress={() => console.log(`Open ${socialIcon.name} link: ${socialIcon.link}`)}
+      onPress={() => Linking.openURL(socialIcon.link)}
     >
       <FontAwesome5 name={socialIcon.icon} size={20} color="#fff" />
     </TouchableOpacity>
@@ -247,6 +246,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "white",
   },
+
   sliderContainer: {
     height: 310,
     marginBottom: 10,
