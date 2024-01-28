@@ -8,12 +8,12 @@ import {
   SafeAreaView,
   ScrollView,
   Dimensions,
+  Linking 
 } from "react-native";
 import Header from "../screens/Header";
 import Color from "../Common/Color";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import { useNavigation } from "@react-navigation/native";
-import WhatsApp from "../Common/WhatsApp";
 import {useSelector} from 'react-redux';
 import { useTranslation } from 'react-i18next'; 
 
@@ -37,7 +37,7 @@ const About = () => {
   const {id: salonId , name: salonName, branches: Branch} = useSelector(state => state.user.usedSalonData)
   const [t] = useTranslation();
 
-console.log(Branch);
+
 
   const handleBookPress = () => {
     navigation.navigate("BookingScreen");
@@ -49,7 +49,11 @@ console.log(Branch);
   };
 
 
-
+  const openWhatsAppChat = () => {
+    const whatsappNumber = "+972595671000";
+    const url = `https://api.whatsapp.com/send?phone=${whatsappNumber}`;
+    Linking.openURL(url);
+  };
  
 
   const socialIcons = [
@@ -77,7 +81,7 @@ console.log(Branch);
 
   return (
     <SafeAreaView style={styles.container}>
-      <WhatsApp />
+      
 
       <Header />
       <ScrollView>
@@ -132,7 +136,8 @@ console.log(Branch);
         <View style={styles.buttonsContainer}>
           <TouchableOpacity
             style={[styles.button, { borderColor: Color.primary }]}
-            onPress={handleContactPress}
+
+            onPress= {openWhatsAppChat}
           >
             <Text style={[styles.buttonText, { color: Color.primary }]}>
             {t('Contact Us')}
@@ -212,7 +217,7 @@ console.log(Branch);
     
     <View style={styles.branchDetails}>
       <FontAwesome5 name={locationIcon} size={15} color={Color.primary} />
-      <Text style={styles.branchInfo}>{Branch}</Text>
+      <Text style={styles.branchInfo}>{Branch} </Text>
     </View>
     
   </View>

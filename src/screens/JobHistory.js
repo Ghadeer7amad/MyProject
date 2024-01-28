@@ -102,7 +102,7 @@ const JobHistory = () => {
                   <Icon name="file-pdf-o" size={25} color="#555555" />
                   <Text style={styles.appointmentContent}>CV File:</Text>
                   <TouchableOpacity
-                    onPress={() => Linking.openURL(item.image.secure_url)}
+                    onPress={() => Linking.openURL(item.cvFile.secure_url)}
                   >
                     <Icon name="download" size={25} color="#555555" />
                   </TouchableOpacity>

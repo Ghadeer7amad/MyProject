@@ -198,7 +198,7 @@ const handleAddToFavorite = async (productId) => {
           <Text style={[styles.styleText, styles.styleText2]}>{t('product for you')}</Text>
           {role === "Admin" && (
           <TouchableOpacity
-             onPress={() => navigation.navigate("AddProduct")}
+             onPress={() => navigation.navigate("AddProduct")} 
              style={{
                marginTop: 30,
                backgroundColor: Color.primary,

@@ -178,6 +178,14 @@ const styles = StyleSheet.create({
     backgroundColor: "#f6f6f6",
     marginBottom: 10,
     position: "relative",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   cardTitle: {
     color: Color.primary,
