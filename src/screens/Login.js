@@ -50,6 +50,7 @@ const Login = () => {
 
       if (response.status === 200) {
         dispatch(storeCurrentUser(response.data));
+        console.log("Salon ID :", response.data.salonId);
         console.log("Login Response:", response.data.token);
         toast.show({
           render: () => (
@@ -60,7 +61,16 @@ const Login = () => {
         });
         setEmail("");
         setPassword("");
-        navigation.navigate("SalonScreen");
+        if (response.data.role === "Manager") {
+          navigation.navigate("MainScreen2", {
+            salonId: response.data.salonId,
+          });
+        } else if (
+          response.data.role === "User" ||
+          response.data.role === "Admin"
+        ) {
+          navigation.navigate("SalonScreen");
+        }
       } else {
         toast.show({
           render: () => (
@@ -72,6 +82,7 @@ const Login = () => {
         return;
       }
     } catch (error) {
+      console.log("ERROR:", error);
       toast.show({
         render: () => (
           <Box bg="#c81912" px="8" py="5" rounded="sm" mb={5}>
