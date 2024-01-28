@@ -12,7 +12,7 @@ const WhatsApp = () => {
 
   return (
     <TouchableOpacity
-      onPress={openWhatsAppChat}
+      onPress={openWhatsAppChat} 
       style={{
         position: "absolute",
         bottom: 84,

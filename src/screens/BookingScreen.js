@@ -238,7 +238,7 @@ const BookingScreen = () => {
       <WhatsApp />
 
       <Header />
-      <ScrollView style={styles.scrollView}>
+      <ScrollView style={styles.scrollView}> 
         <View style={styles.root}>
           <Text style={styles.title}>{t('Book an Appointment')}</Text>
 
@@ -268,7 +268,7 @@ const BookingScreen = () => {
             >
               {services.map((item) => (
                 <Select.Item
-                  key={item.id}
+                  key={item.name}
                   label={item?.name}
                   value={item.name}
                 />

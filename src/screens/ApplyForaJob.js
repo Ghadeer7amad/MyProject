@@ -163,9 +163,9 @@ const ApplyForaJob = () => {
           >
             {items.map((item) => (
               <Select.Item
-                key={item.id}
+                key={item._id}
                 label={item.jobName}
-                value={item.jobName}
+                value={item.jobName} 
               />
             ))}
           </Select>

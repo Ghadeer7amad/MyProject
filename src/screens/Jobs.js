@@ -85,11 +85,36 @@ const Jobs = () => {
       </TouchableOpacity>
 
       <View style={styles.container1}></View>
-      <View style={{ flex: 1 }}>
-        <Text style={styles.textHeader}>{t("Here are the jobs")}</Text>
+      <View style={{ flex: 1 }}> 
+        <Text style={styles.textHeader}>{t("Here are the jobs")} <Image style={{ width: 50, height: 50 }} source={require("../../assets/pic2.jpg")} /></Text>
         <Text style={styles.textHeader1}>
           {t("we currently have available")}
         </Text>
+
+        {role === "Admin" && (
+          <TouchableOpacity
+             onPress={() => navigation.navigate("AddJob")}
+             style={{
+               marginTop: 30,
+               backgroundColor: Color.primary,
+               borderWidth: 1,
+               borderColor: '#fff',
+               borderRadius: 8,
+               paddingVertical: 10,
+               paddingHorizontal: 40,
+               justifyContent: 'center',
+               alignItems: 'center',
+             }}
+           >
+             <Text style={{
+               fontWeight: 'bold',
+               color: '#fff',
+               fontSize: 16,
+             }}>
+               {t('Add Job')}  
+               </Text>
+             </TouchableOpacity>
+          )}
 
         <FlatList
           data={items}
@@ -117,16 +142,7 @@ const Jobs = () => {
             </>
           )}
         />
-        {role === "Admin" && (
-          <TouchableOpacity
-            style={styles.addButton}
-            onPress={() => {
-              navigation.navigate("AddJob");
-            }}
-          >
-            <Text style={styles.addButtonText}>{t("Add Job")}</Text>
-          </TouchableOpacity>
-        )}
+
       </View>
     </View>
   );
@@ -159,24 +175,9 @@ const styles = StyleSheet.create({
     color: Color.primary,
   },
 
-  addButton: {
-    alignSelf: "flex-end",
-    marginRight: Spacing,
-    marginTop: Spacing,
-    marginBottom: Spacing,
-    backgroundColor: Color.background,
-    paddingVertical: Spacing,
-    paddingHorizontal: Spacing * 2,
-    borderRadius: 5,
-  },
-  addButtonText: {
-    color: "white",
-    fontSize: 16,
-    fontWeight: "bold",
-  },
 
   card: {
-    borderRadius: 30,
+    borderRadius: 5,
     backgroundColor: "#f6f6f6",
     marginBottom: 10,
     position: "relative",
@@ -199,7 +200,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 300, // ارتفاع الصورة الثابت داخل الكارت
     resizeMode: "cover",
-    borderRadius: 20,
+    
   },
 
   deleteIcon: {

@@ -161,7 +161,7 @@ export default function Example() {
               {items.map(({ id, label, type, icon, color }) => {
                 return (
                   <TouchableOpacity
-                    key={icon}
+                    key={id}
                     onPress={() => {
                       if (id === "language") {
                         setLanguageModalVisible(true);
