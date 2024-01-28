@@ -61,16 +61,9 @@ const Login = () => {
         });
         setEmail("");
         setPassword("");
-        if (response.data.role === "Manager") {
-          navigation.navigate("MainScreen2", {
-            salonId: response.data.salonId,
-          });
-        } else if (
-          response.data.role === "User" ||
-          response.data.role === "Admin"
-        ) {
-          navigation.navigate("SalonScreen");
-        }
+        navigation.navigate("SalonScreen", {
+          salonId: response.data.salonId,
+        });
       } else {
         toast.show({
           render: () => (

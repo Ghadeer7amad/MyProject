@@ -18,7 +18,7 @@ import NavbarButtom from "../Common/NavbarButtom.js";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 
-const MainScreen2 = ({ route }) => { 
+const MainScreen2 = () => { 
    const navigation = useNavigation();
   const [t] = useTranslation();
 

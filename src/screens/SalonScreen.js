@@ -11,7 +11,7 @@ import { useSelector } from "react-redux";
 import { storeUsedSalon } from "../redux/user/userActions.js";
 import { useTranslation } from "react-i18next";
 
-const SalonScreen = () => {
+const SalonScreen = ({route}) => {
   const navigation = useNavigation();
   const [t] = useTranslation();
 
@@ -28,6 +28,9 @@ const SalonScreen = () => {
   };
 
   const { role, token } = useSelector((state) => state.user.userData);
+  const { salonId } = route.params;
+  console.log(route.params);
+
 
   const handleContinuePress = (item) => {
     dispatch(storeUsedSalon(item));
@@ -58,21 +61,48 @@ const SalonScreen = () => {
   };
 
   const baseUrl = "https://ayabeautyn.onrender.com";
-  const fetchData = async () => {
-    try {
-      const response = await fetch(`${baseUrl}/salons/salon`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Nada__${token}`,
-        },
-      });
-      const data = await response.json();
-      setItems(data);
-      setIsLoading(false);
-    } catch (error) {
-      console.error("Error fetching data:", error);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`${baseUrl}/salons/salon`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Nada__${token}`,
+          },
+        });
+        const data = await response.json();
+        setItems(data);
+        console.log(data);
+        setIsLoading(false);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    const fetchSalonData = async () => {
+      try {
+        const response = await fetch(`${baseUrl}/salons/salon/${salonId}`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Nada__${token}`,
+          },
+        });
+        const data = await response.json();
+        setItems(data);
+        console.log(data);
+        setIsLoading(false);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    if (role === "Admin" || role =="User") {
+      fetchData();
+    } else if (role === "Manager") {
+      fetchSalonData();
     }
-  };
+  }, [role, baseUrl, token, salonId]);
 
   const handleDeletePress = async (itemId) => { 
     console.log("Deleting item with ID:", itemId);
@@ -92,10 +122,6 @@ const SalonScreen = () => {
       console.error("Error deleting item:", error);
     }
   };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
 
   return (
     <View style={styles.container}>
