@@ -9,7 +9,11 @@ import {
 import { Button } from "react-native-elements";
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faBook, faFileSignature } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBook,
+  faFileSignature,
+  faClock,
+} from "@fortawesome/free-solid-svg-icons";
 import Color from "../src/Common/Color.js";
 import { useNavigation } from "@react-navigation/native";
 import { Box, useToast } from "native-base";
@@ -25,6 +29,10 @@ const EditSalon = ({ route }) => {
     : {
         name: "",
         branches: [],
+        openTimes: {
+          startTime: "",
+          endTime: "",
+        },
       };
   const [FData, setFData] = useState({
     ...initialValues,
@@ -48,10 +56,14 @@ const EditSalon = ({ route }) => {
               </Box>
             ),
           });
-          navigation.navigate("SalonScreen");
+          navigation.navigate("SalonScreen", { salonId: null });
           setFData({
             name: "",
             branches: [],
+            openTimes: {
+              startTime: "",
+              endTime: "",
+            },
           });
         } else {
           throw new Error("An error has occurred");
@@ -101,6 +113,31 @@ const EditSalon = ({ route }) => {
           <FontAwesomeIcon
             icon={faBook}
             style={[styles.icon, styles.iconDis]}
+          />
+        </View>
+        <View style={styles.formgroup}>
+          <FontAwesomeIcon icon={faClock} style={styles.icon} />
+          <TextInput
+            value={FData.openTimes.startTime}
+            onChangeText={(text) =>
+              setFData({
+                ...FData,
+                openTimes: { ...FData.openTimes, startTime: text },
+              })
+            }
+            style={styles.input}
+            placeholder={t("Start Time")}
+          />
+          <TextInput
+            value={FData.openTimes.endTime}
+            onChangeText={(text) =>
+              setFData({
+                ...FData,
+                openTimes: { ...FData.openTimes, endTime: text },
+              })
+            }
+            style={styles.input}
+            placeholder={t("End Time")}
           />
         </View>
 

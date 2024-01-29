@@ -10,6 +10,8 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { storeUsedSalon } from "../redux/user/userActions.js";
 import { useTranslation } from "react-i18next";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faClock } from "@fortawesome/free-solid-svg-icons";
 
 const SalonScreen = ({ route }) => {
   const navigation = useNavigation();
@@ -21,8 +23,12 @@ const SalonScreen = ({ route }) => {
   const [filteredItems, setFilteredItems] = useState([]);
 
   const handleSearch = (searchText) => {
-    const filteredData = items.filter((item) =>
-      item.name.toLowerCase().includes(searchText.toLowerCase())
+    const filteredData = items.filter(
+      (item) =>
+        item.name.toLowerCase().includes(searchText.toLowerCase()) ||
+        item.branches.some((branch) =>
+          branch.toLowerCase().includes(searchText.toLowerCase())
+        )
     );
     setFilteredItems(filteredData);
   };
@@ -172,16 +178,52 @@ const SalonScreen = ({ route }) => {
                 <Icon name="star-o" color="gold" size={20} />
               </View>
             </View>
-            <Text
+            <View
               style={{
-                marginTop: 20,
-                letterSpacing: 1,
-                color: Color.primary,
-                fontWeight: "bold",
+                display: "flex",
+                justifyContent: "space-between",
+                alignContent: "center",
+                flexDirection: "row",
               }}
             >
-              {item.branches.join(" | ")}
-            </Text>
+              <Text
+                style={{
+                  marginTop: 15,
+                  letterSpacing: 1,
+                  color: Color.primary,
+                  fontWeight: "bold",
+                  fontSize: 15,
+                }}
+              >
+                {item.branches.join(" | ")}
+              </Text>
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignContent: "center",
+                  backgroundColor: Color.primary,
+                  padding: 7,
+                  borderRadius: 15,
+                  marginTop: 8,
+                  marginRight: -6,
+                }}
+              >
+                <FontAwesomeIcon icon={faClock} style={styles.icon} />
+
+                <Text
+                  style={{
+                    letterSpacing: 1,
+                    color: Color.secondary,
+                    fontWeight: "bold",
+                  }}
+                >
+                  {item.openTimes
+                    ? `${item.openTimes.startTime} am - ${item.openTimes.endTime} pm`
+                    : "Not available"}
+                </Text>
+              </View>
+            </View>
           </Card>
         )}
       />
@@ -251,6 +293,10 @@ const styles = StyleSheet.create({
   Icons: {
     flexDirection: "row",
     justifyContent: "space-between",
+  },
+  icon: {
+    color: Color.secondary,
+    marginRight: 5,
   },
 });
 

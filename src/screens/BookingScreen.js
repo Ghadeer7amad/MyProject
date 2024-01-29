@@ -59,7 +59,7 @@ const BookingScreen = () => {
   const baseUrl = "https://ayabeautyn.onrender.com";
 
   useEffect(() => {
-    fetch(`${baseUrl}/services/getServices`)
+    fetch(`http://10.0.2.2:3000/services/getServices`)
       .then((res) => res.json())
       .then((data) => {
         setServices(data.Services);
@@ -134,8 +134,8 @@ const BookingScreen = () => {
     fetchBranches();
   }, [salonId]);
 
-  const isSlotAvailable = (date, time) => {
-    const uniqueDate = date + time;
+  const isSlotAvailable = (date, time, service, branch) => {
+    const uniqueDate = date + time + service + branch;
     return !bookedAppointments.includes(uniqueDate);
   };
 
@@ -144,23 +144,24 @@ const BookingScreen = () => {
   };
 
   const onTimeSelected = (time) => {
-    if (isSlotAvailable(selectedDate, time)) {
+    const uniqueDateTimeServiceBranch =
+      selectedDate + time + selectedValue + selectedBranch;
+
+    if (isSlotAvailable(selectedDate, time, selectedValue, selectedBranch)) {
       setSelectedTime(time);
     } else {
       toast.show({
-        render: () => {
-          return (
-            <Box bg="#c81912" px="5" py="5" rounded="sm" mb={5}>
-              {t("book")}
-            </Box>
-          );
-        },
+        render: () => (
+          <Box bg="#c81912" px="5" py="5" rounded="sm" mb={5}>
+            {t("Booked")}
+          </Box>
+        ),
       });
     }
   };
 
   const timeItemStyles = {
-    backgroundColor: Color.background,
+    backgroundColor: Color.background, 
     borderRadius: 50,
     padding: 20,
     marginLeft: 10,
@@ -186,20 +187,23 @@ const BookingScreen = () => {
       branch: selectedBranch,
       appointment_date: selectedDate,
       appointment_time: selectedTime,
-      uniqueDate: selectedDate + selectedTime,
+      uniqueDate: selectedDate + selectedTime + selectedValue + selectedBranch,
       serviceType: selectedValue,
       SalonId: salonId,
     };
 
     try {
-      const response = await fetch(`${baseUrl}/appointments/appointment`, {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-      });
+      const response = await fetch(
+        `${baseUrl}/appointments/appointment`,
+        {
+          method: "POST",
+          body: JSON.stringify(data),
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+        }
+      );
       const json = await response.json();
 
       if (!response.ok) {
@@ -314,10 +318,24 @@ const BookingScreen = () => {
                   style={[
                     timeItemStyles,
                     selectedTime === item && styles.selectedTimeItem,
-                    !isSlotAvailable(selectedDate, item) && { opacity: 0.5 },
+                    !isSlotAvailable(
+                      selectedDate,
+                      item,
+                      selectedValue,
+                      selectedBranch
+                    ) && {
+                      opacity: 0.5,
+                    },
                   ]}
                   onPress={() => onTimeSelected(item)}
-                  disabled={!isSlotAvailable(selectedDate, item)}
+                  disabled={
+                    !isSlotAvailable(
+                      selectedDate,
+                      item,
+                      selectedValue,
+                      selectedBranch
+                    )
+                  }
                 >
                   <Text
                     style={[
