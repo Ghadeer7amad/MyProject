@@ -32,7 +32,7 @@ const EmployeesScreen = () => {
     const filteredData = items.filter((item) =>
       item.name.toLowerCase().includes(searchText.toLowerCase())
     );
-    setFilteredItems(filteredData); 
+    setFilteredItems(filteredData);
   };
   const { role } = useSelector((state) => state.user.userData);
   const { _id: salonId, name: salonName } = useSelector(
@@ -51,7 +51,9 @@ const EmployeesScreen = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch(`${baseUrl}/salons/${salonId}/Employee/employee`);
+      const response = await fetch(
+        `${baseUrl}/salons/${salonId}/Employee/employee`
+      );
       const data = await response.json();
       setItems(data);
       setIsLoading(false);

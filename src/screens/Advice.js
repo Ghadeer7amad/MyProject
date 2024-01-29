@@ -6,18 +6,17 @@ import {
   StyleSheet,
   ScrollView,
   Dimensions,
-  TouchableOpacity
+  TouchableOpacity,
 } from "react-native";
 import Color from "../Common/Color.js";
 import { useNavigation } from "@react-navigation/native";
-import Spacing from '../Common/Spacing.js'
-import { Ionicons } from '@expo/vector-icons'
-import { useTranslation } from 'react-i18next';
+import Spacing from "../Common/Spacing.js";
+import { Ionicons } from "@expo/vector-icons";
+import { useTranslation } from "react-i18next";
 
 const Advice = () => {
   const [t] = useTranslation();
-  const navigation = useNavigation(); 
-
+  const navigation = useNavigation();
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -28,14 +27,9 @@ const Advice = () => {
     require("../../assets/advice.jpg"),
   ];
 
-  const texts = [
-    t('one'),
-    t('two'),
-    t('three'),
-    t('four'),
-  ];
+  const texts = [t("one"), t("two"), t("three"), t("four")];
 
-  const handleSlideChange = (index) => { 
+  const handleSlideChange = (index) => {
     setCurrentIndex(index);
   };
 
@@ -43,11 +37,7 @@ const Advice = () => {
 
   return (
     <ScrollView>
-      
       <View style={styles.sliderContainer}>
-
-        
-
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
@@ -55,7 +45,7 @@ const Advice = () => {
           onMomentumScrollEnd={(event) => {
             const slideIndex = Math.floor(
               event.nativeEvent.contentOffset.x /
-              event.nativeEvent.layoutMeasurement.width
+                event.nativeEvent.layoutMeasurement.width
             );
             handleSlideChange(slideIndex);
           }}
@@ -64,13 +54,15 @@ const Advice = () => {
             <View key={index} style={{ width: windowWidth, height: 900 }}>
               <Image
                 source={image}
-                style={[styles.image, { width: "100%", height: "100%", position: 'relative', }]}
+                style={[
+                  styles.image,
+                  { width: "100%", height: "100%", position: "relative" },
+                ]}
                 resizeMode="cover"
               />
 
-              
               <View style={styles.textContainer}>
-                <Text style={styles.title}>{t('tips')}</Text>
+                <Text style={styles.title}>{t("tips")}</Text>
                 <Text style={styles.description}>{texts[index]}</Text>
               </View>
             </View>
@@ -85,8 +77,7 @@ const Advice = () => {
             style={[
               styles.paginationDot,
               {
-                backgroundColor:
-                  index === currentIndex ? "#ffa952" : "#D1D1D1",
+                backgroundColor: index === currentIndex ? "#ffa952" : "#D1D1D1",
               },
             ]}
           />
@@ -98,7 +89,7 @@ const Advice = () => {
 
 const styles = StyleSheet.create({
   sliderContainer: {
-    height: '100%',
+    height: "100%",
   },
   paginationContainer: {
     flexDirection: "row",
@@ -111,31 +102,29 @@ const styles = StyleSheet.create({
     height: 8,
     borderRadius: 4,
     margin: 5,
-    
   },
   textContainer: {
-    position: 'absolute',
-    bottom: 400, 
-    width: '100%',
-    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    position: "absolute",
+    bottom: 400,
+    width: "100%",
+    backgroundColor: "rgba(255, 255, 255, 0.8)",
     padding: 20,
     borderRadius: 30,
   },
-  
+
   title: {
-    color: 'black',
+    color: "black",
     fontSize: 24,
-    fontWeight: 'bold',
-    textAlign: 'center',
-   
+    fontWeight: "bold",
+    textAlign: "center",
   },
   description: {
-    color: 'black',
+    color: "black",
     fontSize: 18,
     lineHeight: 30,
     letterSpacing: 1,
-    textAlign: 'center',
-    marginTop: 10, 
+    textAlign: "center",
+    marginTop: 10,
   },
 });
 

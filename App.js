@@ -4,8 +4,8 @@ import './i18n';
 import { useTranslation } from 'react-i18next';
 import registerNNPushToken from 'native-notify';
 import { Text, View, StyleSheet, Image } from "react-native";
-import {Provider} from 'react-redux';
-import store from './src/redux/store';
+import { Provider } from "react-redux";
+import store from "./src/redux/store";
 import { DrawerItemList, DrawerItem } from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -49,28 +49,20 @@ import ApplyForaJob from "./src/screens/ApplyForaJob.js";
 import AppointmentHistory from "./src/screens/AppointmentHistory";
 import Notification from "./src/screens/notification";
 import JobHistory from "./src/screens/JobHistory";
-import EditServices from './AdminPage/EditServices.js'
-import EditProfile from './AdminPage/EditProfile.js'
-import EditSalon from './AdminPage/EditSalon.js'
-import Advice from './src/screens/Advice.js'
-import EditEmployee from './AdminPage/EditEmployee.js'
+import EditServices from "./AdminPage/EditServices.js";
+import EditProfile from "./AdminPage/EditProfile.js";
+import EditSalon from "./AdminPage/EditSalon.js";
+import Advice from "./src/screens/Advice.js";
+import EditEmployee from "./AdminPage/EditEmployee.js";
 import AddManager from "./AdminPage/AddManager.js";
 import UserHistory from "./src/screens/UserHistory";
 
-
-
-
-
-
 import { NativeBaseProvider } from "native-base";
-
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
-
 const HomeStack = () => (
-  
   <Stack.Navigator>
     {/* <Stack.Screen name="Notification" component={Notification} options={{ headerShown: false }}  /> */}
     <Stack.Screen name="Homee" component={Homee} options={{ headerShown: false }}  />
@@ -120,7 +112,6 @@ const HomeStack = () => (
 );
 
 const CustomDrawerContent = (props) => {
-  
   return (
     <View style={{ flex: 1, justifyContent: "flex-start" }}>
       <Image
@@ -209,9 +200,7 @@ const CustomDrawerContent = (props) => {
         }}
       />
 
-
-
-     <DrawerItem
+      <DrawerItem
         style={{ marginVertical: 3, ...styles.drawerItem }}
         label="ADVICE"
         icon={({ color, size }) => (
@@ -252,29 +241,25 @@ const CustomDrawerContent = (props) => {
         }}
       />
 
-<DrawerItem
-  style={{ marginVertical: -95 }}
-  label="LOG OUT"
-  icon={({ color, size }) => (
-    <Ionicons name="log-out" color={Color.primary} size={size} />
-  )}
-  onPress={() => {
-    props.navigation.navigate("Homee");
-  }}
- 
-/>
-
+      <DrawerItem
+        style={{ marginVertical: -95 }}
+        label="LOG OUT"
+        icon={({ color, size }) => (
+          <Ionicons name="log-out" color={Color.primary} size={size} />
+        )}
+        onPress={() => {
+          props.navigation.navigate("Homee");
+        }}
+      />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   drawerItem: {
-    backgroundColor: "white", 
+    backgroundColor: "white",
   },
 });
-
-
 
 const App = () => {
       registerNNPushToken(19229, 'MmA13R97oItXk9OrbcPye3');
@@ -282,29 +267,29 @@ const App = () => {
   return (
     <NativeBaseProvider>
       <Provider store={store}>
-      <NavigationContainer>
-        <Drawer.Navigator
-          initialRouteName="Home"
-          drawerContent={(props) => <CustomDrawerContent {...props} />}
-          drawerStyle={{
-            backgroundColor: "lightgray",
-            width: 240,
-          }}
-          contentContainerStyle={{
-            flex: 1,
-          }}
-          screenOptions={{
-            drawerActiveTintColor: Color.primary,
-            drawerItemStyle: styles.drawerItem, // استخدم الأنماط هنا
-          }}
-        >
-          <Drawer.Screen
-            name="Home"
-            component={HomeStack}
-            options={{ headerShown: false }}
-          />
-        </Drawer.Navigator>
-      </NavigationContainer>
+        <NavigationContainer>
+          <Drawer.Navigator
+            initialRouteName="Home"
+            drawerContent={(props) => <CustomDrawerContent {...props} />}
+            drawerStyle={{
+              backgroundColor: "lightgray",
+              width: 240,
+            }}
+            contentContainerStyle={{
+              flex: 1,
+            }}
+            screenOptions={{
+              drawerActiveTintColor: Color.primary,
+              drawerItemStyle: styles.drawerItem, // استخدم الأنماط هنا
+            }}
+          >
+            <Drawer.Screen
+              name="Home"
+              component={HomeStack}
+              options={{ headerShown: false }}
+            />
+          </Drawer.Navigator>
+        </NavigationContainer>
       </Provider>
     </NativeBaseProvider>
   );

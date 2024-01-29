@@ -161,7 +161,7 @@ const BookingScreen = () => {
   };
 
   const timeItemStyles = {
-    backgroundColor: Color.background,
+    backgroundColor: Color.background, 
     borderRadius: 50,
     padding: 20,
     marginLeft: 10,

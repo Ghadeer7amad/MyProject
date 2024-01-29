@@ -21,13 +21,11 @@ import { Box, useToast } from "native-base";
 import axios from "axios";
 import { Select } from "native-base";
 import { useEffect } from "react";
-import { useTranslation } from 'react-i18next';  
-
+import { useTranslation } from "react-i18next";
 
 const EditServices = ({ route }) => {
   const { item } = route.params;
   const [t] = useTranslation();
-
 
   const [selectedStatus, setSelectedStatus] = useState();
   const [selectedSubServices, setSelectedSubServices] = useState();
@@ -80,11 +78,11 @@ const EditServices = ({ route }) => {
       .then((response) => {
         // console.log("Response:", response);
         if (response.status === 200) {
-          navigation.navigate("ServicesScreen")
+          navigation.navigate("ServicesScreen");
           toast.show({
             render: () => (
               <Box bg="emerald.500" px="5" py="5" rounded="sm" mb={5}>
-                {t('Service updated successfully')}
+                {t("Service updated successfully")}
               </Box>
             ),
           });
@@ -107,25 +105,25 @@ const EditServices = ({ route }) => {
         toast.show({
           render: () => (
             <Box bg="red.500" px="5" py="5" rounded="sm" mb={5}>
-              {t('Error updating service')}
+              {t("Error updating service")}
             </Box>
           ),
         });
       });
   };
 
-  const navigation = useNavigation(); 
+  const navigation = useNavigation();
   return (
     <ScrollView>
       <View style={styles.contanier}>
-        <Text style={styles.TextStyleHeader}>{t('Update Service')}</Text>
+        <Text style={styles.TextStyleHeader}>{t("Update Service")}</Text>
 
         <View style={styles.formgroup}>
           <TextInput
             value={FData.name}
             onChangeText={(text) => setFData({ ...FData, name: text })}
             style={styles.input}
-            placeholder={t('Service name')}
+            placeholder={t("Service name")}
           />
           <FontAwesomeIcon icon={faFileSignature} style={styles.icon} />
         </View>
@@ -135,7 +133,7 @@ const EditServices = ({ route }) => {
             value={FData.description}
             onChangeText={(text) => setFData({ ...FData, description: text })}
             style={[styles.input, styles.inputDis]}
-            placeholder={t('Service description')}
+            placeholder={t("Service description")}
             multiline={true}
           />
           <FontAwesomeIcon
@@ -149,7 +147,7 @@ const EditServices = ({ route }) => {
             value={FData.price.toString()}
             onChangeText={(text) => setFData({ ...FData, price: text })}
             style={styles.input}
-            placeholder={t('Service price')}
+            placeholder={t("Service price")}
           />
           <FontAwesomeIcon icon={faDollarSign} style={styles.icon} />
         </View>
@@ -159,7 +157,7 @@ const EditServices = ({ route }) => {
             value={FData.discount.toString()}
             onChangeText={(text) => setFData({ ...FData, discount: text })}
             style={styles.input}
-            placeholder={t('Dis')}
+            placeholder={t("Dis")}
           />
           <FontAwesomeIcon icon={faDollarSign} style={styles.icon} />
         </View>
@@ -169,7 +167,7 @@ const EditServices = ({ route }) => {
             value={FData.time.toString()}
             onChangeText={(text) => setFData({ ...FData, time: text })}
             style={styles.input}
-            placeholder={t('Service time')}
+            placeholder={t("Service time")}
           />
           <FontAwesomeIcon icon={faClock} style={styles.icon} />
         </View>
@@ -181,15 +179,15 @@ const EditServices = ({ route }) => {
         >
           <View style={styles.serviceListContainer}>
             <Select
-              placeholder={t('Body')}
+              placeholder={t("Body")}
               color={Color.primary}
               style={{ width: 180, fontSize: 14 }}
               selectedValue={selectedSubServices}
               onValueChange={(value) => handleSubServicesChange(value)}
             >
               {[
-                { id: 1, name: t('Body') },
-                { id: 2, name: t('Face') },
+                { id: 1, name: t("Body") },
+                { id: 2, name: t("Face") },
               ].map((item) => (
                 <Select.Item
                   key={item.id}
@@ -202,7 +200,7 @@ const EditServices = ({ route }) => {
 
           <View style={styles.serviceListContainer}>
             <Select
-              placeholder={t('ac')}
+              placeholder={t("ac")}
               color={Color.primary}
               style={{ width: 150, fontSize: 14 }}
               selectedValue={selectedStatus}
@@ -211,8 +209,8 @@ const EditServices = ({ route }) => {
               }}
             >
               {[
-                { id: 1, name: t('ac') },
-                { id: 2, name: t('Ina') },
+                { id: 1, name: t("ac") },
+                { id: 2, name: t("Ina") },
               ].map((item) => (
                 <Select.Item
                   key={item.id}
@@ -225,11 +223,13 @@ const EditServices = ({ route }) => {
         </SafeAreaView>
 
         <TouchableOpacity onPress={() => handleEditService(item._id)}>
-          <Text style={styles.buttonStyle}>{t('Update')}</Text>
+          <Text style={styles.buttonStyle}>{t("Update")}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => navigation.navigate("ServicesScreen")}>
-          <Text style={[styles.buttonStyle, styles.buttonStyle1]}>{t('Cancel')}</Text>
+          <Text style={[styles.buttonStyle, styles.buttonStyle1]}>
+            {t("Cancel")}
+          </Text>
         </TouchableOpacity>
       </View>
     </ScrollView>

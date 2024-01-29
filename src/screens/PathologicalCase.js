@@ -12,8 +12,7 @@ import { Ionicons } from "@expo/vector-icons";
 import React, { useState } from "react";
 import { Box, useToast } from "native-base";
 import { useSelector } from "react-redux";
-import { useTranslation } from 'react-i18next'; 
-
+import { useTranslation } from "react-i18next";
 
 const PathologicalCase = () => {
   const [problem, setProblem] = useState("");
@@ -61,7 +60,7 @@ const PathologicalCase = () => {
         toast.show({
           render: () => (
             <Box bg="emerald.500" px="5" py="5" rounded="sm" mb={5}>
-              {t('Your status is submitted successfully')}
+              {t("Your status is submitted successfully")}
             </Box>
           ),
         });
@@ -75,7 +74,7 @@ const PathologicalCase = () => {
   return (
     <View>
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-        <Text style={styles.textHeader}>{t('dear')}</Text>
+        <Text style={styles.textHeader}>{t("dear")}</Text>
         <TouchableOpacity
           onPress={() => {
             navigation.navigate("Login");
@@ -89,9 +88,7 @@ const PathologicalCase = () => {
         </TouchableOpacity>
       </View>
 
-      <Text style={styles.subText}>
-      {t('Status')}
-      </Text>
+      <Text style={styles.subText}>{t("Status")}</Text>
 
       <Icon name="pencil" size={30} color="black" style={styles.icon} />
       <View style={styles.container}>
@@ -100,7 +97,7 @@ const PathologicalCase = () => {
           onChangeText={onChangeProblemHandler}
           style={styles.textInput}
           multiline={true}
-          placeholder=  {t('write')}
+          placeholder={t("write")}
         />
       </View>
       <View
@@ -113,7 +110,7 @@ const PathologicalCase = () => {
       >
         <TouchableOpacity onPress={handleProblem}>
           <Text style={styles.buttonStyle}>
-            <Ionicons name="paper-plane" size={25} color="#ebebeb" /> {t('Sub')}
+            <Ionicons name="paper-plane" size={25} color="#ebebeb" /> {t("Sub")}
           </Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={handleHomePress}>
@@ -124,7 +121,7 @@ const PathologicalCase = () => {
               color="#ebebeb"
               style={styles.icon}
             />
-            {t('Home')}
+            {t("Home")}
           </Text>
         </TouchableOpacity>
       </View>

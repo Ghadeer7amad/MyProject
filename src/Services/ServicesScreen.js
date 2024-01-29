@@ -20,7 +20,7 @@ import NavbarButtom from "../Common/NavbarButtom";
 import { Alert } from "react-native";
 import { useSelector } from "react-redux";
 import WhatsApp from "../Common/WhatsApp.js";
-import { useTranslation } from 'react-i18next';  
+import { useTranslation } from "react-i18next";
 
 const ServicesScreen = () => {
   const navigation = useNavigation();
@@ -31,7 +31,7 @@ const ServicesScreen = () => {
     navigation.navigate("BookingScreen");
   };
 
-  const [selectedItem, setSelectedItem] = useState("Body"); 
+  const [selectedItem, setSelectedItem] = useState("Body");
   const { role } = useSelector((state) => state.user.userData);
   const [filteredItems, setFilteredItems] = useState([]);
 
@@ -109,15 +109,15 @@ const ServicesScreen = () => {
   };
   const confirmDelete = (itemId) => {
     Alert.alert(
-      t('Confirm deletion'),
-      t('Are you sure you want to delete this salon?'),
+      t("Confirm deletion"),
+      t("Are you sure you want to delete this salon?"),
       [
         {
-          text: t('Cancel'), 
+          text: t("Cancel"),
           style: "cancel",
         },
         {
-          text: t('Yes, Delete'),
+          text: t("Yes, Delete"),
           onPress: () => handleRemoveService(itemId),
         },
       ],
@@ -160,14 +160,14 @@ const ServicesScreen = () => {
 
         <View style={{ width: "100%" }}>
           <Text style={styles.styleText}>
-          {t('Here')}{" "}
+            {t("Here")}{" "}
             <Image
               style={{ width: 80, height: 60 }}
               source={require("../../assets/111.jpg")}
             />
           </Text>
           <Text style={[styles.styleText, styles.styleText2]}>
-          {t('Our Services')}
+            {t("Our Services")}
           </Text>
           {(role === "Admin" || role === "Manager") && (
             <TouchableOpacity
@@ -191,13 +191,13 @@ const ServicesScreen = () => {
                   fontSize: 16,
                 }}
               >
-                {t('Add Service')}
+                {t("Add Service")}
               </Text>
             </TouchableOpacity>
           )}
 
           <SearchProANDSer
-            placeholder={t('Search your service')}
+            placeholder={t("Search your service")}
             onSearch={handleSearch}
           />
         </View>
@@ -210,7 +210,7 @@ const ServicesScreen = () => {
                 selectedItem === "Body" ? styles.selectedText1 : null,
               ]}
             >
-              {t('Body')}
+              {t("Body")}
             </Text>
           </TouchableOpacity>
 
@@ -221,7 +221,7 @@ const ServicesScreen = () => {
                 selectedItem === "Face" ? styles.selectedText2 : null,
               ]}
             >
-              {t('Face')}
+              {t("Face")}
             </Text>
           </TouchableOpacity>
         </View>
@@ -295,7 +295,7 @@ const ServicesScreen = () => {
                       <View style={{ flexDirection: "row" }}>
                         <Text style={styles.PriceStyle}>
                           {service.finalPrice}
-                          <Text style={{ color: "black" }}> {t('ILS')}</Text>
+                          <Text style={{ color: "black" }}> {t("ILS")}</Text>
                         </Text>
                         {service.price && (
                           <Text style={styles.OldPriceStyle}>
@@ -307,7 +307,7 @@ const ServicesScreen = () => {
                               }}
                             >
                               {" "}
-                              {t('ILS')}
+                              {t("ILS")}
                             </Text>
                           </Text>
                         )}
@@ -316,7 +316,7 @@ const ServicesScreen = () => {
                         style={styles.styleIcons}
                         onPress={() => handleDetailsPress(service)}
                       >
-                        <Text style={styles.details}>{t('More Details')}</Text>
+                        <Text style={styles.details}>{t("More Details")}</Text>
                       </TouchableOpacity>
                     </View>
                   </BlurView>
@@ -390,7 +390,7 @@ const ServicesScreen = () => {
                       <View style={{ flexDirection: "row" }}>
                         <Text style={styles.PriceStyle}>
                           {service.finalPrice}
-                          <Text style={{ color: "black" }}> {t('ILS')}</Text>
+                          <Text style={{ color: "black" }}> {t("ILS")}</Text>
                         </Text>
                         {service.price && (
                           <Text style={styles.OldPriceStyle}>
@@ -402,7 +402,7 @@ const ServicesScreen = () => {
                               }}
                             >
                               {" "}
-                              {t('ILS')}
+                              {t("ILS")}
                             </Text>
                           </Text>
                         )}
@@ -411,7 +411,7 @@ const ServicesScreen = () => {
                         style={styles.styleIcons}
                         onPress={() => handleDetailsPress(service)}
                       >
-                        <Text style={styles.details}>{t('More Details')}</Text>
+                        <Text style={styles.details}>{t("More Details")}</Text>
                       </TouchableOpacity>
                     </View>
                   </BlurView>

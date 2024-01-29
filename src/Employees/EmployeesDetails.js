@@ -1,23 +1,15 @@
 import React from "react";
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-} from "react-native";
+import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Color from "../Common/Color.js";
 import Icon from "react-native-vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
-import { useTranslation } from 'react-i18next'; 
-
+import { useTranslation } from "react-i18next";
 
 const EmployeesDetailsScreen = ({ route }) => {
   const { item } = route.params;
   const navigation = useNavigation();
   const [t] = useTranslation();
-
 
   const handleBookAppointment = () => {
     navigation.navigate("BookingScreen");
@@ -28,7 +20,7 @@ const EmployeesDetailsScreen = ({ route }) => {
 
   return (
     <View style={styles.container}>
-      <Image source={{uri: item?.image?.secure_url}} style={styles.image} />
+      <Image source={{ uri: item?.image?.secure_url }} style={styles.image} />
       <View style={styles.detailsContainer}>
         <View style={styles.nameContainer}>
           <Text style={styles.name}>{item.name}</Text>
@@ -41,28 +33,30 @@ const EmployeesDetailsScreen = ({ route }) => {
         </View>
         <Text style={styles.job}>{item.job}</Text>
         <View style={styles.iconContainer}>
-        <View style={styles.starContainer}>
-          <Icon name="star" color="gold" size={20} />
-          <Text style={styles.rate}>4.5</Text>
+          <View style={styles.starContainer}>
+            <Icon name="star" color="gold" size={20} />
+            <Text style={styles.rate}>4.5</Text>
+          </View>
+          <TouchableOpacity style={styles.starContainer}>
+            <Icon name="checkmark-circle" size={20} color="green" />
+            <Text style={styles.rate}>
+              {item.experienceYears} {t("years of experience")}
+            </Text>
+          </TouchableOpacity>
         </View>
-        <TouchableOpacity style={styles.starContainer} >
-          <Icon name="checkmark-circle" size={20} color="green" />
-          <Text style={styles.rate}>{item.experienceYears} {t('years of experience')}</Text>
-        </TouchableOpacity>
-       </View>
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={styles.button}
             onPress={handleBookAppointment}
           >
-            <Text style={styles.buttonText}>{t('Book Now')}</Text>
+            <Text style={styles.buttonText}>{t("Book Now")}</Text>
           </TouchableOpacity>
- 
+
           <TouchableOpacity
             style={[styles.button, styles.button1]}
             onPress={handleCancelAppointment}
           >
-            <Text style={styles.buttonText1}>{t('Cancel')}</Text>
+            <Text style={styles.buttonText1}>{t("Cancel")}</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -110,7 +104,6 @@ const styles = StyleSheet.create({
   },
   iconContainer: {
     flexDirection: "row",
-    
   },
   starContainer: {
     flexDirection: "row",

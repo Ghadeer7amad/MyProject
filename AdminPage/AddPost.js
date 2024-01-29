@@ -6,7 +6,7 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
-import { Button } from "react-native-elements"; 
+import { Button } from "react-native-elements";
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import {
@@ -19,13 +19,12 @@ import * as ImagePicker from "expo-image-picker";
 import { serialize } from "object-to-formdata";
 import { Box, useToast } from "native-base";
 import { useSelector } from "react-redux";
-import { useTranslation } from 'react-i18next'; 
+import { useTranslation } from "react-i18next";
 
 const AddPost = () => {
   const navigation = useNavigation();
   const [t] = useTranslation();
   const token = useSelector((state) => state.user.userData.token);
-
 
   const { _id: salonId, name: salonName } = useSelector(
     (state) => state.user.usedSalonData
@@ -37,7 +36,7 @@ const AddPost = () => {
   });
   const toast = useToast();
 
-  const [buttonText, setButtonText] = useState(t('Upload Image'));
+  const [buttonText, setButtonText] = useState(t("Upload Image"));
   const [image, setImage] = useState(null);
 
   const pickImage = async () => {
@@ -49,7 +48,7 @@ const AddPost = () => {
     });
     if (!result.canceled) {
       setImage(result.assets[0]);
-      setButtonText(t('Image is uploaded successfully'));
+      setButtonText(t("Image is uploaded successfully"));
     }
   };
 
@@ -84,23 +83,22 @@ const AddPost = () => {
       const response = await fetch(`${baseUrl}/posts/post`, {
         method: "POST",
         headers: {
-          'Authorization': `Nada__${token}`
+          Authorization: `Nada__${token}`,
         },
         body: formData,
       });
 
-      if (!response.ok) { 
-        console.error('Failed to upload post:', response.statusText);
-       
+      if (!response.ok) {
+        console.error("Failed to upload post:", response.statusText);
       }
 
-      console.log(formData); 
+      console.log(formData);
 
       toast.show({
         render: () => {
           return (
             <Box bg="emerald.500" px="5" py="5" rounded="sm" mb={5}>
-              {t('Post added successfully')}
+              {t("Post added successfully")}
             </Box>
           );
         },
@@ -114,14 +112,14 @@ const AddPost = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.TextStyleHeader}>{t('Add Post')}</Text>
+      <Text style={styles.TextStyleHeader}>{t("Add Post")}</Text>
 
       <View style={styles.formgroup}>
         <TextInput
           value={FData.textPost}
           onChangeText={(text) => setFData({ ...FData, textPost: text })}
           style={styles.input}
-          placeholder={t('Write here')}
+          placeholder={t("Write here")}
         />
         <FontAwesomeIcon icon={faFileSignature} style={styles.icon} />
       </View>
@@ -158,11 +156,13 @@ const AddPost = () => {
       </View>
 
       <TouchableOpacity onPress={addPost}>
-        <Text style={styles.buttonStyle}>{t('Add')}</Text>
+        <Text style={styles.buttonStyle}>{t("Add")}</Text>
       </TouchableOpacity>
 
       <TouchableOpacity onPress={() => navigation.navigate("PostsScreen")}>
-        <Text style={[styles.buttonStyle, styles.buttonStyle1]}>{t('Cancel')}</Text>
+        <Text style={[styles.buttonStyle, styles.buttonStyle1]}>
+          {t("Cancel")}
+        </Text>
       </TouchableOpacity>
     </View>
   );

@@ -2,16 +2,14 @@ import React from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import Color from "../Common/Color.js";
 import Icon from "react-native-vector-icons/Ionicons";
-import { FontAwesome as Iconn } from '@expo/vector-icons';
+import { FontAwesome as Iconn } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { useTranslation } from 'react-i18next';  
-
+import { useTranslation } from "react-i18next";
 
 const ServiceDetailsScreen = ({ route }) => {
   const { service } = route.params;
   const navigation = useNavigation();
   const [t] = useTranslation();
-
 
   const handleBookAppointment = () => {
     navigation.navigate("BookingScreen", { service });
@@ -47,21 +45,31 @@ const ServiceDetailsScreen = ({ route }) => {
           </View>
         </View>
 
-        <Text style={{ fontSize: 23, color: "black", fontWeight: "bold", marginLeft: 20 }}>
-        {t('Des')}
+        <Text
+          style={{
+            fontSize: 23,
+            color: "black",
+            fontWeight: "bold",
+            marginLeft: 20,
+          }}
+        >
+          {t("Des")}
         </Text>
         <Text style={styles.description}>{service.description}</Text>
 
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={handleBookAppointment}>
-            <Text style={styles.buttonText}>{t('Book Now')}</Text>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={handleBookAppointment}
+          >
+            <Text style={styles.buttonText}>{t("Book Now")}</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
             style={[styles.button, styles.button1]}
             onPress={handleCancelAppointment}
           >
-            <Text style={styles.buttonText1}>{t('Cancel')}</Text>
+            <Text style={styles.buttonText1}>{t("Cancel")}</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -76,7 +84,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: "100%",
-    height: '45%',
+    height: "45%",
   },
   sectionTitleContainer: {
     flexDirection: "row",
@@ -86,39 +94,39 @@ const styles = StyleSheet.create({
   },
   detailsContainer: {
     backgroundColor: "#fff",
-    height: '70%',
+    height: "70%",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    position:'absolute',
+    position: "absolute",
     marginTop: 300,
-    width: '100%'
+    width: "100%",
   },
   name: {
     fontSize: 23,
     fontWeight: "bold",
     marginTop: 20,
     color: "black",
-    marginLeft: 20
+    marginLeft: 20,
   },
   starContainer: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginBottom: 4,
     marginLeft: 250,
-    marginTop: 30
+    marginTop: 30,
   },
   time: {
     fontSize: 15,
-    color: 'gray',
-    marginLeft:10,
-    marginRight: 10
+    color: "gray",
+    marginLeft: 10,
+    marginRight: 10,
   },
   description: {
     fontSize: 15,
     marginTop: 10,
     lineHeight: 30,
-    color: 'gray',
+    color: "gray",
     letterSpacing: 1,
-    marginLeft: 20
+    marginLeft: 20,
   },
   buttonContainer: {
     flexDirection: "row",
@@ -132,14 +140,14 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",
-    marginLeft: 20
+    marginLeft: 20,
   },
   button1: {
     paddingHorizontal: 10,
     marginLeft: 20,
     backgroundColor: Color.secondary,
     borderColor: Color.background,
-    borderWidth: 1
+    borderWidth: 1,
   },
   buttonText: {
     color: "white",

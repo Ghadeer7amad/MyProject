@@ -30,7 +30,7 @@ const AddEmployee = () => {
   const { _id: salonId, name: salonName } = useSelector(
     (state) => state.user.usedSalonData
   );
-  const [FData, setFData] = useState({ 
+  const [FData, setFData] = useState({
     name: "",
     job: "",
     experienceYears: "",
@@ -164,7 +164,7 @@ const AddEmployee = () => {
       </View>
 
       <TouchableOpacity onPress={addEmployee}>
-        <Text style={styles.buttonStyle}>{t('Add')}</Text>
+        <Text style={styles.buttonStyle}>{t("Add")}</Text>
       </TouchableOpacity>
 
       <TouchableOpacity onPress={() => navigation.navigate("EmployeesScreen")}>

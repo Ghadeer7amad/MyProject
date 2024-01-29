@@ -8,15 +8,14 @@ import {
   SafeAreaView,
   ScrollView,
   Dimensions,
-  Linking 
+  Linking,
 } from "react-native";
 import Header from "../screens/Header";
 import Color from "../Common/Color";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import { useNavigation } from "@react-navigation/native";
-import {useSelector} from 'react-redux';
-import { useTranslation } from 'react-i18next'; 
-
+import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 const About = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -24,7 +23,7 @@ const About = () => {
   const images = [
     require("../../assets/hh.jpg"),
     require("../../assets/oo.jpg"),
-    require("../../assets/hhhh.jpg"), 
+    require("../../assets/hhhh.jpg"),
   ];
 
   const handleSlideChange = (index) => {
@@ -34,10 +33,12 @@ const About = () => {
   const windowWidth = Dimensions.get("window").width;
 
   const navigation = useNavigation();
-  const {id: salonId , name: salonName, branches: Branch} = useSelector(state => state.user.usedSalonData)
+  const {
+    id: salonId,
+    name: salonName,
+    branches: Branch,
+  } = useSelector((state) => state.user.usedSalonData);
   const [t] = useTranslation();
-
-
 
   const handleBookPress = () => {
     navigation.navigate("BookingScreen");
@@ -48,13 +49,11 @@ const About = () => {
     console.log("Contact us pressed");
   };
 
-
   const openWhatsAppChat = () => {
     const whatsappNumber = "+972595671000";
     const url = `https://api.whatsapp.com/send?phone=${whatsappNumber}`;
     Linking.openURL(url);
   };
- 
 
   const socialIcons = [
     {
@@ -76,14 +75,13 @@ const About = () => {
       link: "https://api.whatsapp.com/send?phone=+972595671000",
     },
   ];
-  
+
   const locationIcon = "map-marker-alt";
 
   return (
     <SafeAreaView style={styles.container}>
-      
-      <ScrollView >
-      <Header /> 
+      <ScrollView>
+        <Header />
 
         <View style={styles.sliderContainer}>
           <ScrollView
@@ -129,18 +127,15 @@ const About = () => {
           <View style={styles.titleLine} />
         </View>
 
-        <Text style={styles.paragraph}>
-        {t('aboutus')}
-        </Text>
+        <Text style={styles.paragraph}>{t("aboutus")}</Text>
 
         <View style={styles.buttonsContainer}>
           <TouchableOpacity
             style={[styles.button, { borderColor: Color.primary }]}
-
-            onPress= {openWhatsAppChat}
+            onPress={openWhatsAppChat}
           >
             <Text style={[styles.buttonText, { color: Color.primary }]}>
-            {t('Contact Us')}
+              {t("Contact Us")}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -148,14 +143,14 @@ const About = () => {
             onPress={handleBookPress}
           >
             <Text style={[styles.buttonText, { color: "white" }]}>
-            {t('Book an Appointment')}
+              {t("Book an Appointment")}
             </Text>
           </TouchableOpacity>
         </View>
 
         <View style={styles.titleContainer}>
           <Text style={styles.DepartmentTitle}>
-          {t('Departments of')} {salonName} Center
+            {t("Departments of")} {salonName} Center
           </Text>
           <View style={styles.titleLine} />
         </View>
@@ -168,11 +163,9 @@ const About = () => {
               style={styles.circularImage}
             />
           </View>
-          <Text style={styles.departmentTitle}>{t('Skin Care')} </Text>
+          <Text style={styles.departmentTitle}>{t("Skin Care")} </Text>
           <View style={styles.horizontalLine} />
-          <Text style={styles.departmentParagraph}>
-          {t('aboutskincare')}
-          </Text>
+          <Text style={styles.departmentParagraph}>{t("aboutskincare")}</Text>
         </View>
 
         <View style={styles.departmentContainer}>
@@ -183,12 +176,9 @@ const About = () => {
               style={styles.circularImage}
             />
           </View>
-          <Text style={styles.departmentTitle}>{t('Laser Therapy')} 
-          </Text>
+          <Text style={styles.departmentTitle}>{t("Laser Therapy")}</Text>
           <View style={styles.horizontalLine} />
-          <Text style={styles.departmentParagraph}>
-          {t('aboutlaser')}
-          </Text>
+          <Text style={styles.departmentParagraph}>{t("aboutlaser")}</Text>
         </View>
 
         <View style={styles.departmentContainer}>
@@ -199,43 +189,34 @@ const About = () => {
               style={styles.circularImage}
             />
           </View>
-          <Text style={styles.departmentTitle}>{t('Creams')} </Text>
+          <Text style={styles.departmentTitle}>{t("Creams")} </Text>
           <View style={styles.horizontalLine} />
-          <Text style={styles.departmentParagraph}>
-          {t('aboutcream')}
-          </Text>
+          <Text style={styles.departmentParagraph}>{t("aboutcream")}</Text>
         </View>
 
         <View style={styles.titleContainer}>
-          <Text style={styles.title}>{t('Our Branches')}</Text>
+          <Text style={styles.title}>{t("Our Branches")}</Text>
           <View style={styles.title2Line} />
         </View>
 
-        
-    <View  style={styles.branchContainer}>
-    
-    <View style={styles.branchDetails}>
-      <FontAwesome5 name={locationIcon} size={15} color={Color.primary} />
-      <Text style={styles.branchInfo}>{Branch} </Text>
-    </View>
-    
-  </View>
+        <View style={styles.branchContainer}>
+          <View style={styles.branchDetails}>
+            <FontAwesome5 name={locationIcon} size={15} color={Color.primary} />
+            <Text style={styles.branchInfo}>{Branch} </Text>
+          </View>
+        </View>
 
-<View style={styles.socialIconsBackground}>
-  {socialIcons.map((socialIcon, index) => (
-    <TouchableOpacity
-      key={index}
-      style={[styles.socialIcon]}
-      onPress={() => Linking.openURL(socialIcon.link)}
-    >
-      <FontAwesome5 name={socialIcon.icon} size={20} color="#fff" />
-    </TouchableOpacity>
-  ))}
-</View>
-
-
-
-
+        <View style={styles.socialIconsBackground}>
+          {socialIcons.map((socialIcon, index) => (
+            <TouchableOpacity
+              key={index}
+              style={[styles.socialIcon]}
+              onPress={() => Linking.openURL(socialIcon.link)}
+            >
+              <FontAwesome5 name={socialIcon.icon} size={20} color="#fff" />
+            </TouchableOpacity>
+          ))}
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -343,10 +324,9 @@ const styles = StyleSheet.create({
   },
   departmentTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    color: '#ffa952',
-    
+    fontWeight: "bold",
+    textAlign: "center",
+    color: "#ffa952",
   },
   horizontalLine: {
     width: 220,
@@ -424,10 +404,6 @@ const styles = StyleSheet.create({
     borderColor: "rgba(0, 0, 0, 0.1)", // Color of the border
     elevation: 5,
   },
-  
-
-
-
 });
 
 export default About;

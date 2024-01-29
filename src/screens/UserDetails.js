@@ -12,7 +12,7 @@ import Spacing from "../Common/Spacing.js";
 import Icon from "react-native-vector-icons/FontAwesome"; // Import the icon library you are using
 import { useNavigation } from "@react-navigation/native";
 import React, { useState, useEffect } from "react";
-import { useTranslation } from 'react-i18next'; 
+import { useTranslation } from "react-i18next";
 
 const UserDetails = ({ route }) => {
   const [t] = useTranslation();
@@ -99,31 +99,41 @@ const UserDetails = ({ route }) => {
 
       <ScrollView style={styles.scrollView}>
         <View style={styles.container2}>
-          <Text style={[styles.styleText]}>{t('User Details')}.</Text>
+          <Text style={[styles.styleText]}>{t("User Details")}.</Text>
           <View style={styles.userContainer}>
             <View style={{ display: "flex", gap: 15, flexDirection: "row" }}>
               <Icon name="user" size={25} color="#555555" />
-              <Text style={styles.userInfo}>{t('Name')}: {Info.userName}</Text>
+              <Text style={styles.userInfo}>
+                {t("Name")}: {Info.userName}
+              </Text>
             </View>
             <View style={{ display: "flex", gap: 15, flexDirection: "row" }}>
               <Icon name="map-marker" size={25} color="#555555" />
-              <Text style={styles.userInfo}>{t('Address')}: {Info.address}</Text>
+              <Text style={styles.userInfo}>
+                {t("Address")}: {Info.address}
+              </Text>
             </View>
             <View style={{ display: "flex", gap: 15, flexDirection: "row" }}>
               <Icon name="birthday-cake" size={22} color="#555555" />
-              <Text style={styles.userInfo}>{t('Age')}: {Info.age}</Text>
+              <Text style={styles.userInfo}>
+                {t("Age")}: {Info.age}
+              </Text>
             </View>
             <View style={{ display: "flex", gap: 15, flexDirection: "row" }}>
               <Icon name="phone" size={25} color="#555555" />
-              <Text style={styles.userInfo}>{t('Phone Number')}: {Info.phone}</Text>
+              <Text style={styles.userInfo}>
+                {t("Phone Number")}: {Info.phone}
+              </Text>
             </View>
             <View style={{ display: "flex", gap: 15, flexDirection: "row" }}>
               <Icon name="user-circle" size={25} color="#555555" />
-              <Text style={styles.userInfo}>{t('User Status')}: {status}</Text>
+              <Text style={styles.userInfo}>
+                {t("User Status")}: {status}
+              </Text>
             </View>
           </View>
           <TouchableOpacity onPress={handleBackPress}>
-            <Text style={styles.buttonStyle}>{t('Back')}</Text>
+            <Text style={styles.buttonStyle}>{t("Back")}</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

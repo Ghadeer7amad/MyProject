@@ -23,7 +23,10 @@ const NavbarTop = () => {
 
       <View style={styles.imageContainer}>
         <BlurView style={{ height: "100%", padding: Spacing / 4 }}>
-          <Image source={require("../../assets/aya5.jpg")} style={styles.imageStyle} />
+          <Image
+            source={require("../../assets/aya5.jpg")}
+            style={styles.imageStyle}
+          />
         </BlurView>
       </View>
     </View>
@@ -33,32 +36,32 @@ const NavbarTop = () => {
 export default NavbarTop;
 
 const styles = StyleSheet.create({
-    smallContainer:{
-        marginTop: 25,
-        flexDirection: "row",
-        justifyContent: "space-between"
-    },
-    styleIcon:{
-        borderRadius: Spacing,
-        overflow: "hidden",
-        width: Spacing * 3.5,
-        height : Spacing * 3.5,
-        backgroundColor : Color.secondary
-    },
-    styleBulrView:{
-        height : "100%",
-        justifyContent: "center",
-        alignItems: "center"
-    },
-    imageContainer:{
-        width: Spacing * 4,
-        height : Spacing * 4,
-        overflow: "hidden",
-        borderRadius: Spacing*2
-    },
-    imageStyle:{
-        height:"100%",
-        width:"100%",
-        borderRadius: Spacing * 2
-    }
-})
+  smallContainer: {
+    marginTop: 25,
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  styleIcon: {
+    borderRadius: Spacing,
+    overflow: "hidden",
+    width: Spacing * 3.5,
+    height: Spacing * 3.5,
+    backgroundColor: Color.secondary,
+  },
+  styleBulrView: {
+    height: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  imageContainer: {
+    width: Spacing * 4,
+    height: Spacing * 4,
+    overflow: "hidden",
+    borderRadius: Spacing * 2,
+  },
+  imageStyle: {
+    height: "100%",
+    width: "100%",
+    borderRadius: Spacing * 2,
+  },
+});

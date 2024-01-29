@@ -3,10 +3,10 @@ import {
   View,
   Text,
   StyleSheet,
-  Image, 
+  Image,
   SafeAreaView,
   ScrollView,
-  TouchableOpacity, 
+  TouchableOpacity,
   Switch,
   Modal,
   Pressable,
@@ -27,18 +27,14 @@ export default function Example() {
   const [t, i18n] = useTranslation();
   const navigation = useNavigation();
 
-
-
   const [isLoading, setIsLoading] = useState(true);
   const [items, setItems] = useState([]);
   const {
     id: userId,
     name: userName,
     email: userEmail,
-    
   } = useSelector((state) => state.user.userData);
   const { role } = useSelector((state) => state.user.userData);
-  
 
   const baseUrl = "https://ayabeautyn.onrender.com";
 
@@ -69,7 +65,6 @@ export default function Example() {
 
   const SECTIONS = [
     {
-     
       icon: "settings",
       items: [
         {
@@ -100,13 +95,10 @@ export default function Example() {
           label: t("Notifications"),
           type: "link",
         },
-
-
       ],
     },
 
     {
-      
       icon: "help-circle",
       items: [
         {
@@ -168,21 +160,17 @@ export default function Example() {
                     onPress={() => {
                       if (id === "language") {
                         setLanguageModalVisible(true);
-                      }
-                      else if (id === "Favorites"){
+                      } else if (id === "Favorites") {
                         navigation.navigate("Favorite");
-                      }
-                      else if (id === "Log Out"){
+                      } else if (id === "Log Out") {
                         navigation.navigate("Homee");
-                      }
-                      else if (id === "My Appointments"){
+                      } else if (id === "My Appointments") {
                         if (role === "Admin" || role === "Manager") {
                           navigation.navigate("AppointmentHistory");
                         } else {
                           navigation.navigate("UserHistory");
                         }
-                      }
-                      else {
+                      } else {
                       }
                     }}
                   >
@@ -196,8 +184,6 @@ export default function Example() {
 
                       <View style={{ flex: 1 }} />
 
-                    
-
                       {type === "link" && (
                         <FeatherIcon
                           name="chevron-right"
@@ -209,7 +195,6 @@ export default function Example() {
                   </TouchableOpacity>
                 );
               })}
-
             </View>
           );
         })}
@@ -252,7 +237,6 @@ export default function Example() {
         </Modal>
       </ScrollView>
       <NavbarButtom onChange={(selectedIcon) => console.log(selectedIcon)} />
-
     </SafeAreaView>
   );
 }

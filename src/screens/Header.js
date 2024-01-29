@@ -1,19 +1,18 @@
 import { View, Image, TouchableOpacity, StyleSheet } from "react-native";
 import React from "react";
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createDrawerNavigator } from "@react-navigation/drawer";
 import { useNavigation } from "@react-navigation/native";
-import { Ionicons } from '@expo/vector-icons';
-import One from '../../assets/aya.jpeg';
+import { Ionicons } from "@expo/vector-icons";
+import One from "../../assets/aya.jpeg";
 
 const Drawer = createDrawerNavigator();
 
 const Header = () => {
   const navigation = useNavigation();
 
-  const handleMenuPress   = () => {
+  const handleMenuPress = () => {
     navigation.openDrawer();
   };
-  
 
   return (
     <View style={styles.container}>
@@ -35,10 +34,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     paddingTop: 1,
     paddingLeft: 15,
-    justifyContent: 'space-between',
-    backgroundColor: 'white',
-    alignItems: 'center',
-    shadowColor: 'rgba(0, 0, 0, 0.300)',
+    justifyContent: "space-between",
+    backgroundColor: "white",
+    alignItems: "center",
+    shadowColor: "rgba(0, 0, 0, 0.300)",
     shadowOpacity: 0.7,
     shadowRadius: 20,
     elevation: 7,
@@ -50,9 +49,9 @@ const styles = StyleSheet.create({
   },
 
   iconStyle: {
-    color: '#5e366a',
+    color: "#5e366a",
     marginBottom: 1,
-    alignSelf: 'center',
+    alignSelf: "center",
     fontSize: 40,
     paddingTop: 30,
   },
@@ -60,7 +59,7 @@ const styles = StyleSheet.create({
   imageContainer: {
     width: 50,
     height: 70,
-    overflow: 'hidden',
+    overflow: "hidden",
     borderRadius: 20,
     marginRight: 10,
     marginTop: 35,
