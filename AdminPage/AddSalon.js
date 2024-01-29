@@ -86,7 +86,7 @@ const AddSalon = () => {
           </Box>
         ),
       });
-      navigation.navigate("SalonScreen");
+      navigation.navigate("SalonScreen", {salonId:null});
     } catch (error) {
       console.error(error);
     }

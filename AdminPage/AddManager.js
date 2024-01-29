@@ -160,7 +160,7 @@ const AddManager = () => {
         toast.show({
           render: () => (
             <Box bg="#55a44e" px="8" py="5" rounded="sm" mb={5}>
-              {t("SignUp successfully")}
+              {t("Manager is added successfully")}
             </Box>
           ),
         });
@@ -170,12 +170,12 @@ const AddManager = () => {
         setphone("");
         setaddress("");
         setpassword("");
-        navigation.navigate("SalonScreen");
+        navigation.navigate("SalonScreen", {salonId:null});
       } else {
         toast.show({
           render: () => (
             <Box bg="#c81912" px="8" py="5" rounded="sm" mb={5}>
-              {t("SignUp failed")}
+              {t("Failed")}
             </Box>
           ),
         });
@@ -334,7 +334,7 @@ const AddManager = () => {
       <View style={styles.serviceListContainer}>
         <Select
           placeholder={t("Select Salon")}
-          style={{ width: 150, fontSize: 18 }}
+          style={{ width: 150, fontSize: 15 }}
           selectedValue={selectedValue}
           onValueChange={(itemValue) => setSelectedValue(itemValue)}
         >

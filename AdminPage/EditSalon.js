@@ -51,7 +51,7 @@ const EditSalon = ({ route }) => {
               </Box>
             ),
           });
-          navigation.navigate("SalonScreen");
+          navigation.navigate("SalonScreen", {salonId:null});
           setFData({
             name: "",
             branches: [],
