@@ -59,7 +59,7 @@ const BookingScreen = () => {
   const baseUrl = "https://ayabeautyn.onrender.com";
 
   useEffect(() => {
-    fetch(`http://10.0.2.2:3000/services/getServices`)
+    fetch(`${baseUrl}/services/getServices`)
       .then((res) => res.json())
       .then((data) => {
         setServices(data.Services);
@@ -90,7 +90,7 @@ const BookingScreen = () => {
   const fetchData = async () => {
     try {
       const response = await fetch(
-        `http://10.0.2.2:3000/salons/${salonId}/Appointment/appointment`
+        `${baseUrl}/salons/${salonId}/Appointment/appointment`
       );
       const data = await response.json();
       setBookedAppointments(data.map((appointment) => appointment.uniqueDate));
@@ -108,7 +108,7 @@ const BookingScreen = () => {
       try {
         if (salonId) {
           const response = await fetch(
-            `http://10.0.2.2:3000/salons/salon/${salonId}/branches`
+            `${baseUrl}/salons/salon/${salonId}/branches`
           );
 
           if (!response.ok) {
@@ -194,7 +194,7 @@ const BookingScreen = () => {
 
     try {
       const response = await fetch(
-        `http://10.0.2.2:3000/appointments/appointment`,
+        `${baseUrl}/appointments/appointment`,
         {
           method: "POST",
           body: JSON.stringify(data),
