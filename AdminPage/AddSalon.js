@@ -2,7 +2,7 @@ import {
   StyleSheet,
   Text,
   View,
-  TextInput, 
+  TextInput,
   Image,
   TouchableOpacity,
 } from "react-native";
@@ -153,7 +153,7 @@ const AddSalon = () => {
       </View>
 
       <TouchableOpacity onPress={addSalon}>
-        <Text style={styles.buttonStyle}>{t('Add')}</Text>
+        <Text style={styles.buttonStyle}>{t("Add")}</Text>
       </TouchableOpacity>
 
       <TouchableOpacity onPress={() => navigation.navigate("SalonScreen")}>

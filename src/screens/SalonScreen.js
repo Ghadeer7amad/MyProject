@@ -11,7 +11,7 @@ import { useSelector } from "react-redux";
 import { storeUsedSalon } from "../redux/user/userActions.js";
 import { useTranslation } from "react-i18next";
 
-const SalonScreen = ({route}) => {
+const SalonScreen = ({ route }) => {
   const navigation = useNavigation();
   const [t] = useTranslation();
 
@@ -30,7 +30,6 @@ const SalonScreen = ({route}) => {
   const { role, token } = useSelector((state) => state.user.userData);
   const { salonId } = route.params;
   console.log(route.params);
-
 
   const handleContinuePress = (item) => {
     dispatch(storeUsedSalon(item));
@@ -97,14 +96,14 @@ const SalonScreen = ({route}) => {
       }
     };
 
-    if (role === "Admin" || role =="User") {
+    if (role === "Admin" || role == "User") {
       fetchData();
     } else if (role === "Manager") {
       fetchSalonData();
     }
   }, [role, baseUrl, token, salonId]);
 
-  const handleDeletePress = async (itemId) => { 
+  const handleDeletePress = async (itemId) => {
     console.log("Deleting item with ID:", itemId);
 
     try {
@@ -131,15 +130,14 @@ const SalonScreen = ({route}) => {
       />
       {role === "Admin" && (
         <View style={styles.buttonContainer}>
-         <TouchableOpacity onPress={() => navigation.navigate("AddSalon")}>
+          <TouchableOpacity onPress={() => navigation.navigate("AddSalon")}>
             <Text style={styles.buttonStyle}>{t("Add Salon")}</Text>
-         </TouchableOpacity>
+          </TouchableOpacity>
 
-         <TouchableOpacity onPress={() => navigation.navigate("AddManager")}>
-           <Text style={styles.buttonStyle}>{t("Add Manager")}</Text>
-         </TouchableOpacity>
-       </View>
-
+          <TouchableOpacity onPress={() => navigation.navigate("AddManager")}>
+            <Text style={styles.buttonStyle}>{t("Add Manager")}</Text>
+          </TouchableOpacity>
+        </View>
       )}
 
       <FlatList
@@ -223,7 +221,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 200,
     resizeMode: "cover",
-    borderRadius: 20, 
+    borderRadius: 20,
   },
   iconContainer: {
     flexDirection: "row",
@@ -235,7 +233,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   buttonStyle: {
-    width: "100", 
+    width: "100",
     padding: 10,
     backgroundColor: Color.background,
     fontWeight: "400",
@@ -243,12 +241,12 @@ const styles = StyleSheet.create({
     letterSpacing: 2,
     textAlign: "center",
     color: "#fff",
-    borderRadius: 7
+    borderRadius: 7,
   },
-  
+
   buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   Icons: {
     flexDirection: "row",

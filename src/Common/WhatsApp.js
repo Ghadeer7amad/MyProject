@@ -1,5 +1,5 @@
 import React from "react";
-import {  TouchableOpacity, Linking } from "react-native";
+import { TouchableOpacity, Linking } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import Color from "../Common/Color.js";
 
@@ -12,7 +12,7 @@ const WhatsApp = () => {
 
   return (
     <TouchableOpacity
-      onPress={openWhatsAppChat} 
+      onPress={openWhatsAppChat}
       style={{
         position: "absolute",
         bottom: 84,
@@ -20,11 +20,11 @@ const WhatsApp = () => {
         zIndex: 1000,
         backgroundColor: Color.primary,
         padding: 20,
-        borderRadius: 50, 
-        width: 80, 
+        borderRadius: 50,
+        width: 80,
         height: 80,
-        justifyContent: "center", 
-        alignItems: "center", 
+        justifyContent: "center",
+        alignItems: "center",
       }}
     >
       <Icon name="whatsapp" size={40} color="white" />

@@ -1,7 +1,7 @@
 import {
   StyleSheet,
   Text,
-  View, 
+  View,
   TextInput,
   TouchableOpacity,
   ScrollView,
@@ -9,15 +9,12 @@ import {
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import Icon from "react-native-vector-icons/Ionicons";
-import {
-  faBook,
-  faFileSignature,
-} from "@fortawesome/free-solid-svg-icons";
+import { faBook, faFileSignature } from "@fortawesome/free-solid-svg-icons";
 import Color from "../src/Common/Color.js";
 import { useNavigation } from "@react-navigation/native";
 import { Box, useToast } from "native-base";
 import axios from "axios";
-import { useTranslation } from 'react-i18next'; 
+import { useTranslation } from "react-i18next";
 
 const EditEmployee = ({ route }) => {
   const [t] = useTranslation();
@@ -50,7 +47,7 @@ const EditEmployee = ({ route }) => {
           toast.show({
             render: () => (
               <Box bg="emerald.500" px="5" py="5" rounded="sm" mb={5}>
-                {t('Employee information')}
+                {t("Employee information")}
               </Box>
             ),
           });
@@ -59,18 +56,16 @@ const EditEmployee = ({ route }) => {
             job: "",
             experienceYears: "",
           });
-        } 
-        
-        else {
+        } else {
           throw new Error("An error has occurred");
         }
       })
-      
+
       .catch((error) => {
         toast.show({
           render: () => (
             <Box bg="red.500" px="5" py="5" rounded="sm" mb={5}>
-              {t('Error in update')}
+              {t("Error in update")}
             </Box>
           ),
         });
@@ -81,14 +76,14 @@ const EditEmployee = ({ route }) => {
   return (
     <ScrollView>
       <View style={styles.contanier}>
-        <Text style={styles.TextStyleHeader}>{t('Update Employee')}</Text>
+        <Text style={styles.TextStyleHeader}>{t("Update Employee")}</Text>
 
         <View style={styles.formgroup}>
           <TextInput
             value={FData.name}
             onChangeText={(text) => setFData({ ...FData, name: text })}
             style={styles.input}
-            placeholder={t('EmpName')}
+            placeholder={t("EmpName")}
           />
           <FontAwesomeIcon icon={faFileSignature} style={styles.icon} />
         </View>
@@ -98,7 +93,7 @@ const EditEmployee = ({ route }) => {
             value={FData.job}
             onChangeText={(text) => setFData({ ...FData, job: text })}
             style={[styles.input]}
-            placeholder={t('EmpJob')}
+            placeholder={t("EmpJob")}
           />
           <FontAwesomeIcon
             icon={faBook}
@@ -113,19 +108,21 @@ const EditEmployee = ({ route }) => {
               setFData({ ...FData, experienceYears: text })
             }
             style={styles.input}
-            placeholder={t('Year')}
+            placeholder={t("Year")}
           />
           <Icon name="checkmark-circle" size={22} style={styles.icon} />
         </View>
 
         <TouchableOpacity onPress={() => handleEditSalon(item._id)}>
-          <Text style={styles.buttonStyle}>{t('Update')}</Text>
+          <Text style={styles.buttonStyle}>{t("Update")}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           onPress={() => navigation.navigate("EmployeesScreen")}
         >
-          <Text style={[styles.buttonStyle, styles.buttonStyle1]}>{t('Cancel')}</Text>
+          <Text style={[styles.buttonStyle, styles.buttonStyle1]}>
+            {t("Cancel")}
+          </Text>
         </TouchableOpacity>
       </View>
     </ScrollView>

@@ -22,7 +22,6 @@ const ApplyForaJob = () => {
   const [t] = useTranslation();
   const token = useSelector((state) => state.user.userData.token);
 
-
   const [selectedFile, setSelectedFile] = useState(null);
   const [selectedJob, setSelectedJob] = useState("Laser Specialist");
   const [isLoading, setIsLoading] = useState(false);
@@ -40,10 +39,9 @@ const ApplyForaJob = () => {
   );
 
   const [FData, setFData] = useState({
-    user_name: userName, 
+    user_name: userName,
     SalonId: salonId,
   });
-
 
   const toast = useToast();
 
@@ -53,7 +51,8 @@ const ApplyForaJob = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `${baseUrl}/salons/${salonId}/Job/job`, {
+          `${baseUrl}/salons/${salonId}/Job/job`,
+          {
             headers: {
               "Content-Type": "application/json",
               Authorization: `Nada__${token}`,
@@ -85,34 +84,25 @@ const ApplyForaJob = () => {
     }
   };
 
-
-
   const onSubmitPressed = async () => {
     try {
-
       setFData({
         ...FData,
         jobName: selectedJob,
       });
 
-
-      
-
       const formData = new FormData();
-      formData.append('cvFile', selectedFile.assets[0]);
-      
+      formData.append("cvFile", selectedFile.assets[0]);
 
       console.log("data:", formData);
-  
 
-
-
-      const response = await axios.post(`${baseUrl}/uploadjobs/uploadjob`,
+      const response = await axios.post(
+        `${baseUrl}/uploadjobs/uploadjob`,
         formData,
-        { 
+        {
           headers: {
             "Content-Type": "application/json",
-            Accept: 'application/json',
+            Accept: "application/json",
             Authorization: `Nada__${token}`,
           },
         }
@@ -165,7 +155,7 @@ const ApplyForaJob = () => {
               <Select.Item
                 key={item._id}
                 label={item.jobName}
-                value={item.jobName} 
+                value={item.jobName}
               />
             ))}
           </Select>

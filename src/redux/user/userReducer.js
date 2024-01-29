@@ -6,19 +6,19 @@ import {
   EDIT_USER,
   ADD_TO_FAVORITES,
   REMOVE_FROM_FAVORITES,
-  ADD_TO_CART
-} from './userActionTypes';
+  ADD_TO_CART,
+} from "./userActionTypes";
 
 const initialState = {
   isLoggedIn: false,
   userData: {
     numofNotifications: 0,
     isLiked: false, // حالة اللايك
-    token: null
+    token: null,
   },
-  usedSalonData: '',
-   favorites: [],
-   cart: [],
+  usedSalonData: "",
+  favorites: [],
+  cart: [],
 };
 
 const userReducer = (state = initialState, action) => {
@@ -31,7 +31,7 @@ const userReducer = (state = initialState, action) => {
           ...action.payload,
           token: action.payload.token,
         },
-      }
+      };
 
     case ADD_SALON:
       return { ...state, usedSalonData: action.payload };
@@ -45,15 +45,14 @@ const userReducer = (state = initialState, action) => {
         },
       };
 
-      case EDIT_USER:
-        return{
-          ...state,
-          userData: {
-            ...state.userData,
-            ...action.payload,
-          }
-
-        };
+    case EDIT_USER:
+      return {
+        ...state,
+        userData: {
+          ...state.userData,
+          ...action.payload,
+        },
+      };
 
     case TOGGLE_LIKE:
       return {
@@ -64,28 +63,27 @@ const userReducer = (state = initialState, action) => {
         },
       };
 
-      case ADD_TO_FAVORITES:
+    case ADD_TO_FAVORITES:
       return {
         ...state,
         favorites: [...state.favorites, action.payload],
       };
-      
-      case REMOVE_FROM_FAVORITES:
-        return {
-          ...state,
-          favorites: state.favorites.filter(product => product._id !== action.payload),
-        };
-        case ADD_TO_CART:
-          return {
-            ...state,
-            cart: [...state.cart, action.payload],
-          };
+
+    case REMOVE_FROM_FAVORITES:
+      return {
+        ...state,
+        favorites: state.favorites.filter(
+          (product) => product._id !== action.payload
+        ),
+      };
+    case ADD_TO_CART:
+      return {
+        ...state,
+        cart: [...state.cart, action.payload],
+      };
     default:
       return state;
   }
 };
 
 export default userReducer;
-
-
-

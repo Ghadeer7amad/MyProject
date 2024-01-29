@@ -25,14 +25,12 @@ import { serialize } from "object-to-formdata";
 import { Box, useToast } from "native-base";
 import { Select } from "native-base";
 import { useEffect } from "react";
-import { useTranslation } from 'react-i18next';  
-
+import { useTranslation } from "react-i18next";
 
 const AddServices = () => {
   const [selectedStatus, setSelectedStatus] = useState("Active");
   const [selectedSubServices, setSelectedSubServices] = useState("Body");
   const [t] = useTranslation();
-
 
   const [FData, setFData] = useState({
     name: "",
@@ -45,7 +43,7 @@ const AddServices = () => {
     image: "",
   });
   const toast = useToast();
-  const [buttonText, setButtonText] = useState(t('Upload Image'));
+  const [buttonText, setButtonText] = useState(t("Upload Image"));
   const [image, setImage] = useState(image);
 
   const handleSubServicesChange = (selectedsubServices) => {
@@ -77,7 +75,7 @@ const AddServices = () => {
     });
     if (!result.canceled) {
       setImage(result.assets[0]);
-      setButtonText(t('Image is uploaded successfully'));
+      setButtonText(t("Image is uploaded successfully"));
     }
   };
 
@@ -113,7 +111,7 @@ const AddServices = () => {
         toast.show({
           render: () => (
             <Box bg="#c81912" px="5" py="5" rounded="sm" mb={5}>
-              {t('Error adding services')} {responseData.message}
+              {t("Error adding services")} {responseData.message}
             </Box>
           ),
         });
@@ -124,7 +122,7 @@ const AddServices = () => {
         render: () => {
           return (
             <Box bg="#55a44e" px="5" py="5" rounded="sm" mb={5}>
-              {t('Services added successfully')}
+              {t("Services added successfully")}
             </Box>
           );
         },
@@ -146,7 +144,7 @@ const AddServices = () => {
       toast.show({
         render: () => (
           <Box bg="red.500" px="5" py="5" rounded="sm" mb={5}>
-            {t('Error adding service')}
+            {t("Error adding service")}
           </Box>
         ),
       });
@@ -157,14 +155,14 @@ const AddServices = () => {
   return (
     <ScrollView>
       <View style={styles.contanier}>
-        <Text style={styles.TextStyleHeader}>{t('Add Service')}</Text>
+        <Text style={styles.TextStyleHeader}>{t("Add Service")}</Text>
 
         <View style={styles.formgroup}>
           <TextInput
             value={FData.name}
             onChangeText={(text) => setFData({ ...FData, name: text })}
             style={styles.input}
-            placeholder={t('Service name')}
+            placeholder={t("Service name")}
           />
           <FontAwesomeIcon icon={faFileSignature} style={styles.icon} />
         </View>
@@ -174,7 +172,7 @@ const AddServices = () => {
             value={FData.description}
             onChangeText={(text) => setFData({ ...FData, description: text })}
             style={[styles.input, styles.inputDis]}
-            placeholder={t('Service description')}
+            placeholder={t("Service description")}
             multiline={true}
           />
           <FontAwesomeIcon
@@ -188,7 +186,7 @@ const AddServices = () => {
             value={FData.price}
             onChangeText={(text) => setFData({ ...FData, price: text })}
             style={styles.input}
-            placeholder={t('Service price')}
+            placeholder={t("Service price")}
           />
           <FontAwesomeIcon icon={faDollarSign} style={styles.icon} />
         </View>
@@ -198,7 +196,7 @@ const AddServices = () => {
             value={FData.discount}
             onChangeText={(text) => setFData({ ...FData, discount: text })}
             style={styles.input}
-            placeholder={t('Dis')}
+            placeholder={t("Dis")}
           />
           <FontAwesomeIcon icon={faDollarSign} style={styles.icon} />
         </View>
@@ -208,7 +206,7 @@ const AddServices = () => {
             value={FData.time}
             onChangeText={(text) => setFData({ ...FData, time: text })}
             style={styles.input}
-            placeholder={t('Service time')}
+            placeholder={t("Service time")}
           />
           <FontAwesomeIcon icon={faClock} style={styles.icon} />
         </View>
@@ -220,15 +218,15 @@ const AddServices = () => {
         >
           <View style={styles.serviceListContainer}>
             <Select
-              placeholder={t('Body')}
+              placeholder={t("Body")}
               color={Color.primary}
               style={{ width: 180, fontSize: 14 }}
               selectedValue={selectedSubServices}
               onValueChange={(value) => handleSubServicesChange(value)}
             >
               {[
-                { id: 1, name: t('Body') },
-                { id: 2, name: t('Face') },
+                { id: 1, name: t("Body") },
+                { id: 2, name: t("Face") },
               ].map((item) => (
                 <Select.Item
                   key={item.id}
@@ -239,9 +237,9 @@ const AddServices = () => {
             </Select>
           </View>
 
-          <View style={styles.serviceListContainer}> 
+          <View style={styles.serviceListContainer}>
             <Select
-              placeholder={t('ac')}
+              placeholder={t("ac")}
               color={Color.primary}
               style={{ width: 150, fontSize: 14 }}
               selectedValue={selectedStatus}
@@ -250,8 +248,8 @@ const AddServices = () => {
               }}
             >
               {[
-                { id: 1, name: t('ac') },
-                { id: 2, name: t('Ina') },
+                { id: 1, name: t("ac") },
+                { id: 2, name: t("Ina") },
               ].map((item) => (
                 <Select.Item
                   key={item.id}
@@ -295,11 +293,13 @@ const AddServices = () => {
         </View>
 
         <TouchableOpacity onPress={() => handleAddServices()}>
-          <Text style={styles.buttonStyle}>{t('Add')}</Text>
+          <Text style={styles.buttonStyle}>{t("Add")}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => navigation.navigate("ServicesScreen")}>
-          <Text style={[styles.buttonStyle, styles.buttonStyle1]}>{t('Cancel')}</Text>
+          <Text style={[styles.buttonStyle, styles.buttonStyle1]}>
+            {t("Cancel")}
+          </Text>
         </TouchableOpacity>
       </View>
     </ScrollView>

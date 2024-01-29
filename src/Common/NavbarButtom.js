@@ -1,10 +1,9 @@
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-import { Ionicons } from '@expo/vector-icons';
-import { MaterialIcons } from '@expo/vector-icons';
-import Color from '../Common/Color';
-
+import { Ionicons } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
+import Color from "../Common/Color";
 
 const NavbarButtom = ({ onChange }) => {
   const [selectedIcon, setSelectedIcon] = useState(null);
@@ -17,19 +16,19 @@ const NavbarButtom = ({ onChange }) => {
   const navigation = useNavigation();
 
   const handleSettingsPress = () => {
-    navigation.navigate('Settings');
+    navigation.navigate("Settings");
   };
 
   const handleHomePress = () => {
-    navigation.navigate('MainScreen2');
+    navigation.navigate("MainScreen2");
   };
 
   const handlefavPress = () => {
-    navigation.navigate('Favorite');
+    navigation.navigate("Favorite");
   };
 
   return (
-    <View >
+    <View>
       <View style={styles.container}>
         <TouchableOpacity
           onPress={() => {
@@ -42,14 +41,16 @@ const NavbarButtom = ({ onChange }) => {
               name="home"
               style={[
                 styles.iconStyle,
-                { color: Color.background, textShadowColor: Color.background , borderBottomWidth: 3,  borderBottomColor: Color.background  },
+                {
+                  color: Color.background,
+                  textShadowColor: Color.background,
+                  borderBottomWidth: 3,
+                  borderBottomColor: Color.background,
+                },
               ]}
             />
           ) : (
-            <Ionicons
-              name="home-outline"
-              style={styles.iconStyle}
-            />
+            <Ionicons name="home-outline" style={styles.iconStyle} />
           )}
         </TouchableOpacity>
 
@@ -63,14 +64,16 @@ const NavbarButtom = ({ onChange }) => {
               name="notifications"
               style={[
                 styles.iconStyle,
-                { color: Color.background,  textShadowColor:Color.background , borderBottomWidth: 3,  borderBottomColor: Color.background  },
+                {
+                  color: Color.background,
+                  textShadowColor: Color.background,
+                  borderBottomWidth: 3,
+                  borderBottomColor: Color.background,
+                },
               ]}
             />
           ) : (
-            <Ionicons
-              name="notifications-outline"
-              style={styles.iconStyle}
-            />
+            <Ionicons name="notifications-outline" style={styles.iconStyle} />
           )}
         </TouchableOpacity>
 
@@ -85,14 +88,16 @@ const NavbarButtom = ({ onChange }) => {
               name="favorite"
               style={[
                 styles.iconStyle,
-                { color: Color.background, textShadowColor: Color.background,  borderBottomWidth: 3,  borderBottomColor: Color.background },
+                {
+                  color: Color.background,
+                  textShadowColor: Color.background,
+                  borderBottomWidth: 3,
+                  borderBottomColor: Color.background,
+                },
               ]}
             />
           ) : (
-            <MaterialIcons
-              name="favorite-outline"
-              style={styles.iconStyle}
-            />
+            <MaterialIcons name="favorite-outline" style={styles.iconStyle} />
           )}
         </TouchableOpacity>
 
@@ -107,14 +112,16 @@ const NavbarButtom = ({ onChange }) => {
               name="settings"
               style={[
                 styles.iconStyle,
-                { color: Color.background, textShadowColor: Color.background, borderBottomWidth: 3,  borderBottomColor: Color.background  },
+                {
+                  color: Color.background,
+                  textShadowColor: Color.background,
+                  borderBottomWidth: 3,
+                  borderBottomColor: Color.background,
+                },
               ]}
             />
           ) : (
-            <Ionicons
-              name="settings-outline"
-              style={styles.iconStyle}
-            />
+            <Ionicons name="settings-outline" style={styles.iconStyle} />
           )}
         </TouchableOpacity>
       </View>
@@ -122,32 +129,29 @@ const NavbarButtom = ({ onChange }) => {
   );
 };
 
-
-
 export default NavbarButtom;
 
 const styles = StyleSheet.create({
-
-    container: {
-      flexDirection: "row",
-      padding: 10,
-      justifyContent: 'space-between',
-      borderTopLeftRadius: 20,
-      borderBottomEndRadius: 20,
-      borderBottomStartRadius: 20,
-      borderTopRightRadius: 20,
-      backgroundColor: Color.secondary,
-      height: 65,
-      marginBottom: 15,
-      marginHorizontal: 10,
-      borderTopColor:"#000",
-      elevation: 5,
-    },
-    iconStyle: {
-        color: 'gray',
-        marginBottom: 3,
-        alignSelf: 'center',
-        fontSize: 30,
-        padding: 5,
-    },
+  container: {
+    flexDirection: "row",
+    padding: 10,
+    justifyContent: "space-between",
+    borderTopLeftRadius: 20,
+    borderBottomEndRadius: 20,
+    borderBottomStartRadius: 20,
+    borderTopRightRadius: 20,
+    backgroundColor: Color.secondary,
+    height: 65,
+    marginBottom: 15,
+    marginHorizontal: 10,
+    borderTopColor: "#000",
+    elevation: 5,
+  },
+  iconStyle: {
+    color: "gray",
+    marginBottom: 3,
+    alignSelf: "center",
+    fontSize: 30,
+    padding: 5,
+  },
 });

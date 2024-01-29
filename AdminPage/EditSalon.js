@@ -9,10 +9,7 @@ import {
 import { Button } from "react-native-elements";
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import {
-  faBook,
-  faFileSignature,
-} from "@fortawesome/free-solid-svg-icons";
+import { faBook, faFileSignature } from "@fortawesome/free-solid-svg-icons";
 import Color from "../src/Common/Color.js";
 import { useNavigation } from "@react-navigation/native";
 import { Box, useToast } from "native-base";
@@ -108,7 +105,7 @@ const EditSalon = ({ route }) => {
         </View>
 
         <TouchableOpacity onPress={() => handleEditSalon(item._id)}>
-          <Text style={styles.buttonStyle}>{t('Update')}</Text>
+          <Text style={styles.buttonStyle}>{t("Update")}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => navigation.navigate("SalonScreen")}>

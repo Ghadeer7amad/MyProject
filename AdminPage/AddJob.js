@@ -27,7 +27,7 @@ import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 
 const AddJob = () => {
-  const navigation = useNavigation(); 
+  const navigation = useNavigation();
   const [t] = useTranslation();
   const token = useSelector((state) => state.user.userData.token);
 
@@ -83,7 +83,7 @@ const AddJob = () => {
       const response = await fetch(`${baseUrl}/jobs/job`, {
         method: "POST",
         headers: {
-          'Authorization': `Nada__${token}`
+          Authorization: `Nada__${token}`,
         },
         body: formData,
       });
@@ -159,7 +159,7 @@ const AddJob = () => {
       </View>
 
       <TouchableOpacity onPress={addJob}>
-        <Text style={styles.buttonStyle}>{t('Add')}</Text>
+        <Text style={styles.buttonStyle}>{t("Add")}</Text>
       </TouchableOpacity>
 
       <TouchableOpacity onPress={() => navigation.navigate("Jobs")}>

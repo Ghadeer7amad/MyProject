@@ -16,7 +16,7 @@ import { Select } from "native-base";
 import { useSelector } from "react-redux";
 import { Box, useToast } from "native-base";
 import WhatsApp from "../Common/WhatsApp";
-import { useTranslation } from 'react-i18next'; 
+import { useTranslation } from "react-i18next";
 
 import { useNavigation } from "@react-navigation/native";
 
@@ -26,14 +26,10 @@ const BookingScreen = () => {
   const toast = useToast();
   const [t] = useTranslation();
 
-
-
   const navigation = useNavigation();
   const { userData, usedSalonData } = useSelector((state) => state.user);
   const { id: userId, name: userName } = userData;
-  const { _id: salonId } = useSelector(
-    (state) => state.user.usedSalonData
-  );
+  const { _id: salonId } = useSelector((state) => state.user.usedSalonData);
 
   const generateAvailableTimes = () => {
     const startHour = 8;
@@ -93,7 +89,9 @@ const BookingScreen = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch(`${baseUrl}/salons/${salonId}/Appointment/appointment`); 
+      const response = await fetch(
+        `${baseUrl}/salons/${salonId}/Appointment/appointment`
+      );
       const data = await response.json();
       setBookedAppointments(data.map((appointment) => appointment.uniqueDate));
       setIsLoading(false);
@@ -153,7 +151,7 @@ const BookingScreen = () => {
         render: () => {
           return (
             <Box bg="#c81912" px="5" py="5" rounded="sm" mb={5}>
-              {t('book')}
+              {t("book")}
             </Box>
           );
         },
@@ -181,7 +179,7 @@ const BookingScreen = () => {
     textAlign: "center",
   };
 
-  const onSubmitPressed = async () => { 
+  const onSubmitPressed = async () => {
     const data = {
       user_id: userId,
       user_name: userName,
@@ -217,7 +215,7 @@ const BookingScreen = () => {
           render: () => {
             return (
               <Box bg="emerald.500" px="5" py="5" rounded="sm" mb={5}>
-                {t('Your appointment is booked successfully')}
+                {t("Your appointment is booked successfully")}
               </Box>
             );
           },
@@ -238,9 +236,9 @@ const BookingScreen = () => {
       <WhatsApp />
 
       <Header />
-      <ScrollView style={styles.scrollView}> 
+      <ScrollView style={styles.scrollView}>
         <View style={styles.root}>
-          <Text style={styles.title}>{t('Book an Appointment')}</Text>
+          <Text style={styles.title}>{t("Book an Appointment")}</Text>
 
           <View style={styles.pickerContainer}>
             <Calendar
@@ -255,13 +253,13 @@ const BookingScreen = () => {
           </View>
 
           <View style={styles.sectionTitleContainer}>
-            <Text style={styles.sectionTitle}>{t('Select Service')} </Text>
+            <Text style={styles.sectionTitle}>{t("Select Service")} </Text>
             <Icon name="star" color={Color.background} size={25} />
           </View>
 
           <View style={styles.serviceListContainer}>
             <Select
-              placeholder={t('Select Service')}
+              placeholder={t("Select Service")}
               style={{ width: 150, fontSize: 18 }}
               selectedValue={selectedValue}
               onValueChange={(itemValue) => setSelectedValue(itemValue)}
@@ -277,12 +275,12 @@ const BookingScreen = () => {
           </View>
 
           <View style={styles.sectionTitleContainer}>
-            <Text style={styles.sectionTitle}>{t('Select Branch')} </Text>
+            <Text style={styles.sectionTitle}>{t("Select Branch")} </Text>
             <Icon name="star" color={Color.background} size={25} />
           </View>
           <View style={styles.serviceListContainer}>
             <Select
-              placeholder={t('Select Branch')}
+              placeholder={t("Select Branch")}
               style={{ width: 150, fontSize: 18 }}
               selectedValue={selectedBranch}
               onValueChange={(itemValue) => setSelectedBranch(itemValue)}
@@ -299,7 +297,7 @@ const BookingScreen = () => {
           </View>
 
           <View style={styles.sectionTitleContainer}>
-            <Text style={styles.sectionTitle}>{t('Select Time')} </Text>
+            <Text style={styles.sectionTitle}>{t("Select Time")} </Text>
             <Icon name="time" color={Color.background} size={25} />
           </View>
 
@@ -338,7 +336,7 @@ const BookingScreen = () => {
             style={styles.submitButton}
             onPress={onSubmitPressed}
           >
-            <Text style={styles.submitButtonText}>{t('Send')}</Text>
+            <Text style={styles.submitButtonText}>{t("Send")}</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -347,7 +345,7 @@ const BookingScreen = () => {
   );
 };
 
-const styles = StyleSheet.create({ 
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Color.secondary,

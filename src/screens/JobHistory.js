@@ -19,7 +19,6 @@ import axios from "axios";
 import { useTranslation } from "react-i18next";
 import Icon from "react-native-vector-icons/FontAwesome";
 
-
 const JobHistory = () => {
   const navigation = useNavigation();
   const [t] = useTranslation();
@@ -50,13 +49,15 @@ const JobHistory = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${baseUrl}/salons/${salonId}/Uploadjob/uploadjob`, {
-
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Nada__${token}`,
-          },
-        });
+        const response = await axios.get(
+          `${baseUrl}/salons/${salonId}/Uploadjob/uploadjob`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Nada__${token}`,
+            },
+          }
+        );
         setItems(response.data);
         setIsLoading(false);
       } catch (error) {

@@ -1,10 +1,4 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  Image,
-} from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 import { TextInput } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
@@ -13,8 +7,7 @@ import Color from "../../Common/Color.js";
 import React, { useState } from "react";
 import axios from "axios";
 import { Box, useToast } from "native-base";
-import { useTranslation } from 'react-i18next';  
-
+import { useTranslation } from "react-i18next";
 
 const ForgetPage = () => {
   const navigation = useNavigation();
@@ -64,12 +57,11 @@ const ForgetPage = () => {
           </Box>
         ),
       });
-    } 
+    }
   };
- 
-  // {t('Branch')}            
+
   return (
-    <View style={styles.contanier}> 
+    <View style={styles.contanier}>
       <Image
         style={styles.contanier1}
         source={require("../../../assets/forgetpassword.png")}
@@ -195,5 +187,3 @@ const styles = StyleSheet.create({
     marginTop: 3,
   },
 });
-
-
