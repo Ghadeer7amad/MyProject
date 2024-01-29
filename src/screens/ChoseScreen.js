@@ -5,9 +5,12 @@ import Color from "../Common/Color.js"
 import { Ionicons } from '@expo/vector-icons'
 import Spacing from '../Common/Spacing.js'
 import One from '../../assets/9.jpg';
+import { useTranslation } from 'react-i18next'; 
 
 const ChoseScreen = () => {
     const navigation = useNavigation();
+    const [ t] = useTranslation(); 
+
 
     return (
         <ImageBackground source={One} style={styles.image}>
@@ -23,14 +26,14 @@ const ChoseScreen = () => {
         <TouchableOpacity onPress={() => {
             navigation.navigate('Signup');
           }}>
-       <Text style={[styles.buttonStyle, styles.buttonStyle1]}>sign up</Text>
+       <Text style={[styles.buttonStyle, styles.buttonStyle1]}>{t('sign up')}</Text>
       </TouchableOpacity>  
 
 
       <TouchableOpacity onPress={() => {
             navigation.navigate('Login');
           }}>
-       <Text style={[styles.buttonStyle, styles.buttonStyle2]}>sign in</Text>
+       <Text style={[styles.buttonStyle, styles.buttonStyle2]}>{t('sign in')}</Text>
       </TouchableOpacity>  
         </ImageBackground>
     );

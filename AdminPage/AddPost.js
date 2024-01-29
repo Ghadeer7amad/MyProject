@@ -6,7 +6,7 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
-import { Button } from "react-native-elements";
+import { Button } from "react-native-elements"; 
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import {
@@ -18,17 +18,26 @@ import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
 import { serialize } from "object-to-formdata";
 import { Box, useToast } from "native-base";
+import { useSelector } from "react-redux";
+import { useTranslation } from 'react-i18next'; 
 
 const AddPost = () => {
   const navigation = useNavigation();
+  const [t] = useTranslation();
+  const token = useSelector((state) => state.user.userData.token);
+
+
+  const { _id: salonId, name: salonName } = useSelector(
+    (state) => state.user.usedSalonData
+  );
+
   const [FData, setFData] = useState({
-    name: "",
-    text: "",
-    image: "",
+    textPost: "",
+    SalonId: salonId,
   });
   const toast = useToast();
 
-  const [buttonText, setButtonText] = useState("Upload Image");
+  const [buttonText, setButtonText] = useState(t('Upload Image'));
   const [image, setImage] = useState(null);
 
   const pickImage = async () => {
@@ -40,12 +49,16 @@ const AddPost = () => {
     });
     if (!result.canceled) {
       setImage(result.assets[0]);
-      setButtonText("Image is uploaded successfully");
+      setButtonText(t('Image is uploaded successfully'));
     }
   };
 
   const addPost = async () => {
     try {
+      setFData({
+        ...FData,
+      });
+
       const options = {
         indices: false,
         nullsAsUndefineds: false,
@@ -57,45 +70,58 @@ const AddPost = () => {
 
       const formData = serialize(FData, options);
 
-      formData.append("image", {
-        uri: image.uri,
-        name: FData.name + ".jpg",
-        type: "image/jpeg",
-        size: image.fileSize,
-      });
+      if (image) {
+        formData.append("image", {
+          uri: image.uri,
+          name: FData.name + ".jpg",
+          type: "image/jpeg",
+          size: image.fileSize,
+        });
+      }
+
       const baseUrl = "https://ayabeautyn.onrender.com";
 
       const response = await fetch(`${baseUrl}/posts/post`, {
         method: "POST",
+        headers: {
+          'Authorization': `Nada__${token}`
+        },
         body: formData,
       });
+
+      if (!response.ok) { 
+        console.error('Failed to upload post:', response.statusText);
+       
+      }
+
+      console.log(formData); 
 
       toast.show({
         render: () => {
           return (
             <Box bg="emerald.500" px="5" py="5" rounded="sm" mb={5}>
-              Post added successfully
+              {t('Post added successfully')}
             </Box>
           );
         },
       });
+
+      navigation.navigate("PostsScreen");
     } catch (error) {
       console.error(error);
     }
   };
 
-  /////
-
   return (
     <View style={styles.container}>
-      <Text style={styles.TextStyleHeader}>Add Post</Text>
+      <Text style={styles.TextStyleHeader}>{t('Add Post')}</Text>
 
       <View style={styles.formgroup}>
         <TextInput
           value={FData.textPost}
           onChangeText={(text) => setFData({ ...FData, textPost: text })}
           style={styles.input}
-          placeholder="Write here.."
+          placeholder={t('Write here')}
         />
         <FontAwesomeIcon icon={faFileSignature} style={styles.icon} />
       </View>
@@ -132,11 +158,11 @@ const AddPost = () => {
       </View>
 
       <TouchableOpacity onPress={addPost}>
-        <Text style={styles.buttonStyle}>Add Post</Text>
+        <Text style={styles.buttonStyle}>{t('Add')}</Text>
       </TouchableOpacity>
 
       <TouchableOpacity onPress={() => navigation.navigate("PostsScreen")}>
-        <Text style={[styles.buttonStyle, styles.buttonStyle1]}>Cancel</Text>
+        <Text style={[styles.buttonStyle, styles.buttonStyle1]}>{t('Cancel')}</Text>
       </TouchableOpacity>
     </View>
   );
@@ -145,7 +171,7 @@ const AddPost = () => {
 export default AddPost;
 
 const styles = StyleSheet.create({
-  contanier: {
+  container: {
     width: "100%",
     height: "100%",
   },
@@ -163,7 +189,6 @@ const styles = StyleSheet.create({
     position: "relative",
     marginTop: 20,
     flexDirection: "row",
-
     alignItems: "center",
   },
   icon: {
@@ -181,14 +206,10 @@ const styles = StyleSheet.create({
     borderColor: "#c3b4d2",
     borderWidth: 2,
   },
-  inputDis: {
-    paddingBottom: 100,
-  },
   iconDis: {
     marginHorizontal: 20,
     top: 20,
   },
-
   buttonStyle: {
     padding: 20,
     marginTop: 10,

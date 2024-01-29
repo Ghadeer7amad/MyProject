@@ -5,7 +5,7 @@ import {
   TextInput,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  Dimensions
+  Dimensions,
 } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import {
@@ -24,19 +24,24 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 import { Linking } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import Color from "../Common/Color.js";
-import React, { useState } from "react";
+import Color from "../src/Common/Color.js";
+import React, { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-import Spacing from "../Common/Spacing.js";
-import { Box, useToast, Toast } from "native-base";
+import Spacing from "../src/Common/Spacing.js";
+import { Box, useToast, Toast, Select } from "native-base";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 
-const Signup = () => {
+const AddManager = () => {
   const navigation = useNavigation();
   const [t] = useTranslation();
+  const [items, setItems] = useState([]);
+  const { role, token } = useSelector((state) => state.user.userData);
+  const [isLoading, setIsLoading] = useState(false);
 
   const toast = useToast();
+  const [selectedValue, setSelectedValue] = useState(null);
   const [isPasswordValid, setPasswordValid] = useState(true);
   const [isPasswordCValid, setPasswordCValid] = useState(true);
   const [fieldValid, setFieldValid] = useState({
@@ -68,9 +73,7 @@ const Signup = () => {
     if (password === "") {
       errors.password = false;
     }
-    if (confirmpassword === "") {
-      errors.confirmpassword = false;
-    }
+
     setFieldValid({ ...fieldValid, ...errors });
 
     // إذا كان هناك حقول غير صالحة، لا تقم بإرسال الطلب
@@ -84,7 +87,6 @@ const Signup = () => {
   const [phone, setphone] = useState("");
   const [address, setaddress] = useState("");
   const [password, setpassword] = useState("");
-  const [confirmpassword, setconfirmpassword] = useState("");
 
   const onChangeNameHandler = (userName) => {
     setuserName(userName);
@@ -104,9 +106,7 @@ const Signup = () => {
   const onChangePasswordHandler = (password) => {
     setpassword(password);
   };
-  const onChangeconfirmpasswordHandler = (confirmpassword) => {
-    setconfirmpassword(confirmpassword);
-  };
+
   const handleSignUpAndRegister = () => {
     handleSignUp();
     handleRegister();
@@ -125,16 +125,36 @@ const Signup = () => {
   };
 
   const baseUrl = "https://ayabeautyn.onrender.com";
+  const fetchData = async () => {
+    try {
+      const response = await fetch(`${baseUrl}/salons/salon`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Nada__${token}`,
+        },
+      });
+      const data = await response.json();
+      setItems(data);
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   const handleSignUp = async () => {
     try {
-      const response = await axios.post(`${baseUrl}/auth/signup`, {
+      const response = await axios.post(`${baseUrl}/managers/manager`, {
         userName,
         email,
         age,
         phone,
         address,
         password,
-        confirmpassword,
+        salonId: selectedValue,
       });
       if (response.status === 201) {
         toast.show({
@@ -150,8 +170,7 @@ const Signup = () => {
         setphone("");
         setaddress("");
         setpassword("");
-        setconfirmpassword("");
-        navigation.navigate("Login");
+        navigation.navigate("SalonScreen");
       } else {
         toast.show({
           render: () => (
@@ -192,42 +211,8 @@ const Signup = () => {
 
   return (
     <View style={styles.contanier}>
-      <Text
-        style={{
-          color: Color.primary,
-          fontSize: 25,
-          fontWeight: "bold",
-          marginLeft: 20,
-          marginTop: 3,
-          marginBottom: 1,
-        }}
-      >
-        <TouchableOpacity
-          style={{ marginLeft: Spacing * 2, marginTop: Spacing * 3 }}
-          onPress={() => {
-            navigation.navigate("ChoseScreen");
-          }}
-        >
-          <Ionicons
-            name="arrow-back"
-            color={Color.primary}
-            size={Spacing * 2}
-          />
-        </TouchableOpacity>
+      <Text style={styles.TextStyleHeader}>{t("Add Manager")}</Text>
 
-        {t("Dear Lady")}
-      </Text>
-
-      <Text
-        style={{
-          color: Color.primary,
-          fontSize: 17,
-          marginLeft: 20,
-          marginBottom: 3,
-        }}
-      >
-        {t("please enter your complete information!!")}
-      </Text>
       <View style={styles.formgroup}>
         <TextInput
           value={userName}
@@ -346,101 +331,33 @@ const Signup = () => {
         </Text>
       )}
 
-      <View style={styles.formgroup}>
-        <TextInput
-          secureTextEntry={!showPasswordC}
-          value={confirmpassword}
-          onChangeText={onChangeconfirmpasswordHandler}
-          onBlur={() => {
-            setFieldValid({
-              ...fieldValid,
-              confirmpassword: confirmpassword !== "",
-            });
-            setPasswordCValid(password === confirmpassword);
-          }}
-          style={styles.input}
-          placeholder={t("Confirm your Password")}
-        />
-        <TouchableWithoutFeedback onPress={togglePasswordVisibilityC}>
-          <Ionicons
-            style={styles.iconEye}
-            name={showPasswordC ? "eye" : "eye-off"}
-            size={20}
-          />
-        </TouchableWithoutFeedback>
-        <FontAwesomeIcon icon={faCheck} style={styles.icon} />
+      <View style={styles.serviceListContainer}>
+        <Select
+          placeholder={t("Select Salon")}
+          style={{ width: 150, fontSize: 18 }}
+          selectedValue={selectedValue}
+          onValueChange={(itemValue) => setSelectedValue(itemValue)}
+        >
+          {items.map((item) => (
+            <Select.Item key={item.id} label={item?.name} value={item.id} />
+          ))}
+        </Select>
       </View>
-      {!fieldValid.passwordC && (
-        <Text style={styles.textWrong}>
-          {" "}
-          {t("confirm password is required")}{" "}
-        </Text>
-      )}
-      {!isPasswordCValid && (
-        <Text style={styles.textWrong}>{t("Your Password not match")}</Text>
-      )}
 
       <TouchableOpacity onPress={handleSignUpAndRegister}>
-        <Text style={styles.buttonStyle}>{t("Sign Up")}</Text>
+        <Text style={styles.buttonStyle}>{t("Add Manager")}</Text>
       </TouchableOpacity>
-
-      <View style={styles.dividerContainer}>
-        <View style={styles.dividerLine} />
-        <Text style={styles.dividerText}>{t("or with social media")}</Text>
-        <View style={styles.dividerLine} />
-      </View>
-
-      <View style={styles.buttonsStyle}>
-        <View style={styles.buttonFacebook}>
-          <TouchableOpacity
-            onPress={() => {
-              Linking.openURL("https://facebook.com");
-            }}
-          >
-            <FontAwesomeIcon icon={faFacebookF} style={styles.iconsFacebook} />
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.buttonGoogle}>
-          <TouchableOpacity
-            onPress={() => {
-              Linking.openURL("https://google.com");
-            }}
-          >
-            <FontAwesomeIcon icon={faGoogle} style={styles.iconsGoogle} />
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.buttonTiwtter}>
-          <TouchableOpacity
-            onPress={() => {
-              Linking.openURL("https://twitter.com");
-            }}
-          >
-            <FontAwesomeIcon icon={faTwitter} style={styles.iconsTiwtter} />
-          </TouchableOpacity>
-        </View>
-      </View>
-
-      <Text style={styles.TextStyle4}>
-        {" "}
-        {t("Have An Account?")}
-        <Text onPress={() => navigation.navigate("Login")} style={styles.link}>
-          {" "}
-          {t("Log in your Account")}
-        </Text>
-      </Text>
     </View>
   );
 };
 
-export default Signup;
+export default AddManager;
 
 const styles = StyleSheet.create({
   contanier: {
     marginTop: 55,
-    height: "100%",
-    width: "100%",
+    height: "auto",
+    width: "auto",
   },
   TextStyleHeader: {
     fontWeight: "500",
@@ -500,69 +417,10 @@ const styles = StyleSheet.create({
     color: "#fff",
     borderRadius: 30,
   },
-  dividerContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 10,
-  },
-  dividerText: {
-    flex: 1, // يأخذ المساحة المتاحة بشكل كامل
-    textAlign: "center", // توسيط النص
-    color: "gray",
-  },
-  dividerLine: {
-    flex: 0.7, // يأخذ المساحة المتاحة بشكل كامل
-    borderBottomColor: "black", // لون الخط
-    borderBottomWidth: 0.5, // عرض الخط (بالنقاط)
-  },
   buttonsStyle: {
     flexDirection: "row",
     marginBottom: 10,
     marginLeft: 115,
-  },
-  buttonFacebook: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#4d727e",
-    borderRadius: 50,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    marginRight: 10,
-  },
-  iconsFacebook: {
-    fontSize: 14,
-    color: "#fff",
-    marginRight: 3,
-  },
-
-  buttonGoogle: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: Color.background,
-    borderRadius: 50,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    marginRight: 10,
-  },
-  iconsGoogle: {
-    fontSize: 14,
-    color: "#fff",
-    marginRight: 3,
-  },
-
-  buttonTiwtter: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#7fc5ca",
-    borderRadius: 50,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    marginRight: 10,
-  },
-  iconsTiwtter: {
-    fontSize: 14,
-    color: "#fff",
-    marginRight: 3,
   },
   TextStyle4: {
     marginHorizontal: 70,
@@ -576,5 +434,26 @@ const styles = StyleSheet.create({
   textWrong: {
     color: "#ff847c",
     marginLeft: 10,
+  },
+  TextStyleHeader: {
+    fontWeight: "500",
+    color: Color.primary,
+    fontSize: 24,
+    marginTop: 70,
+    marginBottom: 5,
+    textAlign: "center",
+    textTransform: "uppercase",
+  },
+  serviceListContainer: {
+    width: "95%",
+    marginBottom: 20,
+    margin: 10,
+    borderWidth: 2,
+    borderRadius: 10,
+    borderBottomWidth: 1, // إضافة حدود لحقل النص
+    marginHorizontal: 10,
+    borderRadius: 20,
+    borderColor: Color.background,
+    borderWidth: 2, // تحديد عرض الإطار
   },
 });

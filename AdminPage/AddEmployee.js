@@ -23,17 +23,24 @@ import * as ImagePicker from "expo-image-picker";
 import Icon from "react-native-vector-icons/Ionicons";
 import { serialize } from "object-to-formdata";
 import { Box, useToast } from "native-base";
+import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 const AddEmployee = () => {
-  const [FData, setFData] = useState({
+  const { _id: salonId, name: salonName } = useSelector(
+    (state) => state.user.usedSalonData
+  );
+  const [FData, setFData] = useState({ 
     name: "",
     job: "",
     experienceYears: "",
+    SalonId: salonId,
   });
   const toast = useToast();
   const navigation = useNavigation();
+  const [t] = useTranslation();
 
-  const [buttonText, setButtonText] = useState("Upload Image");
+  const [buttonText, setButtonText] = useState(t("Upload Image"));
   const [image, setImage] = useState(null);
 
   const pickImage = async () => {
@@ -45,7 +52,7 @@ const AddEmployee = () => {
     });
     if (!result.canceled) {
       setImage(result.assets[0]);
-      setButtonText("Image is uploaded successfully");
+      setButtonText(t("Image is uploaded successfully"));
     }
   };
 
@@ -81,25 +88,26 @@ const AddEmployee = () => {
         render: () => {
           return (
             <Box bg="emerald.500" px="5" py="5" rounded="sm" mb={5}>
-              Employee added successfully
+              {t("Employee was successfully added")}
             </Box>
           );
         },
       });
+      navigation.navigate("EmployeesScreen");
     } catch (error) {
       console.error(error);
     }
   };
   return (
     <View style={styles.container}>
-      <Text style={styles.TextStyleHeader}>Add Employee</Text>
+      <Text style={styles.TextStyleHeader}>{t("Add Employee")}</Text>
 
       <View style={styles.formgroup}>
         <TextInput
           value={FData.name}
           onChangeText={(text) => setFData({ ...FData, name: text })}
           style={styles.input}
-          placeholder="Employee Name"
+          placeholder={t("Employee Name")}
         />
         <FontAwesomeIcon icon={faFileSignature} style={styles.icon} />
       </View>
@@ -109,7 +117,7 @@ const AddEmployee = () => {
           value={FData.job}
           onChangeText={(text) => setFData({ ...FData, job: text })}
           style={styles.input}
-          placeholder="Employee Job"
+          placeholder={t("Employee Job")}
         />
         <FontAwesomeIcon icon={faFileSignature} style={styles.icon} />
       </View>
@@ -119,7 +127,7 @@ const AddEmployee = () => {
           value={FData.experienceYears}
           onChangeText={(text) => setFData({ ...FData, experienceYears: text })}
           style={styles.input}
-          placeholder="Years of experience"
+          placeholder={t("Years of experience")}
         />
         <Icon name="checkmark-circle" size={22} style={styles.icon} />
       </View>
@@ -156,11 +164,13 @@ const AddEmployee = () => {
       </View>
 
       <TouchableOpacity onPress={addEmployee}>
-        <Text style={styles.buttonStyle}>Add Employee</Text>
+        <Text style={styles.buttonStyle}>{t('Add')}</Text>
       </TouchableOpacity>
 
       <TouchableOpacity onPress={() => navigation.navigate("EmployeesScreen")}>
-        <Text style={[styles.buttonStyle, styles.buttonStyle1]}>Cancel</Text>
+        <Text style={[styles.buttonStyle, styles.buttonStyle1]}>
+          {t("Cancel")}
+        </Text>
       </TouchableOpacity>
     </View>
   );
@@ -169,7 +179,7 @@ const AddEmployee = () => {
 export default AddEmployee;
 
 const styles = StyleSheet.create({
-  contanier: {
+  container: {
     width: "100%",
     height: "100%",
   },

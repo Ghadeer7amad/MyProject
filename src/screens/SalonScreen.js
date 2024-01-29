@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View, FlatList, Image, StyleSheet, Alert } from "react-native";
-import { Card, Text, Button } from "react-native-elements";
+import { Card, Text } from "react-native-elements";
 import { FontAwesome as Icon } from "@expo/vector-icons";
 import CustomSearchBar from "../Common/SearchBarComponent.js";
 import { useNavigation } from "@react-navigation/native";
@@ -9,9 +9,12 @@ import Color from "../Common/Color";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { storeUsedSalon } from "../redux/user/userActions.js";
+import { useTranslation } from "react-i18next";
 
-const SalonScreen = () => {
+const SalonScreen = ({route}) => {
   const navigation = useNavigation();
+  const [t] = useTranslation();
+
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
@@ -24,7 +27,10 @@ const SalonScreen = () => {
     setFilteredItems(filteredData);
   };
 
-  const { role } = useSelector((state) => state.user.userData);
+  const { role, token } = useSelector((state) => state.user.userData);
+  const { salonId } = route.params;
+  console.log(route.params);
+
 
   const handleContinuePress = (item) => {
     dispatch(storeUsedSalon(item));
@@ -38,15 +44,15 @@ const SalonScreen = () => {
 
   const confirmDelete = (itemId) => {
     Alert.alert(
-      "Delete Confirmation",
-      "Are you sure you want to delete this salon?",
+      t("Confirm deletion"),
+      t("Are you sure you want to delete this salon?"),
       [
         {
-          text: "Cancel",
+          text: t("Cancel"),
           style: "cancel",
         },
         {
-          text: "Yes, Delete",
+          text: t("Yes, Delete"),
           onPress: () => handleDeletePress(itemId),
         },
       ],
@@ -55,18 +61,50 @@ const SalonScreen = () => {
   };
 
   const baseUrl = "https://ayabeautyn.onrender.com";
-  const fetchData = async () => {
-    try {
-      const response = await fetch(`${baseUrl}/salons/salon`);
-      const data = await response.json();
-      setItems(data);
-      setIsLoading(false);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
 
-  const handleDeletePress = async (itemId) => {
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`${baseUrl}/salons/salon`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Nada__${token}`,
+          },
+        });
+        const data = await response.json();
+        setItems(data);
+        console.log(data);
+        setIsLoading(false);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    const fetchSalonData = async () => {
+      try {
+        const response = await fetch(`${baseUrl}/salons/salon/${salonId}`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Nada__${token}`,
+          },
+        });
+        const data = await response.json();
+        setItems(data);
+        console.log(data);
+        setIsLoading(false);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    if (role === "Admin" || role =="User") {
+      fetchData();
+    } else if (role === "Manager") {
+      fetchSalonData();
+    }
+  }, [role, baseUrl, token, salonId]);
+
+  const handleDeletePress = async (itemId) => { 
     console.log("Deleting item with ID:", itemId);
 
     try {
@@ -85,20 +123,23 @@ const SalonScreen = () => {
     }
   };
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
   return (
     <View style={styles.container}>
       <CustomSearchBar
-        placeholder="Search your BeautyCenter"
+        placeholder={t("Search your BeautyCenter")}
         onSearch={handleSearch}
       />
       {role === "Admin" && (
-        <TouchableOpacity onPress={() => navigation.navigate("AddSalon")}>
-          <Text style={styles.buttonStyle}>Add Salon</Text>
-        </TouchableOpacity>
+        <View style={styles.buttonContainer}>
+         <TouchableOpacity onPress={() => navigation.navigate("AddSalon")}>
+            <Text style={styles.buttonStyle}>{t("Add Salon")}</Text>
+         </TouchableOpacity>
+
+         <TouchableOpacity onPress={() => navigation.navigate("AddManager")}>
+           <Text style={styles.buttonStyle}>{t("Add Manager")}</Text>
+         </TouchableOpacity>
+       </View>
+
       )}
 
       <FlatList
@@ -106,7 +147,7 @@ const SalonScreen = () => {
         keyExtractor={(item) => item._id}
         renderItem={({ item }) => (
           <Card containerStyle={styles.card}>
-            {role === "Admin" && (
+            {(role === "Admin" || role === "Manager") && (
               <View style={styles.Icons}>
                 <TouchableOpacity onPress={() => handleEditSalon(item)}>
                   <Icon name="pencil" color="#5e366a" size={20} />
@@ -141,7 +182,7 @@ const SalonScreen = () => {
                 fontWeight: "bold",
               }}
             >
-              {item.branches}
+              {item.branches.join(" | ")}
             </Text>
           </Card>
         )}
@@ -153,7 +194,7 @@ const SalonScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Color.background,
+    backgroundColor: "white",
     paddingHorizontal: 10,
     paddingTop: 30,
   },
@@ -163,6 +204,14 @@ const styles = StyleSheet.create({
     backgroundColor: "#f6f6f6",
     marginBottom: 10,
     position: "relative",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   cardTitle: {
     color: Color.primary,
@@ -174,7 +223,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 200,
     resizeMode: "cover",
-    borderRadius: 20,
+    borderRadius: 20, 
   },
   iconContainer: {
     flexDirection: "row",
@@ -186,22 +235,21 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   buttonStyle: {
-    width: "30%",
+    width: "100", 
     padding: 10,
-    marginHorizontal: 250,
-    backgroundColor: Color.primary,
+    backgroundColor: Color.background,
     fontWeight: "400",
     fontSize: 15,
     letterSpacing: 2,
     textAlign: "center",
     color: "#fff",
+    borderRadius: 7
   },
-  // deleteIcon: {
-  //   left: 300,
-  // },
-  // editButton: {
-  //   left: 30,
-  // },
+  
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   Icons: {
     flexDirection: "row",
     justifyContent: "space-between",

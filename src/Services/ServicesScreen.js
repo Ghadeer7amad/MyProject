@@ -19,16 +19,27 @@ import { useNavigation } from "@react-navigation/native";
 import NavbarButtom from "../Common/NavbarButtom";
 import { Alert } from "react-native";
 import { useSelector } from "react-redux";
+import WhatsApp from "../Common/WhatsApp.js";
+import { useTranslation } from 'react-i18next';  
 
 const ServicesScreen = () => {
   const navigation = useNavigation();
+  const [t] = useTranslation();
+
   const [Services, setServices] = useState(null);
   const handleBookPress = () => {
     navigation.navigate("BookingScreen");
   };
 
-  const [selectedItem, setSelectedItem] = useState("Body");
+  const [selectedItem, setSelectedItem] = useState("Body"); 
   const { role } = useSelector((state) => state.user.userData);
+  const token = useSelector((state) => state.user.userData.token);
+  const { _id: salonId } = useSelector(
+    (state) => state.user.usedSalonData
+  );
+  console.log(salonId);
+  console.log(token)
+
   const [filteredItems, setFilteredItems] = useState([]);
 
   const handleSearch = (searchText) => {
@@ -41,7 +52,7 @@ const ServicesScreen = () => {
   const handleBodyPress = async () => {
     try {
       console.log("Fetching services...");
-      const response = await fetch(`${baseUrl}/services/getBodyServices`);
+      const response = await fetch(`${baseUrl}/salons/${salonId}/services/getBodyServices`);
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
@@ -57,7 +68,7 @@ const ServicesScreen = () => {
   const handleFacePress = async () => {
     try {
       console.log("Fetching services...");
-      const response = await fetch(`${baseUrl}/services/getFaceServices`);
+      const response = await fetch(`${baseUrl}/salons/${salonId}/services/getFaceServices`);
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
@@ -76,10 +87,10 @@ const ServicesScreen = () => {
   const baseUrl = "https://ayabeautyn.onrender.com";
   useEffect(() => {
     console.log("Fetching services...");
-    fetch(`${baseUrl}/services/getServices`)
+    fetch(`${baseUrl}/salons/${salonId}/services/getServices`)
       .then((res) => res.json())
       .then((data) => {
-        console.log("Received data:", data);
+        // console.log("Received data:", data);
         setServices(data.Services);
       })
       .catch((error) => console.log("Error from favs screen: ", error.message));
@@ -105,15 +116,15 @@ const ServicesScreen = () => {
   };
   const confirmDelete = (itemId) => {
     Alert.alert(
-      "Delete Confirmation",
-      "Are you sure you want to delete this item?",
+      t('Confirm deletion'),
+      t('Are you sure you want to delete this salon?'),
       [
         {
-          text: "Cancel",
+          text: t('Cancel'), 
           style: "cancel",
         },
         {
-          text: "Yes, Delete",
+          text: t('Yes, Delete'),
           onPress: () => handleRemoveService(itemId),
         },
       ],
@@ -149,21 +160,23 @@ const ServicesScreen = () => {
 
   return (
     <View style={styles.container}>
+      <WhatsApp />
+
       <ScrollView style={{ padding: Spacing }}>
         <NavbarTop />
 
         <View style={{ width: "100%" }}>
           <Text style={styles.styleText}>
-            Here{" "}
+          {t('Here')}{" "}
             <Image
               style={{ width: 80, height: 60 }}
               source={require("../../assets/111.jpg")}
             />
           </Text>
           <Text style={[styles.styleText, styles.styleText2]}>
-            Our Services
+          {t('Our Services')}
           </Text>
-          {role === "Admin" && (
+          {(role === "Admin" || role === "Manager") && (
             <TouchableOpacity
               onPress={() => navigation.navigate("AddServices")}
               style={{
@@ -185,13 +198,13 @@ const ServicesScreen = () => {
                   fontSize: 16,
                 }}
               >
-                Add Service
+                {t('Add Service')}
               </Text>
             </TouchableOpacity>
           )}
 
           <SearchProANDSer
-            placeholder="Search your service"
+            placeholder={t('Search your service')}
             onSearch={handleSearch}
           />
         </View>
@@ -204,7 +217,7 @@ const ServicesScreen = () => {
                 selectedItem === "Body" ? styles.selectedText1 : null,
               ]}
             >
-              Body
+              {t('Body')}
             </Text>
           </TouchableOpacity>
 
@@ -215,7 +228,7 @@ const ServicesScreen = () => {
                 selectedItem === "Face" ? styles.selectedText2 : null,
               ]}
             >
-              Face
+              {t('Face')}
             </Text>
           </TouchableOpacity>
         </View>
@@ -229,7 +242,7 @@ const ServicesScreen = () => {
                     intensity={90}
                     style={{ padding: Spacing * 3 }}
                   >
-                    {role === "Admin" && (
+                    {(role === "Admin" || role === "Manager") && (
                       <TouchableOpacity
                         style={styles.removeButton}
                         onPress={() => confirmDelete(service._id)}
@@ -241,7 +254,7 @@ const ServicesScreen = () => {
                         />
                       </TouchableOpacity>
                     )}
-                    {role === "Admin" && (
+                    {(role === "Admin" || role === "Manager") && (
                       <TouchableOpacity
                         style={styles.removeButton1}
                         onPress={() => handleSoftDeleteService(service._id)}
@@ -253,7 +266,7 @@ const ServicesScreen = () => {
                         />
                       </TouchableOpacity>
                     )}
-                    {role === "Admin" && (
+                    {(role === "Admin" || role === "Manager") && (
                       <TouchableOpacity
                         style={styles.editButton}
                         onPress={() => handleEditService(service)}
@@ -289,7 +302,7 @@ const ServicesScreen = () => {
                       <View style={{ flexDirection: "row" }}>
                         <Text style={styles.PriceStyle}>
                           {service.finalPrice}
-                          <Text style={{ color: "black" }}> LIS</Text>
+                          <Text style={{ color: "black" }}> {t('ILS')}</Text>
                         </Text>
                         {service.price && (
                           <Text style={styles.OldPriceStyle}>
@@ -301,7 +314,7 @@ const ServicesScreen = () => {
                               }}
                             >
                               {" "}
-                              LIS
+                              {t('ILS')}
                             </Text>
                           </Text>
                         )}
@@ -310,7 +323,7 @@ const ServicesScreen = () => {
                         style={styles.styleIcons}
                         onPress={() => handleDetailsPress(service)}
                       >
-                        <Text style={styles.details}>More Details</Text>
+                        <Text style={styles.details}>{t('More Details')}</Text>
                       </TouchableOpacity>
                     </View>
                   </BlurView>
@@ -324,7 +337,7 @@ const ServicesScreen = () => {
                     intensity={90}
                     style={{ padding: Spacing * 3 }}
                   >
-                    {role === "Admin" && (
+                    {(role === "Admin" || role === "Manager") && (
                       <TouchableOpacity
                         style={styles.removeButton}
                         onPress={() => confirmDelete(service._id)}
@@ -336,7 +349,7 @@ const ServicesScreen = () => {
                         />
                       </TouchableOpacity>
                     )}
-                    {role === "Admin" && (
+                    {(role === "Admin" || role === "Manager") && (
                       <TouchableOpacity
                         style={styles.removeButton1}
                         onPress={() => handleSoftDeleteService(service._id)}
@@ -348,7 +361,7 @@ const ServicesScreen = () => {
                         />
                       </TouchableOpacity>
                     )}
-                    {role === "Admin" && (
+                    {(role === "Admin" || role === "Manager") && (
                       <TouchableOpacity
                         style={styles.editButton}
                         onPress={() => handleEditService(service)}
@@ -384,7 +397,7 @@ const ServicesScreen = () => {
                       <View style={{ flexDirection: "row" }}>
                         <Text style={styles.PriceStyle}>
                           {service.finalPrice}
-                          <Text style={{ color: "black" }}> LIS</Text>
+                          <Text style={{ color: "black" }}> {t('ILS')}</Text>
                         </Text>
                         {service.price && (
                           <Text style={styles.OldPriceStyle}>
@@ -396,7 +409,7 @@ const ServicesScreen = () => {
                               }}
                             >
                               {" "}
-                              LIS
+                              {t('ILS')}
                             </Text>
                           </Text>
                         )}
@@ -405,7 +418,7 @@ const ServicesScreen = () => {
                         style={styles.styleIcons}
                         onPress={() => handleDetailsPress(service)}
                       >
-                        <Text style={styles.details}>More Details</Text>
+                        <Text style={styles.details}>{t('More Details')}</Text>
                       </TouchableOpacity>
                     </View>
                   </BlurView>

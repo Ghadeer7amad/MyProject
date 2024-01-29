@@ -3,29 +3,47 @@ import {
   Text,
   FlatList,
   StyleSheet,
-  Image,
-  TextInput,
   TouchableOpacity,
   Alert,
 } from "react-native";
 import CustomSearchBar from "../Common/SearchBarComponent.js";
-import { Picker } from "@react-native-picker/picker";
 import Header from "../screens/Header.js";
 import NavbarButtom from "../Common/NavbarButtom.js";
 import Color from "../Common/Color.js";
 import Spacing from "../Common/Spacing.js";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons"; 
 import { useNavigation } from "@react-navigation/native";
 import React, { useState, useEffect } from "react";
 import { Select } from "native-base";
+import { useSelector } from "react-redux";
+import { useTranslation } from 'react-i18next'; 
+
 
 const AppointmentsScreen = () => {
   const navigation = useNavigation();
+  const [t] = useTranslation();
+
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [filteredItems, setFilteredItems] = useState([]);
-  const [sortType, setSortType] = useState("closest"); // or "furthest"
+  const [sortType, setSortType] = useState("Closest"); // or "Furthest"
   const [sortOrder, setSortOrder] = useState("asc"); // or "desc"
+
+  const { _id: salonId, name: salonName } = useSelector(
+    (state) => state.user.usedSalonData
+  );
+
+  const currentDate = new Date();
+
+  const getStatus = (appointmentDate) => {
+    const appointmentDateTime = new Date(appointmentDate);
+
+    if (appointmentDateTime < currentDate) { 
+      return "Done";
+    } else {
+      return "Coming";
+    }
+  };
 
   const handleSearch = (searchText) => {
     const filteredData = items.filter((item) =>
@@ -43,17 +61,21 @@ const AppointmentsScreen = () => {
     setSortOrder(sortOrder === "asc" ? "desc" : "asc");
   };
 
+  const handleDetailsPress = (item) => {
+    navigation.navigate("UserDetails", { item });
+  };
+
   const confirmDelete = (itemId) => {
     Alert.alert(
-      "Delete Confirmation",
-      "Are you sure you want to cancle this appointment?",
+      t('Confirm deletion'),
+      t('Are you sure you want to delete this salon?'),
       [
         {
-          text: "Cancel",
+          text: t('Cancel'),
           style: "cancel",
         },
         {
-          text: "Yes, Delete",
+          text: t('Yes, Delete'),
           onPress: () => handleCancleAppointment(itemId),
         },
       ],
@@ -64,7 +86,7 @@ const AppointmentsScreen = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch(`${baseUrl}/appointments/appointment`);
+      const response = await fetch(`${baseUrl}/salons/${salonId}/Appointment/appointment`); 
       const data = await response.json();
 
       const sortedData = data.sort((a, b) => {
@@ -72,9 +94,9 @@ const AppointmentsScreen = () => {
         const dateB = new Date(b.appointment_date);
 
         if (sortOrder === "asc") {
-          return sortType === "closest" ? dateA - dateB : dateB - dateA;
+          return sortType === "Closest" ? dateA - dateB : dateB - dateA;
         } else {
-          return sortType === "closest" ? dateB - dateA : dateA - dateB;
+          return sortType === "Closest" ? dateB - dateA : dateA - dateB;
         }
       });
 
@@ -114,31 +136,30 @@ const AppointmentsScreen = () => {
       <Header />
       <View style={styles.container2}>
         <Text style={[styles.styleText, styles.styleText2]}>
-          Appointment History.
+        {t('Appointment Archive')}
         </Text>
         <CustomSearchBar
-          placeholder={"Search Customer"}
+          placeholder={t('Customer search')}
           onSearch={handleSearch}
         />
       </View>
+
       <View
         style={{
-          width: "40%",
+          width: "30%",
           marginLeft: 15,
-          borderWidth: 1,
-          borderColor: Color.primary,
         }}
       >
         <Select
-          placeholder="Select Service"
+          placeholder={t('closest')}
           style={{ width: 10, fontSize: 18 }}
           color={Color.primary}
           selectedValue={sortType}
           onValueChange={(value) => handleSortChange(value)}
         >
           {[
-            { id: 1, name: "closest" },
-            { id: 2, name: "furthest" },
+            { id: 1, name: t('closest') },
+            { id: 2, name: t('furthest') },
           ].map((item) => (
             <Select.Item
               key={item.id}
@@ -158,6 +179,9 @@ const AppointmentsScreen = () => {
             <View style={styles.userContainer}>
               <Text style={styles.userName}>{item.user_name}</Text>
               <Text style={styles.appointmentContent}>
+                Branch: {item.branch}
+              </Text>
+              <Text style={styles.appointmentContent}>
                 Date: {item.appointment_date}
               </Text>
               <Text style={styles.appointmentContent}>
@@ -166,7 +190,27 @@ const AppointmentsScreen = () => {
               <Text style={styles.appointmentContent}>
                 Service: {item.serviceType}
               </Text>
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  width: "100%",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Text style={styles.appointmentContent}>
+                  Status: {getStatus(item.appointment_date)}
+                </Text>
+
+                <TouchableOpacity
+                  style={styles.styleIcons}
+                  onPress={() => handleDetailsPress(item)}
+                >
+                  <Text style={styles.details}>{t('User Details')}</Text>
+                </TouchableOpacity>
+              </View>
             </View>
+
             <TouchableOpacity
               style={styles.removeButton}
               onPress={() => confirmDelete(item._id)}
@@ -177,7 +221,7 @@ const AppointmentsScreen = () => {
         )}
       />
       <TouchableOpacity onPress={handleHomePress}>
-        <Text style={styles.buttonStyle}>Home</Text>
+        <Text style={styles.buttonStyle}>{t('Home')}</Text>
       </TouchableOpacity>
 
       <NavbarButtom onChange={(selectedIcon) => console.log(selectedIcon)} />
@@ -247,6 +291,22 @@ const styles = StyleSheet.create({
     left: Spacing * 22,
     padding: Spacing / 2,
     zIndex: 1,
+  },
+  styleIcons: {
+    backgroundColor: Color.primary,
+    padding: Spacing / 2,
+    borderRadius: Spacing,
+    marginTop: -8,
+  },
+  details: {
+    color: "#fff",
+    fontSize: 15,
+    fontWeight: "400",
+    padding: 4,
+  },
+  select: {
+    flex: 1,
+    fontSize: 18,
   },
 });
 

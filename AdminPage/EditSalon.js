@@ -3,9 +3,7 @@ import {
   Text,
   View,
   TextInput,
-  Image,
   TouchableOpacity,
-  SafeAreaView,
   ScrollView,
 } from "react-native";
 import { Button } from "react-native-elements";
@@ -14,25 +12,22 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import {
   faBook,
   faFileSignature,
-  faDollarSign,
-  faCloudUploadAlt,
-  faClock,
 } from "@fortawesome/free-solid-svg-icons";
 import Color from "../src/Common/Color.js";
 import { useNavigation } from "@react-navigation/native";
-import * as ImagePicker from "expo-image-picker";
 import { Box, useToast } from "native-base";
-import RNPickerSelect from "react-native-picker-select";
 import axios from "axios";
+import { useTranslation } from "react-i18next";
 
 const EditSalon = ({ route }) => {
   const { item } = route.params;
+  const [t] = useTranslation();
 
   const initialValues = item
     ? { ...item }
     : {
         name: "",
-        branches: "",
+        branches: [],
       };
   const [FData, setFData] = useState({
     ...initialValues,
@@ -52,23 +47,25 @@ const EditSalon = ({ route }) => {
           toast.show({
             render: () => (
               <Box bg="emerald.500" px="5" py="5" rounded="sm" mb={5}>
-                Salon updated successfully
+                {t("Salon has been successfully updated")}
               </Box>
             ),
           });
+          navigation.navigate("SalonScreen");
           setFData({
             name: "",
-            branches: "",
+            branches: [],
           });
         } else {
           throw new Error("An error has occurred");
         }
       })
+
       .catch((error) => {
         toast.show({
           render: () => (
             <Box bg="red.500" px="5" py="5" rounded="sm" mb={5}>
-              Error updating salon
+              {t("Error in updating the salon")}
             </Box>
           ),
         });
@@ -76,10 +73,11 @@ const EditSalon = ({ route }) => {
   };
 
   const navigation = useNavigation();
+
   return (
     <ScrollView>
       <View style={styles.contanier}>
-        <Text style={styles.TextStyleHeader}>Update Salon</Text>
+        <Text style={styles.TextStyleHeader}>{t("Update Salon")}</Text>
 
         <View style={styles.formgroup}>
           <TextInput
@@ -93,10 +91,15 @@ const EditSalon = ({ route }) => {
 
         <View style={styles.formgroup}>
           <TextInput
-            value={FData.branches}
-            onChangeText={(text) => setFData({ ...FData, branches: text })}
-            style={[styles.input]}
-            placeholder="Branches"
+            value={FData.branches.join(", ")}
+            onChangeText={(text) =>
+              setFData({
+                ...FData,
+                branches: text.split(",").map((branch) => branch.trim()),
+              })
+            }
+            style={styles.input}
+            placeholder={t("Branches")}
           />
           <FontAwesomeIcon
             icon={faBook}
@@ -105,11 +108,13 @@ const EditSalon = ({ route }) => {
         </View>
 
         <TouchableOpacity onPress={() => handleEditSalon(item._id)}>
-          <Text style={styles.buttonStyle}>Edit Salon</Text>
+          <Text style={styles.buttonStyle}>{t('Update')}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => navigation.navigate("SalonScreen")}>
-          <Text style={[styles.buttonStyle, styles.buttonStyle1]}>cancel</Text>
+          <Text style={[styles.buttonStyle, styles.buttonStyle1]}>
+            {t("Cancel")}
+          </Text>
         </TouchableOpacity>
       </View>
     </ScrollView>

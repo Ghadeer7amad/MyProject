@@ -15,14 +15,21 @@ import { Box, useToast } from "native-base";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { Select } from "native-base";
-import { serialize } from "object-to-formdata";
+import { useTranslation } from "react-i18next";
 
 const ApplyForaJob = () => {
+  const navigation = useNavigation();
+  const [t] = useTranslation();
+  const token = useSelector((state) => state.user.userData.token);
+
+
   const [selectedFile, setSelectedFile] = useState(null);
   const [selectedJob, setSelectedJob] = useState("Laser Specialist");
   const [isLoading, setIsLoading] = useState(false);
 
-  const navigation = useNavigation();
+  const [buttonText, setButtonText] = useState(t("Upload File"));
+  const [image, setImage] = useState(null);
+
   const [items, setItems] = useState([]);
 
   const { id: userId, name: userName } = useSelector(
@@ -33,10 +40,10 @@ const ApplyForaJob = () => {
   );
 
   const [FData, setFData] = useState({
-    user_id: userId,
-    salon_id: salonId,
-    user_name: userName,
+    user_name: userName, 
+    SalonId: salonId,
   });
+
 
   const toast = useToast();
 
@@ -45,7 +52,14 @@ const ApplyForaJob = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${baseUrl}/jobs/job`);
+        const response = await axios.get(
+          `${baseUrl}/salons/${salonId}/Job/job`, {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Nada__${token}`,
+            },
+          }
+        );
         setItems(response.data);
         setIsLoading(false);
       } catch (error) {
@@ -62,45 +76,51 @@ const ApplyForaJob = () => {
         type: "application/pdf",
       });
 
-      if (result.type === "success") {
-        setSelectedFile(result.uri);
+      if (!result.canceled) {
+        setSelectedFile(result);
+        setButtonText(t("File is uploaded successfully"));
       }
     } catch (err) {
       console.error("Error picking document:", err);
     }
   };
 
+
+
   const onSubmitPressed = async () => {
     try {
-      const options = {
-        indices: false,
-        nullsAsUndefineds: false,
-        booleansAsIntegers: false,
-        allowEmptyArrays: false,
-        noFilesWithArrayNotation: false,
-        dotsForObjectNotation: true,
-      };
 
-      const formData = serialize(FData, options);
-
-      formData.append("jobName", selectedJob);
-      formData.append("image", {
-        uri: selectedFile,
-        name: FData.name + ".pdf",
-        type: "application/pdf",
+      setFData({
+        ...FData,
+        jobName: selectedJob,
       });
 
-      console.log(formData);
 
-      const response = await fetch(`${baseUrl}/uploadjobs/uploadjob`, {
-        method: "POST",
-        body: formData,
-      });
+      
 
-      const responseData = await response.json(); // Parse the response body as JSON
+      const formData = new FormData();
+      formData.append('cvFile', selectedFile.assets[0]);
+      
 
-      if (response.ok) {
-        console.log(responseData);
+      console.log("data:", formData);
+  
+
+
+
+      const response = await axios.post(`${baseUrl}/uploadjobs/uploadjob`,
+        formData,
+        { 
+          headers: {
+            "Content-Type": "application/json",
+            Accept: 'application/json',
+            Authorization: `Nada__${token}`,
+          },
+        }
+      );
+
+      console.log("Server Response:", response);
+
+      if (response.status === 201) {
         toast.show({
           render: () => (
             <Box bg="emerald.500" px="5" py="5" rounded="sm" mb={5}>
@@ -109,10 +129,11 @@ const ApplyForaJob = () => {
           ),
         });
       } else {
+        console.error("Server Error:", response.status, response.statusText);
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
     } catch (error) {
-      console.error("Fetch error:", error);
+      console.error("Fetch error:", error.stack);
     }
   };
 
@@ -131,34 +152,34 @@ const ApplyForaJob = () => {
       </TouchableOpacity>
 
       <View style={{ flex: 1, justifyContent: "center", marginTop: -200 }}>
-        <Text style={styles.labelStyle}>Choose The Job:</Text>
+        <Text style={styles.labelStyle}>{t("Choose The Job:")}</Text>
 
         <View style={styles.labeledContainerStyle}>
           <Select
-            placeholder="Select Job"
+            placeholder={t("Select Job")}
             selectedValue={selectedJob}
             onValueChange={(itemValue, itemIndex) => setSelectedJob(itemValue)}
             style={styles.pickerStyle}
           >
             {items.map((item) => (
               <Select.Item
-                key={item.id}
+                key={item._id}
                 label={item.jobName}
-                value={item.jobName}
+                value={item.jobName} 
               />
             ))}
           </Select>
         </View>
 
         <Text style={[styles.labelStyle, { marginTop: 20 }]}>
-          Attach your CV (PDF):
+          {t("Attach your CV (PDF):")}
         </Text>
 
         <TouchableOpacity
           onPress={pickDocument}
           style={styles.fileUploadButton}
         >
-          <Text style={styles.fileUploadText}>Upload File</Text>
+          <Text style={styles.fileUploadText}>{buttonText}</Text>
         </TouchableOpacity>
 
         {selectedFile && (
@@ -167,16 +188,14 @@ const ApplyForaJob = () => {
           >{`Selected File: ${selectedFile}`}</Text>
         )}
 
-        <Text style={styles.uploadInfoText}>
-          Upload your CV (PDF) by tapping the "Upload File" button.
-        </Text>
+        <Text style={styles.uploadInfoText}>{t("Upload your cv")}</Text>
       </View>
 
       <View style={styles.buttonContainer}>
         <TouchableOpacity onPress={onSubmitPressed}>
           <Text style={styles.buttonStyle}>
-            <Ionicons name="paper-plane" size={25} color="#ebebeb" /> Submit
-            Form
+            <Ionicons name="paper-plane" size={25} color="#ebebeb" />
+            {t("Submit Form")}
           </Text>
         </TouchableOpacity>
       </View>

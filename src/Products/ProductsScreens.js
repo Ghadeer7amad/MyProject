@@ -20,21 +20,25 @@ import NavbarButtom from "../Common/NavbarButtom";
 import { Alert } from "react-native";
 import { Box, useToast } from "native-base";
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';  
 
 const ProductsScreens = () => {
   const navigation = useNavigation();
+  const [t] = useTranslation();
+
   const dispatch = useDispatch();
   const toast = useToast();
   const [products, setproducts] = useState([]);
   const [selectedItem, setSelectedItem] = useState('Body');
 
+  const { role } = useSelector((state) => state.user.userData);
   const token = useSelector((state) => state.user.userData.token);
   const { _id: salonId } = useSelector(
     (state) => state.user.usedSalonData
   );
   console.log(salonId);
   console.log(token)
-
+ 
 const handleAddToCart = async (productId) => {
   const baseUrl = "https://ayabeautyn.onrender.com";
   try {
@@ -51,6 +55,23 @@ const handleAddToCart = async (productId) => {
           const responseData = await response.json();
           console.log('Response data:', responseData);
           navigation.navigate('CardsScreen');
+      }else if(response.status == 400){
+        toast.show({
+          render: () => (
+            <Box bg='#c81912' px="8" py="5" rounded="sm" mb={5}>
+              {t('This Product is Sold Out')}
+            </Box>
+          )
+        });
+      }else if(response.status == 200){
+        toast.show({
+          render: () => (
+            <Box bg='#c81912' px="8" py="5" rounded="sm" mb={5}>
+              {t('This Product is Already in Your Cart')}
+            </Box>
+          )
+        });
+        navigation.navigate('CardsScreen');
       }else{
           const errorData = await response.json();
           console.error('Error data:', errorData);
@@ -61,8 +82,8 @@ const handleAddToCart = async (productId) => {
   }
 };
 
-const handleAddToFavorite = async (productId) => {
-  const baseUrl = "https://ayabeautyn.onrender.com";
+const handleAddToFavorite = async (productId) => { 
+  const baseUrl = "https://ayabeautyn.onrender.com"; 
   try {
       const response = await fetch(`${baseUrl}/favorite/`, {
           method: 'POST',
@@ -81,7 +102,7 @@ const handleAddToFavorite = async (productId) => {
           toast.show({
             render: () => (
               <Box bg='#c81912' px="8" py="5" rounded="sm" mb={5}>
-                Product already in favorites
+                {t('Product already in favorites')}
               </Box>
             )
           });
@@ -125,16 +146,16 @@ const handleAddToFavorite = async (productId) => {
 
     const confirmDelete = (itemId) => {
       Alert.alert(
-        "Delete Confirmation",
-        "Are you sure you want to delete this item?",
+        t('Confirm deletion'),
+        t('Are you sure you want to delete this salon?'), 
         [
           {
-            text: "Cancel",
+            text: t('Cancel'),
             style: "cancel",
           },
           {
-            text: "Yes, Delete",
-            onPress: () => handleRemoveProducts(itemId),
+            text: t('Yes, Delete'),
+            onPress: () => handleRemoveProducts(itemId), 
           },
         ],
         { cancelable: false }
@@ -191,10 +212,11 @@ const handleAddToFavorite = async (productId) => {
           <NavbarTop />
 
           <View style={{width:"100%"}}>
-          <Text style={styles.styleText}>find the best <Image style={{ width: 50, height: 50 }} source={require("../../assets/122.jpg")} /></Text>
-          <Text style={[styles.styleText, styles.styleText2]}>product for you</Text>
+          <Text style={styles.styleText}>{t('find the best')} <Image style={{ width: 50, height: 50 }} source={require("../../assets/122.jpg")} /></Text>
+          <Text style={[styles.styleText, styles.styleText2]}>{t('product for you')}</Text>
+          {(role === "Admin" || role === "Manager") && (
           <TouchableOpacity
-             onPress={() => navigation.navigate("AddProduct")}
+             onPress={() => navigation.navigate("AddProduct")} 
              style={{
                marginTop: 30,
                backgroundColor: Color.primary,
@@ -212,35 +234,37 @@ const handleAddToFavorite = async (productId) => {
                color: '#fff',
                fontSize: 16,
              }}>
-               Add product
+               {t('Add product')}  
                </Text>
              </TouchableOpacity>
+          )}
           
       <SearchProANDSer/>
       <View style={{ flexDirection: 'row'}}>
         <TouchableOpacity onPress={handleBodyPress}>
-        <Text style={[styles.Sub1, selectedItem === 'Body' ? styles.selectedText1 : null]}>Body</Text>
+        <Text style={[styles.Sub1, selectedItem === 'Body' ? styles.selectedText1 : null]}>{t('Body')}</Text>
       </TouchableOpacity>
 
       <TouchableOpacity onPress={handleFacePress}>
-        <Text style={[styles.Sub2, selectedItem === 'Face' ? styles.selectedText2 : null]}>Face</Text>
+        <Text style={[styles.Sub2, selectedItem === 'Face' ? styles.selectedText2 : null]}>{t('Face')}</Text>
       </TouchableOpacity>
       </View>
       <Image style={{height: 300, resizeMode: 'contain', width: '100%'}}
       source={require("../../assets/back.jpg")}/>
-      <Text style={{fontSize: 15, textAlign: 'center', textTransform: 'uppercase', fontWeight: 'bold', marginTop: 15, marginBottom: 10}}>chose product now!</Text>
+      <Text style={{fontSize: 15, textAlign: 'center', textTransform: 'uppercase', fontWeight: 'bold', marginTop: 15, marginBottom: 10}}>{t('chose product now')}</Text>
       </View>
 
           <View style={styles.ProductStyle}>
           {products && products.length > 0 && products.map((product, index) => (
                 <View key={index} style={styles.EveryProduct}>
                 <BlurView tint= 'default' intensity={90} style={{padding: Spacing/2}}>
-
+                {(role === "Admin" || role === "Manager") && (
                 <TouchableOpacity
                     style={styles.removeButton}
                     onPress={() => confirmDelete(product._id)}>
                     <Ionicons name="close" color="red" size={Spacing*1.5} />
                 </TouchableOpacity>
+                )}
 
                   <TouchableOpacity  
                   style={{width:"100%", height:150}} onPress={() => handleDetailsPress(product)} >
@@ -254,7 +278,7 @@ const handleAddToFavorite = async (productId) => {
     
                   </TouchableOpacity>
                   <Text style={styles.NameStyle}>{product.name}</Text>
-                  <Text style={styles.includedStyle}>Stock  {product.stock}</Text>
+                  <Text style={styles.includedStyle}>{t('Stock')}  {product.stock}</Text>
     
               <View style={styles.styleRow}>
                     <Text style={styles.PriceStyle}>$ {product.finalPrice}</Text>

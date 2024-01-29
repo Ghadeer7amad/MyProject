@@ -8,19 +8,23 @@ import {
   SafeAreaView,
   ScrollView,
   Dimensions,
+  Linking 
 } from "react-native";
 import Header from "../screens/Header";
 import Color from "../Common/Color";
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import { useNavigation } from "@react-navigation/native";
+import {useSelector} from 'react-redux';
+import { useTranslation } from 'react-i18next'; 
+
 
 const About = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  
+
   const images = [
     require("../../assets/hh.jpg"),
     require("../../assets/oo.jpg"),
-    require("../../assets/hhhh.jpg"),
+    require("../../assets/hhhh.jpg"), 
   ];
 
   const handleSlideChange = (index) => {
@@ -30,11 +34,14 @@ const About = () => {
   const windowWidth = Dimensions.get("window").width;
 
   const navigation = useNavigation();
+  const {id: salonId , name: salonName, branches: Branch} = useSelector(state => state.user.usedSalonData)
+  const [t] = useTranslation();
+
 
 
   const handleBookPress = () => {
-      navigation.navigate('BookingScreen');
-    };
+    navigation.navigate("BookingScreen");
+  };
 
   const handleContactPress = () => {
     // Handle contact button press
@@ -42,24 +49,42 @@ const About = () => {
   };
 
 
-
-  const branches = [
-    { name: 'Jerusalem', locationIcon: 'map-marker-alt', phoneIcon: 'phone', phoneNumber: '0526053612' },
-    { name: 'Hebron', locationIcon: 'map-marker-alt', phoneIcon: 'phone', phoneNumber: '0595671000' },
-    { name: 'Rahat', locationIcon: 'map-marker-alt', phoneIcon: 'phone', phoneNumber: '0528616847' },
-  ];
+  const openWhatsAppChat = () => {
+    const whatsappNumber = "+972595671000";
+    const url = `https://api.whatsapp.com/send?phone=${whatsappNumber}`;
+    Linking.openURL(url);
+  };
+ 
 
   const socialIcons = [
-    { name: 'facebook', icon: 'facebook-f', color: '#1877f2', link: 'https://facebook.com/' },
-    { name: 'instagram', icon: 'instagram', color: '#e4405f', link: 'https://instagram.com/' },
-    { name: 'whatsapp', icon: 'whatsapp', color: '#25d366', link: 'https://wa.me/' },
+    {
+      name: "facebook",
+      icon: "facebook-f",
+      color: "#1877f2",
+      link: "https://www.facebook.com/aya.beauty.villa1?locale=ar_AR&paipv=0&eav=Afaw8ARYkvdMVws5MTn3LPhYLe4UDWzmlm457FhA5iKZt9ZWEv6qJ46CHCvluDalsIw&_rdr",
+    },
+    {
+      name: "instagram",
+      icon: "instagram",
+      color: "#e4405f",
+      link: "https://www.instagram.com/ayabeautyctr/?igsh=MXhidXR0OWx0aWducw%3D%3D",
+    },
+    {
+      name: "whatsapp",
+      icon: "whatsapp",
+      color: "#25d366",
+      link: "https://api.whatsapp.com/send?phone=+972595671000",
+    },
   ];
   
+  const locationIcon = "map-marker-alt";
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header />
-      <ScrollView>
+      
+      <ScrollView >
+      <Header /> 
+
         <View style={styles.sliderContainer}>
           <ScrollView
             horizontal
@@ -77,10 +102,7 @@ const About = () => {
               <Image
                 key={index}
                 source={image}
-                style={[
-                  styles.image,
-                  { width: windowWidth, height: 300 },
-                ]}
+                style={[styles.image, { width: windowWidth, height: 300 }]}
                 resizeMode="cover"
               />
             ))}
@@ -103,41 +125,37 @@ const About = () => {
         </View>
 
         <View style={styles.titleContainer}>
-          <Text style={styles.title}>Aya Beauty Center</Text>
+          <Text style={styles.title}> {salonName} Center</Text>
           <View style={styles.titleLine} />
         </View>
 
         <Text style={styles.paragraph}>
-          A selected group of consultants and specialists are waiting for
-          you to provide distinguished cosmetic and therapeutic services with
-          the latest cosmetic devices and techniques.
+        {t('aboutus')}
         </Text>
 
         <View style={styles.buttonsContainer}>
           <TouchableOpacity
             style={[styles.button, { borderColor: Color.primary }]}
-            onPress={handleContactPress}
+
+            onPress= {openWhatsAppChat}
           >
             <Text style={[styles.buttonText, { color: Color.primary }]}>
-              Contact Us
+            {t('Contact Us')}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={[
-              styles.button,
-              { backgroundColor: Color.primary },
-            ]}
+            style={[styles.button, { backgroundColor: Color.primary }]}
             onPress={handleBookPress}
           >
             <Text style={[styles.buttonText, { color: "white" }]}>
-              Book an Appointment
+            {t('Book an Appointment')}
             </Text>
           </TouchableOpacity>
         </View>
 
         <View style={styles.titleContainer}>
           <Text style={styles.DepartmentTitle}>
-            Departments of Aya Beauty Center
+          {t('Departments of')} {salonName} Center
           </Text>
           <View style={styles.titleLine} />
         </View>
@@ -150,11 +168,10 @@ const About = () => {
               style={styles.circularImage}
             />
           </View>
-          <Text style={styles.departmentTitle}>Skin Care 
-          <Text style={{color: Color.background}}> Department</Text></Text>
+          <Text style={styles.departmentTitle}>{t('Skin Care')} </Text>
           <View style={styles.horizontalLine} />
           <Text style={styles.departmentParagraph}>
-            We take care of your beauty and skin with the latest international devices and creams.
+          {t('aboutskincare')}
           </Text>
         </View>
 
@@ -166,11 +183,11 @@ const About = () => {
               style={styles.circularImage}
             />
           </View>
-          <Text style={styles.departmentTitle}>Laser Therapy 
-          <Text style={{color: Color.background}}> Department</Text></Text>
+          <Text style={styles.departmentTitle}>{t('Laser Therapy')} 
+          </Text>
           <View style={styles.horizontalLine} />
           <Text style={styles.departmentParagraph}>
-          The latest laser technology in hair removal and treatment of a lot of problems.
+          {t('aboutlaser')}
           </Text>
         </View>
 
@@ -182,44 +199,40 @@ const About = () => {
               style={styles.circularImage}
             />
           </View>
-          <Text style={styles.departmentTitle}>Creams 
-          <Text style={{color: Color.background}}> Department</Text></Text>
+          <Text style={styles.departmentTitle}>{t('Creams')} </Text>
           <View style={styles.horizontalLine} />
           <Text style={styles.departmentParagraph}>
-          The best universal products and creams to take care of the freshness of the skin.
+          {t('aboutcream')}
           </Text>
         </View>
 
         <View style={styles.titleContainer}>
-          <Text style={styles.title}>Our Branches</Text>
+          <Text style={styles.title}>{t('Our Branches')}</Text>
           <View style={styles.title2Line} />
         </View>
 
-        {branches.map((branch, index) => (
-    <View key={index} style={styles.branchContainer}>
+        
+    <View  style={styles.branchContainer}>
     
     <View style={styles.branchDetails}>
-      <FontAwesome5 name={branch.locationIcon} size={15} color={Color.primary} />
-      <Text style={styles.branchInfo}>{branch.name}</Text>
+      <FontAwesome5 name={locationIcon} size={15} color={Color.primary} />
+      <Text style={styles.branchInfo}>{Branch} </Text>
     </View>
-    <View style={styles.branchDetails}>
-      <FontAwesome5 name={branch.phoneIcon} size={15} color={Color.primary} />
-      <Text style={styles.branchInfo}> {branch.phoneNumber}</Text>
-    </View>
+    
   </View>
-))}
 
 <View style={styles.socialIconsBackground}>
   {socialIcons.map((socialIcon, index) => (
     <TouchableOpacity
       key={index}
       style={[styles.socialIcon]}
-      onPress={() => console.log(`Open ${socialIcon.name} link: ${socialIcon.link}`)}
+      onPress={() => Linking.openURL(socialIcon.link)}
     >
       <FontAwesome5 name={socialIcon.icon} size={20} color="#fff" />
     </TouchableOpacity>
   ))}
 </View>
+
 
 
 
@@ -233,6 +246,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "white",
   },
+
   sliderContainer: {
     height: 310,
     marginBottom: 10,
@@ -271,14 +285,14 @@ const styles = StyleSheet.create({
   titleLine: {
     width: 340,
     height: 0.5,
-    backgroundColor: 'gray',
+    backgroundColor: "gray",
     marginTop: 5,
   },
 
   title2Line: {
     width: 220,
     height: 0.5,
-    backgroundColor: 'gray',
+    backgroundColor: "gray",
     marginTop: 5,
   },
   paragraph: {
@@ -306,17 +320,16 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   departmentContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     marginVertical: 20,
-    width: '100%',
-
+    width: "100%",
   },
   imageContainer: {
     width: 100,
     height: 100,
     borderRadius: 50,
-    overflow: 'hidden',
+    overflow: "hidden",
     marginBottom: 10,
     marginTop: 30,
   },
@@ -325,7 +338,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     borderRadius: 50,
-    borderColor: 'gray',
+    borderColor: "gray",
     borderWidth: 1,
   },
   departmentTitle: {
@@ -333,20 +346,21 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     color: '#ffa952',
+    
   },
   horizontalLine: {
     width: 220,
     height: 0.4,
-    backgroundColor: 'gray',
+    backgroundColor: "gray",
     marginTop: 5,
   },
   departmentParagraph: {
-    textAlign: 'center',
+    textAlign: "center",
     marginHorizontal: 20,
-    color: 'gray',
-    fontWeight: 'bold',
+    color: "gray",
+    fontWeight: "bold",
     marginVertical: 10,
-    fontSize: 14
+    fontSize: 14,
   },
   DepartmentTitle: {
     textAlign: "center",
@@ -360,28 +374,26 @@ const styles = StyleSheet.create({
     textShadowRadius: 2,
   },
 
-
   branchContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     marginVertical: 20,
-    width: '100%',
+    width: "100%",
   },
-  
+
   branchDetails: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 5,
   },
   branchInfo: {
     marginLeft: 5,
-    color: 'gray',
-    
+    color: "gray",
   },
 
   socialIconsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
     marginTop: 20,
     marginBottom: 15,
   },
@@ -390,28 +402,29 @@ const styles = StyleSheet.create({
     height: 30,
     borderRadius: 30,
     marginHorizontal: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     backgroundColor: Color.yell,
-    shadowColor: '#800080', // Same as the background color
+    shadowColor: "#800080", // Same as the background color
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.5,
     shadowRadius: 4,
-    elevation: 5, 
+    elevation: 5,
     borderColor: Color.primary,
-    borderWidth: 0.2
+    borderWidth: 0.2,
   },
 
   socialIconsBackground: {
-    flexDirection: 'row',
-    justifyContent: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
     marginTop: 20,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     paddingVertical: 10,
     borderWidth: 0.2, // Add a small border
-    borderColor: 'rgba(0, 0, 0, 0.1)', // Color of the border
+    borderColor: "rgba(0, 0, 0, 0.1)", // Color of the border
     elevation: 5,
   },
+  
 
 
 

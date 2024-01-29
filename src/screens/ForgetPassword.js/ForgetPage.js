@@ -4,7 +4,6 @@ import {
   View,
   TouchableOpacity,
   Image,
-  Alert,
 } from "react-native";
 import { TextInput } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
@@ -14,9 +13,13 @@ import Color from "../../Common/Color.js";
 import React, { useState } from "react";
 import axios from "axios";
 import { Box, useToast } from "native-base";
+import { useTranslation } from 'react-i18next';  
+
 
 const ForgetPage = () => {
   const navigation = useNavigation();
+  const [t] = useTranslation();
+
   const toast = useToast();
   const [email, setEmail] = useState("");
 
@@ -38,7 +41,7 @@ const ForgetPage = () => {
         toast.show({
           render: () => (
             <Box bg="#55a44e" px="8" py="5" rounded="sm" mb={5}>
-              You received a 4-digit code
+              {t("You received a 4-digit code")}
             </Box>
           ),
         });
@@ -48,7 +51,7 @@ const ForgetPage = () => {
         toast.show({
           render: () => (
             <Box bg="#c81912" px="8" py="5" rounded="sm" mb={5}>
-              Something error
+              {t("Something error")}
             </Box>
           ),
         });
@@ -57,24 +60,23 @@ const ForgetPage = () => {
       toast.show({
         render: () => (
           <Box bg="#c81912" px="8" py="5" rounded="sm" mb={5}>
-            Something error
+            {t("Something error")}
           </Box>
         ),
       });
-    }
+    } 
   };
-
+ 
+  // {t('Branch')}            
   return (
-    <View style={styles.contanier}>
+    <View style={styles.contanier}> 
       <Image
         style={styles.contanier1}
         source={require("../../../assets/forgetpassword.png")}
       />
       <View style={styles.contanier2}>
-        <Text style={styles.TextStyleHeader}>forget password,</Text>
-        <Text style={styles.TextSub}>
-          please enter your email address to reset your password !!
-        </Text>
+        <Text style={styles.TextStyleHeader}>{t("forget password")}</Text>
+        <Text style={styles.TextSub}>{t("resetpass")}</Text>
         <View style={styles.formgroup}>
           <TextInput
             value={email}
@@ -86,7 +88,7 @@ const ForgetPage = () => {
           <FontAwesomeIcon icon={faEnvelope} style={styles.icon} />
         </View>
         {!fieldValid.email && (
-          <Text style={styles.textWrong}> email is required </Text>
+          <Text style={styles.textWrong}> {t("email is required")} </Text>
         )}
 
         <TouchableOpacity
@@ -95,7 +97,7 @@ const ForgetPage = () => {
           }}
         >
           <Text style={[styles.buttonStyle, styles.buttonStyle1]}>
-            Reset Password
+            {t("Reset Password")}
           </Text>
         </TouchableOpacity>
 
@@ -105,7 +107,7 @@ const ForgetPage = () => {
           }}
         >
           <Text style={[styles.buttonStyle, styles.buttonStyle2]}>
-            back to login
+            {t("back to login")}
           </Text>
         </TouchableOpacity>
       </View>
@@ -139,7 +141,7 @@ const styles = StyleSheet.create({
   },
   TextSub: {
     color: Color.primary,
-    fontSize: 22,
+    fontSize: 20,
     marginHorizontal: 20,
     textAlign: "center",
     marginBottom: 10,
@@ -193,3 +195,5 @@ const styles = StyleSheet.create({
     marginTop: 3,
   },
 });
+
+

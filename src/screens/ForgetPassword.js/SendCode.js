@@ -2,22 +2,25 @@ import { StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native'
 import { TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Color from '../../Common/Color.js';
-import React, {useState} from 'react'
+import React from 'react'
+import { useTranslation } from "react-i18next";
 
 const SendCode = () => {
     const navigation = useNavigation();
+    const [t] = useTranslation();
+
 
   return (
-   <View style={styles.contanier}>
+   <View style={styles.contanier}> 
     <Image style={styles.contanier1}
         source={require("../../../assets/mail2.png")}
     />
     <View style={styles.contanier2}>
-    <Text style={styles.TextStyleHeader}>Verification Code</Text>
-    <Text style={styles.TextSub}> You will receive 4 digit Code that is send to you</Text>
+    <Text style={styles.TextStyleHeader}>{t('Verification Code')}</Text>
+    <Text style={styles.TextSub}> {t('You will receive a 4digit code')}</Text>
 
     <TouchableOpacity onPress={() => navigation.navigate('ResetPassword')}>
-       <Text style={styles.buttonStyle}>Verifiy</Text>
+       <Text style={styles.buttonStyle}>{t('Verifiy')}</Text>
       </TouchableOpacity>  
    </View>
    </View>

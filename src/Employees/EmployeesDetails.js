@@ -4,18 +4,20 @@ import {
   Text,
   Image,
   StyleSheet,
-  ScrollView,
   TouchableOpacity,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Color from "../Common/Color.js";
 import Icon from "react-native-vector-icons/Ionicons";
-import { FontAwesome as Iconn } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { useTranslation } from 'react-i18next'; 
+
 
 const EmployeesDetailsScreen = ({ route }) => {
   const { item } = route.params;
   const navigation = useNavigation();
+  const [t] = useTranslation();
+
 
   const handleBookAppointment = () => {
     navigation.navigate("BookingScreen");
@@ -45,7 +47,7 @@ const EmployeesDetailsScreen = ({ route }) => {
         </View>
         <TouchableOpacity style={styles.starContainer} >
           <Icon name="checkmark-circle" size={20} color="green" />
-          <Text style={styles.rate}>{item.experienceYears} years of experience</Text>
+          <Text style={styles.rate}>{item.experienceYears} {t('years of experience')}</Text>
         </TouchableOpacity>
        </View>
         <View style={styles.buttonContainer}>
@@ -53,14 +55,14 @@ const EmployeesDetailsScreen = ({ route }) => {
             style={styles.button}
             onPress={handleBookAppointment}
           >
-            <Text style={styles.buttonText}>Book Now</Text>
+            <Text style={styles.buttonText}>{t('Book Now')}</Text>
           </TouchableOpacity>
-
+ 
           <TouchableOpacity
             style={[styles.button, styles.button1]}
             onPress={handleCancelAppointment}
           >
-            <Text style={styles.buttonText1}>Cancel</Text>
+            <Text style={styles.buttonText1}>{t('Cancel')}</Text>
           </TouchableOpacity>
         </View>
       </View>

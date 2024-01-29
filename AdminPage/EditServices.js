@@ -3,32 +3,31 @@ import {
   Text,
   View,
   TextInput,
-  Image,
   TouchableOpacity,
   SafeAreaView,
   ScrollView,
 } from "react-native";
-import { Button } from "react-native-elements";
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import {
   faBook,
   faFileSignature,
   faDollarSign,
-  faCloudUploadAlt,
   faClock,
 } from "@fortawesome/free-solid-svg-icons";
 import Color from "../src/Common/Color.js";
 import { useNavigation } from "@react-navigation/native";
-import * as ImagePicker from "expo-image-picker";
 import { Box, useToast } from "native-base";
-import RNPickerSelect from "react-native-picker-select";
 import axios from "axios";
 import { Select } from "native-base";
 import { useEffect } from "react";
+import { useTranslation } from 'react-i18next';  
+
 
 const EditServices = ({ route }) => {
   const { item } = route.params;
+  const [t] = useTranslation();
+
 
   const [selectedStatus, setSelectedStatus] = useState();
   const [selectedSubServices, setSelectedSubServices] = useState();
@@ -79,12 +78,13 @@ const EditServices = ({ route }) => {
     };
     axios(configurationObject)
       .then((response) => {
-        console.log("Response:", response);
+        // console.log("Response:", response);
         if (response.status === 200) {
+          navigation.navigate("ServicesScreen")
           toast.show({
             render: () => (
               <Box bg="emerald.500" px="5" py="5" rounded="sm" mb={5}>
-                Services updated successfully
+                {t('Service updated successfully')}
               </Box>
             ),
           });
@@ -107,25 +107,25 @@ const EditServices = ({ route }) => {
         toast.show({
           render: () => (
             <Box bg="red.500" px="5" py="5" rounded="sm" mb={5}>
-              Error updating services
+              {t('Error updating service')}
             </Box>
           ),
         });
       });
   };
 
-  const navigation = useNavigation();
+  const navigation = useNavigation(); 
   return (
     <ScrollView>
       <View style={styles.contanier}>
-        <Text style={styles.TextStyleHeader}>update Services</Text>
+        <Text style={styles.TextStyleHeader}>{t('Update Service')}</Text>
 
         <View style={styles.formgroup}>
           <TextInput
             value={FData.name}
             onChangeText={(text) => setFData({ ...FData, name: text })}
             style={styles.input}
-            placeholder="Name Services"
+            placeholder={t('Service name')}
           />
           <FontAwesomeIcon icon={faFileSignature} style={styles.icon} />
         </View>
@@ -135,7 +135,7 @@ const EditServices = ({ route }) => {
             value={FData.description}
             onChangeText={(text) => setFData({ ...FData, description: text })}
             style={[styles.input, styles.inputDis]}
-            placeholder="Discrption Services"
+            placeholder={t('Service description')}
             multiline={true}
           />
           <FontAwesomeIcon
@@ -149,7 +149,7 @@ const EditServices = ({ route }) => {
             value={FData.price.toString()}
             onChangeText={(text) => setFData({ ...FData, price: text })}
             style={styles.input}
-            placeholder="Prise Services"
+            placeholder={t('Service price')}
           />
           <FontAwesomeIcon icon={faDollarSign} style={styles.icon} />
         </View>
@@ -159,7 +159,7 @@ const EditServices = ({ route }) => {
             value={FData.discount.toString()}
             onChangeText={(text) => setFData({ ...FData, discount: text })}
             style={styles.input}
-            placeholder="discount Services"
+            placeholder={t('Dis')}
           />
           <FontAwesomeIcon icon={faDollarSign} style={styles.icon} />
         </View>
@@ -169,7 +169,7 @@ const EditServices = ({ route }) => {
             value={FData.time.toString()}
             onChangeText={(text) => setFData({ ...FData, time: text })}
             style={styles.input}
-            placeholder="time Services"
+            placeholder={t('Service time')}
           />
           <FontAwesomeIcon icon={faClock} style={styles.icon} />
         </View>
@@ -181,15 +181,15 @@ const EditServices = ({ route }) => {
         >
           <View style={styles.serviceListContainer}>
             <Select
-              placeholder="Select subservices"
+              placeholder={t('Body')}
               color={Color.primary}
               style={{ width: 180, fontSize: 14 }}
               selectedValue={selectedSubServices}
               onValueChange={(value) => handleSubServicesChange(value)}
             >
               {[
-                { id: 1, name: "Body" },
-                { id: 2, name: "Face" },
+                { id: 1, name: t('Body') },
+                { id: 2, name: t('Face') },
               ].map((item) => (
                 <Select.Item
                   key={item.id}
@@ -202,7 +202,7 @@ const EditServices = ({ route }) => {
 
           <View style={styles.serviceListContainer}>
             <Select
-              placeholder="Select status"
+              placeholder={t('ac')}
               color={Color.primary}
               style={{ width: 150, fontSize: 14 }}
               selectedValue={selectedStatus}
@@ -211,8 +211,8 @@ const EditServices = ({ route }) => {
               }}
             >
               {[
-                { id: 1, name: "Active" },
-                { id: 2, name: "Inactive" },
+                { id: 1, name: t('ac') },
+                { id: 2, name: t('Ina') },
               ].map((item) => (
                 <Select.Item
                   key={item.id}
@@ -225,11 +225,11 @@ const EditServices = ({ route }) => {
         </SafeAreaView>
 
         <TouchableOpacity onPress={() => handleEditService(item._id)}>
-          <Text style={styles.buttonStyle}>Edit Services</Text>
+          <Text style={styles.buttonStyle}>{t('Update')}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => navigation.navigate("ServicesScreen")}>
-          <Text style={[styles.buttonStyle, styles.buttonStyle1]}>cancel</Text>
+          <Text style={[styles.buttonStyle, styles.buttonStyle1]}>{t('Cancel')}</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>

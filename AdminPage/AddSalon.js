@@ -2,37 +2,36 @@ import {
   StyleSheet,
   Text,
   View,
-  TextInput,
+  TextInput, 
   Image,
   TouchableOpacity,
-  SafeAreaView,
-  ToastAndroid,
 } from "react-native";
 import { Button } from "react-native-elements";
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import {
-  faBook,
   faFileSignature,
-  faDollarSign,
   faCloudUploadAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import Color from "../src/Common/Color.js";
 import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
-import Icon from "react-native-vector-icons/Ionicons";
 import { serialize } from "object-to-formdata";
 import { Box, useToast } from "native-base";
+import { useTranslation } from "react-i18next";
 
 const AddSalon = () => {
   const navigation = useNavigation();
+  const [t] = useTranslation();
+
   const [FData, setFData] = useState({
     name: "",
-    branches: "",
+    branches: [],
   });
+
   const toast = useToast();
 
-  const [buttonText, setButtonText] = useState("Upload Image");
+  const [buttonText, setButtonText] = useState(t("Upload Image"));
   const [image, setImage] = useState(null);
 
   const pickImage = async () => {
@@ -44,9 +43,10 @@ const AddSalon = () => {
     });
     if (!result.canceled) {
       setImage(result.assets[0]);
-      setButtonText("Image is uploaded successfully");
+      setButtonText(t("Image is uploaded successfully"));
     }
   };
+  const baseUrl = "https://ayabeautyn.onrender.com";
 
   const addSalon = async () => {
     try {
@@ -59,7 +59,13 @@ const AddSalon = () => {
         dotsForObjectNotation: true,
       };
 
-      const formData = serialize(FData, options);
+      const branchesArray = FData.branches.map((branch) => branch.trim());
+      setFData({ ...FData, branches: branchesArray });
+
+      const formData = serialize(
+        { ...FData, branches: branchesArray },
+        options
+      );
 
       formData.append("image", {
         uri: image.uri,
@@ -67,7 +73,6 @@ const AddSalon = () => {
         type: "image/jpeg",
         size: image.fileSize,
       });
-      const baseUrl = "https://ayabeautyn.onrender.com";
 
       const response = await fetch(`${baseUrl}/salons/salon`, {
         method: "POST",
@@ -75,38 +80,43 @@ const AddSalon = () => {
       });
 
       toast.show({
-        render: () => {
-          return (
-            <Box bg="emerald.500" px="5" py="5" rounded="sm" mb={5}>
-              Salon added successfully
-            </Box>
-          );
-        },
+        render: () => (
+          <Box bg="emerald.500" px="5" py="5" rounded="sm" mb={5}>
+            {t("Salon added successfully")}
+          </Box>
+        ),
       });
+      navigation.navigate("SalonScreen");
     } catch (error) {
       console.error(error);
     }
   };
+
   return (
     <View style={styles.container}>
-      <Text style={styles.TextStyleHeader}>Add Salon</Text>
+      <Text style={styles.TextStyleHeader}>{t("Add Salon")}</Text>
 
       <View style={styles.formgroup}>
         <TextInput
           value={FData.name}
           onChangeText={(text) => setFData({ ...FData, name: text })}
           style={styles.input}
-          placeholder="Salon Name"
+          placeholder={t("Salon Name")}
         />
         <FontAwesomeIcon icon={faFileSignature} style={styles.icon} />
       </View>
 
       <View style={styles.formgroup}>
         <TextInput
-          value={FData.branches}
-          onChangeText={(text) => setFData({ ...FData, branches: text })}
+          value={FData.branches.join(", ")}
+          onChangeText={(text) =>
+            setFData({
+              ...FData,
+              branches: text.split(",").map((branch) => branch.trim()),
+            })
+          }
           style={styles.input}
-          placeholder="Branches"
+          placeholder={t("Branches")}
         />
         <FontAwesomeIcon icon={faFileSignature} style={styles.icon} />
       </View>
@@ -143,11 +153,13 @@ const AddSalon = () => {
       </View>
 
       <TouchableOpacity onPress={addSalon}>
-        <Text style={styles.buttonStyle}>Add Salon</Text>
+        <Text style={styles.buttonStyle}>{t('Add')}</Text>
       </TouchableOpacity>
 
       <TouchableOpacity onPress={() => navigation.navigate("SalonScreen")}>
-        <Text style={[styles.buttonStyle, styles.buttonStyle1]}>Cancel</Text>
+        <Text style={[styles.buttonStyle, styles.buttonStyle1]}>
+          {t("Cancel")}
+        </Text>
       </TouchableOpacity>
     </View>
   );

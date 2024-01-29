@@ -17,9 +17,13 @@ import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import WhatsApp from "../Common/WhatsApp.js";
+import { useTranslation } from "react-i18next";
 
 const EmployeesScreen = () => {
   const navigation = useNavigation();
+  const [t] = useTranslation();
+
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [filteredItems, setFilteredItems] = useState([]);
@@ -28,9 +32,12 @@ const EmployeesScreen = () => {
     const filteredData = items.filter((item) =>
       item.name.toLowerCase().includes(searchText.toLowerCase())
     );
-    setFilteredItems(filteredData);
+    setFilteredItems(filteredData); 
   };
   const { role } = useSelector((state) => state.user.userData);
+  const { _id: salonId, name: salonName } = useSelector(
+    (state) => state.user.usedSalonData
+  );
 
   const handleDetailsPress = (item) => {
     navigation.navigate("EmployeesDetails", { item });
@@ -44,7 +51,7 @@ const EmployeesScreen = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch(`${baseUrl}/employees/employee`);
+      const response = await fetch(`${baseUrl}/salons/${salonId}/Employee/employee`);
       const data = await response.json();
       setItems(data);
       setIsLoading(false);
@@ -55,15 +62,15 @@ const EmployeesScreen = () => {
 
   const confirmDelete = (itemId) => {
     Alert.alert(
-      "Delete Confirmation",
-      "Are you sure you want to delete this employee?",
+      t("Confirm deletion"),
+      t("Are you sure you want to delete this salon?"),
       [
         {
-          text: "Cancel",
+          text: t("Cancel"),
           style: "cancel",
         },
         {
-          text: "Yes, Delete",
+          text: t("Yes, Delete"),
           onPress: () => handleDeletePress(itemId),
         },
       ],
@@ -96,19 +103,19 @@ const EmployeesScreen = () => {
 
   return (
     <View style={styles.container}>
+      <WhatsApp />
+
       <Header />
       <View style={styles.container2}>
-        <Text style={[styles.styleText, styles.styleText2]}>
-          Beauty Employees.
-        </Text>
+        <Text style={[styles.styleText]}>{t("Beauty Employees")}</Text>
         <CustomSearchBar
-          placeholder="Search Employee"
+          placeholder={t("Search for Employee")}
           onSearch={handleSearch}
         />
       </View>
-      {role === "Admin" && (
+      {(role === "Admin" || role === "Manager") && (
         <TouchableOpacity onPress={() => navigation.navigate("AddEmployee")}>
-          <Text style={styles.buttonStyle}>Add Employee</Text>
+          <Text style={styles.buttonStyle}>{t("Add Employee")}</Text>
         </TouchableOpacity>
       )}
 
@@ -140,7 +147,7 @@ const EmployeesScreen = () => {
                       color="white"
                     />
                   </TouchableOpacity>
-                  {role === "Admin" && (
+                  {(role === "Admin" || role === "Manager") && (
                     <TouchableOpacity
                       style={styles.editIcon}
                       onPress={() => handleEditEmployee(item)}
@@ -148,7 +155,7 @@ const EmployeesScreen = () => {
                       <Icon name="pencil" color="#5e366a" size={20} />
                     </TouchableOpacity>
                   )}
-                  {role === "Admin" && (
+                  {(role === "Admin" || role === "Manager") && (
                     <TouchableOpacity
                       style={styles.deleteIcon}
                       onPress={() => confirmDelete(item._id)}

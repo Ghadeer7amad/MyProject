@@ -3,14 +3,16 @@ import React from 'react'
 import { useState, useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import Color from '../Common/Color.js';
-import Products from "./ProductData.js"
 import { Ionicons } from "@expo/vector-icons";
 import { BlurView } from 'expo-blur';
 import Spacing from "../Common/Spacing.js"
 import {useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';  
 
 const CardsScreen = () => {
   const navigation = useNavigation();
+  const [t] = useTranslation();
+
   const token = useSelector((state) => state.user.userData.token);
   const [cartData, setCartData] = useState([]);
   const [isTouched, setIsTouched] = useState(false);
@@ -43,12 +45,11 @@ const CardsScreen = () => {
         const data = await response.json();
         const totalPrice = data.totalCartPrice; 
         setTotalPrice(totalPrice);
-        console.log("Total Priceeeeeeeeeeee:", totalPrice);
       } catch (error) {
         console.error('Error during checkout:', error.message);
       }
     };
-    useEffect(() => {
+    useEffect(() => { 
   handleCheckOut();
 }, [token]);
     
@@ -113,7 +114,7 @@ const CardsScreen = () => {
         if (response.status === 401) {
           setErrorMessage((prevMessages) => ({
             ...prevMessages,
-            [productId]: "This product is sold out.\n Quantity will be renewed soon",
+            [productId]: t('This product'),
           }));
         }
         fetchCartData();
@@ -146,13 +147,10 @@ const CardsScreen = () => {
         }
     
       } catch (error) {
-        console.error('Error updating quantity:', error.message);
+        console.error(t('Error updating quantity'), error.message);
       }
     };
-    
-    
-    
-    
+ 
   return (
     <View style={{backgroundColor: "#fff", height:"100%"}}>
       <View style={{padding: 40}}>
@@ -167,8 +165,8 @@ const CardsScreen = () => {
       </TouchableOpacity>
       
       <View style={{flexDirection:"column"}}>
-        <Text style={{fontSize: 30, textAlign:"left", color: "#929aab"}}>Shopping</Text>
-        <Text style={{fontSize: 30, fontWeight:"bold", textAlign:"left", color:"black"}}>Cart</Text>
+        <Text style={{fontSize: 30, textAlign:"left", color: "#929aab"}}>{t('Shopping')}</Text>
+        <Text style={{fontSize: 30, fontWeight:"bold", textAlign:"left", color:"black"}}>{t('Cart')}</Text>
         </View>
       </View>
       
@@ -215,9 +213,14 @@ const CardsScreen = () => {
     </View>
   </View>
 ))}
+  {(!cartData || !cartData.products || cartData.products.length === 0) && (
+    <View style={styles.noCartsContainer}>
+      <Text style={styles.noCartsText}>{t('Cart is Empty')}</Text>
+    </View>
+  )}
 
 <View style={{flexDirection:"row", justifyContent: "space-between", margin: 20, borderBottomWidth: 1, borderColor:"black"}}>
-            <Text style={{fontSize: 25, color: "black"}}>Total Price</Text>
+            <Text style={{fontSize: 25, color: "black"}}>{t('Total Price')}</Text>
             <Text style={{fontSize: 25, color: "#929aab"}}>${totalPrice}</Text>
           </View>
 
@@ -232,13 +235,10 @@ const CardsScreen = () => {
           <Text
             style={[
               styles.styleTextButton,
-              isTouched ? styles.touchedTextButton : null]}>Check Out</Text>
+              isTouched ? styles.touchedTextButton : null]}>{t('Check Out')}</Text>
 
-        </TouchableOpacity>
-        
-        
-      </ScrollView>
-      
+        </TouchableOpacity> 
+      </ScrollView>   
     </View>
   )
 }
@@ -296,5 +296,18 @@ ButtonStyle:{
   marginTop: 30,
   justifyContent: "center",
   alignItems: "center",
-}
+},
+noCartsContainer: {
+  flex: 1,
+  justifyContent: 'center',
+  alignItems: 'center',
+  marginTop: 20,
+},
+
+noCartsText: {
+  textAlign: 'center',
+  fontSize: 20,
+  fontWeight: "bold",
+  color: '#929aab',
+},
 })

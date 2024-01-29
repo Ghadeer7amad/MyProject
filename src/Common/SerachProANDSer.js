@@ -4,9 +4,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { StyleSheet, View } from 'react-native';
 import { faList } from '@fortawesome/free-solid-svg-icons';
 import Color from './Color.js';
+import { useTranslation } from 'react-i18next';  
+
 
 const SearchProANDSer = ({ placeholder, onSearch }) => {
   const [searchText, setSearchText] = useState('');
+  const [t, i18n] = useTranslation();
+
 
   const handleSearch = (text) => {
     setSearchText(text);
@@ -16,7 +20,7 @@ const SearchProANDSer = ({ placeholder, onSearch }) => {
   return (
     <View style={styles.searchBarContainer}>
       <SearchBar
-        placeholder={placeholder || 'Search for your product'}
+        placeholder={placeholder || t('Search for your product')}
         onChangeText={handleSearch}
         value={searchText}
         containerStyle={styles.searchBarContainer}

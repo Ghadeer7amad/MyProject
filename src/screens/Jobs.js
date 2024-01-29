@@ -8,21 +8,36 @@ import {
   FlatList,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { Card, Button } from "react-native-elements";
+import { Card } from "react-native-elements";
 import { FontAwesome as Icon } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import Color from "../Common/Color.js";
 import Spacing from "../Common/Spacing.js";
+import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 const Jobs = () => {
-  const navigation = useNavigation();
-  const [items, setItems] = useState([]);
+  const navigation = useNavigation(); 
+  const [t] = useTranslation();
+
+  const { role, token } = useSelector((state) => state.user.userData);
+
+  const { _id: salonId, name: salonName } = useSelector(
+    (state) => state.user.usedSalonData
+  );
+
+  const [items, setItems] = useState([]); 
   const [isLoading, setIsLoading] = useState(true);
 
   const baseUrl = "https://ayabeautyn.onrender.com";
   const fetchData = async () => {
     try {
-      const response = await fetch(`${baseUrl}/jobs/job`);
+      const response = await fetch(`${baseUrl}/salons/${salonId}/Job/job`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Nada__${token}`,
+        },
+      });
       const data = await response.json();
       setItems(data);
       setIsLoading(false);
@@ -37,6 +52,10 @@ const Jobs = () => {
     try {
       const response = await fetch(`${baseUrl}/jobs/job/${itemId}`, {
         method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Nada__${token}`,
+        },
       });
 
       if (response.ok) {
@@ -66,9 +85,36 @@ const Jobs = () => {
       </TouchableOpacity>
 
       <View style={styles.container1}></View>
-      <View style={{ flex: 1 }}>
-        <Text style={styles.textHeader}>Here are the jobs</Text>
-        <Text style={styles.textHeader1}>we currently have available</Text>
+      <View style={{ flex: 1 }}> 
+        <Text style={styles.textHeader}>{t("Here are the jobs")} <Image style={{ width: 50, height: 50 }} source={require("../../assets/pic2.jpg")} /></Text>
+        <Text style={styles.textHeader1}>
+          {t("we currently have available")}
+        </Text>
+
+        {(role === "Admin" || role === "Manager") && (
+          <TouchableOpacity
+             onPress={() => navigation.navigate("AddJob")}
+             style={{
+               marginTop: 30,
+               backgroundColor: Color.primary,
+               borderWidth: 1,
+               borderColor: '#fff',
+               borderRadius: 8,
+               paddingVertical: 10,
+               paddingHorizontal: 40,
+               justifyContent: 'center',
+               alignItems: 'center',
+             }}
+           >
+             <Text style={{
+               fontWeight: 'bold',
+               color: '#fff',
+               fontSize: 16,
+             }}>
+               {t('Add Job')}  
+               </Text>
+             </TouchableOpacity>
+          )}
 
         <FlatList
           data={items}
@@ -76,12 +122,14 @@ const Jobs = () => {
           renderItem={({ item }) => (
             <>
               <Card containerStyle={styles.card}>
-                <TouchableOpacity
-                  style={styles.deleteIcon}
-                  onPress={() => handleDeletePress(item._id)}
-                >
-                  <Icon name="close" color="#5e366a" size={20} />
-                </TouchableOpacity>
+              {(role === "Admin" || role === "Manager") && (
+                  <TouchableOpacity
+                    style={styles.deleteIcon}
+                    onPress={() => handleDeletePress(item._id)}
+                  >
+                    <Icon name="close" color="#5e366a" size={20} />
+                  </TouchableOpacity>
+                )}
                 <Card.Title style={styles.cardTitle}>{item.jobName}</Card.Title>
                 <Card.Title style={styles.cardTitlee}>
                   {item.jobDescription}
@@ -95,14 +143,6 @@ const Jobs = () => {
           )}
         />
 
-        <TouchableOpacity
-          style={styles.addButton}
-          onPress={() => {
-            navigation.navigate("AddJob");
-          }}
-        >
-          <Text style={styles.addButtonText}>Add Job</Text>
-        </TouchableOpacity>
       </View>
     </View>
   );
@@ -135,24 +175,9 @@ const styles = StyleSheet.create({
     color: Color.primary,
   },
 
-  addButton: {
-    alignSelf: "flex-end",
-    marginRight: Spacing,
-    marginTop: Spacing,
-    marginBottom: Spacing,
-    backgroundColor: Color.background,
-    paddingVertical: Spacing,
-    paddingHorizontal: Spacing * 2,
-    borderRadius: 5,
-  },
-  addButtonText: {
-    color: "white",
-    fontSize: 16,
-    fontWeight: "bold",
-  },
 
   card: {
-    borderRadius: 30,
+    borderRadius: 5,
     backgroundColor: "#f6f6f6",
     marginBottom: 10,
     position: "relative",
@@ -175,7 +200,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 300, // ارتفاع الصورة الثابت داخل الكارت
     resizeMode: "cover",
-    borderRadius: 20,
+    
   },
 
   deleteIcon: {

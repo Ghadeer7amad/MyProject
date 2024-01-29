@@ -3,47 +3,51 @@ import { View, Text, Image, Button, StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation } from "@react-navigation/native";
 import Color from '../Common/Color.js';
+import { useTranslation } from 'react-i18next';
 
 
 
-const data = [
-  { id: 1, image: require('../../assets/staff.jpg'), description: 'STAFF' },
-  { id: 2, image: require('../../assets/about.jpg'), description: 'ABOUT' },
-  { id: 3, image: require('../../assets/serv.jpg'), description: 'SERVICES' },
-  { id: 4, image: require('../../assets/product.jpg'), description: 'PRODUCTS' },
-  { id: 5, image: require('../../assets/res.jpg'), description: 'RESERVATIONS' },
-  { id: 6, image: require('../../assets/post.jpg'), description: 'POSTS' },
-];
+
 
 const MainScreen = () => {
 
   const navigation = useNavigation();
+  const [t] = useTranslation();
 
   const handleContinuePress = (option) => {
     setChosenOption(option);
     switch (option) {
-      case 'STAFF':
+      case t('STAFF'):
         navigation.navigate('EmployeesScreen'); 
         break;
-      case 'ABOUT':
+      case t('ABOUT'):
         navigation.navigate('About'); 
         break;
-        case 'RESERVATIONS':
+        case t('RESERVATIONS'):
         navigation.navigate('BookingScreen'); 
         break;
-        case 'SERVICES':
+        case t('SERVICES'):
         navigation.navigate('ServicesScreen'); 
         break;
-        case 'POSTS':
+        case t('POSTS'):
         navigation.navigate('PostsScreen'); 
         break;
-        case 'PRODUCTS':
+        case t('PRODUCTS'):
         navigation.navigate('ProductsScreens'); 
         break;
       default:
         break;
     }
   };
+
+  const data = [
+    { id: 1, image: require('../../assets/staff.jpg'), description: t('STAFF') },
+    { id: 2, image: require('../../assets/about.jpg'), description: t('ABOUT') },
+    { id: 3, image: require('../../assets/serv.jpg'), description: t('SERVICES') },
+    { id: 4, image: require('../../assets/product.jpg'), description: t('PRODUCTS') },
+    { id: 5, image: require('../../assets/res.jpg'), description: t('RESERVATIONS') },
+    { id: 6, image: require('../../assets/post.jpg'), description: t('POSTS') },
+  ];
   
 
 

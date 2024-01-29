@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   Dimensions,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { Calendar } from "react-native-calendars";
 import Color from "../Common/Color";
@@ -15,21 +14,24 @@ import Header from "./Header";
 import NavbarButtom from "../Common/NavbarButtom";
 import { Select } from "native-base";
 import { useSelector } from "react-redux";
-import { serialize } from "object-to-formdata";
 import { Box, useToast } from "native-base";
+import WhatsApp from "../Common/WhatsApp";
+import { useTranslation } from 'react-i18next'; 
+
+import { useNavigation } from "@react-navigation/native";
 
 const screenwidth = Dimensions.get("window").width;
 
 const BookingScreen = () => {
-  const navigation = useNavigation();
-  const [isLoading, setIsLoading] = useState(true);
-  const [items, setItems] = useState([]);
   const toast = useToast();
+  const [t] = useTranslation();
 
-  const { id: userId, name: userName } = useSelector(
-    (state) => state.user.userData
-  );
-  const { _id: salonId, name: salonName } = useSelector(
+
+
+  const navigation = useNavigation();
+  const { userData, usedSalonData } = useSelector((state) => state.user);
+  const { id: userId, name: userName } = userData;
+  const { _id: salonId } = useSelector(
     (state) => state.user.usedSalonData
   );
 
@@ -86,11 +88,12 @@ const BookingScreen = () => {
 
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [bookedAppointments, setBookedAppointments] = useState([]);
 
   const fetchData = async () => {
     try {
-      const response = await fetch(`${baseUrl}/appointments/appointment`);
+      const response = await fetch(`${baseUrl}/salons/${salonId}/Appointment/appointment`); 
       const data = await response.json();
       setBookedAppointments(data.map((appointment) => appointment.uniqueDate));
       setIsLoading(false);
@@ -98,6 +101,40 @@ const BookingScreen = () => {
       console.error("Error fetching data:", error);
     }
   };
+
+  const [selectedBranch, setSelectedBranch] = useState(null);
+  const [branches, setBranches] = useState([]);
+
+  useEffect(() => {
+    const fetchBranches = async () => {
+      try {
+        if (salonId) {
+          const response = await fetch(
+            `${baseUrl}/salons/salon/${salonId}/branches`
+          );
+
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+
+          const data = await response.json();
+          console.log("Data received:", data);
+
+          if (data) {
+            setBranches(data);
+          } else {
+            console.error("Invalid data structure:", data);
+          }
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchBranches();
+  }, [salonId]);
 
   const isSlotAvailable = (date, time) => {
     const uniqueDate = date + time;
@@ -116,7 +153,7 @@ const BookingScreen = () => {
         render: () => {
           return (
             <Box bg="#c81912" px="5" py="5" rounded="sm" mb={5}>
-              Selected time is not available. Please choose another time.
+              {t('book')}
             </Box>
           );
         },
@@ -144,15 +181,16 @@ const BookingScreen = () => {
     textAlign: "center",
   };
 
-  const onSubmitPressed = async () => {
+  const onSubmitPressed = async () => { 
     const data = {
       user_id: userId,
-      salon_id: salonId,
       user_name: userName,
+      branch: selectedBranch,
       appointment_date: selectedDate,
       appointment_time: selectedTime,
       uniqueDate: selectedDate + selectedTime,
       serviceType: selectedValue,
+      SalonId: salonId,
     };
 
     try {
@@ -179,11 +217,12 @@ const BookingScreen = () => {
           render: () => {
             return (
               <Box bg="emerald.500" px="5" py="5" rounded="sm" mb={5}>
-                Your appointment is booked successfully
+                {t('Your appointment is booked successfully')}
               </Box>
             );
           },
         });
+        navigation.navigate("PathologicalCase");
       }
     } catch (err) {
       console.log(err.message);
@@ -196,10 +235,12 @@ const BookingScreen = () => {
 
   return (
     <View style={styles.container}>
+      <WhatsApp />
+
       <Header />
-      <ScrollView style={styles.scrollView}>
+      <ScrollView style={styles.scrollView}> 
         <View style={styles.root}>
-          <Text style={styles.title}>Book an Appointment</Text>
+          <Text style={styles.title}>{t('Book an Appointment')}</Text>
 
           <View style={styles.pickerContainer}>
             <Calendar
@@ -214,20 +255,20 @@ const BookingScreen = () => {
           </View>
 
           <View style={styles.sectionTitleContainer}>
-            <Text style={styles.sectionTitle}>Select Service </Text>
+            <Text style={styles.sectionTitle}>{t('Select Service')} </Text>
             <Icon name="star" color={Color.background} size={25} />
           </View>
 
           <View style={styles.serviceListContainer}>
             <Select
-              placeholder="Select Service"
+              placeholder={t('Select Service')}
               style={{ width: 150, fontSize: 18 }}
               selectedValue={selectedValue}
               onValueChange={(itemValue) => setSelectedValue(itemValue)}
             >
               {services.map((item) => (
                 <Select.Item
-                  key={item.id}
+                  key={item._id}
                   label={item?.name}
                   value={item.name}
                 />
@@ -236,7 +277,29 @@ const BookingScreen = () => {
           </View>
 
           <View style={styles.sectionTitleContainer}>
-            <Text style={styles.sectionTitle}>Select Time </Text>
+            <Text style={styles.sectionTitle}>{t('Select Branch')} </Text>
+            <Icon name="star" color={Color.background} size={25} />
+          </View>
+          <View style={styles.serviceListContainer}>
+            <Select
+              placeholder={t('Select Branch')}
+              style={{ width: 150, fontSize: 18 }}
+              selectedValue={selectedBranch}
+              onValueChange={(itemValue) => setSelectedBranch(itemValue)}
+              accessibilityLabel="Select Branch"
+            >
+              {branches.map((item, index) => (
+                <Select.Item
+                  key={`${item}_${index}`}
+                  label={item}
+                  value={item}
+                />
+              ))}
+            </Select>
+          </View>
+
+          <View style={styles.sectionTitleContainer}>
+            <Text style={styles.sectionTitle}>{t('Select Time')} </Text>
             <Icon name="time" color={Color.background} size={25} />
           </View>
 
@@ -275,7 +338,7 @@ const BookingScreen = () => {
             style={styles.submitButton}
             onPress={onSubmitPressed}
           >
-            <Text style={styles.submitButtonText}>Send</Text>
+            <Text style={styles.submitButtonText}>{t('Send')}</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -284,7 +347,7 @@ const BookingScreen = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create({ 
   container: {
     flex: 1,
     backgroundColor: Color.secondary,
@@ -308,8 +371,8 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start",
 
     flexDirection: "row",
-    borderBottomWidth: 2, // Add a bottom border
-    borderBottomColor: Color.primary, // Border color
+    borderBottomWidth: 2,
+    borderBottomColor: Color.primary,
     marginBottom: 20,
     padding: 10,
     marginTop: 10,

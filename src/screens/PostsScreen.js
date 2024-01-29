@@ -3,8 +3,9 @@ import { useNavigation } from "@react-navigation/native";
 import { Card, Button } from "react-native-elements";
 import Icon from "react-native-vector-icons/Ionicons";
 import Header from "./Header.js";
-import NavbarButtom from "../Common/NavbarButtom.js";
+import NavbarButtom from "../Common/NavbarButtom.js"; 
 import Modal from "react-native-modal";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as ImagePicker from "expo-image-picker";
 import {
   View,
@@ -25,20 +26,36 @@ import {
   MenuOption,
   MenuTrigger,
 } from "react-native-popup-menu";
+import WhatsApp from "../Common/WhatsApp.js";
+import { useSelector } from "react-redux";
+import { useTranslation } from 'react-i18next'; 
+
+
 
 const PostsScreen = () => {
   const navigation = useNavigation();
+  const [t] = useTranslation();   
+
+  const { role, token } = useSelector((state) => state.user.userData);
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [editedText, setEditedText] = useState("");
   const [editedImage, setEditedImage] = useState("");
   const [editedItemId, setEditedItemId] = useState(null);
   const [isEditModalVisible, setEditModalVisible] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [likeStatus, setLikeStatus] = useState({});
 
-  // (الرابط الرئيسي للخادم)
-  const baseUrl = "https://ayabeautyn.onrender.com";
+  const {
+    id: userId,
+    name: userName,
+  } = useSelector((state) => state.user.userData); 
 
-  // (طلب إذن الوصول إلى معرض الصور)
+  const {_id: salonId , name: salonName} = useSelector(state => state.user.usedSalonData)
+
+
+  const baseUrl = "https://ayabeautyn.onrender.com"; 
+
   const requestGalleryPermission = async () => {
     try {
       const granted = await PermissionsAndroid.request(
@@ -61,29 +78,84 @@ const PostsScreen = () => {
     }
   };
 
-  // (استرجاع البيانات من الخادم)
-  const fetchData = async () => {
+  const fetchData = async () => { 
     try {
-      const response = await fetch(`${baseUrl}/posts/post`);
+      const response = await fetch(`${baseUrl}/salons/${salonId}/Post/post`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Nada__${token}`,
+        },
+      });
       const data = await response.json();
-      const formattedData = data.map((item) => ({
-        ...item,
-        timestamps: new Date(item.createdAt).toLocaleString(),
-      }));
-      setItems(formattedData);
-      setIsLoading(false);
+  
+      if (Array.isArray(data)) {
+        const formattedData = [];
+        for (const item of data) { 
+          if (item && item.createdAt) {
+            formattedData.push({
+              ...item,
+              timestamps: new Date(item.createdAt).toLocaleString(),
+            });
+          } else {
+            console.error("Error fetching data: Invalid item format", item);
+          }
+        }
+        setItems(formattedData);
+        setIsLoading(false);
+      } else {
+        console.error("Error fetching data: Invalid data format", data);
+      }
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
+  
+  //عشان يحافظ على لون اللايك
+  const persistLikeStatus = async () => {
+    try {
+      await AsyncStorage.setItem("likeStatus", JSON.stringify(likeStatus));
+    } catch (error) {
+      console.error("Error storing likeStatus:", error);
+    }
+  };
+  
 
-  // (معالجة الضغط على زر الحذف)
+  const retrieveLikeStatus = async () => {
+    try {
+      const storedLikeStatus = await AsyncStorage.getItem("likeStatus");
+      if (storedLikeStatus !== null) {
+        setLikeStatus(JSON.parse(storedLikeStatus));
+      }
+    } catch (error) {
+      console.error("Error retrieving likeStatus:", error);
+    }
+  };
+  
+
+  useEffect(() => {
+    fetchData();
+  }, [salonId]);
+
+  useEffect(() => {
+    requestGalleryPermission();
+    retrieveLikeStatus();
+  }, []); 
+
+  useEffect(() => {
+    persistLikeStatus();
+  }, [likeStatus])        
+  
+
   const handleDeletePress = async (itemId) => {
     console.log("Deleting item with ID:", itemId);
 
     try {
       const response = await fetch(`${baseUrl}/posts/post/${itemId}`, {
         method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Nada__${token}`,
+        },
       });
 
       if (response.ok) {
@@ -97,18 +169,17 @@ const PostsScreen = () => {
     }
   };
 
-  // (عرض رسالة تأكيد الحذف)
   const confirmDelete = (itemId) => {
     Alert.alert(
-      "Delete Confirmation",
-      "Are you sure you want to delete this post?",
+      t('Confirm deletion'),
+      t('Are you sure you want to delete this salon?'),
       [
         {
-          text: "Cancel",
-          style: "cancel",
+          text: t('Cancel'),
+          style: "cancel", 
         },
         {
-          text: "Yes, Delete",
+          text: t('Yes, Delete'),
           onPress: () => handleDeletePress(itemId),
         },
       ],
@@ -116,7 +187,6 @@ const PostsScreen = () => {
     );
   };
 
-  // (معالجة الضغط على زر التعديل)
   const handleEditPress = (itemId, currentText, currentImage) => {
     setEditedItemId(itemId);
     setEditedText(currentText);
@@ -124,119 +194,26 @@ const PostsScreen = () => {
     setEditModalVisible(true);
   };
 
-  // (اختيار الصورة من معرض الصور)
-  const handleChooseImage = async () => {
-    try {
-      const result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsEditing: true,
-        aspect: [4, 3],
-        quality: 1,
-      });
+ 
 
-      if (!result.canceled) {
-        const selectedImage =
-          result.assets && result.assets.length > 0
-            ? result.assets[0].uri
-            : result.uri;
-
-        handleImageSelected(selectedImage);
-      }
-    } catch (error) {
-      console.error("Error choosing image:", error);
-    }
-  };
-
-  // (معالجة اختيار الصورة)
-  const handleImageSelected = (selectedImage) => {
-    setEditedImage(selectedImage);
-  };
-
-  // (رفع الصورة إلى الخادم)
-  const handleImageUpload = async () => {
-    console.log("Image uploaded:", editedImage);
-
-    if (!editedImage || !editedText) {
-      console.log("Both text and image are required");
-      return null;
-    }
-
-    try {
-      const formData = new FormData();
-      formData.append("image", {
-        uri: editedImage,
-        type: "image/jpeg",
-        name: "image.jpg",
-      });
-
-      formData.append("textPost", editedText);
-
-      const response = await fetch(`${baseUrl}/posts/post`, {
-        method: "POST",
-        body: formData,
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-
-      if (response.ok) {
-        const responseData = await response.json();
-        console.log("Image upload successful. Server response:", responseData);
-        return responseData.secure_url;
-      } else {
-        const errorData = await response.json();
-        console.error("Failed to upload image. Server response:", errorData);
-        return null;
-      }
-    } catch (error) {
-      console.error("Error uploading image:", error);
-      return null;
-    }
-  };
-
-  // (حذف الصورة من الخادم)
-  const handleDeleteImage = async (imageId) => {
-    try {
-      // استرجاع الصورة المطلوب حذفها باستخدام imageId
-      const itemToDelete = items.find((item) => item._id === imageId);
-
-      // التحقق من وجود الصورة و public_id
-      if (itemToDelete && itemToDelete.image && itemToDelete.image.public_id) {
-        // حذف الصورة باستخدام public_id
-        const response = await fetch(
-          `${baseUrl}/upload/image/${itemToDelete.image.public_id}`,
-          {
-            method: "DELETE",
-          }
-        );
-
-        if (response.ok) {
-          console.log("Image deleted successfully");
-        } else {
-          const responseData = await response.text();
-          console.error("Error deleting image:", responseData);
-        }
-      }
-    } catch (error) {
-      console.error("Error deleting image:", error);
-    }
-  };
+ 
 
   const handleSaveEdit = async () => {
     try {
       if (editedItemId) {
         const newText = editedText || null;
-
+  
         const response = await fetch(`${baseUrl}/posts/post/${editedItemId}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Nada__${token}`,
           },
           body: JSON.stringify({
             textPost: newText,
           }),
         });
-
+  
         if (response.ok) {
           const updatedItems = items.map((item) => {
             if (item._id === editedItemId) {
@@ -247,151 +224,116 @@ const PostsScreen = () => {
             }
             return item;
           });
-
+  
           setItems(updatedItems);
           setEditModalVisible(false);
+  
+          // Call fetchData after successfully updating the post
+          fetchData();
         } else {
           const responseData = await response.json();
-          console.error(
-            "Failed to update item. Server response:",
-            responseData
-          );
+          console.error("Failed to update item. Server response:", responseData);
         }
       }
     } catch (error) {
       console.error("Error updating item:", error);
     }
   };
+  
 
-  // (إلغاء التعديل)
   const handleCancelEdit = () => {
     setEditModalVisible(false);
   };
 
-  // (حساب فارق الوقت)
   const calculateTimeDifference = (createdAt) => {
     const now = new Date();
     const postDate = new Date(createdAt);
     const timeDifference = now - postDate;
-
+  
+    if (timeDifference < 60000) {
+      return t('Just Now');
+    }
+  
     const seconds = Math.floor(timeDifference / 1000);
     const minutes = Math.floor(seconds / 60);
     const hours = Math.floor(minutes / 60);
     const days = Math.floor(hours / 24);
-
-    if (minutes === 0) {
-      return "Just now";
-    } else if (minutes < 60) {
-      return `${minutes}m`;
+  
+    if (minutes < 60) {
+      return `${minutes}m ago`;
     } else if (hours < 24) {
-      return `${hours}h`;
+      return `${hours}h ago`;
     } else if (days <= 2) {
-      return `${days}d`;
+      return `${days}d ago`;
     } else {
       return postDate.toLocaleDateString("en-GB");
     }
   };
+  
 
-  // (استرجاع الصلاحيات وجلب البيانات عند تحميل الشاشة)
-  useEffect(() => {
-    requestGalleryPermission();
-    fetchData();
-  }, []);
 
-  const [likeStatus, setLikeStatus] = useState({});
+
+
+
 
   const handleToggleLike = async (itemId) => {
     try {
-      const response = await fetch(`${baseUrl}/posts/post/${itemId}/like`, {
-        method: "POST", // Change to 'DELETE' when unliking
+      const response = await fetch(`${baseUrl}/posts/post/${itemId}/${userId}`, {
+        method: "POST",
       });
-
+  
       if (response.ok) {
         const responseData = await response.json();
-        // Update local data
-        const updatedItems = items.map((item) => {
-          if (item._id === itemId) {
-            return {
-              ...item,
-              likes: responseData.likes,
-            };
-          }
-          return item;
-        });
-        setItems(updatedItems);
-
-        // Toggle like status locally
+  
         setLikeStatus((prevStatus) => ({
           ...prevStatus,
           [itemId]: !prevStatus[itemId],
         }));
+  
+        const updatedItems = items.map((item) => {
+          if (item._id === itemId) {
+            return {
+              ...item,
+              likes: new Array(responseData.likes),
+            };
+          }
+          return item;
+        });
+  
+        setItems(updatedItems);
+  
+        // حفظ حالة اللايك في AsyncStorage
+        await AsyncStorage.setItem("likeStatus", JSON.stringify(likeStatus));
       } else {
-        // Handle error
+        console.log("error");
       }
     } catch (error) {
       console.error("Error toggling like:", error);
     }
   };
+  
 
-  const handleUnlike = async (itemId) => {
-    try {
-      const response = await fetch(`${baseUrl}/posts/post/${itemId}/unlike`, {
-        method: "POST",
-      });
 
-      if (response.ok) {
-        const responseData = await response.json();
 
-        // Update local data and decrement likes
-        const updatedItems = items.map((item) => {
-          if (item._id === itemId) {
-            return {
-              ...item,
-              likes: responseData.likes,
-            };
-          }
-          return item;
-        });
 
-        setItems(updatedItems);
 
-        // Toggle like status locally
-        setLikeStatus((prevStatus) => ({
-          ...prevStatus,
-          [itemId]: !prevStatus[itemId],
-        }));
-      } else {
-        console.error(
-          "Failed to unlike. Server response:",
-          response.statusText
-        );
 
-        // Optionally, log or handle the HTML error page
-        const responseText = await response.text();
-        console.log("HTML error page:", responseText);
 
-        // You can also throw an error or handle it based on your requirements
-      }
-    } catch (error) {
-      console.error("Error handling unlike:", error);
-    }
-  };
 
-  // (عرض المكون)
   return (
     <MenuProvider>
       <View style={styles.container}>
+        <WhatsApp />
+
         <Header />
 
         <View style={styles.postInputContainer}>
+        {(role === "Admin" || role === "Manager") && (
           <View style={styles.postingContainer}>
-            <Image
-              source={require("../../assets/3.jpg")}
-              style={styles.userImage}
-            />
+
             <View style={styles.postInputWrapper}>
               <Button
-                title="What do you want to share?"
+                title={t('What do you want to share?')}
                 type="outline"
                 onPress={() => navigation.navigate("AddPost")}
                 buttonStyle={styles.postButton}
@@ -399,6 +341,7 @@ const PostsScreen = () => {
               />
             </View>
           </View>
+        )}
         </View>
 
         <FlatList
@@ -406,6 +349,7 @@ const PostsScreen = () => {
           keyExtractor={(item) => item._id}
           renderItem={({ item }) => (
             <Card containerStyle={styles.card}>
+              {(role === "Admin" || role === "Manager") && (
               <Menu>
                 <MenuTrigger style={styles.pointsContainer}>
                   <Icon name="ellipsis-vertical" color="#5e366a" size={20} />
@@ -426,15 +370,17 @@ const PostsScreen = () => {
                     text="Edit"
                   />
                 </MenuOptions>
-              </Menu>
+              </Menu> )}
+
               <View style={styles.cardContentContainer}>
-                {/* New section for the small circular image and name */}
+             
                 <View style={styles.userInfoContainer}>
                   <Image
+                    // source={{ uri: imageSalon.image }}
                     source={require("../../assets/3.jpg")}
                     style={styles.smallUserImage}
                   />
-                  <Text style={styles.userName}>Ghadeer Hamad</Text>
+                  <Text style={styles.userName}>{salonName}</Text>
                 </View>
 
                 <Text style={styles.postDate}>
@@ -449,14 +395,8 @@ const PostsScreen = () => {
                 />
               </View>
               <View style={styles.postInteractions}>
-                <TouchableOpacity
-                  onPress={() => {
-                    if (likeStatus[item._id]) {
-                      handleUnlike(item._id);
-                    } else {
-                      handleToggleLike(item._id);
-                    }
-                  }}
+              <TouchableOpacity
+                  onPress={() => handleToggleLike(item._id)}
                 >
                   <Icon
                     name="heart"
@@ -464,11 +404,8 @@ const PostsScreen = () => {
                     color={likeStatus[item._id] ? "red" : "#777"}
                   />
                 </TouchableOpacity>
-                <Text>{item.likes}</Text>
-                <TouchableOpacity>
-                  <Icon name="chatbox" size={20} color="#777" />
-                </TouchableOpacity>
-                <Text>{item.comments}</Text>
+                <Text>{item.likes.length}</Text>
+
               </View>
             </Card>
           )}
@@ -521,13 +458,7 @@ const styles = StyleSheet.create({
   userContainer: {
     flexDirection: "row",
     alignItems: "center",
-  },
-  userImage: {
-    width: 35,
-    height: 50,
-    borderRadius: 25,
-    marginRight: 10,
-  },
+  }, 
   userName: {
     fontSize: 18,
     fontWeight: "bold",
@@ -579,7 +510,9 @@ const styles = StyleSheet.create({
   },
   postInteractions: {
     flexDirection: "row",
-    gap: 6,
+    gap: 5,
+    marginTop: 15,
+    marginBottom: -5
   },
   postHeader: {
     gap: 1,
