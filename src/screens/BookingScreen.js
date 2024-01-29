@@ -59,7 +59,7 @@ const BookingScreen = () => {
   const baseUrl = "https://ayabeautyn.onrender.com";
 
   useEffect(() => {
-    fetch(`http://10.0.2.2:3000/services/getServices`)
+    fetch(`${baseUrl}/services/getServices`)
       .then((res) => res.json())
       .then((data) => {
         setServices(data.Services);
