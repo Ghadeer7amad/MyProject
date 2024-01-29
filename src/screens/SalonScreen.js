@@ -22,10 +22,13 @@ const SalonScreen = ({route}) => {
 
   const handleSearch = (searchText) => {
     const filteredData = items.filter((item) =>
-      item.name.toLowerCase().includes(searchText.toLowerCase())
+      item.name.toLowerCase().includes(searchText.toLowerCase()) ||
+      item.branches.some(branch => branch.toLowerCase().includes(searchText.toLowerCase()))
     );
     setFilteredItems(filteredData);
   };
+  
+  
 
   const { role, token } = useSelector((state) => state.user.userData);
   const { salonId } = route.params;
