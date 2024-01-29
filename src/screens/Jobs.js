@@ -91,7 +91,7 @@ const Jobs = () => {
           {t("we currently have available")}
         </Text>
 
-        {role === "Admin" && (
+        {(role === "Admin" || role === "Manager") && (
           <TouchableOpacity
              onPress={() => navigation.navigate("AddJob")}
              style={{
@@ -122,7 +122,7 @@ const Jobs = () => {
           renderItem={({ item }) => (
             <>
               <Card containerStyle={styles.card}>
-                {role === "Admin" && (
+              {(role === "Admin" || role === "Manager") && (
                   <TouchableOpacity
                     style={styles.deleteIcon}
                     onPress={() => handleDeletePress(item._id)}

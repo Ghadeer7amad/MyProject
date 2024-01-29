@@ -169,7 +169,7 @@ const ServicesScreen = () => {
           <Text style={[styles.styleText, styles.styleText2]}>
           {t('Our Services')}
           </Text>
-          {role === "Admin" && (
+          {(role === "Admin" || role === "Manager") && (
             <TouchableOpacity
               onPress={() => navigation.navigate("AddServices")}
               style={{
@@ -235,7 +235,7 @@ const ServicesScreen = () => {
                     intensity={90}
                     style={{ padding: Spacing * 3 }}
                   >
-                    {role === "Admin" && (
+                    {(role === "Admin" || role === "Manager") && (
                       <TouchableOpacity
                         style={styles.removeButton}
                         onPress={() => confirmDelete(service._id)}
@@ -247,7 +247,7 @@ const ServicesScreen = () => {
                         />
                       </TouchableOpacity>
                     )}
-                    {role === "Admin" && (
+                    {(role === "Admin" || role === "Manager") && (
                       <TouchableOpacity
                         style={styles.removeButton1}
                         onPress={() => handleSoftDeleteService(service._id)}
@@ -259,7 +259,7 @@ const ServicesScreen = () => {
                         />
                       </TouchableOpacity>
                     )}
-                    {role === "Admin" && (
+                    {(role === "Admin" || role === "Manager") && (
                       <TouchableOpacity
                         style={styles.editButton}
                         onPress={() => handleEditService(service)}
@@ -330,7 +330,7 @@ const ServicesScreen = () => {
                     intensity={90}
                     style={{ padding: Spacing * 3 }}
                   >
-                    {role === "Admin" && (
+                    {(role === "Admin" || role === "Manager") && (
                       <TouchableOpacity
                         style={styles.removeButton}
                         onPress={() => confirmDelete(service._id)}
@@ -342,7 +342,7 @@ const ServicesScreen = () => {
                         />
                       </TouchableOpacity>
                     )}
-                    {role === "Admin" && (
+                    {(role === "Admin" || role === "Manager") && (
                       <TouchableOpacity
                         style={styles.removeButton1}
                         onPress={() => handleSoftDeleteService(service._id)}
@@ -354,7 +354,7 @@ const ServicesScreen = () => {
                         />
                       </TouchableOpacity>
                     )}
-                    {role === "Admin" && (
+                    {(role === "Admin" || role === "Manager") && (
                       <TouchableOpacity
                         style={styles.editButton}
                         onPress={() => handleEditService(service)}

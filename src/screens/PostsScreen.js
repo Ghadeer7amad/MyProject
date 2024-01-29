@@ -328,7 +328,7 @@ const PostsScreen = () => {
         <Header />
 
         <View style={styles.postInputContainer}>
-        {role === "Admin" && (
+        {(role === "Admin" || role === "Manager") && (
           <View style={styles.postingContainer}>
 
             <View style={styles.postInputWrapper}>
@@ -349,7 +349,7 @@ const PostsScreen = () => {
           keyExtractor={(item) => item._id}
           renderItem={({ item }) => (
             <Card containerStyle={styles.card}>
-              {role === "Admin" && (
+              {(role === "Admin" || role === "Manager") && (
               <Menu>
                 <MenuTrigger style={styles.pointsContainer}>
                   <Icon name="ellipsis-vertical" color="#5e366a" size={20} />
@@ -405,10 +405,7 @@ const PostsScreen = () => {
                   />
                 </TouchableOpacity>
                 <Text>{item.likes.length}</Text>
-                {/* <TouchableOpacity>
-                  <Icon name="chatbox" size={20} color="#777" />
-                </TouchableOpacity>
-                <Text>{item.comments}</Text> */}
+
               </View>
             </Card>
           )}

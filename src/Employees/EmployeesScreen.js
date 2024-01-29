@@ -113,7 +113,7 @@ const EmployeesScreen = () => {
           onSearch={handleSearch}
         />
       </View>
-      {role === "Admin" && (
+      {(role === "Admin" || role === "Manager") && (
         <TouchableOpacity onPress={() => navigation.navigate("AddEmployee")}>
           <Text style={styles.buttonStyle}>{t("Add Employee")}</Text>
         </TouchableOpacity>
@@ -147,7 +147,7 @@ const EmployeesScreen = () => {
                       color="white"
                     />
                   </TouchableOpacity>
-                  {role === "Admin" && (
+                  {(role === "Admin" || role === "Manager") && (
                     <TouchableOpacity
                       style={styles.editIcon}
                       onPress={() => handleEditEmployee(item)}
@@ -155,7 +155,7 @@ const EmployeesScreen = () => {
                       <Icon name="pencil" color="#5e366a" size={20} />
                     </TouchableOpacity>
                   )}
-                  {role === "Admin" && (
+                  {(role === "Admin" || role === "Manager") && (
                     <TouchableOpacity
                       style={styles.deleteIcon}
                       onPress={() => confirmDelete(item._id)}
