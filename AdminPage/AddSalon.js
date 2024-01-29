@@ -2,7 +2,7 @@ import {
   StyleSheet,
   Text,
   View,
-  TextInput, 
+  TextInput,
   Image,
   TouchableOpacity,
 } from "react-native";
@@ -12,6 +12,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import {
   faFileSignature,
   faCloudUploadAlt,
+  faClock,
 } from "@fortawesome/free-solid-svg-icons";
 import Color from "../src/Common/Color.js";
 import { useNavigation } from "@react-navigation/native";
@@ -27,6 +28,10 @@ const AddSalon = () => {
   const [FData, setFData] = useState({
     name: "",
     branches: [],
+    openTimes: {
+      startTime: "",
+      endTime: "",
+    },
   });
 
   const toast = useToast();
@@ -86,7 +91,7 @@ const AddSalon = () => {
           </Box>
         ),
       });
-      navigation.navigate("SalonScreen", {salonId:null});
+      navigation.navigate("SalonScreen", { salonId: null });
     } catch (error) {
       console.error(error);
     }
@@ -121,6 +126,32 @@ const AddSalon = () => {
         <FontAwesomeIcon icon={faFileSignature} style={styles.icon} />
       </View>
 
+      <View style={styles.formgroup}>
+        <FontAwesomeIcon icon={faClock} style={styles.icon} />
+        <TextInput
+          value={FData.openTimes.startTime}
+          onChangeText={(text) =>
+            setFData({
+              ...FData,
+              openTimes: { ...FData.openTimes, startTime: text },
+            })
+          }
+          style={styles.input}
+          placeholder={t("Start Time")}
+        />
+        <TextInput
+          value={FData.openTimes.endTime}
+          onChangeText={(text) =>
+            setFData({
+              ...FData,
+              openTimes: { ...FData.openTimes, endTime: text },
+            })
+          }
+          style={styles.input}
+          placeholder={t("End Time")}
+        />
+      </View>
+
       <View style={{ marginHorizontal: 10, marginTop: 20 }}>
         <Button
           title={buttonText}
@@ -153,7 +184,7 @@ const AddSalon = () => {
       </View>
 
       <TouchableOpacity onPress={addSalon}>
-        <Text style={styles.buttonStyle}>{t('Add')}</Text>
+        <Text style={styles.buttonStyle}>{t("Add")}</Text>
       </TouchableOpacity>
 
       <TouchableOpacity onPress={() => navigation.navigate("SalonScreen")}>

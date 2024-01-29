@@ -10,8 +10,10 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { storeUsedSalon } from "../redux/user/userActions.js";
 import { useTranslation } from "react-i18next";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faClock } from "@fortawesome/free-solid-svg-icons";
 
-const SalonScreen = ({route}) => {
+const SalonScreen = ({ route }) => {
   const navigation = useNavigation();
   const [t] = useTranslation();
 
@@ -21,19 +23,19 @@ const SalonScreen = ({route}) => {
   const [filteredItems, setFilteredItems] = useState([]);
 
   const handleSearch = (searchText) => {
-    const filteredData = items.filter((item) =>
-      item.name.toLowerCase().includes(searchText.toLowerCase()) ||
-      item.branches.some(branch => branch.toLowerCase().includes(searchText.toLowerCase()))
+    const filteredData = items.filter(
+      (item) =>
+        item.name.toLowerCase().includes(searchText.toLowerCase()) ||
+        item.branches.some((branch) =>
+          branch.toLowerCase().includes(searchText.toLowerCase())
+        )
     );
     setFilteredItems(filteredData);
   };
-  
-  
 
   const { role, token } = useSelector((state) => state.user.userData);
   const { salonId } = route.params;
   console.log(route.params);
-
 
   const handleContinuePress = (item) => {
     dispatch(storeUsedSalon(item));
@@ -100,14 +102,14 @@ const SalonScreen = ({route}) => {
       }
     };
 
-    if (role === "Admin" || role =="User") {
+    if (role === "Admin" || role == "User") {
       fetchData();
     } else if (role === "Manager") {
       fetchSalonData();
     }
   }, [role, baseUrl, token, salonId]);
 
-  const handleDeletePress = async (itemId) => { 
+  const handleDeletePress = async (itemId) => {
     console.log("Deleting item with ID:", itemId);
 
     try {
@@ -134,15 +136,14 @@ const SalonScreen = ({route}) => {
       />
       {role === "Admin" && (
         <View style={styles.buttonContainer}>
-         <TouchableOpacity onPress={() => navigation.navigate("AddSalon")}>
+          <TouchableOpacity onPress={() => navigation.navigate("AddSalon")}>
             <Text style={styles.buttonStyle}>{t("Add Salon")}</Text>
-         </TouchableOpacity>
+          </TouchableOpacity>
 
-         <TouchableOpacity onPress={() => navigation.navigate("AddManager")}>
-           <Text style={styles.buttonStyle}>{t("Add Manager")}</Text>
-         </TouchableOpacity>
-       </View>
-
+          <TouchableOpacity onPress={() => navigation.navigate("AddManager")}>
+            <Text style={styles.buttonStyle}>{t("Add Manager")}</Text>
+          </TouchableOpacity>
+        </View>
       )}
 
       <FlatList
@@ -177,16 +178,52 @@ const SalonScreen = ({route}) => {
                 <Icon name="star-o" color="gold" size={20} />
               </View>
             </View>
-            <Text
+            <View
               style={{
-                marginTop: 20,
-                letterSpacing: 1,
-                color: Color.primary,
-                fontWeight: "bold",
+                display: "flex",
+                justifyContent: "space-between",
+                alignContent: "center",
+                flexDirection: "row",
               }}
             >
-              {item.branches.join(" | ")}
-            </Text>
+              <Text
+                style={{
+                  marginTop: 15,
+                  letterSpacing: 1,
+                  color: Color.primary,
+                  fontWeight: "bold",
+                  fontSize: 15,
+                }}
+              >
+                {item.branches.join(" | ")}
+              </Text>
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignContent: "center",
+                  backgroundColor: Color.primary,
+                  padding: 7,
+                  borderRadius: 15,
+                  marginTop: 8,
+                  marginRight: -6,
+                }}
+              >
+                <FontAwesomeIcon icon={faClock} style={styles.icon} />
+
+                <Text
+                  style={{
+                    letterSpacing: 1,
+                    color: Color.secondary,
+                    fontWeight: "bold",
+                  }}
+                >
+                  {item.openTimes
+                    ? `${item.openTimes.startTime} am - ${item.openTimes.endTime} pm`
+                    : "Not available"}
+                </Text>
+              </View>
+            </View>
           </Card>
         )}
       />
@@ -226,7 +263,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 200,
     resizeMode: "cover",
-    borderRadius: 20, 
+    borderRadius: 20,
   },
   iconContainer: {
     flexDirection: "row",
@@ -238,7 +275,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   buttonStyle: {
-    width: "100", 
+    width: "100",
     padding: 10,
     backgroundColor: Color.background,
     fontWeight: "400",
@@ -246,16 +283,20 @@ const styles = StyleSheet.create({
     letterSpacing: 2,
     textAlign: "center",
     color: "#fff",
-    borderRadius: 7
+    borderRadius: 7,
   },
-  
+
   buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   Icons: {
     flexDirection: "row",
     justifyContent: "space-between",
+  },
+  icon: {
+    color: Color.secondary,
+    marginRight: 5,
   },
 });
 
