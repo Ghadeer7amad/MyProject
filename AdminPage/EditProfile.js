@@ -21,13 +21,12 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { editCurrentUser } from "../src/redux/user/userActions.js";
-import { useTranslation } from 'react-i18next'; 
+import { useTranslation } from "react-i18next";
 
 const EditProfile = ({ route }) => {
   const navigation = useNavigation();
   const [t] = useTranslation();
   const token = useSelector((state) => state.user.userData.token);
-
 
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -49,7 +48,7 @@ const EditProfile = ({ route }) => {
     phone: userPhone,
     address: userAddress,
   };
-  const [FData, setFData] = useState({  
+  const [FData, setFData] = useState({
     ...initialValues,
   });
   const toast = useToast();
@@ -59,7 +58,7 @@ const EditProfile = ({ route }) => {
       url: `${baseUrl}/profiles/profile/${userId}`,
       method: "PUT",
       headers: {
-        'Authorization': `Nada__${token}`
+        Authorization: `Nada__${token}`,
       },
       data: FData,
     };
@@ -75,7 +74,7 @@ const EditProfile = ({ route }) => {
           toast.show({
             render: () => (
               <Box bg="emerald.500" px="5" py="5" rounded="sm" mb={5}>
-                {t('Profile updated successfully')}
+                {t("Profile updated successfully")}
               </Box>
             ),
           });
@@ -102,7 +101,7 @@ const EditProfile = ({ route }) => {
   return (
     <ScrollView>
       <View style={styles.container}>
-        <Text style={styles.textStyleHeader}>{t('Update Profile')}</Text>
+        <Text style={styles.textStyleHeader}>{t("Update Profile")}</Text>
 
         <View style={styles.formGroup}>
           <TextInput
@@ -115,12 +114,12 @@ const EditProfile = ({ route }) => {
         </View>
 
         <View style={styles.formGroup}>
-        <TextInput
-         value={`${FData.age}`}  // Convert number to string
-         onChangeText={(text) => setFData({ ...FData, age: text })}
-        style={[styles.input]}
-        placeholder={`${userAge}`}
-/>
+          <TextInput
+            value={`${FData.age}`} // Convert number to string
+            onChangeText={(text) => setFData({ ...FData, age: text })}
+            style={[styles.input]}
+            placeholder={`${userAge}`}
+          />
           <FontAwesomeIcon
             icon={faUser}
             style={[styles.icon, styles.iconDis]}
@@ -154,11 +153,13 @@ const EditProfile = ({ route }) => {
         </View>
 
         <TouchableOpacity onPress={() => handleEditProfile()}>
-          <Text style={styles.buttonStyle}>{t('Update')}</Text>
+          <Text style={styles.buttonStyle}>{t("Update")}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
-          <Text style={[styles.buttonStyle, styles.buttonStyle1]}>{t('Cancel')}</Text>
+          <Text style={[styles.buttonStyle, styles.buttonStyle1]}>
+            {t("Cancel")}
+          </Text>
         </TouchableOpacity>
       </View>
     </ScrollView>

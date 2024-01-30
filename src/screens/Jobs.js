@@ -17,7 +17,7 @@ import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 
 const Jobs = () => {
-  const navigation = useNavigation(); 
+  const navigation = useNavigation();
   const [t] = useTranslation();
 
   const { role, token } = useSelector((state) => state.user.userData);
@@ -26,7 +26,7 @@ const Jobs = () => {
     (state) => state.user.usedSalonData
   );
 
-  const [items, setItems] = useState([]); 
+  const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const baseUrl = "https://ayabeautyn.onrender.com";
@@ -85,36 +85,44 @@ const Jobs = () => {
       </TouchableOpacity>
 
       <View style={styles.container1}></View>
-      <View style={{ flex: 1 }}> 
-        <Text style={styles.textHeader}>{t("Here are the jobs")} <Image style={{ width: 50, height: 50 }} source={require("../../assets/pic2.jpg")} /></Text>
+      <View style={{ flex: 1 }}>
+        <Text style={styles.textHeader}>
+          {t("Here are the jobs")}{" "}
+          <Image
+            style={{ width: 50, height: 50 }}
+            source={require("../../assets/pic2.jpg")}
+          />
+        </Text>
         <Text style={styles.textHeader1}>
           {t("we currently have available")}
         </Text>
 
         {(role === "Admin" || role === "Manager") && (
           <TouchableOpacity
-             onPress={() => navigation.navigate("AddJob")}
-             style={{
-               marginTop: 30,
-               backgroundColor: Color.primary,
-               borderWidth: 1,
-               borderColor: '#fff',
-               borderRadius: 8,
-               paddingVertical: 10,
-               paddingHorizontal: 40,
-               justifyContent: 'center',
-               alignItems: 'center',
-             }}
-           >
-             <Text style={{
-               fontWeight: 'bold',
-               color: '#fff',
-               fontSize: 16,
-             }}>
-               {t('Add Job')}  
-               </Text>
-             </TouchableOpacity>
-          )}
+            onPress={() => navigation.navigate("AddJob")}
+            style={{
+              marginTop: 30,
+              backgroundColor: Color.primary,
+              borderWidth: 1,
+              borderColor: "#fff",
+              borderRadius: 8,
+              paddingVertical: 10,
+              paddingHorizontal: 40,
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Text
+              style={{
+                fontWeight: "bold",
+                color: "#fff",
+                fontSize: 16,
+              }}
+            >
+              {t("Add Job")}
+            </Text>
+          </TouchableOpacity>
+        )}
 
         <FlatList
           data={items}
@@ -122,7 +130,7 @@ const Jobs = () => {
           renderItem={({ item }) => (
             <>
               <Card containerStyle={styles.card}>
-              {(role === "Admin" || role === "Manager") && (
+                {(role === "Admin" || role === "Manager") && (
                   <TouchableOpacity
                     style={styles.deleteIcon}
                     onPress={() => handleDeletePress(item._id)}
@@ -142,7 +150,6 @@ const Jobs = () => {
             </>
           )}
         />
-
       </View>
     </View>
   );
@@ -175,7 +182,6 @@ const styles = StyleSheet.create({
     color: Color.primary,
   },
 
-
   card: {
     borderRadius: 5,
     backgroundColor: "#f6f6f6",
@@ -200,7 +206,6 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 300, // ارتفاع الصورة الثابت داخل الكارت
     resizeMode: "cover",
-    
   },
 
   deleteIcon: {
