@@ -47,7 +47,6 @@ import Jobs from "./src/screens/Jobs.js";
 import MainJob from "./src/screens/MainJob.js";
 import ApplyForaJob from "./src/screens/ApplyForaJob.js";
 import AppointmentHistory from "./src/screens/AppointmentHistory";
-import Notification from "./src/screens/notification";
 import JobHistory from "./src/screens/JobHistory";
 import EditServices from "./AdminPage/EditServices.js";
 import EditProfile from "./AdminPage/EditProfile.js";
@@ -64,7 +63,6 @@ const Drawer = createDrawerNavigator();
 
 const HomeStack = () => (
   <Stack.Navigator>
-    {/* <Stack.Screen name="Notification" component={Notification} options={{ headerShown: false }}  /> */}
     <Stack.Screen name="Homee" component={Homee} options={{ headerShown: false }}  />
     <Stack.Screen name="Employee" component={Employee} options={{ headerShown: false }}  />
     <Stack.Screen name="Offers" component={Offers} options={{ headerShown: false }}  /> 
