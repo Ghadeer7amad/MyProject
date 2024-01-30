@@ -22,12 +22,16 @@ import axios from "axios";
 import { Select } from "native-base";
 import { useEffect } from "react";
 import { useTranslation } from 'react-i18next';  
+import { useSelector } from "react-redux"; 
 
 
 const EditServices = ({ route }) => {
   const { item } = route.params;
   const [t] = useTranslation();
 
+  const { _id: salonId, name: salonName } = useSelector(
+    (state) => state.user.usedSalonData
+  );
 
   const [selectedStatus, setSelectedStatus] = useState();
   const [selectedSubServices, setSelectedSubServices] = useState();
@@ -97,6 +101,7 @@ const EditServices = ({ route }) => {
             subServices: "",
             status: "",
             image: "",
+            SalonId: salonId
           });
         } else {
           throw new Error("An error has occurred");
