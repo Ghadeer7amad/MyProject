@@ -75,17 +75,6 @@ const PathologicalCase = () => {
     <View>
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
         <Text style={styles.textHeader}>{t("dear")}</Text>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate("Login");
-          }}
-        >
-          <Ionicons
-            name="arrow-back"
-            color={Color.background}
-            style={{ fontSize: 30, marginTop: 80, marginRight: 20 }}
-          />
-        </TouchableOpacity>
       </View>
 
       <Text style={styles.subText}>{t("Status")}</Text>

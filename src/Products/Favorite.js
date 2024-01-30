@@ -165,7 +165,9 @@ const FavoriteScreens = ({ favoriteProducts }) => {
           ))
         ) : (
           <View style={styles.noFavoritesContainer}>
-            <Text style={styles.noFavoritesText}>{t('Favorite products are Empty')}</Text>
+            <Text style={styles.noFavoritesText}>
+              {t("Favorite products are Empty")}
+            </Text>
           </View>
         )}
       </ScrollView>

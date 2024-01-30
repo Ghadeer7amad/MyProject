@@ -170,7 +170,7 @@ const AddManager = () => {
         setphone("");
         setaddress("");
         setpassword("");
-        navigation.navigate("SalonScreen", {salonId:null});
+        navigation.navigate("SalonScreen", { salonId: null });
       } else {
         toast.show({
           render: () => (
