@@ -27,8 +27,7 @@ import { Box, useToast } from "native-base";
 import { Select } from "native-base";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { useTranslation } from 'react-i18next';  
-
+import { useTranslation } from "react-i18next";
 
 const AddProduct = ({ route }) => {
   const [t] = useTranslation();
@@ -52,9 +51,9 @@ const AddProduct = ({ route }) => {
     SalonId: salonId,
   });
   const toast = useToast();
-  const [buttonText, setButtonText] = useState(t('Upload Image'));
+  const [buttonText, setButtonText] = useState(t("Upload Image"));
   const [image, setImage] = useState(null);
-//"Upload Image" t('Upload Image')
+  //"Upload Image" t('Upload Image')
   const handleSubProductsChange = (selectedSubProduct) => {
     setFData((prevData) => ({
       ...prevData,
@@ -84,7 +83,7 @@ const AddProduct = ({ route }) => {
     });
     if (!result.canceled) {
       setImage(result.assets[0]);
-      setButtonText(t('Image is uploaded successfully'));
+      setButtonText(t("Image is uploaded successfully"));
     }
   };
 
@@ -120,7 +119,7 @@ const AddProduct = ({ route }) => {
         toast.show({
           render: () => (
             <Box bg="#c81912" px="5" py="5" rounded="sm" mb={5}>
-              {t('Error adding product')} {responseData.message}
+              {t("Error adding product")} {responseData.message}
             </Box>
           ),
         });
@@ -131,7 +130,7 @@ const AddProduct = ({ route }) => {
         render: () => {
           return (
             <Box bg="#55a44e" px="5" py="5" rounded="sm" mb={5}>
-              {t('product added successfully')}
+              {t("product added successfully")}
             </Box>
           );
         },
@@ -148,14 +147,14 @@ const AddProduct = ({ route }) => {
         image: "",
       });
       setImage(null);
-      setButtonText(t('Upload Image'));
-      navigation.navigate("ProductsScreens")
+      setButtonText(t("Upload Image"));
+      navigation.navigate("ProductsScreens");
     } catch (error) {
       console.error("Error during fetch:", error);
       toast.show({
         render: () => (
           <Box bg="red.500" px="5" py="5" rounded="sm" mb={5}>
-            {t('Error adding product')}
+            {t("Error adding product")}
           </Box>
         ),
       });
@@ -166,14 +165,14 @@ const AddProduct = ({ route }) => {
   return (
     <ScrollView>
       <View style={styles.contanier}>
-        <Text style={styles.TextStyleHeader}>{t('Add product')}</Text>
+        <Text style={styles.TextStyleHeader}>{t("Add product")}</Text>
 
         <View style={styles.formgroup}>
           <TextInput
             value={FData.name}
             onChangeText={(text) => setFData({ ...FData, name: text })}
             style={styles.input}
-            placeholder={t('Name Product')}
+            placeholder={t("Name Product")}
           />
           <FontAwesomeIcon icon={faFileSignature} style={styles.icon} />
         </View>
@@ -183,7 +182,7 @@ const AddProduct = ({ route }) => {
             value={FData.description}
             onChangeText={(text) => setFData({ ...FData, description: text })}
             style={[styles.input, styles.inputDis]}
-            placeholder={t('Discrption Product')}
+            placeholder={t("Discrption Product")}
             multiline={true}
           />
           <FontAwesomeIcon
@@ -197,7 +196,7 @@ const AddProduct = ({ route }) => {
             value={FData.price}
             onChangeText={(text) => setFData({ ...FData, price: text })}
             style={styles.input}
-            placeholder={t('Prise Product')}
+            placeholder={t("Prise Product")}
           />
           <FontAwesomeIcon icon={faDollarSign} style={styles.icon} />
         </View>
@@ -207,7 +206,7 @@ const AddProduct = ({ route }) => {
             value={FData.discount}
             onChangeText={(text) => setFData({ ...FData, discount: text })}
             style={styles.input}
-            placeholder={t('discount Product')}
+            placeholder={t("discount Product")}
           />
           <FontAwesomeIcon icon={faDollarSign} style={styles.icon} />
         </View>
@@ -217,7 +216,7 @@ const AddProduct = ({ route }) => {
             value={FData.stock}
             onChangeText={(text) => setFData({ ...FData, stock: text })}
             style={styles.input}
-            placeholder={t('stock Product')}
+            placeholder={t("stock Product")}
           />
           <FontAwesomeIcon icon={faPoundSign} style={styles.icon} />
         </View>
@@ -227,7 +226,7 @@ const AddProduct = ({ route }) => {
             value={FData.rate}
             onChangeText={(text) => setFData({ ...FData, rate: text })}
             style={styles.input}
-            placeholder={t('Rate Product')}
+            placeholder={t("Rate Product")}
           />
           <FontAwesomeIcon icon={faClock} style={styles.icon} />
         </View>
@@ -239,15 +238,15 @@ const AddProduct = ({ route }) => {
         >
           <View style={styles.serviceListContainer}>
             <Select
-              placeholder={t('Body')}
+              placeholder={t("Body")}
               color={Color.primary}
               style={{ width: 180, fontSize: 14 }}
               selectedValue={selectedSubProduct}
               onValueChange={(value) => handleSubProductsChange(value)}
             >
               {[
-                { id: 1, name: t('Body') },
-                { id: 2, name: t('Face') },
+                { id: 1, name: t("Body") },
+                { id: 2, name: t("Face") },
               ].map((item) => (
                 <Select.Item
                   key={item.id}
@@ -260,7 +259,7 @@ const AddProduct = ({ route }) => {
 
           <View style={styles.serviceListContainer}>
             <Select
-              placeholder={t('Active')}
+              placeholder={t("Active")}
               color={Color.primary}
               style={{ width: 150, fontSize: 14 }}
               selectedValue={selectedStatus}
@@ -269,8 +268,8 @@ const AddProduct = ({ route }) => {
               }}
             >
               {[
-                { id: 1, name: t('Active') },
-                { id: 2, name: t('Inactive') },
+                { id: 1, name: t("Active") },
+                { id: 2, name: t("Inactive") },
               ].map((item) => (
                 <Select.Item
                   key={item.id}
@@ -314,11 +313,15 @@ const AddProduct = ({ route }) => {
         </View>
 
         <TouchableOpacity onPress={() => handleAddProducts()}>
-          <Text style={styles.buttonStyle}>{t('Add')}</Text>
+          <Text style={styles.buttonStyle}>{t("Add")}</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => navigation.navigate("ProductsScreens")}>
-          <Text style={[styles.buttonStyle, styles.buttonStyle1]}>{t('Cancel')}</Text>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("ProductsScreens")}
+        >
+          <Text style={[styles.buttonStyle, styles.buttonStyle1]}>
+            {t("Cancel")}
+          </Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
