@@ -26,11 +26,16 @@ import { Box, useToast } from "native-base";
 import { Select } from "native-base";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 
 const AddServices = () => {
   const [selectedStatus, setSelectedStatus] = useState("Active");
   const [selectedSubServices, setSelectedSubServices] = useState("Body");
   const [t] = useTranslation();
+
+  const { _id: salonId, name: salonName } = useSelector(
+    (state) => state.user.usedSalonData
+  );
 
   const [FData, setFData] = useState({
     name: "",
@@ -41,6 +46,7 @@ const AddServices = () => {
     subServices: [],
     status: [],
     image: "",
+    SalonId: salonId,
   });
   const toast = useToast();
   const [buttonText, setButtonText] = useState(t("Upload Image"));
