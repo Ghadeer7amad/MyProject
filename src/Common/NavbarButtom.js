@@ -27,6 +27,10 @@ const NavbarButtom = ({ onChange }) => {
     navigation.navigate("Favorite");
   };
 
+  const handlenotificationsPress = () => {
+    navigation.navigate("Notifications");
+  };
+
   return (
     <View>
       <View style={styles.container}>
@@ -56,6 +60,7 @@ const NavbarButtom = ({ onChange }) => {
 
         <TouchableOpacity
           onPress={() => {
+            handlenotificationsPress();
             handleIconPress("notifications");
           }}
         >

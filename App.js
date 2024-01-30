@@ -55,6 +55,8 @@ import Advice from "./src/screens/Advice.js";
 import EditEmployee from "./AdminPage/EditEmployee.js";
 import AddManager from "./AdminPage/AddManager.js";
 import UserHistory from "./src/screens/UserHistory";
+import NotificationScreen from "./src/screens/NotificationScreen";
+
 
 import { NativeBaseProvider } from "native-base";
 
@@ -81,6 +83,7 @@ const HomeStack = () => (
     <Stack.Screen name="ProductsScreens" component={ProductsScreens} options={{ headerShown: false }} />
     <Stack.Screen name="CardsScreen" component={CardsScreen} options={{ headerShown: false }}/>
     <Stack.Screen name="Favorite" component={Favorite} options={{ headerShown: false }}/>
+    <Stack.Screen name="Notifications" component={NotificationScreen} options={{ headerShown: false }}/>
     <Stack.Screen name="ProductsDetails" component={ProductsDetails}options={{ headerShown: false }} />
     <Stack.Screen name="BookingScreen" component={BookingScreen}options={{ headerShown: false }} />
     <Stack.Screen name="AppointmentHistory" component={AppointmentHistory} options={{ headerShown: false }}  />

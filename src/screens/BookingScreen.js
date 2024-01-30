@@ -190,7 +190,6 @@ const BookingScreen = () => {
   const notificationListener = useRef();
   const responseListener = useRef();
 
-  // Function to register for push notifications
   const registerForPushNotificationsAsync = async () => {
     let token;
 
@@ -227,30 +226,58 @@ const BookingScreen = () => {
     return token.data;
   };
 
-  // Function to send a push notification
   const sendPushNotification = async (expoPushToken) => {
-    const message = {
+    const notificationData = {
+      expoPushToken,
+      title: "Appointment Booked 🎉",
+      body: `Hello, ${userName}! Your appointment is booked successfully! We look forward to seeing you!`,
+      data: { someData: "goes here" },
+    };
+  
+    try {
+      const backendResponse = await fetch(`${baseUrl}/notifications/notification`, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(notificationData),
+      });
+  
+      if (!backendResponse.ok) {
+        throw new Error(`Backend Error: ${backendResponse.statusText}`);
+      }
+    } catch (backendError) {
+      console.error("Error sending notification to the backend:", backendError.message);
+    }
+  
+    const expoMessage = {
       to: expoPushToken,
       sound: "default",
       title: "Appointment Booked 🎉",
-      body: `Hello, ${userName}!
-Your appointment is booked successfully! We look forward to seeing you!`,
+      body: `Hello, ${userName}! Your appointment is booked successfully! We look forward to seeing you!`,
       data: { someData: "goes here" },
     };
-
-    await fetch("https://exp.host/--/api/v2/push/send", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Accept-encoding": "gzip, deflate",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(message),
-    });
+  
+    try {
+      const expoResponse = await fetch("https://exp.host/--/api/v2/push/send", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Accept-encoding": "gzip, deflate",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(expoMessage),
+      });
+  
+      if (!expoResponse.ok) {
+        throw new Error(`Expo Error: ${expoResponse.statusText}`);
+      }
+    } catch (expoError) {
+      console.error("Error sending notification to Expo:", expoError.message);
+    }
   };
-
-  // useEffect to handle push notification listeners
-  useEffect(() => {
+   useEffect(() => {
     registerForPushNotificationsAsync().then((token) =>
       setExpoPushToken(token)
     );
@@ -272,6 +299,7 @@ Your appointment is booked successfully! We look forward to seeing you!`,
       Notifications.removeNotificationSubscription(responseListener.current);
     };
   }, []);
+  
 
   const onSubmitPressed = async () => {
     const data = {
