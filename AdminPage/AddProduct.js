@@ -15,6 +15,7 @@ import {
   faBook,
   faFileSignature,
   faDollarSign,
+  faPoundSign,
   faCloudUploadAlt,
   faClock,
 } from "@fortawesome/free-solid-svg-icons";
@@ -25,6 +26,7 @@ import { serialize } from "object-to-formdata";
 import { Box, useToast } from "native-base";
 import { Select } from "native-base";
 import { useEffect } from "react";
+import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 
 const AddProduct = ({ route }) => {
@@ -32,16 +34,21 @@ const AddProduct = ({ route }) => {
 
   const [selectedStatus, setSelectedStatus] = useState("Active");
   const [selectedSubProduct, setSelectedSubProducts] = useState("Body");
+  const { _id: salonId, name: salonName } = useSelector(
+    (state) => state.user.usedSalonData
+  );
 
   const [FData, setFData] = useState({
     name: "",
     description: "",
     price: "",
     discount: "",
+    stock: "",
     rate: "",
     subProducts: [],
     status: [],
     image: "",
+    SalonId: salonId,
   });
   const toast = useToast();
   const [buttonText, setButtonText] = useState(t("Upload Image"));
@@ -133,6 +140,7 @@ const AddProduct = ({ route }) => {
         description: "",
         price: "",
         discount: "",
+        stock: "",
         rate: "",
         subProducts: "",
         status: "",
@@ -201,6 +209,16 @@ const AddProduct = ({ route }) => {
             placeholder={t("discount Product")}
           />
           <FontAwesomeIcon icon={faDollarSign} style={styles.icon} />
+        </View>
+
+        <View style={styles.formgroup}>
+          <TextInput
+            value={FData.stock}
+            onChangeText={(text) => setFData({ ...FData, stock: text })}
+            style={styles.input}
+            placeholder={t("stock Product")}
+          />
+          <FontAwesomeIcon icon={faPoundSign} style={styles.icon} />
         </View>
 
         <View style={styles.formgroup}>

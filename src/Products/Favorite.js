@@ -166,7 +166,7 @@ const FavoriteScreens = ({ favoriteProducts }) => {
         ) : (
           <View style={styles.noFavoritesContainer}>
             <Text style={styles.noFavoritesText}>
-              {t("Favorite products are not available")}
+              {t("Favorite products are Empty")}
             </Text>
           </View>
         )}

@@ -31,14 +31,11 @@ const ProductsScreens = () => {
   const [products, setproducts] = useState([]);
   const [selectedItem, setSelectedItem] = useState("Body");
 
-  const token = useSelector((state) => state.user.userData.token);
   const { role } = useSelector((state) => state.user.userData);
-
-  console.log(token);
-  const { _id: salonId, name: salonName } = useSelector(
-    (state) => state.user.usedSalonData
-  );
+  const token = useSelector((state) => state.user.userData.token);
+  const { _id: salonId } = useSelector((state) => state.user.usedSalonData);
   console.log(salonId);
+  console.log(token);
 
   const handleAddToCart = async (productId) => {
     const baseUrl = "https://ayabeautyn.onrender.com";
@@ -55,6 +52,23 @@ const ProductsScreens = () => {
       if (response.status == 201) {
         const responseData = await response.json();
         console.log("Response data:", responseData);
+        navigation.navigate("CardsScreen");
+      } else if (response.status == 400) {
+        toast.show({
+          render: () => (
+            <Box bg="#c81912" px="8" py="5" rounded="sm" mb={5}>
+              {t("This Product is Sold Out")}
+            </Box>
+          ),
+        });
+      } else if (response.status == 200) {
+        toast.show({
+          render: () => (
+            <Box bg="#c81912" px="8" py="5" rounded="sm" mb={5}>
+              {t("This Product is Already in Your Cart")}
+            </Box>
+          ),
+        });
         navigation.navigate("CardsScreen");
       } else {
         const errorData = await response.json();

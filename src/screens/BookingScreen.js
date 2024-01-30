@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Text,
   View,
@@ -6,7 +6,9 @@ import {
   ScrollView,
   TouchableOpacity,
   Dimensions,
+  Platform,
 } from "react-native";
+import registerNNPushToken from "native-notify";
 import Icon from "react-native-vector-icons/Ionicons";
 import { Calendar } from "react-native-calendars";
 import Color from "../Common/Color";
@@ -17,6 +19,9 @@ import { useSelector } from "react-redux";
 import { Box, useToast } from "native-base";
 import WhatsApp from "../Common/WhatsApp";
 import { useTranslation } from "react-i18next";
+import * as Device from "expo-device";
+import * as Notifications from "expo-notifications";
+import Constants from "expo-constants";
 
 import { useNavigation } from "@react-navigation/native";
 
@@ -59,7 +64,7 @@ const BookingScreen = () => {
   const baseUrl = "https://ayabeautyn.onrender.com";
 
   useEffect(() => {
-    fetch(`${baseUrl}/services/getServices`)
+    fetch(`${baseUrl}/salons/${salonId}/services/getServices`)
       .then((res) => res.json())
       .then((data) => {
         setServices(data.Services);
@@ -161,7 +166,7 @@ const BookingScreen = () => {
   };
 
   const timeItemStyles = {
-    backgroundColor: Color.background, 
+    backgroundColor: Color.background,
     borderRadius: 50,
     padding: 20,
     marginLeft: 10,
@@ -180,6 +185,122 @@ const BookingScreen = () => {
     textAlign: "center",
   };
 
+  const [expoPushToken, setExpoPushToken] = useState("");
+  const [notification, setNotification] = useState(false);
+  const notificationListener = useRef();
+  const responseListener = useRef();
+
+  const registerForPushNotificationsAsync = async () => {
+    let token;
+
+    if (Platform.OS === "android") {
+      Notifications.setNotificationChannelAsync("default", {
+        name: "default",
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250, 250, 250],
+        lightColor: "#FF231F7C",
+      });
+    }
+
+    if (Device.isDevice) {
+      const { status: existingStatus } =
+        await Notifications.getPermissionsAsync();
+      let finalStatus = existingStatus;
+      if (existingStatus !== "granted") {
+        const { status } = await Notifications.requestPermissionsAsync();
+        finalStatus = status;
+      }
+      if (finalStatus !== "granted") {
+        alert("Failed to get push token for push notification!");
+        return;
+      }
+      token = await Notifications.getExpoPushTokenAsync({
+        projectId: Constants.expoConfig.extra.eas.projectId,
+      });
+      console.log(token);
+    } else {
+      alert("Must use a physical device for Push Notifications");
+    }
+
+    setExpoPushToken(token.data);
+    return token.data;
+  };
+
+  const sendPushNotification = async (expoPushToken) => {
+    const notificationData = {
+      expoPushToken,
+      title: "Appointment Booked 🎉",
+      body: `Hello, ${userName}! Your appointment is booked successfully! We look forward to seeing you!`,
+      data: { someData: "goes here" },
+    };
+  
+    try {
+      const backendResponse = await fetch(`${baseUrl}/notifications/notification`, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(notificationData),
+      });
+  
+      if (!backendResponse.ok) {
+        throw new Error(`Backend Error: ${backendResponse.statusText}`);
+      }
+    } catch (backendError) {
+      console.error("Error sending notification to the backend:", backendError.message);
+    }
+  
+    const expoMessage = {
+      to: expoPushToken,
+      sound: "default",
+      title: "Appointment Booked 🎉",
+      body: `Hello, ${userName}! Your appointment is booked successfully! We look forward to seeing you!`,
+      data: { someData: "goes here" },
+    };
+  
+    try {
+      const expoResponse = await fetch("https://exp.host/--/api/v2/push/send", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Accept-encoding": "gzip, deflate",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(expoMessage),
+      });
+  
+      if (!expoResponse.ok) {
+        throw new Error(`Expo Error: ${expoResponse.statusText}`);
+      }
+    } catch (expoError) {
+      console.error("Error sending notification to Expo:", expoError.message);
+    }
+  };
+   useEffect(() => {
+    registerForPushNotificationsAsync().then((token) =>
+      setExpoPushToken(token)
+    );
+
+    notificationListener.current =
+      Notifications.addNotificationReceivedListener((notification) => {
+        setNotification(notification);
+      });
+
+    responseListener.current =
+      Notifications.addNotificationResponseReceivedListener((response) => {
+        console.log(response);
+      });
+
+    return () => {
+      Notifications.removeNotificationSubscription(
+        notificationListener.current
+      );
+      Notifications.removeNotificationSubscription(responseListener.current);
+    };
+  }, []);
+  
+
   const onSubmitPressed = async () => {
     const data = {
       user_id: userId,
@@ -193,17 +314,14 @@ const BookingScreen = () => {
     };
 
     try {
-      const response = await fetch(
-        `${baseUrl}/appointments/appointment`,
-        {
-          method: "POST",
-          body: JSON.stringify(data),
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-        }
-      );
+      const response = await fetch(`${baseUrl}/appointments/appointment`, {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+      });
       const json = await response.json();
 
       if (!response.ok) {
@@ -214,6 +332,7 @@ const BookingScreen = () => {
         console.log("appointment details", json);
 
         setBookedAppointments([...bookedAppointments, data.uniqueDate]);
+        sendPushNotification(expoPushToken);
 
         toast.show({
           render: () => {

@@ -33,6 +33,11 @@ const ServicesScreen = () => {
 
   const [selectedItem, setSelectedItem] = useState("Body");
   const { role } = useSelector((state) => state.user.userData);
+  const token = useSelector((state) => state.user.userData.token);
+  const { _id: salonId } = useSelector((state) => state.user.usedSalonData);
+  console.log(salonId);
+  console.log(token);
+
   const [filteredItems, setFilteredItems] = useState([]);
 
   const handleSearch = (searchText) => {
@@ -45,7 +50,9 @@ const ServicesScreen = () => {
   const handleBodyPress = async () => {
     try {
       console.log("Fetching services...");
-      const response = await fetch(`${baseUrl}/services/getBodyServices`);
+      const response = await fetch(
+        `${baseUrl}/salons/${salonId}/services/getBodyServices`
+      );
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
@@ -61,7 +68,9 @@ const ServicesScreen = () => {
   const handleFacePress = async () => {
     try {
       console.log("Fetching services...");
-      const response = await fetch(`${baseUrl}/services/getFaceServices`);
+      const response = await fetch(
+        `${baseUrl}/salons/${salonId}/services/getFaceServices`
+      );
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
@@ -80,7 +89,7 @@ const ServicesScreen = () => {
   const baseUrl = "https://ayabeautyn.onrender.com";
   useEffect(() => {
     console.log("Fetching services...");
-    fetch(`${baseUrl}/services/getServices`)
+    fetch(`${baseUrl}/salons/${salonId}/services/getServices`)
       .then((res) => res.json())
       .then((data) => {
         // console.log("Received data:", data);

@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
-import "intl-pluralrules";
-import "./i18n";
-import { useTranslation } from "react-i18next";
-
+import 'intl-pluralrules';
+import './i18n';
+import { useTranslation } from 'react-i18next';
+import registerNNPushToken from 'native-notify';
 import { Text, View, StyleSheet, Image } from "react-native";
 import { Provider } from "react-redux";
 import store from "./src/redux/store";
@@ -55,6 +55,8 @@ import Advice from "./src/screens/Advice.js";
 import EditEmployee from "./AdminPage/EditEmployee.js";
 import AddManager from "./AdminPage/AddManager.js";
 import UserHistory from "./src/screens/UserHistory";
+import NotificationScreen from "./src/screens/NotificationScreen";
+
 
 import { NativeBaseProvider } from "native-base";
 
@@ -63,221 +65,50 @@ const Drawer = createDrawerNavigator();
 
 const HomeStack = () => (
   <Stack.Navigator>
-    <Stack.Screen
-      name="Homee"
-      component={Homee}
-      options={{ headerShown: false }}
-    />
-    <Stack.Screen
-      name="Employee"
-      component={Employee}
-      options={{ headerShown: false }}
-    />
-    <Stack.Screen
-      name="Offers"
-      component={Offers}
-      options={{ headerShown: false }}
-    />
-    <Stack.Screen
-      name="ChoseScreen"
-      component={ChoseScreen}
-      options={{ headerShown: false }}
-    />
-    <Stack.Screen
-      name="Signup"
-      component={Signup}
-      options={{ headerShown: false }}
-    />
-    <Stack.Screen
-      name="Login"
-      component={Login}
-      options={{ headerShown: false }}
-    />
-    <Stack.Screen
-      name="ForgetPage"
-      component={ForgetPage}
-      options={{ headerShown: false }}
-    />
-    <Stack.Screen
-      name="ResetPassword"
-      component={ResetPassword}
-      options={{ headerShown: false }}
-    />
-    <Stack.Screen
-      name="SendCode"
-      component={SendCode}
-      options={{ headerShown: false }}
-    />
-    <Stack.Screen
-      name="PathologicalCase"
-      component={PathologicalCase}
-      options={{ headerShown: false }}
-    />
-    <Stack.Screen
-      name="SalonScreen"
-      component={SalonScreen}
-      options={{ headerShown: false }}
-    />
-    <Stack.Screen
-      name="MainScreen2"
-      component={MainScreen2}
-      options={{ headerShown: false }}
-    />
-    <Stack.Screen
-      name="Settings"
-      component={Settings}
-      options={{ headerShown: false }}
-    />
-    <Stack.Screen
-      name="About"
-      component={About}
-      options={{ headerShown: false }}
-    />
-    <Stack.Screen
-      name="ServicesScreen"
-      component={ServicesScreen}
-      options={{ headerShown: false }}
-    />
-    <Stack.Screen
-      name="ProductsScreens"
-      component={ProductsScreens}
-      options={{ headerShown: false }}
-    />
-    <Stack.Screen
-      name="CardsScreen"
-      component={CardsScreen}
-      options={{ headerShown: false }}
-    />
-    <Stack.Screen
-      name="Favorite"
-      component={Favorite}
-      options={{ headerShown: false }}
-    />
-    <Stack.Screen
-      name="ProductsDetails"
-      component={ProductsDetails}
-      options={{ headerShown: false }}
-    />
-    <Stack.Screen
-      name="BookingScreen"
-      component={BookingScreen}
-      options={{ headerShown: false }}
-    />
-    <Stack.Screen
-      name="AppointmentHistory"
-      component={AppointmentHistory}
-      options={{ headerShown: false }}
-    />
-    <Stack.Screen
-      name="UserDetails"
-      component={UserDetails}
-      options={{ headerShown: false }}
-    />
-    <Stack.Screen
-      name="EmployeesScreen"
-      component={EmployeesScreen}
-      options={{ headerShown: false }}
-    />
-    <Stack.Screen
-      name="EmployeesDetails"
-      component={EmployeesDetailsScreen}
-      options={{ headerShown: false }}
-    />
-    <Stack.Screen
-      name="AddEmployee"
-      component={AddEmployee}
-      options={{ headerShown: false }}
-    />
-    <Stack.Screen
-      name="PostsScreen"
-      component={PostsScreen}
-      options={{ headerShown: false }}
-    />
-    <Stack.Screen
-      name="ServiceDetails"
-      component={ServiceDetails}
-      options={{ headerShown: false }}
-    />
-    <Stack.Screen
-      name="AddSalon"
-      component={AddSalon}
-      options={{ headerShown: false }}
-    />
-    <Stack.Screen
-      name="AddProduct"
-      component={AddProduct}
-      options={{ headerShown: false }}
-    />
-    <Stack.Screen
-      name="AddServices"
-      component={AddServices}
-      options={{ headerShown: false }}
-    />
-    <Stack.Screen
-      name="AddPost"
-      component={AddPost}
-      options={{ headerShown: false }}
-    />
-    <Stack.Screen
-      name="AddJob"
-      component={AddJob}
-      options={{ headerShown: false }}
-    />
-    <Stack.Screen
-      name="JobHistory"
-      component={JobHistory}
-      options={{ headerShown: false }}
-    />
-    <Stack.Screen
-      name="MainJob"
-      component={MainJob}
-      options={{ headerShown: false }}
-    />
-    <Stack.Screen
-      name="Jobs"
-      component={Jobs}
-      options={{ headerShown: false }}
-    />
-    <Stack.Screen
-      name="ApplyForaJob"
-      component={ApplyForaJob}
-      options={{ headerShown: false }}
-    />
-    <Stack.Screen
-      name="EditServices"
-      component={EditServices}
-      options={{ headerShown: false }}
-    />
-    <Stack.Screen
-      name="EditProfile"
-      component={EditProfile}
-      options={{ headerShown: false }}
-    />
-    <Stack.Screen
-      name="EditSalon"
-      component={EditSalon}
-      options={{ headerShown: false }}
-    />
-    <Stack.Screen
-      name="EditEmployee"
-      component={EditEmployee}
-      options={{ headerShown: false }}
-    />
-    <Stack.Screen
-      name="Advice"
-      component={Advice}
-      options={{ headerShown: false }}
-    />
-    <Stack.Screen
-      name="AddManager"
-      component={AddManager}
-      options={{ headerShown: false }}
-    />
-    <Stack.Screen
-      name="UserHistory"
-      component={UserHistory}
-      options={{ headerShown: false }}
-    />
+    <Stack.Screen name="Homee" component={Homee} options={{ headerShown: false }}  />
+    <Stack.Screen name="Employee" component={Employee} options={{ headerShown: false }}  />
+    <Stack.Screen name="Offers" component={Offers} options={{ headerShown: false }}  /> 
+    <Stack.Screen name="ChoseScreen" component={ChoseScreen} options={{ headerShown: false }} /> 
+    <Stack.Screen name="Signup" component={Signup} options={{ headerShown: false }}/> 
+    <Stack.Screen name="Login" component={Login} options={{ headerShown: false }}/>
+    <Stack.Screen name="ForgetPage" component={ForgetPage} options={{ headerShown: false }}/>
+    <Stack.Screen name="ResetPassword" component={ResetPassword} options={{ headerShown: false }}/>
+    <Stack.Screen name="SendCode" component={SendCode} options={{ headerShown: false }}/>
+    <Stack.Screen name="PathologicalCase" component={PathologicalCase} options={{ headerShown: false }}/>
+    <Stack.Screen name="SalonScreen" component={SalonScreen} options={{ headerShown: false }}/>
+    <Stack.Screen name="MainScreen2" component={MainScreen2} options={{ headerShown: false }} />
+    <Stack.Screen name="Settings" component={Settings} options={{ headerShown: false }}/>
+    <Stack.Screen name="About" component={About} options={{ headerShown: false }}/>  
+    <Stack.Screen name="ServicesScreen" component={ServicesScreen} options={{ headerShown: false }}/>
+    <Stack.Screen name="ProductsScreens" component={ProductsScreens} options={{ headerShown: false }} />
+    <Stack.Screen name="CardsScreen" component={CardsScreen} options={{ headerShown: false }}/>
+    <Stack.Screen name="Favorite" component={Favorite} options={{ headerShown: false }}/>
+    <Stack.Screen name="Notifications" component={NotificationScreen} options={{ headerShown: false }}/>
+    <Stack.Screen name="ProductsDetails" component={ProductsDetails}options={{ headerShown: false }} />
+    <Stack.Screen name="BookingScreen" component={BookingScreen}options={{ headerShown: false }} />
+    <Stack.Screen name="AppointmentHistory" component={AppointmentHistory} options={{ headerShown: false }}  />
+    <Stack.Screen name="UserDetails" component={UserDetails} options={{ headerShown: false }}  />
+    <Stack.Screen name="EmployeesScreen" component={EmployeesScreen} options={{ headerShown: false }} />
+    <Stack.Screen name="EmployeesDetails" component={EmployeesDetailsScreen} options={{ headerShown: false }}/>
+    <Stack.Screen name="AddEmployee" component={AddEmployee} options={{ headerShown: false }}/>
+    <Stack.Screen name="PostsScreen" component={PostsScreen} options={{ headerShown: false }}/>
+    <Stack.Screen name="ServiceDetails" component={ServiceDetails} options={{ headerShown: false }}/> 
+    <Stack.Screen name="AddSalon" component={AddSalon} options={{ headerShown: false }}/>
+    <Stack.Screen name="AddProduct" component={AddProduct} options={{ headerShown: false }}/>
+    <Stack.Screen name="AddServices" component={AddServices} options={{ headerShown: false }}/> 
+    <Stack.Screen name="AddPost" component={AddPost} options={{ headerShown: false }}/> 
+    <Stack.Screen name="AddJob" component={AddJob} options={{ headerShown: false }}/> 
+    <Stack.Screen name="JobHistory" component={JobHistory} options={{ headerShown: false }}  />
+    <Stack.Screen name="MainJob" component={MainJob} options={{ headerShown: false }}/>
+    <Stack.Screen name="Jobs" component={Jobs} options={{ headerShown: false }}/>
+    <Stack.Screen name="ApplyForaJob" component={ApplyForaJob} options={{ headerShown: false }}/>
+    <Stack.Screen name="EditServices" component={EditServices} options={{ headerShown: false }}/>
+    <Stack.Screen name="EditProfile" component={EditProfile} options={{ headerShown: false }}/>
+    <Stack.Screen name="EditSalon" component={EditSalon} options={{ headerShown: false }}/>
+    <Stack.Screen name="EditEmployee" component={EditEmployee} options={{ headerShown: false }}/>
+    <Stack.Screen name="Advice" component={Advice} options={{ headerShown: false }}/>
+    <Stack.Screen name="AddManager" component={AddManager} options={{ headerShown: false }}/>
+    <Stack.Screen name="UserHistory" component={UserHistory} options={{ headerShown: false }}/>
   </Stack.Navigator>
 );
 
@@ -432,6 +263,8 @@ const styles = StyleSheet.create({
 });
 
 const App = () => {
+      registerNNPushToken(19229, 'MmA13R97oItXk9OrbcPye3');
+
   return (
     <NativeBaseProvider>
       <Provider store={store}>

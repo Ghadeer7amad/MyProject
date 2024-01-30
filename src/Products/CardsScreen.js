@@ -307,6 +307,13 @@ const CardsScreen = () => {
               </View>
             </View>
           ))}
+        {(!cartData ||
+          !cartData.products ||
+          cartData.products.length === 0) && (
+          <View style={styles.noCartsContainer}>
+            <Text style={styles.noCartsText}>{t("Cart is Empty")}</Text>
+          </View>
+        )}
 
         <View
           style={{
@@ -397,5 +404,18 @@ const styles = StyleSheet.create({
     marginTop: 30,
     justifyContent: "center",
     alignItems: "center",
+  },
+  noCartsContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 20,
+  },
+
+  noCartsText: {
+    textAlign: "center",
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#929aab",
   },
 });
