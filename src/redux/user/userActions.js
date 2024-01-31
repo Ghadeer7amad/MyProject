@@ -7,6 +7,7 @@ import {
   ADD_TO_FAVORITES,
   REMOVE_FROM_FAVORITES, // New action
   ADD_TO_CART,
+  LogOut,
 } from "./userActionTypes";
 
 export const setIsProvider = (isProvider) => {
@@ -16,7 +17,7 @@ export const setIsProvider = (isProvider) => {
   };
 };
 
-export const storeCurrentUser = (userData) => {
+export const storeCurrentUser = (userData) => { 
   return {
     type: SUCCESS_LOGIN,
     payload: userData,
@@ -64,4 +65,12 @@ export const addToCart = (product) => {
     type: ADD_TO_CART,
     payload: product,
   };
+
+
 };
+
+export const logOut = () => {
+  return {
+    type: LogOut,
+  }
+}

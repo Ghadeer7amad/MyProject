@@ -230,17 +230,27 @@ const BookingScreen = () => {
   };
 
   const sendPushNotification = async (expoPushToken) => {
-    const notificationData = {
+    const notificationData1 = {
       expoPushToken,
       title: `${salonName}: Appointment Booked 🎉`,
       body: `Hello, ${userName}! Your appointment is booked successfully! We look forward to seeing you!`,
       data: { someData: "goes here" },
       salonId: salonId,
       userId: userId,
+      toUser: false,
     };
-
+    
+    const notificationData2 = {
+      expoPushToken,
+      title: `New Appointment Booked 🎉`,
+      body: `${userName} has booked an appointment at your salon!`,
+      data: { someData: "goes here" },
+      salonId: salonId,
+      userId: userId,
+    };
+    
     try {
-      const backendResponse = await fetch(
+      const backendResponse1 = await fetch(
         `${baseUrl}/notifications/notification`,
         {
           method: "POST",
@@ -248,12 +258,28 @@ const BookingScreen = () => {
             Accept: "application/json",
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(notificationData),
+          body: JSON.stringify(notificationData1),
         }
       );
-
-      if (!backendResponse.ok) {
-        throw new Error(`Backend Error: ${backendResponse.statusText}`);
+    
+      if (!backendResponse1.ok) {
+        throw new Error(`Backend Error: ${backendResponse1.statusText}`);
+      }
+    
+      const backendResponse2 = await fetch(
+        `${baseUrl}/notifications/notification`,
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(notificationData2),
+        }
+      );
+    
+      if (!backendResponse2.ok) {
+        throw new Error(`Backend Error: ${backendResponse2.statusText}`);
       }
     } catch (backendError) {
       console.error(

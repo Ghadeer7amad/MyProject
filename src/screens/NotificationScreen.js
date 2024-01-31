@@ -11,19 +11,30 @@ import Spacing from "../Common/Spacing.js";
 
 const NotificationScreen = () => {
   const [t] = useTranslation();
+  const { role } = useSelector((state) => state.user.userData);
+  
 
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const {
+    id: userId,
+    name: userName,
+    email: userEmail,
+  } = useSelector((state) => state.user.userData);
 
-  const { userData } = useSelector((state) => state.user);
-  const { id: userId } = userData;
+  const { id: salonIdUser } = useSelector(
+    (state) => state.user.usedSalonData
+  );
+  
+const { salonId:salonIdManager } = useSelector((state) => state.user.userData);
 
+  console.log(salonIdUser);
   const baseUrl = "https://ayabeautyn.onrender.com";
 
-  const fetchData = async () => {
+  const fetchData = async () => { 
     try {
       const response = await fetch(
-        `${baseUrl}/auth/${userId}/Notification/userNotification`
+        `${baseUrl}/auth/${salonIdUser}/${userId}/Notification/userNotification`
       );
       if (!response.ok) {
         throw new Error(
@@ -40,8 +51,31 @@ const NotificationScreen = () => {
   };
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    const fetchSalonData = async () => {
+      try {
+        const response = await fetch(
+          `${baseUrl}/salons/${salonIdManager}/Notification/managerNotification`
+        );
+        if (!response.ok) {
+          throw new Error(
+            `Failed to fetch notifications: ${response.statusText}`
+          );
+        }
+        const data = await response.json();
+        setItems(data); 
+        setIsLoading(false);
+      } catch (error) {
+        console.error("Error fetching notifications:", error.message);
+        setIsLoading(false);
+      }
+    };
+
+    if (role === "User") {
+      fetchData();
+    } else if (role === "Manager") { 
+      fetchSalonData();
+    }
+  }, );
 
   const calculateTimeDifference = (createdAt) => {
     const now = new Date();
@@ -64,7 +98,7 @@ const NotificationScreen = () => {
     } else if (days <= 2) {
       return `${days}d ago`;
     } else {
-      return postDate.toLocaleDateString("en-GB"); 
+      return postDate.toLocaleDateString("en-GB");
     }
   };
 
@@ -78,6 +112,7 @@ const NotificationScreen = () => {
       );
 
       if (response.ok) {
+        // Reuse the fetchData function
         fetchData();
       } else {
         const responseData = await response.json();
@@ -174,32 +209,31 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   rowBack: {
-    alignItems: 'center',
-    backgroundColor: '#f0f0f0',  // Change the background color as needed
+    alignItems: "center",
+    backgroundColor: "#f0f0f0", // Change the background color as needed
     flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
+    flexDirection: "row",
+    justifyContent: "flex-end",
     paddingLeft: 15,
   },
   backRightBtn: {
-    alignItems: 'center',
+    alignItems: "center",
     bottom: 0,
-    justifyContent: 'center',
-    position: 'absolute',
+    justifyContent: "center",
+    position: "absolute",
     top: 0,
     width: 75,
   },
   backRightBtnRight: {
-    backgroundColor: '#f0f0f0',  // Change the background color as needed
+    backgroundColor: "#f0f0f0", // Change the background color as needed
     right: 0,
   },
   postDate: {
     fontSize: 12,
-    color: "#555555", 
+    color: "#555555",
     marginTop: 5,
     marginLeft: 300,
   },
 });
-
 
 export default NotificationScreen;

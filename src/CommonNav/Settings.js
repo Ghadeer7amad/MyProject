@@ -22,10 +22,12 @@ import Spacing from "../Common/Spacing.js";
 import NavbarButtom from "../Common/NavbarButtom";
 
 import { useTranslation } from "react-i18next";
+import { logOut } from "../redux/user/userActions";
 
 export default function Example() {
   const [t, i18n] = useTranslation();
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   const [isLoading, setIsLoading] = useState(true);
   const [items, setItems] = useState([]);
@@ -112,6 +114,9 @@ export default function Example() {
     },
   ];
 
+
+
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
       <ScrollView contentContainerStyle={styles.container}>
@@ -163,14 +168,18 @@ export default function Example() {
                       } else if (id === "Favorites") {
                         navigation.navigate("Favorite");
                       } else if (id === "Log Out") {
-                        navigation.navigate("Homee");
-                      } else if (id === "My Appointments") {
+                        dispatch(logOut());
+                       navigation.navigate("Login"); 
+                        
+                      } 
+                      else if (id === "My Appointments") {
                         if (role === "Admin" || role === "Manager") {
                           navigation.navigate("AppointmentHistory");
                         } else {
-                          navigation.navigate("UserHistory");
+                          navigation.navigate("UserHistory"); 
                         }
                       } else {
+                        navigation.navigate("Notifications"); 
                       }
                     }}
                   >

@@ -18,7 +18,7 @@ const Homee = () => {
   const isArabic = i18n.language === "ar";
 
   const handleContinuePress = () => {
-    navigation.navigate("ChoseScreen");
+    navigation.navigate("ChoseScreen"); 
   };
 
   const changeLanguage = (language) => {
