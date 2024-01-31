@@ -54,27 +54,7 @@ const PostsScreen = () => {
 
   const baseUrl = "https://ayabeautyn.onrender.com";
 
-  const requestGalleryPermission = async () => {
-    try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-        {
-          title: "Gallery Permission",
-          message: "App needs access to your gallery to choose images.",
-          buttonNeutral: "Ask Me Later",
-          buttonNegative: "Cancel",
-          buttonPositive: "OK",
-        }
-      );
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        console.log("Gallery permission granted");
-      } else {
-        console.log("Gallery permission denied");
-      }
-    } catch (err) {
-      console.warn(err);
-    }
-  };
+
 
   const fetchData = async () => {
     try {
@@ -133,7 +113,6 @@ const PostsScreen = () => {
   }, [salonId]);
 
   useEffect(() => {
-    requestGalleryPermission();
     retrieveLikeStatus();
   }, []);
 
