@@ -48,7 +48,7 @@ const ProductsDetails = ({ route }) => {
       });
       if (response.status == 201) {
         const responseData = await response.json();
-        console.log("Response data:", responseData);
+   
         navigation.navigate("Favorite");
       } else {
         toast.show({

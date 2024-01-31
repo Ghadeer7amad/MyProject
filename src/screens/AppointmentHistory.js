@@ -108,8 +108,6 @@ const AppointmentsScreen = () => {
     }
   };
   const handleCancleAppointment = async (itemId) => {
-    console.log("Deleting item with ID:", itemId);
-
     try {
       const response = await fetch(
         `${baseUrl}/appointments/appointment/${itemId}`,

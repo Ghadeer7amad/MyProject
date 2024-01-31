@@ -124,8 +124,7 @@ const BookingScreen = () => {
           }
 
           const data = await response.json();
-          console.log("Data received:", data);
-
+  
           if (data) {
             setBranches(data);
           } else {
@@ -220,7 +219,6 @@ const BookingScreen = () => {
       token = await Notifications.getExpoPushTokenAsync({
         projectId: Constants.expoConfig.extra.eas.projectId,
       });
-      console.log(token);
     } else {
       alert("Must use a physical device for Push Notifications");
     }
@@ -326,7 +324,6 @@ const BookingScreen = () => {
 
     responseListener.current =
       Notifications.addNotificationResponseReceivedListener((response) => {
-        console.log(response);
       });
 
     return () => {
@@ -383,8 +380,6 @@ const BookingScreen = () => {
       }
 
       if (response.ok) {
-        console.log("appointment details", json);
-
         setBookedAppointments([...bookedAppointments, data.uniqueDate]);
         sendPushNotification(expoPushToken);
 

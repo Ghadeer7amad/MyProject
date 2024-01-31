@@ -104,8 +104,6 @@ const ApplyForaJob = () => {
       formData.append("jobName", selectedJob);
       formData.append("cvFile", FData.cvFile); // تحديث هنا لاستخدام FData بدلاً من selectedFile
   
-      console.log("data:", formData);
-  
       const response = await axios.post(
         `${baseUrl}/uploadjobs/uploadjob`,
         JSON.stringify(formData),
@@ -116,8 +114,6 @@ const ApplyForaJob = () => {
           },
         }
       );
-  
-      console.log("Response:", response);
       if (response.status === 201) {
         toast.show({
           render: () => (

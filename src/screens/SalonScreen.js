@@ -35,11 +35,9 @@ const SalonScreen = ({ route }) => {
 
   const { role, token } = useSelector((state) => state.user.userData);
   const { salonId } = route.params;
-  console.log(route.params);
 
   const handleContinuePress = (item) => {
     dispatch(storeUsedSalon(item));
-    console.log(storeUsedSalon(item));
     navigation.navigate("MainScreen2", { item });
   };
 
@@ -78,7 +76,6 @@ const SalonScreen = ({ route }) => {
         });
         const data = await response.json();
         setItems(data);
-        console.log(data);
         setIsLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -95,7 +92,6 @@ const SalonScreen = ({ route }) => {
         });
         const data = await response.json();
         setItems(data);
-        console.log(data);
         setIsLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -110,8 +106,6 @@ const SalonScreen = ({ route }) => {
   }, [role, baseUrl, token, salonId]);
 
   const handleDeletePress = async (itemId) => {
-    console.log("Deleting item with ID:", itemId);
-
     try {
       const response = await fetch(`${baseUrl}/salons/salon/${itemId}`, {
         method: "DELETE",
@@ -121,7 +115,6 @@ const SalonScreen = ({ route }) => {
         fetchData();
       } else {
         const responseData = await response.json();
-        console.error("Failed to delete item. Server response:", responseData);
       }
     } catch (error) {
       console.error("Error deleting item:", error);

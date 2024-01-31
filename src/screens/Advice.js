@@ -21,10 +21,10 @@ const Advice = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const images = [
-    require("../../assets/advice.jpg"),
-    require("../../assets/advice.jpg"),
-    require("../../assets/advice.jpg"),
-    require("../../assets/advice.jpg"),
+    require("../../assets/new.jpg"),
+    require("../../assets/new.jpg"),
+    require("../../assets/new.jpg"),
+    require("../../assets/new.jpg"),
   ];
 
   const texts = [t("one"), t("two"), t("three"), t("four")];

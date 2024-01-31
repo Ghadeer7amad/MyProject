@@ -35,8 +35,6 @@ const ServicesScreen = () => {
   const { role } = useSelector((state) => state.user.userData);
   const token = useSelector((state) => state.user.userData.token);
   const { _id: salonId } = useSelector((state) => state.user.usedSalonData);
-  console.log(salonId);
-  console.log(token);
 
   const [filteredItems, setFilteredItems] = useState([]);
 
@@ -57,7 +55,6 @@ const ServicesScreen = () => {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
       const data = await response.json();
-      console.log("Received data:", data);
       setServices(data.Services);
       setSelectedItem("Body");
     } catch (error) {
@@ -75,7 +72,6 @@ const ServicesScreen = () => {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
       const data = await response.json();
-      console.log("Received data:", data);
       setServices(data.Services);
       setSelectedItem("Face");
     } catch (error) {
@@ -87,19 +83,16 @@ const ServicesScreen = () => {
     navigation.navigate("ServiceDetails", { service });
   };
   const baseUrl = "https://ayabeautyn.onrender.com";
-  useEffect(() => {
-    console.log("Fetching services...");
+  useEffect(() => {  
     fetch(`${baseUrl}/salons/${salonId}/services/getServices`)
       .then((res) => res.json())
       .then((data) => {
-        // console.log("Received data:", data);
         setServices(data.Services);
       })
       .catch((error) => console.log("Error from favs screen: ", error.message));
   }, []);
 
   const handleRemoveService = async (itemId) => {
-    console.log("Deleting item with ID:", itemId);
     try {
       const response = await fetch(`${baseUrl}/services/hardDelete/${itemId}`, {
         method: "DELETE",
@@ -135,7 +128,6 @@ const ServicesScreen = () => {
   };
 
   const handleSoftDeleteService = async (itemId) => {
-    console.log("SoftDelete item with ID:", itemId);
     try {
       const response = await fetch(`${baseUrl}/services/softDelete/${itemId}`, {
         method: "PATCH",

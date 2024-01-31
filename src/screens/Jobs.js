@@ -47,8 +47,6 @@ const Jobs = () => {
   };
 
   const handleDeletePress = async (itemId) => {
-    console.log("Deleting item with ID:", itemId);
-
     try {
       const response = await fetch(`${baseUrl}/jobs/job/${itemId}`, {
         method: "DELETE",
