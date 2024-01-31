@@ -131,7 +131,7 @@ const SalonScreen = ({ route }) => {
   return (
     <View style={styles.container}>
       <CustomSearchBar
-        placeholder={t("Search your BeautyCenter")}
+        placeholder={t("Search for BeautyCenters or Cities..")}
         onSearch={handleSearch}
       />
       {role === "Admin" && (
@@ -188,7 +188,7 @@ const SalonScreen = ({ route }) => {
             >
               <Text
                 style={{
-                  marginTop: 15,
+                  marginTop: 20,
                   letterSpacing: 1,
                   color: Color.primary,
                   fontWeight: "bold",
@@ -205,7 +205,7 @@ const SalonScreen = ({ route }) => {
                   backgroundColor: Color.primary,
                   padding: 7,
                   borderRadius: 15,
-                  marginTop: 8,
+                  marginTop: 15,
                   marginRight: -6,
                 }}
               >
