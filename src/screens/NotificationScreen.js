@@ -1,85 +1,122 @@
-import {
-  View,
-  Text,
-  FlatList,
-  StyleSheet,
-  TouchableOpacity,
-  Alert,
-} from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { SwipeListView } from "react-native-swipe-list-view";
+import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 import Header from "../screens/Header.js";
 import NavbarButtom from "../Common/NavbarButtom.js";
 import Color from "../Common/Color.js";
 import Spacing from "../Common/Spacing.js";
-import { Ionicons } from "@expo/vector-icons";
-import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
-import { useTranslation } from "react-i18next";
 
 const NotificationScreen = () => {
-    const [t] = useTranslation();
-  
-    const [items, setItems] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
+  const [t] = useTranslation();
 
-    const { userData, usedSalonData } = useSelector((state) => state.user);
-    const { id: userId, name: userName } = userData;
-    const { _id: salonId, name: salonName } = useSelector(
-      (state) => state.user.usedSalonData
-    );
-  
-    const baseUrl = "https://ayabeautyn.onrender.com";
-  
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`${baseUrl}/notifications/notifications/${userId}`);
-        if (!response.ok) {
-          throw new Error(`Failed to fetch notifications: ${response.statusText}`);
-        }
-        const data = await response.json();
-        setItems(data);
-        setIsLoading(false);
-      } catch (error) {
-        console.error("Error fetching notifications:", error.message);
-        setIsLoading(false);
+  const [items, setItems] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const { userData } = useSelector((state) => state.user);
+  const { id: userId } = userData;
+
+  const baseUrl = "https://ayabeautyn.onrender.com";
+
+  const fetchData = async () => {
+    try {
+      const response = await fetch(
+        `${baseUrl}/auth/${userId}/Notification/userNotification`
+      );
+      if (!response.ok) {
+        throw new Error(
+          `Failed to fetch notifications: ${response.statusText}`
+        );
       }
-    };
-  
-    useEffect(() => {
-      fetchData();
-    }, []); 
-  
-    return (
-      <View style={styles.container}>
-        <Header />
-        <View style={styles.container2}>
-          <Text style={[styles.styleText]}>
-            {t("Notification")}
-          </Text>
-        </View>
-  
-        {isLoading ? (
-          <Text>Loading...</Text>
-        ) : (
-          <FlatList
-            data={items}
-            keyExtractor={(item) => item._id}
-            renderItem={({ item }) => (
-              <View style={styles.notificationContainer}>
-                <View style={styles.userContainer}>
-                  <Text style={styles.title}>{item.title}</Text>
-                  <Text style={styles.notificationContent}>
-                    {item.body}
-                  </Text>
-                </View>
-              </View>
-            )}
-          />
-        )}
-  
-        <NavbarButtom onChange={(selectedIcon) => console.log(selectedIcon)} />
-      </View>
-    );
+      const data = await response.json();
+      setItems(data);
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Error fetching notifications:", error.message);
+      setIsLoading(false);
+    }
   };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const calculateTimeDifference = (createdAt) => {
+    const now = new Date();
+    const postDate = new Date(createdAt);
+    const timeDifference = now - postDate;
+
+    if (timeDifference < 60000) {
+      return t("Just Now");
+    }
+
+    const seconds = Math.floor(timeDifference / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
+
+    if (minutes < 60) {
+      return `${minutes}m ago`;
+    } else if (hours < 24) {
+      return `${hours}h ago`;
+    } else if (days <= 2) {
+      return `${days}d ago`;
+    } else {
+      return postDate.toLocaleDateString("en-GB"); 
+    }
+  };
+
+  const handleDelete = (notificationId) => {
+    setItems((prevItems) => prevItems.filter((item) => item._id !== notificationId));
+    // You may also want to send a request to the server to delete the notification from the database
+    // For example: fetch(`${baseUrl}/deleteNotification/${notificationId}`, { method: 'DELETE' });
+  }; 
+
+  return (
+    <View style={styles.container}>
+      <Header />
+      <View style={styles.container2}>
+        <Text style={[styles.styleText]}>{t("Notification")}</Text>
+      </View>
+
+      {isLoading ? (
+        <Text>Loading...</Text>
+      ) : (
+        <SwipeListView
+          data={items}
+          keyExtractor={(item) => item._id}
+          renderItem={({ item }) => (
+            <View style={styles.notificationContainer}>
+              <View style={styles.userContainer}>
+                <Text style={styles.title}>{item.title}</Text>
+                <Text style={styles.notificationContent}>{item.body}</Text>
+                <Text style={styles.postDate}>
+                  {calculateTimeDifference(item.createdAt) ||
+                    "No date available"}
+                </Text>
+              </View>
+            </View>
+          )}
+          renderHiddenItem={({ item }) => (
+            <View style={styles.rowBack}>
+              <TouchableOpacity
+                style={[styles.backRightBtn, styles.backRightBtnRight]}
+                onPress={() => handleDelete(item._id)}
+              >
+                <Ionicons name="trash-outline" size={30} color="#fff" />
+              </TouchableOpacity>
+            </View>
+          )}
+          rightOpenValue={-75} // Width of the delete button
+        />
+      )}
+
+      <NavbarButtom onChange={(selectedIcon) => console.log(selectedIcon)} />
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -122,18 +159,33 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginBottom: 15,
   },
-  styleIcons: {
-    backgroundColor: Color.primary,
-    padding: Spacing / 2,
-    borderRadius: Spacing,
-    marginTop: -8,
+  rowBack: {
+    alignItems: 'center',
+    backgroundColor: '#f0f0f0',  // Change the background color as needed
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    paddingLeft: 15,
   },
-  loadingText: {
-    fontSize: 18,
-    color: "#555555",
-    alignSelf: "center",
-    marginTop: 20,
+  backRightBtn: {
+    alignItems: 'center',
+    bottom: 0,
+    justifyContent: 'center',
+    position: 'absolute',
+    top: 0,
+    width: 75,
+  },
+  backRightBtnRight: {
+    backgroundColor: '#f0f0f0',  // Change the background color as needed
+    right: 0,
+  },
+  postDate: {
+    fontSize: 12,
+    color: "#555555", 
+    marginTop: 5,
+    marginLeft: 300,
   },
 });
+
 
 export default NotificationScreen;
