@@ -81,8 +81,7 @@ const EmployeesScreen = () => {
   };
 
   const handleDeletePress = async (itemId) => {
-    console.log("Deleting item with ID:", itemId);
-
+  
     try {
       const response = await fetch(`${baseUrl}/employees/employee/${itemId}`, {
         method: "DELETE",

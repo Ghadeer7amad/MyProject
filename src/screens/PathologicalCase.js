@@ -55,8 +55,6 @@ const PathologicalCase = () => {
       }
 
       if (response.ok) {
-        console.log("Response JSON:", json);
-
         toast.show({
           render: () => (
             <Box bg="emerald.500" px="5" py="5" rounded="sm" mb={5}>

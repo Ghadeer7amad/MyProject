@@ -142,8 +142,6 @@ const PostsScreen = () => {
   }, [likeStatus]);
 
   const handleDeletePress = async (itemId) => {
-    console.log("Deleting item with ID:", itemId);
-
     try {
       const response = await fetch(`${baseUrl}/posts/post/${itemId}`, {
         method: "DELETE",

@@ -24,9 +24,6 @@ const UserDetails = ({ route }) => {
   const [isLoading, setIsLoading] = useState(true);
   const { role } = useSelector((state) => state.user.userData);
 
-
-  console.log(user.user_id);
-
   const handleBackPress = () => {
     if (role === 'Admin' || role === 'Manager') {
       navigation.navigate("AppointmentHistory");
@@ -52,7 +49,6 @@ const UserDetails = ({ route }) => {
           }
 
           const data = await response.json();
-          console.log("Data received:", data);
 
           if (data) {
             setInfo(data);
@@ -83,7 +79,6 @@ const UserDetails = ({ route }) => {
           }
 
           const data = await response.json();
-          console.log("Dataaa received:", data);
 
           if (data) {
             setStatus(data);

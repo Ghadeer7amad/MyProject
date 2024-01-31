@@ -34,8 +34,6 @@ const ProductsScreens = () => {
   const { role } = useSelector((state) => state.user.userData);
   const token = useSelector((state) => state.user.userData.token);
   const { _id: salonId } = useSelector((state) => state.user.usedSalonData);
-  console.log(salonId);
-  console.log(token);
 
   const handleAddToCart = async (productId) => {
     const baseUrl = "https://ayabeautyn.onrender.com";
@@ -51,7 +49,6 @@ const ProductsScreens = () => {
 
       if (response.status == 201) {
         const responseData = await response.json();
-        console.log("Response data:", responseData);
         navigation.navigate("CardsScreen");
       } else if (response.status == 400) {
         toast.show({
@@ -94,7 +91,6 @@ const ProductsScreens = () => {
 
       if (response.status == 201) {
         const responseData = await response.json();
-        console.log("Response data:", responseData);
         navigation.navigate("Favorite");
       } else {
         toast.show({
@@ -126,7 +122,6 @@ const ProductsScreens = () => {
   };
 
   const handleRemoveProducts = async (itemId) => {
-    console.log("Deleting item with ID:", itemId);
     try {
       const response = await fetch(`${baseUrl}/products/hardDelete/${itemId}`, {
         method: "DELETE",
@@ -163,7 +158,6 @@ const ProductsScreens = () => {
   };
   const handleBodyPress = async () => {
     try {
-      console.log("Fetching products...");
       const response = await fetch(
         `${baseUrl}/salons/${salonId}/Product/getBodyProducts`
       );
@@ -180,7 +174,6 @@ const ProductsScreens = () => {
 
   const handleFacePress = async () => {
     try {
-      console.log("Fetching products...");
       const response = await fetch(
         `${baseUrl}/salons/${salonId}/Product/getFaceProducts`
       );

@@ -33,8 +33,6 @@ const UserHistory = () => {
   );
   const { _id: salonId } = useSelector((state) => state.user.usedSalonData);
 
-  console.log(userId);
-
   const currentDate = new Date();
 
   const getStatus = (appointmentDate) => {
@@ -99,8 +97,6 @@ const UserHistory = () => {
     }
   };
   const handleCancleAppointment = async (itemId) => {
-    console.log("Deleting item with ID:", itemId);
-
     try {
       const response = await fetch(
         `${baseUrl}/appointments/appointment/${itemId}`,
@@ -113,7 +109,6 @@ const UserHistory = () => {
         fetchData();
       } else {
         const responseData = await response.json();
-        console.log("Data:", responseData);
         console.error("Failed to delete item. Server response:", responseData);
       }
     } catch (error) {
