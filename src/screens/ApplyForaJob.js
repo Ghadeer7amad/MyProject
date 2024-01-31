@@ -41,7 +41,11 @@ const ApplyForaJob = () => {
   const [FData, setFData] = useState({
     user_name: userName,
     SalonId: salonId,
+    jobName: "",
+    cvFile: "",
   });
+
+   
 
   const toast = useToast();
 
@@ -74,42 +78,46 @@ const ApplyForaJob = () => {
       const result = await DocumentPicker.getDocumentAsync({
         type: "application/pdf",
       });
-
+  
       if (!result.canceled) {
         setSelectedFile(result);
         setButtonText(t("File is uploaded successfully"));
+  
+        // Update FData with the selected file
+        setFData((prevFData) => ({
+          ...prevFData,
+          cvFile: result.assets[0],
+        }));
       }
     } catch (err) {
       console.error("Error picking document:", err);
     }
   };
+  
+
 
   const onSubmitPressed = async () => {
     try {
-      setFData({
-        ...FData,
-        jobName: selectedJob,
-      });
-
       const formData = new FormData();
-      formData.append("cvFile", selectedFile.assets[0]);
-
+      formData.append("user_name", userName);
+      formData.append("SalonId", salonId);
+      formData.append("jobName", selectedJob);
+      formData.append("cvFile", FData.cvFile); // تحديث هنا لاستخدام FData بدلاً من selectedFile
+  
       console.log("data:", formData);
-
+  
       const response = await axios.post(
         `${baseUrl}/uploadjobs/uploadjob`,
-        formData,
+        JSON.stringify(formData),
         {
           headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
+            "Content-Type": "multipart/form-data",
             Authorization: `Nada__${token}`,
           },
         }
       );
-
-      console.log("Server Response:", response);
-
+  
+      console.log("Response:", response);
       if (response.status === 201) {
         toast.show({
           render: () => (
@@ -126,6 +134,7 @@ const ApplyForaJob = () => {
       console.error("Fetch error:", error.stack);
     }
   };
+  
 
   return (
     <ImageBackground
@@ -172,11 +181,7 @@ const ApplyForaJob = () => {
           <Text style={styles.fileUploadText}>{buttonText}</Text>
         </TouchableOpacity>
 
-        {selectedFile && (
-          <Text
-            style={styles.selectedFileText}
-          >{`Selected File: ${selectedFile}`}</Text>
-        )}
+        
 
         <Text style={styles.uploadInfoText}>{t("Upload your cv")}</Text>
       </View>
