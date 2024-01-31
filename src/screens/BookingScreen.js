@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Dimensions,
   Platform,
+  Alert,
 } from "react-native";
 import registerNNPushToken from "native-notify";
 import Icon from "react-native-vector-icons/Ionicons";
@@ -34,7 +35,9 @@ const BookingScreen = () => {
   const navigation = useNavigation();
   const { userData, usedSalonData } = useSelector((state) => state.user);
   const { id: userId, name: userName } = userData;
-  const { _id: salonId } = useSelector((state) => state.user.usedSalonData);
+  const { id: salonId, name: salonName } = useSelector(
+    (state) => state.user.usedSalonData
+  );
 
   const generateAvailableTimes = () => {
     const startHour = 8;
@@ -178,7 +181,7 @@ const BookingScreen = () => {
   };
 
   const timeTextStyles = {
-    fontSize: 15,
+    fontSize: 13,
     color: Color.secondary,
     fontWeight: "bold",
     alignSelf: "center",
@@ -229,36 +232,44 @@ const BookingScreen = () => {
   const sendPushNotification = async (expoPushToken) => {
     const notificationData = {
       expoPushToken,
-      title: "Appointment Booked 🎉",
+      title: `${salonName}: Appointment Booked 🎉`,
       body: `Hello, ${userName}! Your appointment is booked successfully! We look forward to seeing you!`,
       data: { someData: "goes here" },
+      salonId: salonId,
+      userId: userId,
     };
-  
+
     try {
-      const backendResponse = await fetch(`${baseUrl}/notifications/notification`, {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(notificationData),
-      });
-  
+      const backendResponse = await fetch(
+        `${baseUrl}/notifications/notification`,
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(notificationData),
+        }
+      );
+
       if (!backendResponse.ok) {
         throw new Error(`Backend Error: ${backendResponse.statusText}`);
       }
     } catch (backendError) {
-      console.error("Error sending notification to the backend:", backendError.message);
+      console.error(
+        "Error sending notification to the backend:",
+        backendError.message
+      );
     }
-  
+
     const expoMessage = {
       to: expoPushToken,
       sound: "default",
-      title: "Appointment Booked 🎉",
+      title: `${salonName}: Appointment Booked 🎉`,
       body: `Hello, ${userName}! Your appointment is booked successfully! We look forward to seeing you!`,
       data: { someData: "goes here" },
     };
-  
+
     try {
       const expoResponse = await fetch("https://exp.host/--/api/v2/push/send", {
         method: "POST",
@@ -269,7 +280,7 @@ const BookingScreen = () => {
         },
         body: JSON.stringify(expoMessage),
       });
-  
+
       if (!expoResponse.ok) {
         throw new Error(`Expo Error: ${expoResponse.statusText}`);
       }
@@ -277,7 +288,7 @@ const BookingScreen = () => {
       console.error("Error sending notification to Expo:", expoError.message);
     }
   };
-   useEffect(() => {
+  useEffect(() => {
     registerForPushNotificationsAsync().then((token) =>
       setExpoPushToken(token)
     );
@@ -299,7 +310,24 @@ const BookingScreen = () => {
       Notifications.removeNotificationSubscription(responseListener.current);
     };
   }, []);
-  
+
+  const confirmBooking = () => {
+    Alert.alert(
+      t("Confirm booking"),
+      t("Are you sure you want to book this appointment?"),
+      [
+        {
+          text: t("Cancel"),
+          style: "cancel",
+        },
+        {
+          text: t("Yes, Confirm"),
+          onPress: () => onSubmitPressed(),
+        },
+      ],
+      { cancelable: false }
+    );
+  };
 
   const onSubmitPressed = async () => {
     const data = {
@@ -471,7 +499,7 @@ const BookingScreen = () => {
 
           <TouchableOpacity
             style={styles.submitButton}
-            onPress={onSubmitPressed}
+            onPress={confirmBooking}
           >
             <Text style={styles.submitButtonText}>{t("Send")}</Text>
           </TouchableOpacity>

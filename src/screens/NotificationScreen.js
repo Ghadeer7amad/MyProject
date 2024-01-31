@@ -20,7 +20,9 @@ const NotificationScreen = () => {
   
     const [items, setItems] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-  
+
+    const { userData, usedSalonData } = useSelector((state) => state.user);
+    const { id: userId, name: userName } = userData;
     const { _id: salonId, name: salonName } = useSelector(
       (state) => state.user.usedSalonData
     );
@@ -29,7 +31,7 @@ const NotificationScreen = () => {
   
     const fetchData = async () => {
       try {
-        const response = await fetch(`${baseUrl}/notifications/notifications`);
+        const response = await fetch(`${baseUrl}/notifications/notifications/${userId}`);
         if (!response.ok) {
           throw new Error(`Failed to fetch notifications: ${response.statusText}`);
         }
