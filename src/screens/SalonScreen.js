@@ -67,46 +67,46 @@ const SalonScreen = ({ route }) => {
 
   const baseUrl = "https://ayabeautyn.onrender.com";
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`${baseUrl}/salons/salon`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Nada__${token}`,
-          },
-        });
-        const data = await response.json();
-        setItems(data);
-        console.log(data);
-        setIsLoading(false);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    const fetchSalonData = async () => {
-      try {
-        const response = await fetch(`${baseUrl}/salons/salon/${salonId}`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Nada__${token}`,
-          },
-        });
-        const data = await response.json();
-        setItems(data);
-        console.log(data);
-        setIsLoading(false);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    if (role === "Admin" || role == "User") {
-      fetchData();
-    } else if (role === "Manager") {
-      fetchSalonData();
+  const fetchSalonData = async (salonId) => {
+    try {
+      const response = await fetch(`${baseUrl}/salons/salon/${salonId}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Nada__${token}`,
+        },
+      });
+      const data = await response.json();
+      setItems(data);
+      console.log(data);
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
     }
+  };
+
+  useEffect(() => {
+    const fetchDataBasedOnRole = async () => {
+      try {
+        if (role === "Admin" || role === "User") {
+          const response = await fetch(`${baseUrl}/salons/salon`, {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Nada__${token}`,
+            },
+          });
+          const data = await response.json();
+          setItems(data);
+          console.log(data);
+          setIsLoading(false);
+        } else if (role === "Manager") {
+          fetchSalonData(salonId);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchDataBasedOnRole();
   }, [role, baseUrl, token, salonId]);
 
   const handleDeletePress = async (itemId) => {
@@ -118,7 +118,14 @@ const SalonScreen = ({ route }) => {
       });
 
       if (response.ok) {
-        fetchData();
+        if (response.status === 204) {
+          fetchDataBasedOnRole();
+        } else {
+          console.error(
+            "Failed to delete item. Unexpected server response:",
+            response
+          );
+        }
       } else {
         const responseData = await response.json();
         console.error("Failed to delete item. Server response:", responseData);
