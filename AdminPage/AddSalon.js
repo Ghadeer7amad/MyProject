@@ -187,7 +187,9 @@ const AddSalon = () => {
         <Text style={styles.buttonStyle}>{t("Add")}</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => navigation.navigate("SalonScreen")}>
+      <TouchableOpacity
+        onPress={() => navigation.navigate("SalonScreen", { salonId: null })}
+      >
         <Text style={[styles.buttonStyle, styles.buttonStyle1]}>
           {t("Cancel")}
         </Text>
