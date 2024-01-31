@@ -68,11 +68,25 @@ const NotificationScreen = () => {
     }
   };
 
-  const handleDelete = (notificationId) => {
-    setItems((prevItems) => prevItems.filter((item) => item._id !== notificationId));
-    // You may also want to send a request to the server to delete the notification from the database
-    // For example: fetch(`${baseUrl}/deleteNotification/${notificationId}`, { method: 'DELETE' });
-  }; 
+  const handleDelete = async (itemId) => {
+    try {
+      const response = await fetch(
+        `${baseUrl}/notifications/notification/${itemId}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (response.ok) {
+        fetchData();
+      } else {
+        const responseData = await response.json();
+        console.error("Failed to delete item. Server response:", responseData);
+      }
+    } catch (error) {
+      console.error("Error deleting item:", error);
+    }
+  };
 
   return (
     <View style={styles.container}>
