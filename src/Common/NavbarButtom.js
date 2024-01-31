@@ -9,7 +9,7 @@ const NavbarButtom = ({ onChange }) => {
   const [selectedIcon, setSelectedIcon] = useState(null);
 
   const handleIconPress = (iconName) => {
-    setSelectedIcon(iconName);
+    setSelectedIcon(iconName); 
     onChange(iconName);
   };
 

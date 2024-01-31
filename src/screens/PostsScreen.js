@@ -31,7 +31,7 @@ import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 
 const PostsScreen = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation(); 
   const [t] = useTranslation();
 
   const { role, token } = useSelector((state) => state.user.userData);

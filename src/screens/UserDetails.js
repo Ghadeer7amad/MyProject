@@ -12,21 +12,29 @@ import Spacing from "../Common/Spacing.js";
 import Icon from "react-native-vector-icons/FontAwesome"; // Import the icon library you are using
 import { useNavigation } from "@react-navigation/native";
 import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 
 const UserDetails = ({ route }) => {
   const [t] = useTranslation();
 
   const user = route.params.item;
-  const navigation = useNavigation();
+  const navigation = useNavigation(); 
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const { role } = useSelector((state) => state.user.userData);
+
 
   console.log(user.user_id);
 
   const handleBackPress = () => {
-    navigation.navigate("AppointmentHistory");
+    if (role === 'Admin' || role === 'Manager') {
+      navigation.navigate("AppointmentHistory");
+    } else {
+      navigation.navigate("UserHistory");
+    }
   };
+  
 
   const [Info, setInfo] = useState([]);
   const [status, setStatus] = useState([]);
