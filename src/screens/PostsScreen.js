@@ -32,7 +32,7 @@ import { useTranslation } from "react-i18next";
 
 const PostsScreen = () => {
   const navigation = useNavigation(); 
-  const [t] = useTranslation();
+  const [t, i18n] = useTranslation();
 
   const { role, token } = useSelector((state) => state.user.userData);
   const [items, setItems] = useState([]);
@@ -116,11 +116,7 @@ const PostsScreen = () => {
     }
   };
 
-  useEffect(() => {
-    fetchData();
-    retrieveLikeStatus();
-    persistLikeStatus();
-  }, [likeStatus]);
+ 
 
   
 
@@ -287,8 +283,13 @@ const PostsScreen = () => {
   };
   
   
-  
+  useEffect(() => {
+    fetchData();
+ 
+  }, []);
 
+  //   retrieveLikeStatus();
+  //persistLikeStatus();
   return (
     <MenuProvider>
       <View style={styles.container}>
@@ -355,7 +356,7 @@ const PostsScreen = () => {
                   {calculateTimeDifference(item.createdAt) ||
                     "No date available"}
                 </Text>
-                <Text style={styles.cardTitle}>{item.textPost}</Text>
+                <Text  style={[styles.cardTitle, { writingDirection: i18n.language === 'ar' ? 'rtl' : 'ltr' }]}>{item.textPost}</Text>
                 <Image
                   source={{ uri: item?.image?.secure_url }}
                   style={styles.cardImage}

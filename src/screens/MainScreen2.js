@@ -20,7 +20,7 @@ import { useTranslation } from "react-i18next";
 
 const MainScreen2 = () => {
   const navigation = useNavigation();
-  const [t] = useTranslation();
+  const [t, i18n] = useTranslation(); 
 
   const handleMenuPress = () => {
     navigation.openDrawer();
@@ -51,7 +51,7 @@ const MainScreen2 = () => {
             source={require("../../assets/pic3.jpg")}
           />
         </Text>
-        <Text style={styles.textHeader1}>
+        <Text style={[styles.textHeader1, { writingDirection: i18n.language === 'ar' ? 'rtl' : 'ltr' }]}>
           {t("welcome to")} {salonName} center
         </Text>
         <MainScreen />
