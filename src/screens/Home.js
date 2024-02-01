@@ -117,17 +117,19 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 520,
+    marginTop: 550,
   },
   languageText: {
     color: Colors.primary,
     fontSize: 16,
     marginRight: 10,
     fontWeight: "bold",
+    
   },
   separator: {
     color: Colors.primary,
     fontSize: 16,
     fontWeight: "bold",
+    
   },
 });

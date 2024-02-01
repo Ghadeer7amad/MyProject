@@ -11,7 +11,7 @@ import {
   Modal,
   Pressable,
   Appearance,
-} from "react-native";
+} from "react-native"; 
 import One from "../../assets/profile.jpg";
 import FeatherIcon from "react-native-vector-icons/Feather";
 import { useNavigation } from "@react-navigation/native";

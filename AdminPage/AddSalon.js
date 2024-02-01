@@ -6,7 +6,7 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
-import { Button } from "react-native-elements";
+import { Button } from "react-native-elements"; 
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import {
@@ -62,7 +62,7 @@ const AddSalon = () => {
         allowEmptyArrays: false,
         noFilesWithArrayNotation: false,
         dotsForObjectNotation: true,
-      };
+      }; 
 
       const branchesArray = FData.branches.map((branch) => branch.trim());
       setFData({ ...FData, branches: branchesArray });
@@ -93,7 +93,7 @@ const AddSalon = () => {
       });
       navigation.navigate("SalonScreen", { salonId: null });
     } catch (error) {
-      console.error(error);
+      console.error(error); 
     }
   };
 
@@ -201,7 +201,7 @@ const AddSalon = () => {
 export default AddSalon;
 
 const styles = StyleSheet.create({
-  contanier: {
+  container: {
     width: "100%",
     height: "100%",
   },

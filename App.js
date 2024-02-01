@@ -58,6 +58,8 @@ import UserHistory from "./src/screens/UserHistory";
 import NotificationScreen from "./src/screens/NotificationScreen";
 
 
+
+
 import { NativeBaseProvider } from "native-base";
 
 const Stack = createStackNavigator();
@@ -113,6 +115,7 @@ const HomeStack = () => (
 );
 
 const CustomDrawerContent = (props) => {
+
   return (
     <View style={{ flex: 1, justifyContent: "flex-start" }}>
       <Image
@@ -249,7 +252,8 @@ const CustomDrawerContent = (props) => {
           <Ionicons name="log-out" color={Color.primary} size={size} />
         )}
         onPress={() => {
-          props.navigation.navigate("Homee");
+          
+          props.navigation.navigate("Login");
         }}
       />
     </View>
