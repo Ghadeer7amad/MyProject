@@ -109,7 +109,7 @@ const AddPost = () => {
           );
         },
       });
-      navigation.navigate("PostsScreen");
+      navigation.replace("PostsScreen");
 
       
     } catch (error) {
