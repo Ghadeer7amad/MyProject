@@ -45,8 +45,6 @@ const ApplyForaJob = () => {
     cvFile: "",
   });
 
-   
-
   const toast = useToast();
 
   const baseUrl = "https://ayabeautyn.onrender.com";
@@ -78,12 +76,10 @@ const ApplyForaJob = () => {
       const result = await DocumentPicker.getDocumentAsync({
         type: "application/pdf",
       });
-  
+
       if (!result.canceled) {
         setSelectedFile(result);
         setButtonText(t("File is uploaded successfully"));
-  
-        // Update FData with the selected file
         setFData((prevFData) => ({
           ...prevFData,
           cvFile: result.assets[0],
@@ -93,8 +89,6 @@ const ApplyForaJob = () => {
       console.error("Error picking document:", err);
     }
   };
-  
-
 
   const onSubmitPressed = async () => {
     try {
@@ -102,11 +96,15 @@ const ApplyForaJob = () => {
       formData.append("user_name", userName);
       formData.append("SalonId", salonId);
       formData.append("jobName", selectedJob);
-      formData.append("cvFile", FData.cvFile); // تحديث هنا لاستخدام FData بدلاً من selectedFile
-  
+      formData.append("cvFile", {
+        uri: FData.cvFile,
+        name: "cvFile.pdf",
+        type: "application/pdf",
+      });
+
       const response = await axios.post(
         `${baseUrl}/uploadjobs/uploadjob`,
-        JSON.stringify(formData),
+        formData,
         {
           headers: {
             "Content-Type": "multipart/form-data",
@@ -114,6 +112,7 @@ const ApplyForaJob = () => {
           },
         }
       );
+
       if (response.status === 201) {
         toast.show({
           render: () => (
@@ -130,7 +129,6 @@ const ApplyForaJob = () => {
       console.error("Fetch error:", error.stack);
     }
   };
-  
 
   return (
     <ImageBackground
@@ -176,8 +174,6 @@ const ApplyForaJob = () => {
         >
           <Text style={styles.fileUploadText}>{buttonText}</Text>
         </TouchableOpacity>
-
-        
 
         <Text style={styles.uploadInfoText}>{t("Upload your cv")}</Text>
       </View>
