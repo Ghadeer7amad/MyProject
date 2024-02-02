@@ -35,7 +35,7 @@ const PostsScreen = () => {
   const [t, i18n] = useTranslation();
 
   const { role, token } = useSelector((state) => state.user.userData);
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState([ ]);
   const [isLoading, setIsLoading] = useState(true);
   const [editedText, setEditedText] = useState("");
   const [editedImage, setEditedImage] = useState("");
@@ -96,25 +96,7 @@ const PostsScreen = () => {
   };
   
 
-  //عشان يحافظ على لون اللايك
-  const persistLikeStatus = async () => {
-    try {
-      await AsyncStorage.setItem("likeStatus", JSON.stringify(likeStatus));
-    } catch (error) {
-      console.error("Error storing likeStatus:", error);
-    }
-  };
-
-  const retrieveLikeStatus = async () => {
-    try {
-      const storedLikeStatus = await AsyncStorage.getItem("likeStatus");
-      if (storedLikeStatus !== null) {
-        setLikeStatus(JSON.parse(storedLikeStatus));
-      }
-    } catch (error) {
-      console.error("Error retrieving likeStatus:", error);
-    }
-  };
+ 
 
  
 
@@ -196,7 +178,6 @@ const PostsScreen = () => {
           setItems(updatedItems);
           setEditModalVisible(false);
 
-          // Call fetchData after successfully updating the post
           fetchData();
         } else {
           const responseData = await response.json();
@@ -249,47 +230,42 @@ const PostsScreen = () => {
       if (response.ok) {
         const responseData = await response.json();
   
-        // Update like status in AsyncStorage
-        const updatedLikeStatus = { ...likeStatus, [itemId]: !likeStatus[itemId] };
-        await AsyncStorage.setItem("likeStatus", JSON.stringify(updatedLikeStatus));
   
-        // Update like status color
-        const updatedLikeStatusColor = { ...likeStatusColor, [itemId]: 'red' };
-        setLikeStatusColor(updatedLikeStatusColor);
+      const updatedLikeStatus = { ...likeStatus, [itemId]: !likeStatus[itemId] };
+      await AsyncStorage.setItem("likeStatus", JSON.stringify(updatedLikeStatus));
   
-        // Retrieve updated like status from AsyncStorage
-        const storedLikeStatus = await AsyncStorage.getItem("likeStatus");
-        if (storedLikeStatus !== null) {
-          setLikeStatus(JSON.parse(storedLikeStatus));
+    
+      const storedLikeStatus = await AsyncStorage.getItem("likeStatus");
+      if (storedLikeStatus !== null) {
+        setLikeStatus(JSON.parse(storedLikeStatus));
   
-          const updatedItems = items.map((item) => {
-            if (item._id === itemId) {
-              return {
-                ...item,
-                likes: new Array(responseData.likes),
-              };
-            }
-            return item;
-          });
+        const updatedItems = items.map((item) => {
+          if (item._id === itemId) {
+            return {
+              ...item,
+              likes: responseData.likes,
+            };
+          }
+          return item;
+        });
   
-          setItems(updatedItems);
-        }
-      } else {
-        console.log("Error toggling like");
+        setItems(()=> updatedItems);
       }
-    } catch (error) {
-      console.error("Error toggling like:", error);
+    } else {
+      console.log("Error toggling like");
     }
+  } catch (error) {
+    console.error("Error toggling like:", error);
+   }
   };
+  
   
   
   useEffect(() => {
     fetchData();
- 
   }, []);
 
-  //   retrieveLikeStatus();
-  //persistLikeStatus();
+
   return (
     <MenuProvider>
       <View style={styles.container}>
@@ -345,7 +321,6 @@ const PostsScreen = () => {
               <View style={styles.cardContentContainer}>
                 <View style={styles.userInfoContainer}>
                   <Image
-                    // source={{ uri: imageSalon.image }}
                     source={require("../../assets/profile.jpg")}
                     style={styles.smallUserImage}
                   />
@@ -368,7 +343,7 @@ const PostsScreen = () => {
                   <Icon
                     name="heart"
                     size={20}
-                    color={likeStatusColor[item._id] || "#777"}
+                    color={item?.likes.find(id=> id === userId)?"red":"#777"}
                   />
                 </TouchableOpacity>
                 <Text>{item.likes.length}</Text>

@@ -47,7 +47,6 @@ const ServicesScreen = () => {
 
   const handleBodyPress = async () => {
     try {
-      console.log("Fetching services...");
       const response = await fetch(
         `${baseUrl}/salons/${salonId}/services/getBodyServices`
       );

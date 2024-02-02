@@ -25,13 +25,6 @@ const ServiceDetailsScreen = ({ route }) => {
       <View style={styles.detailsContainer}>
         <View style={{ flexDirection: "row" }}>
           <Text style={styles.name}>{service.name}</Text>
-          <View style={styles.starContainer}>
-            <Iconn name="star" color="gold" size={15} />
-            <Iconn name="star" color="gold" size={15} />
-            <Iconn name="star" color="gold" size={15} />
-            <Iconn name="star-o" color="gold" size={15} />
-            <Iconn name="star-o" color="gold" size={15} />
-          </View>
         </View>
 
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>

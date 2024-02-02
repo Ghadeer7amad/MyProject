@@ -44,7 +44,7 @@ const MainScreen2 = () => {
         </TouchableOpacity>
       </View>
       <ScrollView>
-        <Text style={styles.textHeader}>
+        <Text style={[styles.textHeader, { writingDirection: i18n.language === 'ar' ? 'rtl' : 'ltr' }]}>
           {t("hello")} {userName}
           <Image
             style={{ width: 50, height: 50 }}
