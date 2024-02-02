@@ -28,13 +28,36 @@ const NotificationScreen = () => {
   
 const { salonId:salonIdManager } = useSelector((state) => state.user.userData);
 
-  console.log(salonIdUser);
+  
   const baseUrl = "https://ayabeautyn.onrender.com";
 
-  const fetchData = async () => { 
+  const fetchData = async () => {
     try {
       const response = await fetch(
         `${baseUrl}/auth/${salonIdUser}/${userId}/Notification/userNotification`
+      );
+  
+      if (!response.ok) {
+        throw new Error(`Failed to fetch notifications: ${response.statusText}`);
+      }
+  
+      const data = await response.json();
+      const sortedData = data.sort((a, b) => {
+        return new Date(b.createdAt) - new Date(a.createdAt); 
+      });
+      setItems(sortedData);
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Error fetching notifications:", error.message);
+      setIsLoading(false);
+    }
+  };
+  
+
+  const fetchSalonData = async () => {
+    try {
+      const response = await fetch(
+        `${baseUrl}/salons/${salonIdManager}/Notification/managerNotification`
       );
       if (!response.ok) {
         throw new Error(
@@ -42,7 +65,10 @@ const { salonId:salonIdManager } = useSelector((state) => state.user.userData);
         );
       }
       const data = await response.json();
-      setItems(data);
+      const sortedData = data.sort((a, b) => {
+        return new Date(b.createdAt) - new Date(a.createdAt);
+      });
+      setItems(sortedData);
       setIsLoading(false);
     } catch (error) {
       console.error("Error fetching notifications:", error.message);
@@ -51,31 +77,12 @@ const { salonId:salonIdManager } = useSelector((state) => state.user.userData);
   };
 
   useEffect(() => {
-    const fetchSalonData = async () => {
-      try {
-        const response = await fetch(
-          `${baseUrl}/salons/${salonIdManager}/Notification/managerNotification`
-        );
-        if (!response.ok) {
-          throw new Error(
-            `Failed to fetch notifications: ${response.statusText}`
-          );
-        }
-        const data = await response.json();
-        setItems(data); 
-        setIsLoading(false);
-      } catch (error) {
-        console.error("Error fetching notifications:", error.message);
-        setIsLoading(false);
-      }
-    };
-
     if (role === "User") {
       fetchData();
-    } else if (role === "Manager") { 
+    } else if (role === "Manager") {
       fetchSalonData();
     }
-  }, );
+  }, [role, fetchData, fetchSalonData]);
 
   const calculateTimeDifference = (createdAt) => {
     const now = new Date();

@@ -10,7 +10,7 @@ import {
   Switch,
   Modal,
   Pressable,
-  Appearance,
+  Alert,
 } from "react-native"; 
 import One from "../../assets/profile.jpg";
 import FeatherIcon from "react-native-vector-icons/Feather";
@@ -112,9 +112,30 @@ export default function Example() {
         },
       ],
     },
-  ];
+  ]; 
 
+  const confirmLogOut = () => {
+    Alert.alert(
+      t("Confirm Log Out"),
+      t("Are you want to log out from your accout?"),
+      [
+        {
+          text: t("Cancel"),
+          style: "cancel",
+        },
+        {
+          text: t("Yes, Log Out"),
+          onPress: () => LOGOut (),
+        },
+      ],
+      { cancelable: false }
+    );
+  };
 
+  const LOGOut=() => {
+    dispatch(logOut());
+    navigation.navigate("Login");
+  }
 
 
   return (
@@ -168,8 +189,7 @@ export default function Example() {
                       } else if (id === "Favorites") {
                         navigation.navigate("Favorite");
                       } else if (id === "Log Out") {
-                        dispatch(logOut());
-                       navigation.navigate("Login"); 
+                        confirmLogOut(); 
                         
                       } 
                       else if (id === "My Appointments") {

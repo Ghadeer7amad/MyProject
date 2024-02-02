@@ -59,7 +59,7 @@ const SalonScreen = ({ route }) => {
           onPress: () => handleDeletePress(itemId),
         },
       ],
-      { cancelable: false }
+      { cancelable: false } 
     );
   };
 

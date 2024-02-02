@@ -16,7 +16,7 @@ import { useTranslation } from "react-i18next";
 
 const PathologicalCase = () => {
   const [problem, setProblem] = useState("");
-  const [t] = useTranslation();
+  const [t, i18n] = useTranslation(); 
 
   const toast = useToast();
   const { userData } = useSelector((state) => state.user);
@@ -72,10 +72,10 @@ const PathologicalCase = () => {
   return (
     <View>
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-        <Text style={styles.textHeader}>{t("dear")}</Text>
+        <Text style={[styles.textHeader, { writingDirection: i18n.language === 'ar' ? 'rtl' : 'ltr' }]}>{t("dear")}</Text>
       </View>
 
-      <Text style={styles.subText}>{t("Status")}</Text>
+      <Text style={[styles.subText, { writingDirection: i18n.language === 'ar' ? 'rtl' : 'ltr' }]}>{t("Status")}</Text>
 
       <Icon name="pencil" size={30} color="black" style={styles.icon} />
       <View style={styles.container}>
