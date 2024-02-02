@@ -59,48 +59,48 @@ const SalonScreen = ({ route }) => {
           onPress: () => handleDeletePress(itemId),
         },
       ],
-      { cancelable: false }
+      { cancelable: false } 
     );
   };
 
   const baseUrl = "https://ayabeautyn.onrender.com";
 
+  const fetchData = async () => {
+    try {
+      const response = await fetch(`${baseUrl}/salons/salon`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Nada__${token}`,
+        },
+      });
+      const data = await response.json();
+      setItems(data);
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const fetchSalonData = async () => {
+    try {
+      const response = await fetch(`${baseUrl}/salons/salon/${salonId}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Nada__${token}`,
+        },
+      });
+      const data = await response.json();
+      setItems(data);
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`${baseUrl}/salons/salon`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Nada__${token}`,
-          },
-        });
-        const data = await response.json();
-        setItems(data);
-        setIsLoading(false);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    const fetchSalonData = async () => {
-      try {
-        const response = await fetch(`${baseUrl}/salons/salon/${salonId}`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Nada__${token}`,
-          },
-        });
-        const data = await response.json();
-        setItems(data);
-        setIsLoading(false);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    if (role === "Admin" || role == "User") {
+    if ((role === "Admin" || role === "User") && !salonId) {
       fetchData();
-    } else if (role === "Manager") {
+    } else if (role === "Manager" && salonId) {
       fetchSalonData();
     }
   }, [role, baseUrl, token, salonId]);
@@ -112,7 +112,11 @@ const SalonScreen = ({ route }) => {
       });
 
       if (response.ok) {
-        fetchData();
+        if ((role === "Admin" || role === "User") && !salonId) {
+          fetchData();
+        } else if (role === "Manager" && salonId) {
+          fetchSalonData();
+        }
       } else {
         const responseData = await response.json();
       }

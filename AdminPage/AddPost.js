@@ -24,6 +24,8 @@ import { useTranslation } from "react-i18next";
 const AddPost = () => {
   const navigation = useNavigation();
   const [t] = useTranslation();
+  const [isLoading, setIsLoading] = useState(false);
+
   const token = useSelector((state) => state.user.userData.token);
 
   const { _id: salonId, name: salonName } = useSelector(
@@ -52,6 +54,8 @@ const AddPost = () => {
     }
   };
 
+ 
+
   const addPost = async () => {
     try {
       setFData({
@@ -77,7 +81,7 @@ const AddPost = () => {
           size: image.fileSize,
         });
       }
-
+      setIsLoading(true);
       const baseUrl = "https://ayabeautyn.onrender.com";
 
       const response = await fetch(`${baseUrl}/posts/post`, {
@@ -88,9 +92,11 @@ const AddPost = () => {
         body: formData,
       });
 
+      setIsLoading(false);
+
       if (!response.ok) {
         console.error("Failed to upload post:", response.statusText);
-      }
+      } 
 
       console.log(formData);
 
@@ -103,8 +109,9 @@ const AddPost = () => {
           );
         },
       });
-
       navigation.navigate("PostsScreen");
+
+      
     } catch (error) {
       console.error(error);
     }
@@ -148,15 +155,15 @@ const AddPost = () => {
               width: 335,
               height: 180,
               margin: 20,
-              borderRadius: 10,
+              borderRadius: 10, 
               marginLeft: 15,
             }}
           />
         )}
       </View>
 
-      <TouchableOpacity onPress={addPost}>
-        <Text style={styles.buttonStyle}>{t("Add")}</Text>
+      <TouchableOpacity onPress={addPost} disabled={isLoading}>
+        <Text style={styles.buttonStyle}>{isLoading ? "Adding..." : t("Add")}</Text>
       </TouchableOpacity>
 
       <TouchableOpacity onPress={() => navigation.navigate("PostsScreen")}>

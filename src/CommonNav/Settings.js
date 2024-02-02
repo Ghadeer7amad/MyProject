@@ -10,8 +10,8 @@ import {
   Switch,
   Modal,
   Pressable,
-  Appearance,
-} from "react-native";
+  Alert,
+} from "react-native"; 
 import One from "../../assets/profile.jpg";
 import FeatherIcon from "react-native-vector-icons/Feather";
 import { useNavigation } from "@react-navigation/native";
@@ -22,10 +22,12 @@ import Spacing from "../Common/Spacing.js";
 import NavbarButtom from "../Common/NavbarButtom";
 
 import { useTranslation } from "react-i18next";
+import { logOut } from "../redux/user/userActions";
 
 export default function Example() {
   const [t, i18n] = useTranslation();
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   const [isLoading, setIsLoading] = useState(true);
   const [items, setItems] = useState([]);
@@ -110,7 +112,31 @@ export default function Example() {
         },
       ],
     },
-  ];
+  ]; 
+
+  const confirmLogOut = () => {
+    Alert.alert(
+      t("Confirm Log Out"),
+      t("Are you want to log out from your accout?"),
+      [
+        {
+          text: t("Cancel"),
+          style: "cancel",
+        },
+        {
+          text: t("Yes, Log Out"),
+          onPress: () => LOGOut (),
+        },
+      ],
+      { cancelable: false }
+    );
+  };
+
+  const LOGOut=() => {
+    dispatch(logOut());
+    navigation.navigate("Login");
+  }
+
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
@@ -163,14 +189,17 @@ export default function Example() {
                       } else if (id === "Favorites") {
                         navigation.navigate("Favorite");
                       } else if (id === "Log Out") {
-                        navigation.navigate("Homee");
-                      } else if (id === "My Appointments") {
+                        confirmLogOut(); 
+                        
+                      } 
+                      else if (id === "My Appointments") {
                         if (role === "Admin" || role === "Manager") {
                           navigation.navigate("AppointmentHistory");
                         } else {
-                          navigation.navigate("UserHistory");
+                          navigation.navigate("UserHistory"); 
                         }
                       } else {
+                        navigation.navigate("Notifications"); 
                       }
                     }}
                   >

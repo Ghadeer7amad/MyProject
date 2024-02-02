@@ -235,6 +235,7 @@ const BookingScreen = () => {
       data: { someData: "goes here" },
       salonId: salonId,
       userId: userId,
+      toUser: false,
     };
     
     const notificationData2 = {

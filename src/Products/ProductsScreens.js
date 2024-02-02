@@ -24,7 +24,7 @@ import { useTranslation } from "react-i18next";
 
 const ProductsScreens = () => {
   const navigation = useNavigation();
-  const [t] = useTranslation();
+  const [t, i18n] = useTranslation();
 
   const dispatch = useDispatch();
   const toast = useToast();
@@ -209,14 +209,14 @@ const ProductsScreens = () => {
         <NavbarTop />
 
         <View style={{ width: "100%" }}>
-          <Text style={styles.styleText}>
+          <Text style={[styles.styleText, { writingDirection: i18n.language === 'ar' ? 'rtl' : 'ltr' }]}>
             {t("find the best")}{" "}
             <Image
               style={{ width: 50, height: 50 }}
               source={require("../../assets/122.jpg")}
             />
           </Text>
-          <Text style={[styles.styleText, styles.styleText2]}>
+          <Text style={[styles.styleText, styles.styleText2, { writingDirection: i18n.language === 'ar' ? 'rtl' : 'ltr' }]}>
             {t("product for you")}
           </Text>
           {(role === "Admin" || role === "Manager") && (

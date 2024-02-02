@@ -32,10 +32,10 @@ import { useTranslation } from "react-i18next";
 
 const PostsScreen = () => {
   const navigation = useNavigation(); 
-  const [t] = useTranslation();
+  const [t, i18n] = useTranslation();
 
   const { role, token } = useSelector((state) => state.user.userData);
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState([ ]);
   const [isLoading, setIsLoading] = useState(true);
   const [editedText, setEditedText] = useState("");
   const [editedImage, setEditedImage] = useState("");
@@ -43,6 +43,8 @@ const PostsScreen = () => {
   const [isEditModalVisible, setEditModalVisible] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [likeStatus, setLikeStatus] = useState({});
+  const [likeStatusColor, setLikeStatusColor] = useState({});
+
 
   const { id: userId, name: userName } = useSelector(
     (state) => state.user.userData
@@ -54,30 +56,11 @@ const PostsScreen = () => {
 
   const baseUrl = "https://ayabeautyn.onrender.com";
 
-  const requestGalleryPermission = async () => {
-    try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-        {
-          title: "Gallery Permission",
-          message: "App needs access to your gallery to choose images.",
-          buttonNeutral: "Ask Me Later",
-          buttonNegative: "Cancel",
-          buttonPositive: "OK",
-        }
-      );
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        console.log("Gallery permission granted");
-      } else {
-        console.log("Gallery permission denied");
-      }
-    } catch (err) {
-      console.warn(err);
-    }
-  };
+
 
   const fetchData = async () => {
     try {
+      setIsLoading(true);
       const response = await fetch(`${baseUrl}/salons/${salonId}/Post/post`, {
         headers: {
           "Content-Type": "application/json",
@@ -85,7 +68,7 @@ const PostsScreen = () => {
         },
       });
       const data = await response.json();
-
+  
       if (Array.isArray(data)) {
         const formattedData = [];
         for (const item of data) {
@@ -105,41 +88,19 @@ const PostsScreen = () => {
       }
     } catch (error) {
       console.error("Error fetching data:", error);
+    } finally {
+      setIsLoading(false);
     }
+  
+  
   };
+  
 
-  //عشان يحافظ على لون اللايك
-  const persistLikeStatus = async () => {
-    try {
-      await AsyncStorage.setItem("likeStatus", JSON.stringify(likeStatus));
-    } catch (error) {
-      console.error("Error storing likeStatus:", error);
-    }
-  };
+ 
 
-  const retrieveLikeStatus = async () => {
-    try {
-      const storedLikeStatus = await AsyncStorage.getItem("likeStatus");
-      if (storedLikeStatus !== null) {
-        setLikeStatus(JSON.parse(storedLikeStatus));
-      }
-    } catch (error) {
-      console.error("Error retrieving likeStatus:", error);
-    }
-  };
+ 
 
-  useEffect(() => {
-    fetchData();
-  }, [salonId]);
-
-  useEffect(() => {
-    requestGalleryPermission();
-    retrieveLikeStatus();
-  }, []);
-
-  useEffect(() => {
-    persistLikeStatus();
-  }, [likeStatus]);
+  
 
   const handleDeletePress = async (itemId) => {
     try {
@@ -217,7 +178,6 @@ const PostsScreen = () => {
           setItems(updatedItems);
           setEditModalVisible(false);
 
-          // Call fetchData after successfully updating the post
           fetchData();
         } else {
           const responseData = await response.json();
@@ -263,42 +223,48 @@ const PostsScreen = () => {
 
   const handleToggleLike = async (itemId) => {
     try {
-      const response = await fetch(
-        `${baseUrl}/posts/post/${itemId}/${userId}`,
-        {
-          method: "POST",
-        }
-      );
-
+      const response = await fetch(`${baseUrl}/posts/post/${itemId}/${userId}`, {
+        method: "POST",
+      });
+  
       if (response.ok) {
         const responseData = await response.json();
-
-        setLikeStatus((prevStatus) => ({
-          ...prevStatus,
-          [itemId]: !prevStatus[itemId],
-        }));
-
+  
+  
+      const updatedLikeStatus = { ...likeStatus, [itemId]: !likeStatus[itemId] };
+      await AsyncStorage.setItem("likeStatus", JSON.stringify(updatedLikeStatus));
+  
+    
+      const storedLikeStatus = await AsyncStorage.getItem("likeStatus");
+      if (storedLikeStatus !== null) {
+        setLikeStatus(JSON.parse(storedLikeStatus));
+  
         const updatedItems = items.map((item) => {
           if (item._id === itemId) {
             return {
               ...item,
-              likes: new Array(responseData.likes),
+              likes: responseData.likes,
             };
           }
           return item;
         });
-
-        setItems(updatedItems);
-
-        // حفظ حالة اللايك في AsyncStorage
-        await AsyncStorage.setItem("likeStatus", JSON.stringify(likeStatus));
-      } else {
-        console.log("error");
+  
+        setItems(()=> updatedItems);
       }
-    } catch (error) {
-      console.error("Error toggling like:", error);
+    } else {
+      console.log("Error toggling like");
     }
+  } catch (error) {
+    console.error("Error toggling like:", error);
+   }
   };
+  
+  
+  
+  useEffect(() => {
+    fetchData();
+  }, []);
+
 
   return (
     <MenuProvider>
@@ -348,25 +314,24 @@ const PostsScreen = () => {
                       }
                       text="Edit"
                     />
-                  </MenuOptions>
+                  </MenuOptions> 
                 </Menu>
               )}
 
               <View style={styles.cardContentContainer}>
                 <View style={styles.userInfoContainer}>
                   <Image
-                    // source={{ uri: imageSalon.image }}
-                    source={require("../../assets/3.jpg")}
+                    source={require("../../assets/profile.jpg")}
                     style={styles.smallUserImage}
                   />
-                  <Text style={styles.userName}>{salonName}</Text>
+                  <Text style={styles.userName}>{salonName}Center</Text>
                 </View>
 
                 <Text style={styles.postDate}>
                   {calculateTimeDifference(item.createdAt) ||
                     "No date available"}
                 </Text>
-                <Text style={styles.cardTitle}>{item.textPost}</Text>
+                <Text  style={[styles.cardTitle, { writingDirection: i18n.language === 'ar' ? 'rtl' : 'ltr' }]}>{item.textPost}</Text>
                 <Image
                   source={{ uri: item?.image?.secure_url }}
                   style={styles.cardImage}
@@ -378,7 +343,7 @@ const PostsScreen = () => {
                   <Icon
                     name="heart"
                     size={20}
-                    color={likeStatus[item._id] ? "red" : "#777"}
+                    color={item?.likes.find(id=> id === userId)?"red":"#777"}
                   />
                 </TouchableOpacity>
                 <Text>{item.likes.length}</Text>
@@ -390,27 +355,33 @@ const PostsScreen = () => {
         <NavbarButtom onChange={(selectedIcon) => console.log(selectedIcon)} />
 
         <Modal isVisible={isEditModalVisible}>
-          <View style={styles.editModalContainer}>
-            <TextInput
-              style={styles.editInput}
-              value={editedText}
-              onChangeText={(text) => setEditedText(text)}
-            />
+  <View style={styles.editModalContainer}>
+    <TextInput
+      style={styles.editInput}
+      value={editedText}
+      onChangeText={(text) => setEditedText(text)}
+      placeholder="Edit your post..."
+    />
+    <Image
+      source={{ uri: editedImage }}
+      style={styles.editImage}
+      resizeMode="cover"
+    />
+    <View style={styles.editModalButtons}>
+      <Button
+        title="Save"
+        onPress={handleSaveEdit}
+        buttonStyle={styles.saveButton}
+      />
+      <Button
+        title="Cancel"
+        onPress={handleCancelEdit}
+        buttonStyle={styles.cancelButton}
+      />
+    </View>
+  </View>
+</Modal>
 
-            <View style={styles.editModalButtons}>
-              <Button
-                title="Save"
-                onPress={handleSaveEdit}
-                buttonStyle={styles.saveButton}
-              />
-              <Button
-                title="Cancel"
-                onPress={handleCancelEdit}
-                buttonStyle={styles.cancelButton}
-              />
-            </View>
-          </View>
-        </Modal>
       </View>
     </MenuProvider>
   );
@@ -557,6 +528,9 @@ const styles = StyleSheet.create({
     color: "black",
     marginBottom: 5,
     marginLeft: 20,
+    marginTop: 5,
+    
+
   },
   editModalContainer: {
     backgroundColor: "white",

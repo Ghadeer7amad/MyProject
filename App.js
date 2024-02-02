@@ -3,8 +3,8 @@ import 'intl-pluralrules';
 import './i18n';
 import { useTranslation } from 'react-i18next';
 import registerNNPushToken from 'native-notify';
-import { Text, View, StyleSheet, Image } from "react-native";
-import { Provider } from "react-redux";
+import { Text, View, StyleSheet, Image } from "react-native"; 
+import { Provider, useDispatch, useSelector } from "react-redux";
 import store from "./src/redux/store";
 import { DrawerItemList, DrawerItem } from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
@@ -58,7 +58,10 @@ import UserHistory from "./src/screens/UserHistory";
 import NotificationScreen from "./src/screens/NotificationScreen";
 
 
+
+
 import { NativeBaseProvider } from "native-base";
+import { logOut } from "./src/redux/user/userActions";
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -112,7 +115,10 @@ const HomeStack = () => (
   </Stack.Navigator>
 );
 
-const CustomDrawerContent = (props) => {
+const CustomDrawerContent = (props) => { 
+
+  const dispatch = useDispatch();
+
   return (
     <View style={{ flex: 1, justifyContent: "flex-start" }}>
       <Image
@@ -249,7 +255,9 @@ const CustomDrawerContent = (props) => {
           <Ionicons name="log-out" color={Color.primary} size={size} />
         )}
         onPress={() => {
-          props.navigation.navigate("Homee");
+          
+          dispatch(logOut());
+          props.navigation.navigate("Login");
         }}
       />
     </View>

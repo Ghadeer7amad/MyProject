@@ -7,6 +7,7 @@ import {
   ADD_TO_FAVORITES,
   REMOVE_FROM_FAVORITES,
   ADD_TO_CART,
+  LogOut
 } from "./userActionTypes";
 
 const initialState = {
@@ -81,6 +82,15 @@ const userReducer = (state = initialState, action) => {
         ...state,
         cart: [...state.cart, action.payload],
       };
+
+      case LogOut:
+        return {
+          ...state,
+          userData: { },
+        }
+
+
+
     default:
       return state;
   }

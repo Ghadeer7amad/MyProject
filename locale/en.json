@@ -242,5 +242,8 @@
   "Time": "Time:",
   "Service": "Service:",
   "Statu": "Status:",
-  "Add Manager": "Add Manager"
+  "Add Manager": "Add Manager",
+  "Confirm Log Out": "Confirm Log Out",
+  "Are you want to log out from your accout?": "Are you want to log out from your accout?",
+  "Yes, Log Out": "Yes, Log Out" 
 }
