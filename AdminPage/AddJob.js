@@ -97,7 +97,7 @@ const AddJob = () => {
           );
         },
       });
-      navigation.navigate("Jobs");
+      navigation.replace("Jobs");
     } catch (error) {
       console.error(error);
     }
