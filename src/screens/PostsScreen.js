@@ -293,32 +293,24 @@ const PostsScreen = () => {
       </View>
 
       <FlatList
-        data={items}
-        keyExtractor={(item) => item._id}
-        renderItem={({ item }) => (
-          <Card containerStyle={styles.card}>
-            {(role === "Admin" || role === "Manager") && (
-              <Menu>
-                <MenuTrigger style={styles.pointsContainer}>
-                  <Icon name="ellipsis-vertical" color="#5e366a" size={20} />
-                </MenuTrigger>
-                <MenuOptions>
-                  <MenuOption
-                    onSelect={() => confirmDelete(item._id)}
-                    text="Delete"
-                  />
-                  <MenuOption
-                    onSelect={() =>
-                      handleEditPress(
-                        item._id,
-                        item.textPost,
-                        item?.image?.secure_url || ""
-                      )
-                    }
-                    text="Edit"
-                  />
-                </MenuOptions>
-              </Menu>
+          data={items}
+          keyExtractor={(item) => item._id}
+          renderItem={({ item }) => (
+            <Card containerStyle={styles.card}>
+              {(role === "Admin" || role === "Manager") && (
+                <Menu>
+                  <MenuTrigger style={styles.pointsContainer}>
+                    <Icon name="ellipsis-vertical" color="#5e366a" size={20} />
+                  </MenuTrigger>
+                  <MenuOptions customStyles={{ optionsContainer: styles.menuContainer }}>
+                    <MenuOption onSelect={() => confirmDelete(item._id)} style={styles.menuOption}>
+                      <Text style={styles.menuOptionText}>Delete</Text>
+                    </MenuOption>
+                    <MenuOption onSelect={() => handleEditPress(item._id, item.textPost, item?.image?.secure_url || "")} style={styles.menuOption}>
+                      <Text style={styles.menuOptionText}>Edit</Text>
+                    </MenuOption>
+                  </MenuOptions>
+                </Menu>
             )}
 
             <View style={styles.cardContentContainer}>
@@ -606,6 +598,22 @@ const styles = StyleSheet.create({
   userName: {
     fontSize: 12,
     color: "black",
+  },
+
+  menuContainer: {
+    position: "absolute", 
+    backgroundColor: "white", 
+    borderRadius: 8, 
+    padding: 8, 
+  },
+  menuOption: {
+    padding: 10, 
+    borderBottomWidth: 1, 
+    borderBottomColor: "#ccc", 
+  },
+  menuOptionText: {
+    fontSize: 16, 
+    color: "black", 
   },
 });
 

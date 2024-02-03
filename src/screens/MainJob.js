@@ -56,7 +56,7 @@ const MainJob = () => {
         </Text>
       </TouchableOpacity>
 
-      {(role === "Admin" || role === "Manager") && (
+      {role === "Admin"  && (
         <TouchableOpacity
           onPress={() => {
             navigation.navigate("JobHistory");

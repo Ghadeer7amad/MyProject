@@ -209,6 +209,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     borderColor: "#c3b4d2",
     borderWidth: 2,
+ 
   },
   inputDis: {
     paddingBottom: 100,
