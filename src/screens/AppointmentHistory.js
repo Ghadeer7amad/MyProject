@@ -259,9 +259,9 @@ const AppointmentsScreen = () => {
         const dateB = new Date(b.appointment_date);
 
         if (sortOrder === "asc") {
-          return sortType === "Closest" ? dateA - dateB : dateB - dateA;
+          return sortType === t("closest") ? dateA - dateB : dateB - dateA;
         } else {
-          return sortType === "Closest" ? dateB - dateA : dateA - dateB;
+          return sortType === t("furthest") ? dateB - dateA : dateA - dateB;
         }
       });
 

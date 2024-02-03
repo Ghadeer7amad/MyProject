@@ -42,7 +42,7 @@ const Jobs = () => {
       setItems(data);
       setIsLoading(false);
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.error("Error fetching data:", error); 
     }
   };
 
@@ -123,7 +123,7 @@ const Jobs = () => {
         )}
 
         <FlatList
-          data={items}
+          data={items.slice().reverse()}
           keyExtractor={(item) => item._id}
           renderItem={({ item }) => (
             <>

@@ -82,9 +82,7 @@ const ApplyForaJob = () => {
       if (!result.canceled) {
         setSelectedFile(result);
         setButtonText(t("File is uploaded successfully"));
-  
-        // Update FData with the selected file
-        setFData((prevFData) => ({
+          setFData((prevFData) => ({
           ...prevFData,
           cvFile: result.assets[0],
         }));
@@ -102,11 +100,11 @@ const ApplyForaJob = () => {
       formData.append("user_name", userName);
       formData.append("SalonId", salonId);
       formData.append("jobName", selectedJob);
-      formData.append("cvFile", FData.cvFile); // تحديث هنا لاستخدام FData بدلاً من selectedFile
+      formData.append("cvFile", FData.cvFile);
   
       const response = await axios.post(
         `${baseUrl}/uploadjobs/uploadjob`,
-        JSON.stringify(formData),
+        formData,
         {
           headers: {
             "Content-Type": "multipart/form-data",
@@ -114,6 +112,7 @@ const ApplyForaJob = () => {
           },
         }
       );
+  
       if (response.status === 201) {
         toast.show({
           render: () => (
@@ -130,6 +129,7 @@ const ApplyForaJob = () => {
       console.error("Fetch error:", error.stack);
     }
   };
+  
   
 
   return (

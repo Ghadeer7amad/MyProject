@@ -97,7 +97,7 @@ const AddJob = () => {
           );
         },
       });
-      navigation.navigate("Jobs");
+      navigation.replace("Jobs");
     } catch (error) {
       console.error(error);
     }
@@ -209,6 +209,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     borderColor: "#c3b4d2",
     borderWidth: 2,
+ 
   },
   inputDis: {
     paddingBottom: 100,

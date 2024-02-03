@@ -66,6 +66,8 @@ const UserDetails = ({ route }) => {
     fetchInfo();
   }, [user.user_id]);
 
+  console.log(user.user_id)
+
   useEffect(() => {
     const fetchStatus = async () => {
       try {

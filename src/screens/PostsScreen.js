@@ -81,6 +81,10 @@ const PostsScreen = () => {
             console.error("Error fetching data: Invalid item format", item);
           }
         }
+  
+        // Sort the formattedData array in descending order based on timestamps
+        formattedData.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  
         setItems(formattedData);
         setIsLoading(false);
       } else {
@@ -91,9 +95,8 @@ const PostsScreen = () => {
     } finally {
       setIsLoading(false);
     }
-  
-  
   };
+  
   
 
  
@@ -268,28 +271,28 @@ const PostsScreen = () => {
 
   return (
     <MenuProvider>
-      <View style={styles.container}>
-        <WhatsApp />
+    <View style={styles.container}>
+      <WhatsApp />
 
-        <Header />
+      <Header />
 
-        <View style={styles.postInputContainer}>
-          {(role === "Admin" || role === "Manager") && (
-            <View style={styles.postingContainer}>
-              <View style={styles.postInputWrapper}>
-                <Button
-                  title={t("What do you want to share?")}
-                  type="outline"
-                  onPress={() => navigation.navigate("AddPost")}
-                  buttonStyle={styles.postButton}
-                  titleStyle={styles.postButtonTitle}
-                />
-              </View>
+      <View style={styles.postInputContainer}>
+        {(role === "Admin" || role === "Manager") && (
+          <View style={styles.postingContainer}>
+            <View style={styles.postInputWrapper}>
+              <Button
+                title={t("What do you want to share?")}
+                type="outline"
+                onPress={() => navigation.navigate("AddPost")}
+                buttonStyle={styles.postButton}
+                titleStyle={styles.postButtonTitle}
+              />
             </View>
-          )}
-        </View>
+          </View>
+        )}
+      </View>
 
-        <FlatList
+      <FlatList
           data={items}
           keyExtractor={(item) => item._id}
           renderItem={({ item }) => (
@@ -299,90 +302,90 @@ const PostsScreen = () => {
                   <MenuTrigger style={styles.pointsContainer}>
                     <Icon name="ellipsis-vertical" color="#5e366a" size={20} />
                   </MenuTrigger>
-                  <MenuOptions>
-                    <MenuOption
-                      onSelect={() => confirmDelete(item._id)}
-                      text="Delete"
-                    />
-                    <MenuOption
-                      onSelect={() =>
-                        handleEditPress(
-                          item._id,
-                          item.textPost,
-                          item?.image?.secure_url || ""
-                        )
-                      }
-                      text="Edit"
-                    />
-                  </MenuOptions> 
+                  <MenuOptions customStyles={{ optionsContainer: styles.menuContainer }}>
+                    <MenuOption onSelect={() => confirmDelete(item._id)} style={styles.menuOption}>
+                      <Text style={styles.menuOptionText}>Delete</Text>
+                    </MenuOption>
+                    <MenuOption onSelect={() => handleEditPress(item._id, item.textPost, item?.image?.secure_url || "")} style={styles.menuOption}>
+                      <Text style={styles.menuOptionText}>Edit</Text>
+                    </MenuOption>
+                  </MenuOptions>
                 </Menu>
-              )}
+            )}
 
-              <View style={styles.cardContentContainer}>
-                <View style={styles.userInfoContainer}>
-                  <Image
-                    source={require("../../assets/profile.jpg")}
-                    style={styles.smallUserImage}
-                  />
-                  <Text style={styles.userName}>{salonName}Center</Text>
-                </View>
-
-                <Text style={styles.postDate}>
-                  {calculateTimeDifference(item.createdAt) ||
-                    "No date available"}
-                </Text>
-                <Text  style={[styles.cardTitle, { writingDirection: i18n.language === 'ar' ? 'rtl' : 'ltr' }]}>{item.textPost}</Text>
+            <View style={styles.cardContentContainer}>
+              <View style={styles.userInfoContainer}>
                 <Image
-                  source={{ uri: item?.image?.secure_url }}
-                  style={styles.cardImage}
-                  resizeMode="cover"
+                  source={require("../../assets/profile.jpg")}
+                  style={styles.smallUserImage}
                 />
+                <Text style={styles.userName}>{salonName}Center</Text>
               </View>
-              <View style={styles.postInteractions}>
-                <TouchableOpacity onPress={() => handleToggleLike(item._id)}>
-                  <Icon
-                    name="heart"
-                    size={20}
-                    color={item?.likes.find(id=> id === userId)?"red":"#777"}
-                  />
-                </TouchableOpacity>
-                <Text>{item.likes.length}</Text>
-              </View>
-            </Card>
-          )}
-        />
 
-        <NavbarButtom onChange={(selectedIcon) => console.log(selectedIcon)} />
+              <Text style={styles.postDate}>
+                {calculateTimeDifference(item.createdAt) ||
+                  "No date available"}
+              </Text>
+              <Text
+                style={[
+                  styles.cardTitle,
+                  { writingDirection: i18n.language === "ar" ? "rtl" : "ltr" },
+                ]}
+              >
+                {item.textPost}
+              </Text>
+              <Image
+                source={{ uri: item?.image?.secure_url }}
+                style={styles.cardImage}
+                resizeMode="cover"
+              />
+            </View>
+            <View style={styles.postInteractions}>
+              <TouchableOpacity onPress={() => handleToggleLike(item._id)}>
+                <Icon
+                  name="heart"
+                  size={20}
+                  color={
+                    item?.likes.find((id) => id === userId) ? "red" : "#777"
+                  }
+                />
+              </TouchableOpacity>
+              <Text>{item.likes.length}</Text>
+            </View>
+          </Card>
+        )}
+      />
 
-        <Modal isVisible={isEditModalVisible}>
-  <View style={styles.editModalContainer}>
-    <TextInput
-      style={styles.editInput}
-      value={editedText}
-      onChangeText={(text) => setEditedText(text)}
-      placeholder="Edit your post..."
-    />
-    <Image
-      source={{ uri: editedImage }}
-      style={styles.editImage}
-      resizeMode="cover"
-    />
-    <View style={styles.editModalButtons}>
-      <Button
-        title="Save"
-        onPress={handleSaveEdit}
-        buttonStyle={styles.saveButton}
-      />
-      <Button
-        title="Cancel"
-        onPress={handleCancelEdit}
-        buttonStyle={styles.cancelButton}
-      />
+      <NavbarButtom onChange={(selectedIcon) => console.log(selectedIcon)} />
+
+      <Modal isVisible={isEditModalVisible}>
+        <View style={styles.editModalContainer}>
+          <TextInput
+            style={styles.editInput}
+            value={editedText}
+            onChangeText={(text) => setEditedText(text)}
+            placeholder="Edit your post..."
+          />
+          <Image
+            source={{ uri: editedImage }}
+            style={styles.editImage}
+            resizeMode="cover"
+          />
+          <View style={styles.editModalButtons}>
+            <Button
+              title="Save"
+              onPress={handleSaveEdit}
+              buttonStyle={styles.saveButton}
+            />
+            <Button
+              title="Cancel"
+              onPress={handleCancelEdit}
+              buttonStyle={styles.cancelButton}
+            />
+          </View>
+        </View>
+      </Modal>
     </View>
-  </View>
-</Modal>
-
-      </View>
     </MenuProvider>
   );
 };
@@ -486,6 +489,12 @@ const styles = StyleSheet.create({
   },
 
   card: {
+    position: 'relative', // Set position to relative
+    zIndex: 0, // Set zIndex to 0
+    borderRadius: 30,
+    backgroundColor: "#f6f6f6",
+    marginBottom: 10,
+  },  card: {
     borderRadius: 30,
     backgroundColor: "#f6f6f6",
     marginBottom: 10,
@@ -570,10 +579,11 @@ const styles = StyleSheet.create({
   },
 
   pointsContainer: {
-    position: "absolute",
+    
     top: 10,
-    right: 10,
+    left: 320,
     zIndex: 1,
+    
   },
   userInfoContainer: {
     flexDirection: "row",
@@ -588,6 +598,22 @@ const styles = StyleSheet.create({
   userName: {
     fontSize: 12,
     color: "black",
+  },
+
+  menuContainer: {
+    position: "absolute", 
+    backgroundColor: "white", 
+    borderRadius: 8, 
+    padding: 8, 
+  },
+  menuOption: {
+    padding: 10, 
+    borderBottomWidth: 1, 
+    borderBottomColor: "#ccc", 
+  },
+  menuOptionText: {
+    fontSize: 16, 
+    color: "black", 
   },
 });
 
