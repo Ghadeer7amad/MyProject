@@ -56,8 +56,7 @@ import EditEmployee from "./AdminPage/EditEmployee.js";
 import AddManager from "./AdminPage/AddManager.js";
 import UserHistory from "./src/screens/UserHistory";
 import NotificationScreen from "./src/screens/NotificationScreen";
-
-
+import {LogBox} from 'react-native';
 
 
 
@@ -65,6 +64,8 @@ import { logOut } from "./src/redux/user/userActions";
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
+
+LogBox.ignoreAllLogs(true);
 
 const HomeStack = () => (
   <Stack.Navigator>
