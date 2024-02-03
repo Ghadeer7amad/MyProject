@@ -21,6 +21,7 @@ import { Alert } from "react-native";
 import { Box, useToast } from "native-base";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
+import { useFocusEffect } from '@react-navigation/native'; 
 
 const ProductsScreens = () => {
   const navigation = useNavigation();
@@ -76,6 +77,12 @@ const ProductsScreens = () => {
       alert("An unexpected error occurred. Please try again.");
     }
   };
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchData(); // استدعاء الدالة عند التركيز على الشاشة
+    }, [])
+  );
+
 
   const handleAddToFavorite = async (productId) => {
     const baseUrl = "https://ayabeautyn.onrender.com";
@@ -142,7 +149,7 @@ const ProductsScreens = () => {
   const confirmDelete = (itemId) => {
     Alert.alert(
       t("Confirm deletion"),
-      t("Are you sure you want to delete this salon?"),
+      t("Are you sure you want to delete this product?"),
       [
         {
           text: t("Cancel"),
@@ -188,20 +195,24 @@ const ProductsScreens = () => {
     }
   };
 
-  const baseUrl = "https://ayabeautyn.onrender.com";
-  useEffect(() => {
-    fetch(`${baseUrl}/salons/${salonId}/Product/getProducts`)
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error(`HTTP error! Status: ${res.status}`);
-        }
-        return res.json();
-      })
-      .then((data) => {
-        setproducts(data.products);
-      })
-      .catch((error) => console.log("Error from favs screen: ", error.message));
-  }, []);
+const baseUrl = "https://ayabeautyn.onrender.com";
+const fetchData = async () => {
+  try {
+    const response = await fetch(`${baseUrl}/salons/${salonId}/Product/getProducts`);
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    const data = await response.json();
+    setproducts(data.products);
+  } catch (error) {
+    console.error("Error fetching products:", error.message);
+  }
+};
+
+useEffect(() => {
+  fetchData(); 
+}, []); 
+  
 
   return (
     <View style={styles.container}>
