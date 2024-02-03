@@ -21,6 +21,7 @@ import { Alert } from "react-native";
 import { useSelector } from "react-redux";
 import WhatsApp from "../Common/WhatsApp.js";
 import { useTranslation } from "react-i18next";
+import { useFocusEffect } from '@react-navigation/native'; 
 
 const ServicesScreen = () => {
   const navigation = useNavigation();
@@ -82,13 +83,20 @@ const ServicesScreen = () => {
     navigation.navigate("ServiceDetails", { service });
   };
   const baseUrl = "https://ayabeautyn.onrender.com";
-  useEffect(() => {  
-    fetch(`${baseUrl}/salons/${salonId}/services/getServices`)
-      .then((res) => res.json())
-      .then((data) => {
-        setServices(data.Services);
-      })
-      .catch((error) => console.log("Error from favs screen: ", error.message));
+  const fetchData = async () => {
+    try {
+      const response = await fetch(`${baseUrl}/salons/${salonId}/services/getServices`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      const data = await response.json();
+      setServices(data.Services);
+    } catch (error) {
+      console.error("Error fetching services:", error.message);
+    }
+  };
+  useEffect(() => {
+    fetchData();
   }, []);
 
   const handleRemoveService = async (itemId) => {
@@ -150,7 +158,12 @@ const ServicesScreen = () => {
   const handleEditService = async (item) => {
     navigation.navigate("EditServices", { item });
   };
-
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchData(); // استدعاء الدالة عند التركيز على الشاشة
+    }, [])
+  );
+  
   return (
     <View style={styles.container}>
       <WhatsApp />
