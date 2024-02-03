@@ -28,6 +28,7 @@ import {
 } from "react-native-popup-menu";
 import WhatsApp from "../Common/WhatsApp.js";
 import { useSelector } from "react-redux";
+import { useFocusEffect } from '@react-navigation/native';
 import { useTranslation } from "react-i18next";
 
 const PostsScreen = () => {
@@ -115,7 +116,7 @@ const PostsScreen = () => {
         },
       });
 
-      if (response.ok) {
+      if (response.ok) { 
         fetchData();
       } else {
         const responseData = await response.json();
@@ -264,9 +265,11 @@ const PostsScreen = () => {
   
   
   
-  useEffect(() => {
-    fetchData();
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchData();
+    }, [])
+  );
 
 
   return (
