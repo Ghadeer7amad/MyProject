@@ -242,7 +242,7 @@ const CardsScreen = () => {
                     }}
                   >
                     <Text style={styles.productPrice}>
-                      ${product.productId?.finalPrice}
+                      {product.productId?.finalPrice} ILS
                     </Text>
                   </View>
 
@@ -327,7 +327,7 @@ const CardsScreen = () => {
           <Text style={{ fontSize: 25, color: "black" }}>
             {t("Total Price")}
           </Text>
-          <Text style={{ fontSize: 25, color: "#929aab" }}>${totalPrice}</Text>
+          <Text style={{ fontSize: 25, color: "#929aab" }}>{totalPrice} ILS</Text>
         </View>
 
         <TouchableOpacity

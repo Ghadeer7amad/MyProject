@@ -345,7 +345,7 @@ useEffect(() => {
 
                   <View style={styles.styleRow}>
                     <Text style={styles.PriceStyle}>
-                      $ {product.finalPrice}
+                      {product.finalPrice} ILS
                     </Text>
 
                     <TouchableOpacity

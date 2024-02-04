@@ -158,7 +158,7 @@ const ProductsDetails = ({ route }) => {
         <View style={{ flexDirection: "row" }}>
           <View style={{ marginTop: 30, paddingLeft: 5 }}>
             <Text style={styles.priceStyle}>{t("Price")}</Text>
-            <Text style={styles.priceStyle}>${product.finalPrice}</Text>
+            <Text style={styles.priceStyle}>{product.finalPrice} ILS</Text>
           </View>
           <TouchableOpacity
             onPressIn={handlePressIn}
