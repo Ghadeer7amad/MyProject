@@ -156,7 +156,7 @@ const FavoriteScreens = ({ favoriteProducts }) => {
                     }}
                   >
                     <Text style={styles.productPrice}>
-                      ${product.productId?.finalPrice}
+                      {product.productId?.finalPrice} ILS
                     </Text>
                   </View>
                 </View>
