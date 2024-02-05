@@ -43,7 +43,7 @@ const EditEmployee = ({ route }) => {
     axios(configurationObject)
       .then((response) => {
         if (response.status === 200) {
-          navigation.navigate("EmployeesScreen");
+          navigation.replace("EmployeesScreen");
           toast.show({
             render: () => (
               <Box bg="emerald.500" px="5" py="5" rounded="sm" mb={5}>
@@ -118,7 +118,7 @@ const EditEmployee = ({ route }) => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => navigation.navigate("EmployeesScreen")}
+          onPress={() => navigation.replace("EmployeesScreen")}
         >
           <Text style={[styles.buttonStyle, styles.buttonStyle1]}>
             {t("Cancel")}

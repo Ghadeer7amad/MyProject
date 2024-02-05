@@ -5,29 +5,20 @@ import {
   TextInput,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  Dimensions,
 } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import {
   faEnvelope,
   faLock,
   faUser,
-  faCheck,
   faHome,
   faPhone,
   faBirthdayCake,
 } from "@fortawesome/free-solid-svg-icons";
-import {
-  faFacebookF,
-  faGoogle,
-  faTwitter,
-} from "@fortawesome/free-brands-svg-icons";
-import { Linking } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Color from "../src/Common/Color.js";
 import React, { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-import Spacing from "../src/Common/Spacing.js";
 import { Box, useToast, Toast, Select } from "native-base";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
@@ -170,7 +161,7 @@ const AddManager = () => {
         setphone("");
         setaddress("");
         setpassword("");
-        navigation.navigate("SalonScreen", { salonId: null });
+        navigation.replace("SalonScreen", { salonId: null });
       } else {
         toast.show({
           render: () => (

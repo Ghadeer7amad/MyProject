@@ -19,6 +19,8 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import WhatsApp from "../Common/WhatsApp.js";
 import { useTranslation } from "react-i18next";
+import { useFocusEffect } from '@react-navigation/native';
+
 
 const EmployeesScreen = () => {
   const navigation = useNavigation();
@@ -98,9 +100,11 @@ const EmployeesScreen = () => {
     }
   };
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchData();
+    }, [])
+  );
 
   return (
     <View style={styles.container}>

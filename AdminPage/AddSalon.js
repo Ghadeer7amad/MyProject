@@ -91,7 +91,7 @@ const AddSalon = () => {
           </Box>
         ),
       });
-      navigation.navigate("SalonScreen", { salonId: null });
+      navigation.replace("SalonScreen", { salonId: null });
     } catch (error) {
       console.error(error); 
     }
@@ -188,7 +188,7 @@ const AddSalon = () => {
       </TouchableOpacity>
 
       <TouchableOpacity
-        onPress={() => navigation.navigate("SalonScreen", { salonId: null })}
+        onPress={() => navigation.replace("SalonScreen", { salonId: null })}
       >
         <Text style={[styles.buttonStyle, styles.buttonStyle1]}>
           {t("Cancel")}

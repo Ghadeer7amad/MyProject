@@ -93,7 +93,7 @@ const AddEmployee = () => {
           );
         },
       });
-      navigation.navigate("EmployeesScreen");
+      navigation.replace("EmployeesScreen");
     } catch (error) {
       console.error(error);
     }
@@ -167,7 +167,7 @@ const AddEmployee = () => {
         <Text style={styles.buttonStyle}>{t("Add")}</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => navigation.navigate("EmployeesScreen")}>
+      <TouchableOpacity onPress={() => navigation.replace("EmployeesScreen")}>
         <Text style={[styles.buttonStyle, styles.buttonStyle1]}>
           {t("Cancel")}
         </Text>
